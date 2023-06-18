@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.get('/prompt', (req, res) => {
-    fs.readFile('listPrompts.json', 'utf8', (err, data) => {
+    fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             res.sendStatus(500);
