@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
     const { generated_text } = await inference.textGeneration({
-        model: 'Falcon-40B',
+        model: 'databricks/dolly-v2-12b',
         inputs: userInput
     });
     res.json({ response: generated_text });
