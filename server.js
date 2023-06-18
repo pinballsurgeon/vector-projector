@@ -24,7 +24,7 @@ app.get('/prompt', (req, res) => {
 app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
     const { generated_text } = await inference.textGeneration({
-        model: 'distilgpt2',
+        model: 'tiiuae/falcon-7b-instruct',
         inputs: userInput,
         max_length: 1000
     });
