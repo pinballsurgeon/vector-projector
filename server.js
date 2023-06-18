@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
     const { generated_text } = await inference.textGeneration({
-        model: 'gpt2',
+        model: 'Falcon-40B',
         inputs: userInput
     });
     res.json({ response: generated_text });
