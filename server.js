@@ -5,8 +5,9 @@ const { HfInference } = require("@huggingface/inference");
 const app = express();
 const inference = new HfInference("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");
 
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(express.static('public'));
 
 app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
