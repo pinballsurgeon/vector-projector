@@ -13,7 +13,8 @@ app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
     const { generated_text } = await inference.textGeneration({
         model: 'tiiuae/falcon-7b',
-        inputs: userInput
+        inputs: userInput,
+        max_length: 500
     });
     res.json({ response: generated_text });
 });
