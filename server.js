@@ -21,15 +21,33 @@ app.get('/prompt', (req, res) => {
     });
 });
 
+
+// LLM INTERACTION
 app.post('/ask', async (req, res) => {
     const userInput = req.body.prompt;
+    const model = req.body.model;
     const { generated_text } = await inference.textGeneration({
-        model: 'tiiuae/falcon-7b-instruct',
+        model: model,
         inputs: userInput,
         max_length: 1000
     });
     res.json({ response: generated_text });
 });
+
+
+// MODELS
+app.get('/models', (req, res) => {
+    fs.readFile('public/llmModels.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+        } else {
+            const models = JSON.parse(data);
+            res.json(models);
+        }
+    });
+});
+
 
 const port = process.env.PORT || 3000;
 

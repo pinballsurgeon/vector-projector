@@ -8,6 +8,26 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
+  fetch('/models')
+  .then(response => response.json())
+  .then(models => {
+      const modelContainer = document.getElementById('modelContainer');
+      models.forEach((model, index) => {
+          const label = document.createElement('label');
+          label.textContent = model;
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'model';
+          input.value = model;
+          if (index === 0) {
+              input.checked = true;
+          }
+          label.appendChild(input);
+          modelContainer.appendChild(label);
+      });
+  });
+  
+
 async function getPrompt() {
     const response = await fetch('/prompt');
     const data = await response.json();
@@ -39,3 +59,20 @@ async function askGPT() {
 }
 
 document.getElementById('askButton').addEventListener('click', askGPT);
+
+document.getElementById('askButton').addEventListener('click', () => {
+    const userInput = document.getElementById('userInput').value;
+    const selectedModel = document.querySelector('input[name="model"]:checked').value;
+    fetch('/ask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: userInput, model: selectedModel }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('gptResponse').textContent = data.response;
+    });
+});
+
