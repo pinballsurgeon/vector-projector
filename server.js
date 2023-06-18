@@ -9,11 +9,11 @@ const inference = new HfInference("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");
 app.use(express.json());
 app.use(express.static('public'));
 
-app.get('/prompt', (req, res) => {
+app.get('/prompt', (req, res, next) => {
     fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.sendStatus(500);
+            return next(err);
         } else {
             const prompts = JSON.parse(data);
             res.json({ prompt: prompts[0] });
@@ -21,33 +21,40 @@ app.get('/prompt', (req, res) => {
     });
 });
 
-
-// LLM INTERACTION
-app.post('/ask', async (req, res) => {
-    const userInput = req.body.prompt;
-    const model = req.body.model;
-    const { generated_text } = await inference.textGeneration({
-        model: model,
-        inputs: userInput,
-        max_length: 1000
-    });
-    res.json({ response: generated_text });
+app.post('/ask', async (req, res, next) => {
+    try {
+        const userInput = req.body.prompt;
+        const model = req.body.model;
+        const { generated_text } = await inference.textGeneration({
+            model: model,
+            inputs: userInput,
+            max_length: 1000
+        });
+        res.json({ response: generated_text });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
 });
 
-
-// MODELS
-app.get('/models', (req, res) => {
+app.get('/models', (req, res, next) => {
     fs.readFile('public/llmModels.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.sendStatus(500);
+            return next(err);
         } else {
             const models = JSON.parse(data);
+            console.info('DAN DAN DAN');
             res.json(models);
         }
     });
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: err.toString() });
+});
 
 const port = process.env.PORT || 3000;
 
