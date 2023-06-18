@@ -20,7 +20,8 @@ async function askGPT() {
     });
 
     const data = await response.json();
-    document.getElementById('gptResponse').innerText = data.response;
+    let responseText = data.response.replace(userInput, ''); // Remove the userInput from the response
+    document.getElementById('gptResponse').innerText = responseText.trim(); // Use trim() to remove leading/trailing white spaces
 }
 
 document.getElementById('askButton').addEventListener('click', askGPT);
