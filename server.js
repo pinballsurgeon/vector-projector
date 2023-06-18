@@ -14,7 +14,7 @@ app.post('/ask', async (req, res) => {
     const { generated_text } = await inference.textGeneration({
         model: 'tiiuae/falcon-7b',
         inputs: userInput,
-        max_length: 500
+        max_length: 1000
     });
     res.json({ response: generated_text });
 });
