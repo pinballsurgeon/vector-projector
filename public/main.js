@@ -21,7 +21,13 @@ async function askGPT() {
 
     const data = await response.json();
     let responseText = data.response.replace(userInput, ''); // Remove the userInput from the response
-    document.getElementById('gptResponse').innerText = responseText.trim(); // Use trim() to remove leading/trailing white spaces
+
+    // Preprocessing the responseText into a list
+    responseText = responseText.trim().replace(/\[|\]|'/g, ""); // Remove brackets and quotes
+    let responseList = responseText.split(","); // Split into array by comma
+    responseList = responseList.map(item => item.trim()); // Remove any leading/trailing spaces in each item
+
+    document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
 }
 
 document.getElementById('askButton').addEventListener('click', askGPT);
