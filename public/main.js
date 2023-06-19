@@ -8,66 +8,72 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
-function getSelectedModel() {
-    const radios = document.getElementsByName('model');
-    for (let i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            return radios[i].value;
-        }
-    }
-}
+  let selectedModel; // Save selected model
 
-function updateSidebar() {
-    const sidebarSelector = document.getElementById("sidebarSelector");
-    const sidebarTitle = document.getElementById("sidebarTitle");
-    const sidebarContent = document.querySelector('.sidebar-content');
-    
-    sidebarContent.innerHTML = ''; // Clear current content
-    
-    if(sidebarSelector.value === 'logs') {
-        sidebarTitle.textContent = 'Logs';
-        // Logs will be appended here dynamically
-    } else {
-        sidebarTitle.textContent = 'Model Selection';
-        appendModelSelection();
-    }
-}
-
-function appendLog(message) {
-    const logElement = document.createElement('p');
-    const date = new Date();
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    logElement.textContent = `${formattedDate} - ${message}`;
-    document.querySelector('.sidebar-content').appendChild(logElement);
-}
-
-function appendModelSelection() {
-    fetch('/models')
-    .then(response => {
-        appendLog('Fetching models...');
-        return response.json();
-    })
-    .then(models => {
-        const sidebarContent = document.querySelector('.sidebar-content');
-        models.forEach((model, index) => {
-            const label = document.createElement('label');
-            label.textContent = model;
-            const input = document.createElement('input');
-            input.type = 'radio';
-            input.name = 'model';
-            input.value = model;
-            if (index === 0) {
-                input.checked = true;
-            }
-            label.appendChild(input);
-            sidebarContent.appendChild(label);
-        });
-        appendLog('Models fetched successfully');
-    })
-    .catch(error => {
-        appendLog(`Error fetching models: ${error}`);
-    });
-}
+  function getSelectedModel() {
+      return selectedModel; // Return saved model
+  }
+  
+  function updateSidebar() {
+      const sidebarSelector = document.getElementById("sidebarSelector");
+      const sidebarTitle = document.getElementById("sidebarTitle");
+      const logsContent = document.getElementById('logsContent');
+      const modelSelectionContent = document.getElementById('modelSelectionContent');
+      
+      logsContent.innerHTML = ''; // Clear current logs
+      modelSelectionContent.innerHTML = ''; // Clear current model selection
+      
+      if(sidebarSelector.value === 'logs') {
+          sidebarTitle.textContent = 'Logs';
+          // Logs will be appended to 'logsContent' div
+      } else {
+          sidebarTitle.textContent = 'Model Selection';
+          appendModelSelection();
+      }
+  }
+  
+  function appendLog(message) {
+      const logElement = document.createElement('p');
+      const date = new Date();
+      const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      logElement.textContent = `${formattedDate} - ${message}`;
+      document.getElementById('logsContent').appendChild(logElement); // Append to 'logsContent' div
+  }
+  
+  function appendModelSelection() {
+      fetch('/models')
+      .then(response => {
+          appendLog('Fetching models...');
+          return response.json();
+      })
+      .then(models => {
+          const modelSelectionContent = document.getElementById('modelSelectionContent'); // Append to 'modelSelectionContent' div
+          models.forEach((model, index) => {
+              const label = document.createElement('label');
+              label.textContent = model;
+              const input = document.createElement('input');
+              input.type = 'radio';
+              input.name = 'model';
+              input.value = model;
+              if (index === 0) {
+                  input.checked = true;
+                  selectedModel = model; // Save first model as default
+              }
+              // Add event listener to save selected model
+              input.addEventListener('change', () => {
+                  if(input.checked) {
+                      selectedModel = model;
+                  }
+              });
+              label.appendChild(input);
+              modelSelectionContent.appendChild(label);
+          });
+          appendLog('Models fetched successfully');
+      })
+      .catch(error => {
+          appendLog(`Error fetching models: ${error}`);
+      });
+  }
   
 async function getPrompt() {
     const response = await fetch('/prompt');
