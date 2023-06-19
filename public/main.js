@@ -80,7 +80,7 @@ async function executeSequence() {
         });
 
         if (!response.ok) {
-            appendLog(`LLM Request Error: ${response}`);
+            appendLog(`LLM Request Error: ${JSON.stringify(response)}`);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
