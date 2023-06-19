@@ -119,14 +119,11 @@ async function executeSequence() {
 
 
 document.addEventListener("DOMContentLoaded", function(){
-    const sidebar = document.getElementById("sidebar");
-    const toggleButton = document.getElementById("toggleSidebarButton");
+    const sidebarSelector = document.getElementById("sidebarSelector");
 
-    toggleButton.addEventListener("click", function() {
-        sidebar.classList.toggle("open");
-    });
+    sidebarSelector.addEventListener("change", updateSidebar);
+    
+    updateSidebar(); // Update sidebar on page load
 });
-
-
 
 document.getElementById('askButton').addEventListener('click', executeSequence);
