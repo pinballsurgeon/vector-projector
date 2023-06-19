@@ -6,25 +6,24 @@
 </head>
 <body>
     <h1>Hello LLM!</h1>
-    <button id="toggleSidebarButton">Toggle Logs</button>
+    <select id="sidebarSelector">
+        <option value="logs">Logs</option>
+        <option value="modelSelection">Model Selection</option>
+    </select>
     <div id="my_dataviz"></div>
     
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <h2>Logs</h2>
+            <h2 id="sidebarTitle">Logs</h2>
         </div>
         <div class="sidebar-content">
-            <!-- The logs will be appended here -->
+            <!-- The logs and model selection will be appended here -->
         </div>
     </div>
     
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
     <button id="askButton">Ask</button>
-    
-    <!-- Area to display model selection -->
-    <h2>Select Model:</h2>
-    <div id="modelContainer"></div>
     
     <!-- Area to display GPT response -->
     <p id="gptResponse"></p>

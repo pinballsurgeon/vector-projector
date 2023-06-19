@@ -17,6 +17,21 @@ function getSelectedModel() {
     }
 }
 
+function updateSidebar() {
+    const sidebarSelector = document.getElementById("sidebarSelector");
+    const sidebarTitle = document.getElementById("sidebarTitle");
+    const sidebarContent = document.querySelector('.sidebar-content');
+    
+    sidebarContent.innerHTML = ''; // Clear current content
+    
+    if(sidebarSelector.value === 'logs') {
+        sidebarTitle.textContent = 'Logs';
+        // Logs will be appended here dynamically
+    } else {
+        sidebarTitle.textContent = 'Model Selection';
+        appendModelSelection();
+    }
+}
 
 function appendLog(message) {
     const logElement = document.createElement('p');
@@ -26,31 +41,33 @@ function appendLog(message) {
     document.querySelector('.sidebar-content').appendChild(logElement);
 }
 
-fetch('/models')
-.then(response => {
-    appendLog('Fetching models...');
-    return response.json();
-})
-.then(models => {
-    const modelContainer = document.getElementById('modelContainer');
-    models.forEach((model, index) => {
-        const label = document.createElement('label');
-        label.textContent = model;
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'model';
-        input.value = model;
-        if (index === 0) {
-            input.checked = true;
-        }
-        label.appendChild(input);
-        modelContainer.appendChild(label);
+function appendModelSelection() {
+    fetch('/models')
+    .then(response => {
+        appendLog('Fetching models...');
+        return response.json();
+    })
+    .then(models => {
+        const sidebarContent = document.querySelector('.sidebar-content');
+        models.forEach((model, index) => {
+            const label = document.createElement('label');
+            label.textContent = model;
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'model';
+            input.value = model;
+            if (index === 0) {
+                input.checked = true;
+            }
+            label.appendChild(input);
+            sidebarContent.appendChild(label);
+        });
+        appendLog('Models fetched successfully');
+    })
+    .catch(error => {
+        appendLog(`Error fetching models: ${error}`);
     });
-    appendLog('Models fetched successfully');
-})
-.catch(error => {
-    appendLog(`Error fetching models: ${error}`);
-});
+}
   
 async function getPrompt() {
     const response = await fetch('/prompt');
