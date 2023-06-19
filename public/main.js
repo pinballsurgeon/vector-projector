@@ -33,6 +33,12 @@ async function getPrompt() {
     return data.prompt;
 }
 
+function appendLog(message) {
+    const logElement = document.createElement('p');
+    logElement.textContent = message;
+    document.querySelector('.sidebar-content').appendChild(logElement);
+}
+
 async function askGPT() {
     const userInput = document.getElementById('userInput').value;
 
@@ -47,6 +53,8 @@ async function askGPT() {
         body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }), // include the model in the request body
     });
 
+
+    appendLog('DAN DAN DAN'); // Added this line
     const data = await response.json();
     let responseText = data.response.replace(fullPrompt, ''); // Remove the fullPrompt from the response
 

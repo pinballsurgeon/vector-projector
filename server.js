@@ -9,13 +9,6 @@ const inference = new HfInference("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");
 app.use(express.json());
 app.use(express.static('public'));
 
-
-function appendLog(message) {
-    const logElement = document.createElement('p');
-    logElement.textContent = message;
-    document.querySelector('.sidebar-content').appendChild(logElement);
-}
-
 app.get('/prompt', (req, res, next) => {
     fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {
         if (err) {
@@ -51,7 +44,6 @@ app.get('/models', (req, res, next) => {
             return next(err);
         } else {
             const models = JSON.parse(data);
-            appendLog('Models fetched successfully'); // Added this line
             res.json(models);
         }
     });
