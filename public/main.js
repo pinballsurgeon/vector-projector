@@ -20,21 +20,20 @@ d3.select("#my_dataviz")
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     
-    logsContent.innerHTML = ''; // Clear current logs
-    modelSelectionContent.innerHTML = ''; // Clear current model selection
-    
     if(sidebarSelector.value === 'logs') {
         sidebarTitle.textContent = 'Logs';
         logsContent.style.display = 'block'; // Show logsContent
         modelSelectionContent.style.display = 'none'; // Hide modelSelectionContent
-        // Logs will be appended to 'logsContent' div
     } else {
         sidebarTitle.textContent = 'Model Selection';
         logsContent.style.display = 'none'; // Hide logsContent
         modelSelectionContent.style.display = 'block'; // Show modelSelectionContent
+
+        modelSelectionContent.innerHTML = ''; // Clear current model selection
         appendModelSelection();
     }
 }
+
 
   
   function appendLog(message) {
