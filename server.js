@@ -24,7 +24,7 @@ app.get('/prompt', (req, res, next) => {
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
-        const model = req.body.model || 'gpt-2'; // Provide a default value
+        const model = req.body.model || 'gpt2'; // Provide a default value
         const { generated_text } = await inference.textGeneration({
             model: model,
             inputs: userInput,
