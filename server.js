@@ -25,17 +25,33 @@ app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
+        const max_length = req.body.max_length || 1000;
+        const min_length = req.body.min_length || undefined;
+        const temperature = req.body.temperature || 1.0;
+        const top_p = req.body.top_p || undefined;
+        const top_k = req.body.top_k || undefined;
+        const num_return_sequences = req.body.num_return_sequences || 1;
+        const do_sample = req.body.do_sample || true;
+
         const { generated_text } = await inference.textGeneration({
             model: model,
             inputs: userInput,
-            max_length: 1000
+            max_length: max_length,
+            min_length: min_length,
+            temperature: temperature,
+            top_p: top_p,
+            top_k: top_k,
+            num_return_sequences: num_return_sequences,
+            do_sample: do_sample
         });
+        
         res.json({ response: generated_text });
     } catch (err) {
         console.error(err);
         next(err);
     }
 });
+
 
 app.get('/models', (req, res, next) => {
     fs.readFile('public/llmModels.json', 'utf8', (err, data) => {
