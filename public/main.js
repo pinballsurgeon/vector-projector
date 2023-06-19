@@ -85,7 +85,7 @@ async function executeSequence() {
         }
 
         const data = await response.json();
-        appendLog('Received response from /ask');
+        appendLog(`Received response from /ask: ${data}`);
 
         let responseText = data.response.replace(fullPrompt, ''); // Remove the fullPrompt from the response
         responseText = responseText.trim().replace(/\[|\]|'/g, ""); // Remove brackets and quotes
