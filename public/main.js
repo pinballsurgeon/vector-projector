@@ -8,36 +8,44 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
-  fetch('/models')
-  .then(response => response.json())
-  .then(models => {
-      const modelContainer = document.getElementById('modelContainer');
-      models.forEach((model, index) => {
-          const label = document.createElement('label');
-          label.textContent = model;
-          const input = document.createElement('input');
-          input.type = 'radio';
-          input.name = 'model';
-          input.value = model;
-          if (index === 0) {
-              input.checked = true;
-          }
-          label.appendChild(input);
-          modelContainer.appendChild(label);
-      });
-    appendLog(label); // Added this line
-  });
+  function appendLog(message) {
+    const logElement = document.createElement('p');
+    const date = new Date();
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    logElement.textContent = `${formattedDate} - ${message}`;
+    document.querySelector('.sidebar-content').appendChild(logElement);
+}
+
+fetch('/models')
+.then(response => {
+    appendLog('Fetching models...');
+    return response.json();
+})
+.then(models => {
+    const modelContainer = document.getElementById('modelContainer');
+    models.forEach((model, index) => {
+        const label = document.createElement('label');
+        label.textContent = model;
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'model';
+        input.value = model;
+        if (index === 0) {
+            input.checked = true;
+        }
+        label.appendChild(input);
+        modelContainer.appendChild(label);
+    });
+    appendLog('Models fetched successfully');
+})
+.catch(error => {
+    appendLog(`Error fetching models: ${error}`);
+});
   
 async function getPrompt() {
     const response = await fetch('/prompt');
     const data = await response.json();
     return data.prompt;
-}
-
-function appendLog(message) {
-    const logElement = document.createElement('p');
-    logElement.textContent = message;
-    document.querySelector('.sidebar-content').appendChild(logElement);
 }
 
 async function askGPT() {
