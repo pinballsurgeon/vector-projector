@@ -27,12 +27,6 @@ d3.select("#my_dataviz")
       });
   });
   
-function appendLog(message) {
-    const logElement = document.createElement('p');
-    logElement.textContent = message;
-    document.querySelector('.sidebar-content').appendChild(logElement);
-}
-
 async function getPrompt() {
     const response = await fetch('/prompt');
     const data = await response.json();

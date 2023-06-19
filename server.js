@@ -9,6 +9,13 @@ const inference = new HfInference("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");
 app.use(express.json());
 app.use(express.static('public'));
 
+
+function appendLog(message) {
+    const logElement = document.createElement('p');
+    logElement.textContent = message;
+    document.querySelector('.sidebar-content').appendChild(logElement);
+}
+
 app.get('/prompt', (req, res, next) => {
     fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {
         if (err) {
