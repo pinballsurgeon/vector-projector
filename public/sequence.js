@@ -56,6 +56,8 @@ export async function listPerpetuator() {
         // Call the generateRootList function and get the result
         const rootList = await generateRootList();
 
+        appendLog(`List perpetuator response: ${rootList}`);
+
         // Return the result to the caller
         return rootList;
     } catch (error) {
