@@ -1,4 +1,4 @@
-import {updateSidebar, appendLog, appendModelSelection, getSelectedModel} from './sidebar.js';
+import {updateSidebar, appendLog, appendModelSelection, getSelectedModel, initializeModels} from './sidebar.js';
 import {getPrompt, executeSequence} from './sequence.js';
 
 d3.select("#my_dataviz")
@@ -11,7 +11,7 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
-document.addEventListener("DOMContentLoaded", function(){
+  document.addEventListener("DOMContentLoaded", function(){
     const sidebarSelector = document.getElementById("sidebarSelector");
     const toggleSidebarButton = document.getElementById("toggleSidebarButton");
     const sidebar = document.getElementById("sidebar");
@@ -21,8 +21,9 @@ document.addEventListener("DOMContentLoaded", function(){
     toggleSidebarButton.addEventListener("click", function() {
         sidebar.classList.toggle("open");
     });
-    
+
     updateSidebar(); // Update sidebar on page load
+    initializeModels(); // Fetch models on page load
 });
 
 document.getElementById('askButton').addEventListener('click', executeSequence);

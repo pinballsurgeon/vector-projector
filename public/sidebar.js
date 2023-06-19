@@ -1,5 +1,9 @@
 export let selectedModel; // Save selected model
 
+export function initializeModels() {
+    appendModelSelection();
+}
+
 export function getSelectedModel() {
     return selectedModel; // Return saved model
 }
