@@ -25,6 +25,7 @@ d3.select("#my_dataviz")
           label.appendChild(input);
           modelContainer.appendChild(label);
       });
+    appendLog(label); // Added this line
   });
   
 async function getPrompt() {
