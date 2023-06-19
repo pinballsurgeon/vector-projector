@@ -45,7 +45,7 @@ async function askGPT() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: fullPrompt }),
+        body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }), // include the model in the request body
     });
 
     const data = await response.json();
@@ -59,20 +59,3 @@ async function askGPT() {
 }
 
 document.getElementById('askButton').addEventListener('click', askGPT);
-
-document.getElementById('askButton').addEventListener('click', () => {
-    const userInput = document.getElementById('userInput').value;
-    const selectedModel = document.querySelector('input[name="model"]:checked').value;
-    fetch('/ask', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: userInput, model: selectedModel }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('gptResponse').textContent = data.response;
-    });
-});
-
