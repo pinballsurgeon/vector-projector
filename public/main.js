@@ -116,12 +116,16 @@ async function executeSequence() {
     }
 }
 
-
-
 document.addEventListener("DOMContentLoaded", function(){
     const sidebarSelector = document.getElementById("sidebarSelector");
+    const toggleSidebarButton = document.getElementById("toggleSidebarButton");
+    const sidebar = document.getElementById("sidebar");
 
     sidebarSelector.addEventListener("change", updateSidebar);
+
+    toggleSidebarButton.addEventListener("click", function() {
+        sidebar.classList.toggle("open");
+    });
     
     updateSidebar(); // Update sidebar on page load
 });
