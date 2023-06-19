@@ -63,10 +63,7 @@ async function executeSequence() {
         const userInput = document.getElementById('userInput').value;
         appendLog(`Starting sequence with user input: ${userInput}`);
 
-        appendLog('Getting prompt...');
         const prompt = await getPrompt();
-        appendLog(`Received prompt: ${prompt}`);
-
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
         appendLog(`Full prompt: ${fullPrompt}`);
 
@@ -83,6 +80,7 @@ async function executeSequence() {
         });
 
         if (!response.ok) {
+            appendLog(`LLM Request Error: ${response}`);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
