@@ -1,4 +1,6 @@
 [
 "tiiuae/falcon-7b",
-"gpt2"
+"bigscience/bloom-560m",
+"distilgpt2",
+"databricks/dolly-v2-3b"
 ]
