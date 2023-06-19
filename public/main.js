@@ -1,5 +1,5 @@
 import {updateSidebar, appendLog, appendModelSelection, getSelectedModel, initializeModels} from './sidebar.js';
-import {getPrompt, executeSequence} from './sequence.js';
+import {getPrompt, generateRootList} from './sequence.js';
 
 d3.select("#my_dataviz")
   .append("svg")
@@ -26,4 +26,4 @@ d3.select("#my_dataviz")
     initializeModels(); // Fetch models on page load
 });
 
-document.getElementById('askButton').addEventListener('click', executeSequence);
+document.getElementById('askButton').addEventListener('click', generateRootList);
