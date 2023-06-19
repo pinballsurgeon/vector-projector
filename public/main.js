@@ -8,7 +8,17 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
-  function appendLog(message) {
+function getSelectedModel() {
+    const radios = document.getElementsByName('model');
+    for (let i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            return radios[i].value;
+        }
+    }
+}
+
+
+function appendLog(message) {
     const logElement = document.createElement('p');
     const date = new Date();
     const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -60,13 +70,16 @@ async function executeSequence() {
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
         appendLog(`Full prompt: ${fullPrompt}`);
 
+        const selectedModel = getSelectedModel();
+        appendLog(`Selected model: ${selectedModel}`);
+
         appendLog('Sending request to /ask...');
         const response = await fetch('/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }), // include the model in the request body
+            body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }),
         });
 
         if (!response.ok) {
