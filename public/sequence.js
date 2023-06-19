@@ -58,9 +58,13 @@ export async function listPerpetuator() {
 
         appendLog(`List perpetuator response: ${rootList}`);
 
+        // Update the 'gptResponse' element with the returned list
+        document.getElementById('gptResponse').innerText = rootList.join(", ");
+
         // Return the result to the caller
         return rootList;
     } catch (error) {
         appendLog(`Error in list perpetuator: ${error}`);
     }
 }
+

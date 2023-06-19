@@ -1,3 +1,4 @@
+//CLIENT
 import {updateSidebar, appendLog, appendModelSelection, getSelectedModel, initializeModels} from './sidebar.js';
 import {getPrompt, listPerpetuator} from './sequence.js';
 
@@ -11,6 +12,7 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
+  // SIDE BAR HANDLER
   document.addEventListener("DOMContentLoaded", function(){
     const sidebarSelector = document.getElementById("sidebarSelector");
     const toggleSidebarButton = document.getElementById("toggleSidebarButton");
@@ -26,4 +28,7 @@ d3.select("#my_dataviz")
     initializeModels(); // Fetch models on page load
 });
 
-document.getElementById('askButton').addEventListener('click', listPerpetuator);
+// TOPIC HANDLER
+document.getElementById('askButton').addEventListener('click', async () => {
+    const rootList = await listPerpetuator();
+});
