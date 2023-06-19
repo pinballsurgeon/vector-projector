@@ -6,10 +6,9 @@ export async function getPrompt() {
     return data.prompt;
 }
 
-export async function executeSequence() {
+export async function generateRootList() {
     try {
         const userInput = document.getElementById('userInput').value;
-        appendLog(`Starting sequence with user input: ${userInput}`);
 
         const prompt = await getPrompt();
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
@@ -41,8 +40,8 @@ export async function executeSequence() {
         responseList = responseList.map(item => item.trim()); // Remove any leading/trailing spaces in each item
         document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
 
-        appendLog('Sequence completed successfully');
+        appendLog('Root list generation completed successfully');
     } catch (error) {
-        appendLog(`Error during sequence: ${error}`);
+        appendLog(`Error during root list generation: ${error}`);
     }
 }
