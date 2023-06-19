@@ -1,4 +1,26 @@
 body {
     font-family: Arial, sans-serif;
   }
-  
+  .sidebar {
+    position: fixed;
+    width: 250px;
+    max-height: 100vh;
+    overflow: auto;
+    right: 0;
+    top: 0;
+    background-color: #f1f1f1;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    padding: 20px;
+}
+
+.sidebar-content {
+    padding: 20px;
+}

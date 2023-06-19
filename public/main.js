@@ -27,6 +27,11 @@ d3.select("#my_dataviz")
       });
   });
   
+function appendLog(message) {
+    const logElement = document.createElement('p');
+    logElement.textContent = message;
+    document.querySelector('.sidebar-content').appendChild(logElement);
+}
 
 async function getPrompt() {
     const response = await fetch('/prompt');
@@ -57,5 +62,9 @@ async function askGPT() {
 
     document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
 }
+
+document.getElementById('toggleSidebarButton').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+});
 
 document.getElementById('askButton').addEventListener('click', askGPT);

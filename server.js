@@ -44,7 +44,7 @@ app.get('/models', (req, res, next) => {
             return next(err);
         } else {
             const models = JSON.parse(data);
-            console.info('DAN DAN DAN');
+            appendLog('Models fetched successfully'); // Added this line
             res.json(models);
         }
     });
