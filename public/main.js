@@ -66,8 +66,17 @@ async function askGPT() {
     document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
 }
 
-document.getElementById('toggleSidebarButton').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
+
+
+document.addEventListener("DOMContentLoaded", function(){
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("toggleSidebarButton");
+
+    toggleButton.addEventListener("click", function() {
+        sidebar.classList.toggle("open");
+    });
 });
+
+
 
 document.getElementById('askButton').addEventListener('click', askGPT);
