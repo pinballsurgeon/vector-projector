@@ -37,16 +37,28 @@ export async function generateRootList() {
         const data = await response.json();
         appendLog(`Received response from /ask: ${JSON.stringify(data)}`);
 
+        // CLEAN LIST RESPONSE
         let responseText = data.response.replace(fullPrompt, '');  // Remove the fullPrompt from the response
         responseText = responseText.trim().split("\n")[0];          // Split by newline, take the first line, and trim
         responseText = responseText.replace(/\[|\]|'/g, "");        // Remove brackets and quotes
         let responseList = responseText.split(",");                 // Split into array by comma
         responseList = responseList.map(item => item.trim());       // Remove any leading/trailing spaces in each item
-        document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
 
         appendLog('Root list generation completed successfully');
+        return responseList;                                        // Return the response list
     } catch (error) {
         appendLog(`Error during root list generation: ${error}`);
     }
 }
 
+export async function listPerpetuator() {
+    try {
+        // Call the generateRootList function and get the result
+        const rootList = await generateRootList();
+
+        // Return the result to the caller
+        return rootList;
+    } catch (error) {
+        appendLog(`Error in list perpetuator: ${error}`);
+    }
+}
