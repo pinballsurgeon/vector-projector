@@ -48,30 +48,44 @@ async function getPrompt() {
     return data.prompt;
 }
 
-async function askGPT() {
-    const userInput = document.getElementById('userInput').value;
+async function executeSequence() {
+    try {
+        const userInput = document.getElementById('userInput').value;
+        appendLog(`Starting sequence with user input: ${userInput}`);
 
-    const prompt = await getPrompt();
-    const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+        appendLog('Getting prompt...');
+        const prompt = await getPrompt();
+        appendLog(`Received prompt: ${prompt}`);
 
-    const response = await fetch('/ask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }), // include the model in the request body
-    });
+        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+        appendLog(`Full prompt: ${fullPrompt}`);
 
+        appendLog('Sending request to /ask...');
+        const response = await fetch('/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }), // include the model in the request body
+        });
 
-    appendLog('DAN DAN DAN'); // Added this line
-    const data = await response.json();
-    let responseText = data.response.replace(fullPrompt, ''); // Remove the fullPrompt from the response
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    responseText = responseText.trim().replace(/\[|\]|'/g, ""); // Remove brackets and quotes
-    let responseList = responseText.split(","); // Split into array by comma
-    responseList = responseList.map(item => item.trim()); // Remove any leading/trailing spaces in each item
+        const data = await response.json();
+        appendLog('Received response from /ask');
 
-    document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
+        let responseText = data.response.replace(fullPrompt, ''); // Remove the fullPrompt from the response
+        responseText = responseText.trim().replace(/\[|\]|'/g, ""); // Remove brackets and quotes
+        let responseList = responseText.split(","); // Split into array by comma
+        responseList = responseList.map(item => item.trim()); // Remove any leading/trailing spaces in each item
+        document.getElementById('gptResponse').innerText = responseList.join(", "); // Join array elements with a comma for display
+
+        appendLog('Sequence completed successfully');
+    } catch (error) {
+        appendLog(`Error during sequence: ${error}`);
+    }
 }
 
 
