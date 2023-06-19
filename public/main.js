@@ -101,4 +101,4 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-document.getElementById('askButton').addEventListener('click', askGPT);
+document.getElementById('askButton').addEventListener('click', executeSequence);
