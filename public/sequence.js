@@ -1,95 +1,77 @@
-import {appendLog, getSelectedModel} from './sidebar.js';
+import { appendLog, getSelectedModel } from './sidebar.js';
 
-export async function getPrompt(promptKey) {
-    const response = await fetch('/prompt/' + promptKey);
+export const getPrompt = (promptKey) =>
+  fetch(`/prompt/${promptKey}`)
+    .then((response) => response.json())
+    .then((data) => data.prompt);
+
+export const cleanResponse = (responseText, fullPrompt) => {
+  let cleanText = responseText.replace(fullPrompt, '').trim().split("\n")[0];
+  cleanText = cleanText.replace(/\[|\]|'/g, "").replace(/[^\w\s,-]/g, "");
+  return cleanText.split(",").map(item => item.trim());
+};
+
+export const fetchListFromLLM = async (promptKey, userInput) => {
+  try {
+    const prompt = await getPrompt(promptKey);
+    const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+    appendLog(`Full prompt: ${fullPrompt}`);
+
+    const selectedModel = getSelectedModel();
+    appendLog(`Selected model: ${selectedModel}`);
+
+    // SEND PROMPT
+    appendLog('Sending request to /ask...');
+    const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }),
+    });
+
+    // ERROR in RESPONSE
+    if (!response.ok) {
+        appendLog(`LLM Request Error: ${JSON.stringify(response)}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // DATA RESPONSE
     const data = await response.json();
-    return data.prompt;
-}
+    appendLog(`Received response from /ask: ${JSON.stringify(data)}`);
 
-export async function fetchListFromLLM(promptKey, userInput) {
-    try {
-        const prompt = await getPrompt(promptKey);
-        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
-        appendLog(`Full prompt: ${fullPrompt}`);
+    const responseList = cleanResponse(data.response, fullPrompt);
+    appendLog('List generation completed successfully');
+    return responseList;
 
-        const selectedModel = getSelectedModel();
-        appendLog(`Selected model: ${selectedModel}`);
+  } catch (error) {
+    appendLog(`Error during list generation: ${error}`);
+  }
+};
 
-        // SEND PROMPT
-        appendLog('Sending request to /ask...');
-        const response = await fetch('/ask', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }),
-        });
+export const combineAndCleanList = (initialList, expandedList) => {
+  let combinedList = [...initialList, ...expandedList];
+  combinedList = combinedList.map(item => item.toLowerCase());
+  combinedList = [...new Set(combinedList)];
+  return combinedList.filter(item => item !== '');
+};
 
-        // ERROR in RESPONSE
-        if (!response.ok) {
-            appendLog(`LLM Request Error: ${JSON.stringify(response)}`);
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+export const listPerpetuator = async () => {
+  try {
+    const originalPromptKey = "initialList";
+    const newPromptKey = "refinedList";
 
-        // DATA RESPONSE
-        const data = await response.json();
-        appendLog(`Received response from /ask: ${JSON.stringify(data)}`);
+    const userInput = document.getElementById('userInput').value;
 
-        // CLEAN LIST RESPONSE
-        let responseText = data.response.replace(fullPrompt, '');  // Remove the fullPrompt from the response
-        responseText = responseText.trim().split("\n")[0];         // Split by newline, take the first line, and trim
-        responseText = responseText.replace(/\[|\]|'/g, "");       // Remove brackets and quotes
-        responseText = responseText.replace(/[^\w\s,-]/g, "");     // Remove all punctuation except spaces, commas, and hyphens
-        let responseList = responseText.split(",");                // Split into array by comma
-        responseList = responseList.map(item => item.trim());      // Remove any leading/trailing spaces in each item        
+    const initialList = await fetchListFromLLM(originalPromptKey, userInput);
+    const newInput = initialList.join(', ');
+    const expandedList = await fetchListFromLLM(newPromptKey, newInput);
 
-        appendLog('List generation completed successfully');
-        return responseList;                                       // Return the response list
+    const combinedList = combineAndCleanList(initialList, expandedList);
 
-    } catch (error) {
-        appendLog(`Error during list generation: ${error}`);
-    }
-}
+    appendLog(`List perpetuator response: ${combinedList}`);
+    document.getElementById('gptResponse').innerText = combinedList.join(", ");
+    return combinedList;
 
-export async function listPerpetuator() {
-    try {
-        // Define your original and new prompt keys
-        const originalPromptKey = "initialList";
-        const newPromptKey = "refinedList";
-
-        // Get the user's input
-        const userInput = document.getElementById('userInput').value;
-
-        // Call the fetchListFromLLM function with the original prompt key and get the result
-        const initialList = await fetchListFromLLM(originalPromptKey, userInput);
-
-        // Convert the initialList to a string to serve as the userInput for the next function call
-        const newInput = initialList.join(', ');
-
-        // Then call fetchListFromLLM again with the new prompt key to expand the list
-        const expandedList = await fetchListFromLLM(newPromptKey, newInput);
-
-        // Combine the initial and expanded lists
-        let combinedList = [...initialList, ...expandedList];
-
-        // Convert all to lower case
-        combinedList = combinedList.map(item => item.toLowerCase());
-
-        // Remove duplicates
-        combinedList = [...new Set(combinedList)];
-
-        // Remove empty strings
-        combinedList = combinedList.filter(item => item !== '');
-
-        appendLog(`List perpetuator response: ${combinedList}`);
-
-        // Update the 'gptResponse' element with the returned list
-        document.getElementById('gptResponse').innerText = combinedList.join(", ");
-
-        // Return the combined list to the caller
-        return combinedList;
-    } catch (error) {
-        appendLog(`Error in list perpetuator: ${error}`);
-    }
-}
-
+  } catch (error) {
+    appendLog(`Error in list perpetuator: ${error}`);
+  }
+};
