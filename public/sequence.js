@@ -6,10 +6,8 @@ export async function getPrompt(promptKey) {
     return data.prompt;
 }
 
-export async function fetchListFromLLM(promptKey) {
+export async function fetchListFromLLM(promptKey, userInput) {
     try {
-        const userInput = document.getElementById('userInput').value;
-
         const prompt = await getPrompt(promptKey);
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
         appendLog(`Full prompt: ${fullPrompt}`);
@@ -46,6 +44,7 @@ export async function fetchListFromLLM(promptKey) {
 
         appendLog('List generation completed successfully');
         return responseList;                                       // Return the response list
+
     } catch (error) {
         appendLog(`Error during list generation: ${error}`);
     }
@@ -57,15 +56,22 @@ export async function listPerpetuator() {
         const originalPromptKey = "initialList";
         const newPromptKey = "refinedList";
 
+        // Get the user's input
+        const userInput = document.getElementById('userInput').value;
+
         // Call the fetchListFromLLM function with the original prompt key and get the result
-        const initialList = await fetchListFromLLM(originalPromptKey);
+        const initialList = await fetchListFromLLM(originalPromptKey, userInput);
+
+        // Convert the initialList to a string to serve as the userInput for the next function call
+        const newInput = initialList.join(', ');
 
         // Then call fetchListFromLLM again with the new prompt key to expand the list
-        const expandedList = await fetchListFromLLM(newPromptKey);
+        const expandedList = await fetchListFromLLM(newPromptKey, newInput);
 
         // Combine the initial and expanded lists
         const combinedList = [...initialList, ...expandedList];
 
+        // Log and display the results as before...
         appendLog(`List perpetuator response: ${combinedList}`);
 
         // Update the 'gptResponse' element with the returned list
@@ -73,6 +79,7 @@ export async function listPerpetuator() {
 
         // Return the combined list to the caller
         return combinedList;
+        
     } catch (error) {
         appendLog(`Error in list perpetuator: ${error}`);
     }
