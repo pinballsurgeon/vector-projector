@@ -57,22 +57,27 @@ export async function listPerpetuator() {
         const originalPromptKey = "initialList";
         const newPromptKey = "refinedList";
 
-        // Get the user's input
-        const userInput = document.getElementById('userInput').value;
-
         // Call the fetchListFromLLM function with the original prompt key and get the result
-        const initialList = await fetchListFromLLM(originalPromptKey, userInput);
-
-        // Convert the initialList to a string to serve as the userInput for the next function call
-        const newInput = initialList.join(', ');
+        const initialList = await fetchListFromLLM(originalPromptKey);
 
         // Then call fetchListFromLLM again with the new prompt key to expand the list
-        const expandedList = await fetchListFromLLM(newPromptKey, newInput);
+        const expandedList = await fetchListFromLLM(newPromptKey);
 
         // Combine the initial and expanded lists
-        const combinedList = [...initialList, ...expandedList];
+        let combinedList = [...initialList, ...expandedList];
 
-        // Log and display the results as before...
+        // Convert all to lower case
+        combinedList = combinedList.map(item => item.toLowerCase());
+
+        // Remove spaces (assumes you want to remove all spaces, not just leading/trailing ones)
+        combinedList = combinedList.map(item => item.replace(/\s/g, ''));
+
+        // Remove duplicates
+        combinedList = [...new Set(combinedList)];
+
+        // Remove empty strings
+        combinedList = combinedList.filter(item => item !== '');
+
         appendLog(`List perpetuator response: ${combinedList}`);
 
         // Update the 'gptResponse' element with the returned list
@@ -80,7 +85,6 @@ export async function listPerpetuator() {
 
         // Return the combined list to the caller
         return combinedList;
-
     } catch (error) {
         appendLog(`Error in list perpetuator: ${error}`);
     }
