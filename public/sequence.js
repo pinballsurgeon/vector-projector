@@ -39,8 +39,9 @@ export async function fetchListFromLLM(promptKey, userInput) {
         let responseText = data.response.replace(fullPrompt, '');  // Remove the fullPrompt from the response
         responseText = responseText.trim().split("\n")[0];         // Split by newline, take the first line, and trim
         responseText = responseText.replace(/\[|\]|'/g, "");       // Remove brackets and quotes
+        responseText = responseText.replace(/[^\w\s,-]/g, "");     // Remove all punctuation except spaces, commas, and hyphens
         let responseList = responseText.split(",");                // Split into array by comma
-        responseList = responseList.map(item => item.trim());      // Remove any leading/trailing spaces in each item
+        responseList = responseList.map(item => item.trim());      // Remove any leading/trailing spaces in each item        
 
         appendLog('List generation completed successfully');
         return responseList;                                       // Return the response list
@@ -75,11 +76,11 @@ export async function listPerpetuator() {
         appendLog(`List perpetuator response: ${combinedList}`);
 
         // Update the 'gptResponse' element with the returned list
-        document.getElementById('gptResponse').innerText = combinedList.join(" --- ");
+        document.getElementById('gptResponse').innerText = combinedList.join(", ");
 
         // Return the combined list to the caller
         return combinedList;
-        
+
     } catch (error) {
         appendLog(`Error in list perpetuator: ${error}`);
     }
