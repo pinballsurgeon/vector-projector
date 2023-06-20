@@ -57,11 +57,17 @@ export async function listPerpetuator() {
         const originalPromptKey = "initialList";
         const newPromptKey = "refinedList";
 
+        // Get the user's input
+        const userInput = document.getElementById('userInput').value;
+
         // Call the fetchListFromLLM function with the original prompt key and get the result
-        const initialList = await fetchListFromLLM(originalPromptKey);
+        const initialList = await fetchListFromLLM(originalPromptKey, userInput);
+
+        // Convert the initialList to a string to serve as the userInput for the next function call
+        const newInput = initialList.join(', ');
 
         // Then call fetchListFromLLM again with the new prompt key to expand the list
-        const expandedList = await fetchListFromLLM(newPromptKey);
+        const expandedList = await fetchListFromLLM(newPromptKey, newInput);
 
         // Combine the initial and expanded lists
         let combinedList = [...initialList, ...expandedList];
@@ -89,3 +95,4 @@ export async function listPerpetuator() {
         appendLog(`Error in list perpetuator: ${error}`);
     }
 }
+
