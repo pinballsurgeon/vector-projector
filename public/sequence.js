@@ -75,9 +75,6 @@ export async function listPerpetuator() {
         // Convert all to lower case
         combinedList = combinedList.map(item => item.toLowerCase());
 
-        // Remove spaces (assumes you want to remove all spaces, not just leading/trailing ones)
-        combinedList = combinedList.map(item => item.replace(/\s/g, ''));
-
         // Remove duplicates
         combinedList = [...new Set(combinedList)];
 
