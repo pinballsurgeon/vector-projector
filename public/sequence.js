@@ -54,8 +54,8 @@ export async function fetchListFromLLM(promptKey) {
 export async function listPerpetuator() {
     try {
         // Define your original and new prompt keys
-        const originalPromptKey = "original";
-        const newPromptKey = "new";
+        const originalPromptKey = "initialList";
+        const newPromptKey = "refinedList";
 
         // Call the fetchListFromLLM function with the original prompt key and get the result
         const initialList = await fetchListFromLLM(originalPromptKey);
