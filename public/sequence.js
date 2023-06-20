@@ -1,16 +1,16 @@
 import {appendLog, getSelectedModel} from './sidebar.js';
 
-export async function getPrompt() {
-    const response = await fetch('/prompt');
+export async function getPrompt(promptKey) {
+    const response = await fetch('/prompt/' + promptKey);
     const data = await response.json();
     return data.prompt;
 }
 
-export async function generateRootList() {
+export async function fetchListFromLLM(promptKey) {
     try {
         const userInput = document.getElementById('userInput').value;
 
-        const prompt = await getPrompt();
+        const prompt = await getPrompt(promptKey);
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
         appendLog(`Full prompt: ${fullPrompt}`);
 
@@ -39,32 +39,41 @@ export async function generateRootList() {
 
         // CLEAN LIST RESPONSE
         let responseText = data.response.replace(fullPrompt, '');  // Remove the fullPrompt from the response
-        responseText = responseText.trim().split("\n")[0];          // Split by newline, take the first line, and trim
-        responseText = responseText.replace(/\[|\]|'/g, "");        // Remove brackets and quotes
-        let responseList = responseText.split(",");                 // Split into array by comma
-        responseList = responseList.map(item => item.trim());       // Remove any leading/trailing spaces in each item
+        responseText = responseText.trim().split("\n")[0];         // Split by newline, take the first line, and trim
+        responseText = responseText.replace(/\[|\]|'/g, "");       // Remove brackets and quotes
+        let responseList = responseText.split(",");                // Split into array by comma
+        responseList = responseList.map(item => item.trim());      // Remove any leading/trailing spaces in each item
 
-        appendLog('Root list generation completed successfully');
-        return responseList;                                        // Return the response list
+        appendLog('List generation completed successfully');
+        return responseList;                                       // Return the response list
     } catch (error) {
-        appendLog(`Error during root list generation: ${error}`);
+        appendLog(`Error during list generation: ${error}`);
     }
 }
 
 export async function listPerpetuator() {
     try {
-        // Call the generateRootList function and get the result
-        const rootList = await generateRootList();
+        // Define your original and new prompt keys
+        const originalPromptKey = "original";
+        const newPromptKey = "new";
 
-        appendLog(`List perpetuator response: ${rootList}`);
+        // Call the fetchListFromLLM function with the original prompt key and get the result
+        const initialList = await fetchListFromLLM(originalPromptKey);
+
+        // Then call fetchListFromLLM again with the new prompt key to expand the list
+        const expandedList = await fetchListFromLLM(newPromptKey);
+
+        // Combine the initial and expanded lists
+        const combinedList = [...initialList, ...expandedList];
+
+        appendLog(`List perpetuator response: ${combinedList}`);
 
         // Update the 'gptResponse' element with the returned list
-        document.getElementById('gptResponse').innerText = rootList.join(", ");
+        document.getElementById('gptResponse').innerText = combinedList.join(", ");
 
-        // Return the result to the caller
-        return rootList;
+        // Return the combined list to the caller
+        return combinedList;
     } catch (error) {
         appendLog(`Error in list perpetuator: ${error}`);
     }
 }
-

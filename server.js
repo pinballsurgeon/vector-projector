@@ -9,14 +9,15 @@ const inference = new HfInference("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");
 app.use(express.json());
 app.use(express.static('public'));
 
-app.get('/prompt', (req, res, next) => {
+app.get('/prompt/:promptKey', (req, res, next) => {
     fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return next(err);
         } else {
             const prompts = JSON.parse(data);
-            res.json({ prompt: prompts[0] });
+            const prompt = prompts[req.params.promptKey];
+            res.json({ prompt: prompt });
         }
     });
 });
@@ -51,7 +52,6 @@ app.post('/ask', async (req, res, next) => {
         next(err);
     }
 });
-
 
 app.get('/models', (req, res, next) => {
     fs.readFile('public/llmModels.json', 'utf8', (err, data) => {

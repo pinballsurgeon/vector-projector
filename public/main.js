@@ -24,8 +24,8 @@ d3.select("#my_dataviz")
         sidebar.classList.toggle("open");
     });
 
-    updateSidebar(); // Update sidebar on page load
-    initializeModels(); // Fetch models on page load
+    updateSidebar();                    // Update sidebar on page load
+    initializeModels();                 // Fetch models on page load
 });
 
 // TOPIC HANDLER
