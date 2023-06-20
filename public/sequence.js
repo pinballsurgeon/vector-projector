@@ -69,7 +69,7 @@ export async function listPerpetuator() {
         appendLog(`List perpetuator response: ${combinedList}`);
 
         // Update the 'gptResponse' element with the returned list
-        document.getElementById('gptResponse').innerText = combinedList.join(", ");
+        document.getElementById('gptResponse').innerText = combinedList.join(" --- ");
 
         // Return the combined list to the caller
         return combinedList;
