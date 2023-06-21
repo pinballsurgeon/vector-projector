@@ -1,4 +1,4 @@
-import { appendLog, getSelectedModel } from './sidebar.js';
+import { appendLog, getModelAndParams } from './sidebar.js';
 
 // A function to fetch a prompt from a server given a promptKey
 export const getPrompt = (promptKey) =>
