@@ -19,6 +19,21 @@ export const cleanResponse = (responseText, fullPrompt) => {
   return cleanText.split(",").map(item => item.trim());
 };
 
+// A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
+export const combineAndCleanList = (initialList, expandedList) => {
+  // Combining the initial and expanded lists
+  let combinedList = [...initialList, ...expandedList];
+  
+  // Converting all items to lower case
+  combinedList = combinedList.map(item => item.toLowerCase());
+  
+  // Removing duplicate items
+  combinedList = [...new Set(combinedList)];
+  
+  // Removing empty strings and returning the final list
+  return combinedList.filter(item => item !== '');
+};
+
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (promptKey, userInput) => {
     try {
@@ -52,9 +67,11 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
       }
 
       const data = await response.json(); // Parsing the response data as JSON
+      appendLog(`Response data: ${JSON.stringify(data)}`);
 
       // Clean the GPT response text
       const cleanedResponse = cleanResponse(data.choices[0].text, fullPrompt);
+      appendLog(`Cleaned response: ${cleanedResponse}`);
 
       // RETURN THE CLEANED RESPONSE
       return cleanedResponse;
@@ -62,23 +79,6 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
     } catch (error) {
       appendLog(`Error during list generation: ${error}`);
     }
-};
-
-  
-
-// A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
-export const combineAndCleanList = (initialList, expandedList) => {
-  // Combining the initial and expanded lists
-  let combinedList = [...initialList, ...expandedList];
-  
-  // Converting all items to lower case
-  combinedList = combinedList.map(item => item.toLowerCase());
-  
-  // Removing duplicate items
-  combinedList = [...new Set(combinedList)];
-  
-  // Removing empty strings and returning the final list
-  return combinedList.filter(item => item !== '');
 };
 
 // A function to generate and expand a list based on user input
@@ -90,15 +90,19 @@ export const listPerpetuator = async () => {
 
     // Getting the user input from the 'userInput' element
     const userInput = document.getElementById('userInput').value;
+    appendLog(`User input: ${userInput}`);
 
     // Generating the initial list using the fetchListFromLLM function
     const initialList = await fetchListFromLLM(originalPromptKey, userInput);
+    appendLog(`Initial list: ${initialList}`);
     
     // Converting the initial list to a string to use as input for the expanded list
     const newInput = initialList.join(', ');
+    appendLog(`New input: ${newInput}`);
     
     // Generating the expanded list using the fetchListFromLLM function
     const expandedList = await fetchListFromLLM(newPromptKey, newInput);
+    appendLog(`Expanded list: ${expandedList}`);
 
     // Combining and cleaning the initial and expanded lists using the combineAndCleanList function
     const combinedList = combineAndCleanList(initialList, expandedList);
