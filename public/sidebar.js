@@ -91,6 +91,8 @@ export function appendModelSelection() {
         console.log('toggleSidebarButton:', toggleSidebarButton);
         console.log('sidebar:', sidebar);
 
+        // Initialize model parameters after models are fetched and appended to DOM
+        initializeModelParams();
     })
     .catch(error => {
         appendLog(`Error fetching models: ${error}`);
