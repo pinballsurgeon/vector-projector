@@ -1,7 +1,7 @@
 [
 "tiiuae/falcon-7b",
 "tiiuae/falcon-7b-instruct",
-"TheBloke/Wizard-Vicuna-13B-Uncensored-HF",
+"tiiuae/falcon-40b-instruct",
 "bigcode/starcoderplus",
 "CalderaAI/30B-Lazarus",
 "NousResearch/Nous-Hermes-13b",
