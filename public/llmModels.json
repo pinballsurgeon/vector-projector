@@ -1,7 +1,6 @@
 [
 "tiiuae/falcon-7b",
 "tiiuae/falcon-7b-instruct",
-"h2oai/h2ogpt-oasst1-512-20b",
 "bigcode/starcoderplus",
 "HuggingFaceH4/starchat-beta"
 ]
