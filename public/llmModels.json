@@ -2,8 +2,8 @@
 "tiiuae/falcon-7b",
 "tiiuae/falcon-7b-instruct",
 "bigscience/bloom-560m",
-"distilgpt2",
+"bigcode/starcoderplus",
 "databricks/dolly-v2-3b",
 "stabilityai/stablelm-tuned-alpha-7b",
-"eachadea/vicuna-7b-1.1"
+"HuggingFaceH4/starchat-beta"
 ]
