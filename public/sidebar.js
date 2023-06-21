@@ -25,10 +25,10 @@ export function initializeModels() {
     initializeModelParams();
 }
 
-function initializeModelParams() {
-    document.getElementById('temperature').value = 0.5; // default value
-    document.getElementById('top_p').value = 0.9; // default value
-    document.getElementById('num_return_sequences').value = 1; // default value
+export function initializeModelParams() {
+    document.getElementById('temperature').value = 0.5;
+    document.getElementById('top_p').value = 0.5;
+    document.getElementById('one').checked = true; 
 }
 
 
