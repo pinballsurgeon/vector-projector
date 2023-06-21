@@ -26,7 +26,22 @@ d3.select("#my_dataviz")
 
     updateSidebar();                    // Update sidebar on page load
     initializeModels();                 // Fetch models on page load
-    // initializeModelParams();
+    initializeModelParams();
+    
+    document.getElementById('temperature').addEventListener('input', (event) => {
+        selectedTemperature = event.target.value;
+    });
+
+    document.getElementById('top_p').addEventListener('input', (event) => {
+        selectedTopP = event.target.value;
+    });
+
+    document.querySelectorAll('input[name="num_return_sequences"]').forEach((element) => {
+        element.addEventListener('change', (event) => {
+            selectedNumSequences = event.target.value;
+        });
+    });
+
 });
 
 // TOPIC HANDLER
