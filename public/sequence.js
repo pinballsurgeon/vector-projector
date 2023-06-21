@@ -105,7 +105,10 @@ export const listPerpetuator = async () => {
     
     // Displaying the final list in the 'gptResponse' element
     document.getElementById('llmListResponse').innerText = combinedList.join(", ");
-    
+
+    // Update visibility of the button
+    handleListButtonVisibility();
+
     // Returning the final list
     return combinedList;
 
@@ -114,3 +117,16 @@ export const listPerpetuator = async () => {
     appendLog(`Error in list perpetuator: ${error}`);
   }
 };
+
+// Function to handle visibility of the button
+const handleListButtonVisibility = () => {
+    const llmListResponse = document.getElementById('llmListResponse');
+    const listButton = document.getElementById('listButton');
+    
+    if (llmListResponse.innerText.trim() !== '') {
+      listButton.style.display = 'inline-block'; // Show button
+    } else {
+      listButton.style.display = 'none'; // Hide button
+    }
+  };
+  
