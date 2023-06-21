@@ -46,11 +46,24 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
           }),
       });
   
-      // ... (rest of the code as before)
+      // We need to make sure the response is OK before we can parse it as JSON
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json(); // Parsing the response data as JSON
+
+      // Clean the GPT response text
+      const cleanedResponse = cleanResponse(data.choices[0].text, fullPrompt);
+
+      // RETURN THE CLEANED RESPONSE
+      return cleanedResponse;
+
     } catch (error) {
       appendLog(`Error during list generation: ${error}`);
     }
-  };
+};
+
   
 
 // A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
