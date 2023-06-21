@@ -17,8 +17,11 @@ export function getModelAndParams() {
 }
 
 export function initializeModels() {
+    const modelSelectionContent = document.getElementById('modelSelectionContent');
+    modelSelectionContent.innerHTML = '';
     appendModelSelection();
 }
+
 
 export function updateSidebar() {
     const sidebarSelector = document.getElementById("sidebarSelector");
@@ -34,9 +37,6 @@ export function updateSidebar() {
         sidebarTitle.textContent = 'Model Selection';
         logsContent.style.display = 'none'; // Hide logsContent
         modelSelectionContent.style.display = 'block'; // Show modelSelectionContent
-
-        modelSelectionContent.innerHTML = ''; // Clear current model selection
-        appendModelSelection();
     }
 }
 
