@@ -16,10 +16,19 @@ export function getModelAndParams() {
     }; 
 }
 
+// sidebar.js
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     modelSelectionContent.innerHTML = '';
     appendModelSelection();
+
+    initializeModelParams();
+}
+
+function initializeModelParams() {
+    document.getElementById('temperature').value = 0.5; // default value
+    document.getElementById('top_p').value = 0.9; // default value
+    document.getElementById('num_return_sequences').value = 1; // default value
 }
 
 
