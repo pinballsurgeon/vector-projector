@@ -70,7 +70,7 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
       appendLog(`Response data: ${JSON.stringify(data)}`);
 
       // Clean the GPT response text
-      const cleanedResponse = cleanResponse(data.choices[0].text, fullPrompt);
+      const cleanedResponse = cleanResponse(data.response, fullPrompt);
       appendLog(`Cleaned response: ${cleanedResponse}`);
 
       // RETURN THE CLEANED RESPONSE
