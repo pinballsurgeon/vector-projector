@@ -1,6 +1,6 @@
 //CLIENT
-import {updateSidebar, appendLog, initializeModels} from './sidebar.js';
-import {getPrompt, listPerpetuator} from './sequence.js';
+import {updateSidebar, initializeModels, initializeModelParams} from './sidebar.js';
+import {listPerpetuator} from './sequence.js';
 
 d3.select("#my_dataviz")
   .append("svg")
