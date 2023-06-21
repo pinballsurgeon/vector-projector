@@ -7,30 +7,23 @@ export const getPrompt = (promptKey) =>
     .then((response) => response.json()) // Parsing the response as JSON
     .then((data) => data.prompt); // Returning the prompt from the response data
 
+
 // A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
 export const cleanResponse = (responseText, fullPrompt) => {
-  // Removing the full prompt and leading/trailing white spaces, and taking the first line
   let cleanText = responseText.replace(fullPrompt, '').trim().split("\n")[0];
-  
-  // Replacing brackets, quotes, and all other punctuation except spaces, commas, and hyphens
   cleanText = cleanText.replace(/\[|\]|'/g, "").replace(/[^\w\s,-]/g, "");
-  
-  // Splitting the cleaned text into an array of items and trimming each item
   return cleanText.split(",").map(item => item.trim());
 };
 
 // A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
 export const combineAndCleanList = (initialList, expandedList) => {
+
   // Combining the initial and expanded lists
   let combinedList = [...initialList, ...expandedList];
   
   // Converting all items to lower case
   combinedList = combinedList.map(item => item.toLowerCase());
-  
-  // Removing duplicate items
   combinedList = [...new Set(combinedList)];
-  
-  // Removing empty strings and returning the final list
   return combinedList.filter(item => item !== '');
 };
 
@@ -111,7 +104,7 @@ export const listPerpetuator = async () => {
     appendLog(`List perpetuator response: ${combinedList}`);
     
     // Displaying the final list in the 'gptResponse' element
-    document.getElementById('gptResponse').innerText = combinedList.join(", ");
+    document.getElementById('llmListResponse').innerText = combinedList.join(", ");
     
     // Returning the final list
     return combinedList;
