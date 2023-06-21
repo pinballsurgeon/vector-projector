@@ -42,6 +42,14 @@ d3.select("#my_dataviz")
         });
     });
 
+    document.getElementById('listButton').addEventListener('click', () => {
+        const llmListResponse = document.getElementById('llmListResponse');
+        const llmTopicAttributes = document.getElementById('llmTopicAttributes');
+
+        llmTopicAttributes.innerText = llmListResponse.innerText;
+    });
+
+
 });
 
 // TOPIC HANDLER
