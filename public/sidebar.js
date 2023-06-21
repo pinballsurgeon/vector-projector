@@ -77,6 +77,11 @@ export function appendModelSelection() {
             modelSelectionContent.appendChild(label);
         });
         appendLog('Models fetched successfully');
+        appendLog(`Content objects ${sidebar}`);
+        console.log('sidebarSelector:', sidebarSelector);
+        console.log('toggleSidebarButton:', toggleSidebarButton);
+        console.log('sidebar:', sidebar);
+
     })
     .catch(error => {
         appendLog(`Error fetching models: ${error}`);
