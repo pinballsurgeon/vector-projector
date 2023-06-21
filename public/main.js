@@ -26,6 +26,7 @@ d3.select("#my_dataviz")
 
     updateSidebar();                    // Update sidebar on page load
     initializeModels();                 // Fetch models on page load
+    initializeModelParams();
 });
 
 // TOPIC HANDLER

@@ -22,7 +22,7 @@ export function initializeModels() {
     modelSelectionContent.innerHTML = '';
     appendModelSelection();
 
-    initializeModelParams();
+    //initializeModelParams();
 }
 
 export function initializeModelParams() {
