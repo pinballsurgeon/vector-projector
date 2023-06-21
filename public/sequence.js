@@ -63,7 +63,7 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
   
       // We need to make sure the response is OK before we can parse it as JSON
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response}`);
+        throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
       }
 
       const data = await response.json(); // Parsing the response data as JSON
