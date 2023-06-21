@@ -1,9 +1,7 @@
 [
 "tiiuae/falcon-7b",
 "tiiuae/falcon-7b-instruct",
-"eachadea/vicuna-7b-1.1",
+"h2oai/h2ogpt-oasst1-512-20b",
 "bigcode/starcoderplus",
-"medalpaca/medalpaca-7b",
-"mosaicml/mpt-7b",
 "HuggingFaceH4/starchat-beta"
 ]
