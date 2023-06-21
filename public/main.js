@@ -1,5 +1,5 @@
 //CLIENT
-import {updateSidebar, appendLog, appendModelSelection, getSelectedModel, initializeModels} from './sidebar.js';
+import {updateSidebar, appendLog, initializeModels} from './sidebar.js';
 import {getPrompt, listPerpetuator} from './sequence.js';
 
 d3.select("#my_dataviz")
