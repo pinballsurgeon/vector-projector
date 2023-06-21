@@ -1,11 +1,23 @@
 export let selectedModel; // Save selected model
+export let selectedTemperature; // Save selected temperature
+export let selectedTopP; // Save selected top_p
+export let selectedNumSequences; // Save selected num_return_sequences
+
+export function getModelAndParams() {
+    selectedTemperature = document.getElementById('temperature').value;
+    selectedTopP = document.getElementById('top_p').value;
+    selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
+    
+    return { 
+        model: selectedModel, 
+        temperature: selectedTemperature, 
+        top_p: selectedTopP, 
+        num_return_sequences: selectedNumSequences 
+    }; 
+}
 
 export function initializeModels() {
     appendModelSelection();
-}
-
-export function getSelectedModel() {
-    return selectedModel; // Return saved model
 }
 
 export function updateSidebar() {

@@ -21,48 +21,37 @@ export const cleanResponse = (responseText, fullPrompt) => {
 
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (promptKey, userInput) => {
-  try {
-    // Getting the prompt using the getPrompt function
-    const prompt = await getPrompt(promptKey);
-    
-    // Replacing the '<USERINPUT TOPIC>' placeholder in the prompt with the user input
-    const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
-    appendLog(`Full prompt: ${fullPrompt}`);
-
-    // Getting the selected model using the getSelectedModel function
-    const selectedModel = getSelectedModel();
-    appendLog(`Selected model: ${selectedModel}`);
-
-    // Sending a POST request to the '/ask' endpoint with the full prompt and selected model as data
-    appendLog('Sending request to /ask...');
-    const response = await fetch('/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: fullPrompt, model: selectedModel }),
-    });
-
-    // Checking the status of the response, if it's not OK then throwing an error
-    if (!response.ok) {
-        appendLog(`LLM Request Error: ${JSON.stringify(response)}`);
-        throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const prompt = await getPrompt(promptKey);
+      const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+      appendLog(`Full prompt: ${fullPrompt}`);
+  
+      const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+      appendLog(`Selected model: ${model}`);
+      appendLog(`Selected temperature: ${temperature}`);
+      appendLog(`Selected top_p: ${top_p}`);
+      appendLog(`Selected num_return_sequences: ${num_return_sequences}`);
+  
+      // SEND PROMPT
+      appendLog('Sending request to /ask...');
+      const response = await fetch('/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+              prompt: fullPrompt, 
+              model: model,
+              temperature: temperature,
+              top_p: top_p,
+              num_return_sequences: num_return_sequences
+          }),
+      });
+  
+      // ... (rest of the code as before)
+    } catch (error) {
+      appendLog(`Error during list generation: ${error}`);
     }
-
-    // Parsing the response data as JSON
-    const data = await response.json();
-    appendLog(`Received response from /ask: ${JSON.stringify(data)}`);
-
-    // Cleaning the response data using the cleanResponse function
-    const responseList = cleanResponse(data.response, fullPrompt);
-    appendLog('List generation completed successfully');
-    
-    // Returning the response list
-    return responseList;
-
-  } catch (error) {
-    // Logging any errors that occur during the process
-    appendLog(`Error during list generation: ${error}`);
-  }
-};
+  };
+  
 
 // A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
 export const combineAndCleanList = (initialList, expandedList) => {

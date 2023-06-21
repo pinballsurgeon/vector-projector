@@ -19,7 +19,22 @@
         </div>
         <div class="sidebar-content">
             <div id="logsContent"></div>
-            <div id="modelSelectionContent" style="display: none;"></div> <!-- default to hidden -->
+            <div id="modelSelectionContent" style="display: none;"> <!-- default to hidden -->
+                <!-- Add sliders and radio buttons for model parameters here -->
+                <label for="temperature">Temperature:</label>
+                <input type="range" id="temperature" name="temperature" min="0" max="1" step="0.01">
+                
+                <label for="top_p">Top P:</label>
+                <input type="range" id="top_p" name="top_p" min="0" max="1" step="0.01">
+
+                <p>Num return sequences:</p>
+                <input type="radio" id="one" name="num_return_sequences" value="1" checked>
+                <label for="one">1</label>
+                <input type="radio" id="two" name="num_return_sequences" value="2">
+                <label for="two">2</label>
+                <input type="radio" id="three" name="num_return_sequences" value="3">
+                <label for="three">3</label>
+            </div>
         </div>
     </div>    
 
