@@ -59,14 +59,12 @@ export const fetchListFromLLM = async (promptKey, userInput) => {
         throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
       }
 
+      // clean prompt results
       const data = await response.json(); // Parsing the response data as JSON
-      appendLog(`Response data: ${JSON.stringify(data)}`);
-
-      // Clean the GPT response text
       const cleanedResponse = cleanResponse(data.response, fullPrompt);
       appendLog(`Cleaned response: ${cleanedResponse}`);
 
-      // RETURN THE CLEANED RESPONSE
+      // RETURN CLEANED RESPONSE
       return cleanedResponse;
 
     } catch (error) {

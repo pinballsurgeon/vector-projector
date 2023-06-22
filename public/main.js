@@ -26,8 +26,9 @@ d3.select("#my_dataviz")
 
     updateSidebar();                    // Update sidebar on page load
     initializeModels();                 // Fetch models on page load
-    initializeModelParams();
+    initializeModelParams();            // Fetch model parameters on page load
     
+    // react to temoerature change
     document.getElementById('temperature').addEventListener('input', (event) => {
         selectedTemperature = event.target.value;
     });
