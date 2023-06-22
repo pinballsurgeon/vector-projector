@@ -3,5 +3,5 @@
 "tiiuae/falcon-7b-instruct",
 "bigcode/starcoderplus",
 "HuggingFaceH4/starchat-beta",
-"BlinkDL/ChatRWKV-gradio"
+"BlinkDL/Raven-RWKV-7B"
 ]
