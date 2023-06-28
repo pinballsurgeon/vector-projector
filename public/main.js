@@ -1,6 +1,7 @@
 //CLIENT
 import {updateSidebar, initializeModels, initializeModelParams} from './sidebar.js';
-import {listPerpetuator} from './sequence.js';
+import {listPerpetuator, differentiatingTopicsGenerator} from './sequence.js';
+
 
 d3.select("#my_dataviz")
   .append("svg")
@@ -57,3 +58,6 @@ d3.select("#my_dataviz")
 document.getElementById('askButton').addEventListener('click', async () => {
     const rootList = await listPerpetuator();
 });
+
+document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
+
