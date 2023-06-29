@@ -135,7 +135,7 @@ export const differentiatingTopicsGenerator = async () => {
       const newPromptKey = "distinguishingFeatures";
   
       // Getting the user input from the 'userInput' element
-      const LLMListInput = document.getElementById('llmListResponse').value;
+      const LLMListInput = document.getElementById('llmListResponse').innerText;
       appendLog(`List of items needing attributes: ${userInput}`);
       
       // Generate Attribute Topics
@@ -143,7 +143,7 @@ export const differentiatingTopicsGenerator = async () => {
       appendLog(`Attribute Topics: ${attributeTopics}`);
   
       // Displaying the final list in the 'gptResponse' element
-      document.getElementById('llmListResponse').innerText = attributeTopics.join(", ");
+      document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
   
       // Update visibility of the button
       handleListButtonVisibility();
