@@ -29,27 +29,30 @@ d3.select("#my_dataviz")
     initializeModels();                 // Fetch models on page load
     initializeModelParams();            // Fetch model parameters on page load
     
-    // react to temoerature change
+    // param - TEMPERATURE
     document.getElementById('temperature').addEventListener('input', (event) => {
         selectedTemperature = event.target.value;
     });
 
+    // param - TOP P
     document.getElementById('top_p').addEventListener('input', (event) => {
         selectedTopP = event.target.value;
     });
 
+    // param - RETURN SEQUENCES
     document.querySelectorAll('input[name="num_return_sequences"]').forEach((element) => {
         element.addEventListener('change', (event) => {
             selectedNumSequences = event.target.value;
         });
     });
 
-    document.getElementById('listButton').addEventListener('click', () => {
-        const llmListResponse = document.getElementById('llmListResponse');
-        const llmTopicAttributes = document.getElementById('llmTopicAttributes');
+    // 
+    // document.getElementById('listButton').addEventListener('click', () => {
+    //     const llmListResponse = document.getElementById('llmListResponse');
+    //     const llmTopicAttributes = document.getElementById('llmTopicAttributes');
 
-        llmTopicAttributes.innerText = llmListResponse.innerText;
-    });
+    //     llmTopicAttributes.innerText = llmListResponse.innerText;
+    // });
 
 
 });
