@@ -136,8 +136,8 @@ export const differentiatingTopicsGenerator = async () => {
   
       // Getting the user input from the 'userInput' element
       const LLMListInput = document.getElementById('llmListResponse').innerText;
-      appendLog(`List of items needing attributes: ${userInput}`);
-      
+      appendLog(`List of items needing attributes: ${LLMListInput}`);  // Use LLMListInput here, not userInput
+            
       // Generate Attribute Topics
       const attributeTopics = await fetchListFromLLM(newPromptKey, LLMListInput);
       appendLog(`Attribute Topics: ${attributeTopics}`);
