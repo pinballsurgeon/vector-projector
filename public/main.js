@@ -1,15 +1,6 @@
 //CLIENT
-import {updateSidebar, initializeModels, initializeModelParams} from './sidebar.js';
+import {updateSidebar, initializeModels, initializeModelParams, initializePrompts} from './sidebar.js';
 import {listPerpetuator, differentiatingTopicsGenerator} from './sequence.js';
-
-
-let listPrompts;
-
-fetch('/listPrompts.json') 
-.then(response => response.json())
-.then(data => listPrompts = data)
-.catch(error => console.log('Error:', error));
-
 
 d3.select("#my_dataviz")
   .append("svg")
@@ -36,6 +27,8 @@ d3.select("#my_dataviz")
     updateSidebar();                    // Update sidebar on page load
     initializeModels();                 // Fetch models on page load
     initializeModelParams();            // Fetch model parameters on page load
+    initializePrompts();                // Fetch prompts on page load
+
     
     // param - TEMPERATURE
     document.getElementById('temperature').addEventListener('input', (event) => {

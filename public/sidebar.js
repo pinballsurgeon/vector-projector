@@ -111,16 +111,24 @@ export function appendModelSelection() {
     });
 }
 
+export let listPrompts;
+
 export function initializePrompts() {
-    const promptEditors = document.getElementById('promptEditors');
-    for (const prompt in listPrompts) {
-        const label = document.createElement('label');
-        label.textContent = prompt;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = listPrompts[prompt];
-        input.addEventListener('change', () => listPrompts[prompt] = input.value);
-        promptEditors.appendChild(label);
-        promptEditors.appendChild(input);
-    }
+    fetch('/listPrompts.json')
+    .then(response => response.json())
+    .then(data => {
+        listPrompts = data;
+        const promptEditors = document.getElementById('promptEditors');
+        for (const prompt in listPrompts) {
+            const label = document.createElement('label');
+            label.textContent = prompt;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = listPrompts[prompt];
+            input.addEventListener('change', () => listPrompts[prompt] = input.value);
+            promptEditors.appendChild(label);
+            promptEditors.appendChild(input);
+        }
+    })
+    .catch(error => console.log('Error:', error));
 }
