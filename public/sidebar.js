@@ -21,7 +21,7 @@ export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     modelSelectionContent.innerHTML = '';
     appendModelSelection();
-
+    initializePrompts();
     //initializeModelParams();
 }
 
@@ -109,4 +109,18 @@ export function appendModelSelection() {
     .catch(error => {
         appendLog(`Error fetching models: ${error}`);
     });
+}
+
+export function initializePrompts() {
+    const promptEditors = document.getElementById('promptEditors');
+    for (const prompt in listPrompts) {
+        const label = document.createElement('label');
+        label.textContent = prompt;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = listPrompts[prompt];
+        input.addEventListener('change', () => listPrompts[prompt] = input.value);
+        promptEditors.appendChild(label);
+        promptEditors.appendChild(input);
+    }
 }
