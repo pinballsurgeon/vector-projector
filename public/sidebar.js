@@ -39,7 +39,15 @@ export function updateSidebar() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
     
-    if(sidebarSelector.value === 'logs') {
+    const promptEditors = document.getElementById('promptEditors');
+
+    if(sidebarSelector.value === 'prompts') {
+        sidebarTitle.textContent = 'Prompts';
+        logsContent.style.display = 'none';
+        modelSelectionContent.style.display = 'none';
+        modelParametersContent.style.display = 'none';
+        promptEditors.style.display = 'block'; // Show promptEditors
+    } else if(sidebarSelector.value === 'logs') {
         sidebarTitle.textContent = 'Logs';
         logsContent.style.display = 'block'; // Show logsContent
         modelSelectionContent.style.display = 'none'; // Hide modelSelectionContent

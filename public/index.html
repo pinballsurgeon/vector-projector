@@ -10,7 +10,8 @@
     <select id="sidebarSelector">
         <option value="logs">Logs</option>
         <option value="modelSelection">Model Selection</option>
-    </select>
+        <option value="prompts">Prompts</option>
+    </select>    
     <div id="my_dataviz"></div>
     
     <div id="sidebar" class="sidebar">
@@ -18,6 +19,7 @@
             <h2 id="sidebarTitle">Logs</h2>
         </div>
         <div class="sidebar-content">
+            <div id="promptEditors" style="display: none;"></div>
             <div id="logsContent"></div>
             <div id="modelSelectionContent" style="display: none;"></div> <!-- model list will be appended here -->
             <div id="modelParametersContent" style="display: none;"> <!-- model parameters are here -->

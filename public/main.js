@@ -3,6 +3,14 @@ import {updateSidebar, initializeModels, initializeModelParams} from './sidebar.
 import {listPerpetuator, differentiatingTopicsGenerator} from './sequence.js';
 
 
+let listPrompts;
+
+fetch('/listPrompts.json') 
+.then(response => response.json())
+.then(data => listPrompts = data)
+.catch(error => console.log('Error:', error));
+
+
 d3.select("#my_dataviz")
   .append("svg")
   .attr("width", 500)
@@ -45,15 +53,6 @@ d3.select("#my_dataviz")
             selectedNumSequences = event.target.value;
         });
     });
-
-    // 
-    // document.getElementById('listButton').addEventListener('click', () => {
-    //     const llmListResponse = document.getElementById('llmListResponse');
-    //     const llmTopicAttributes = document.getElementById('llmTopicAttributes');
-
-    //     llmTopicAttributes.innerText = llmListResponse.innerText;
-    // });
-
 
 });
 
