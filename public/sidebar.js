@@ -21,8 +21,6 @@ export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     modelSelectionContent.innerHTML = '';
     appendModelSelection();
-    //initializePrompts();
-    //initializeModelParams();
 }
 
 export function initializeModelParams() {

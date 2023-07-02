@@ -1,12 +1,7 @@
-import { appendLog, getModelAndParams } from './sidebar.js';
+import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
-// A function to fetch a prompt from a server given a promptKey
-export const getPrompt = (promptKey) =>
-  // Using fetch to make a request to the server
-  fetch(`/prompt/${promptKey}`)
-    .then((response) => response.json()) // Parsing the response as JSON
-    .then((data) => data.prompt); // Returning the prompt from the response data
-
+// A function to fetch a prompt from the listPrompts object
+export const getPrompt = (promptKey) => listPrompts[promptKey];
 
 // A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
 export const cleanResponse = (responseText, fullPrompt) => {
