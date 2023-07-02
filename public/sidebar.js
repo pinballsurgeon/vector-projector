@@ -1,8 +1,9 @@
-export let selectedModel; // Save selected model
-export let selectedTemperature; // Save selected temperature
-export let selectedTopP; // Save selected top_p
-export let selectedNumSequences; // Save selected num_return_sequences
+export let selectedModel;                   // Save selected model
+export let selectedTemperature;             // Save selected temperature
+export let selectedTopP;                    // Save selected top_p
+export let selectedNumSequences;            // Save selected num_return_sequences
 
+// Initialize Model Parameters
 export function getModelAndParams() {
     selectedTemperature = document.getElementById('temperature').value;
     selectedTopP = document.getElementById('top_p').value;
@@ -16,20 +17,21 @@ export function getModelAndParams() {
     }; 
 }
 
-// sidebar.js
+// Initialize Model
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     modelSelectionContent.innerHTML = '';
     appendModelSelection();
 }
 
+// Initialize Model Parameters
 export function initializeModelParams() {
     document.getElementById('temperature').value = 0.5;
     document.getElementById('top_p').value = 0.5;
     document.getElementById('one').checked = true; 
 }
 
-
+// Initialize Update Sidebar
 export function updateSidebar() {
     const sidebarSelector = document.getElementById("sidebarSelector");
     const sidebarTitle = document.getElementById("sidebarTitle");
@@ -58,8 +60,7 @@ export function updateSidebar() {
     }
 }
 
-
-
+// Write to log
 export function appendLog(message) {
     const logElement = document.createElement('p');
     const date = new Date();
@@ -68,6 +69,7 @@ export function appendLog(message) {
     document.getElementById('logsContent').appendChild(logElement); // Append to 'logsContent' div
 }
 
+// Initialize Model
 export function appendModelSelection() {
     fetch('/models')
     .then(response => {
@@ -98,9 +100,6 @@ export function appendModelSelection() {
         });
         appendLog('Models fetched successfully');
         appendLog(`Content objects ${sidebar}`);
-        console.log('sidebarSelector:', sidebarSelector);
-        console.log('toggleSidebarButton:', toggleSidebarButton);
-        console.log('sidebar:', sidebar);
 
         // Initialize model parameters after models are fetched and appended to DOM
         initializeModelParams();
@@ -110,6 +109,7 @@ export function appendModelSelection() {
     });
 }
 
+// Build prompt sidebar
 export let listPrompts;
 
 export function initializePrompts() {
@@ -122,7 +122,7 @@ export function initializePrompts() {
             const label = document.createElement('label');
             label.textContent = prompt;
             const textarea = document.createElement('textarea');
-            textarea.rows = 10; // Set the height to 10 lines
+            textarea.rows = 10;                     // Set the height to 10 lines
             textarea.value = listPrompts[prompt];
             textarea.addEventListener('change', () => listPrompts[prompt] = textarea.value);
             promptEditors.appendChild(label);
