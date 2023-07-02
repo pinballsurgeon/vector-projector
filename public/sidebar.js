@@ -121,12 +121,12 @@ export function initializePrompts() {
         for (const prompt in listPrompts) {
             const label = document.createElement('label');
             label.textContent = prompt;
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = listPrompts[prompt];
-            input.addEventListener('change', () => listPrompts[prompt] = input.value);
+            const textarea = document.createElement('textarea');
+            textarea.rows = 10; // Set the height to 10 lines
+            textarea.value = listPrompts[prompt];
+            textarea.addEventListener('change', () => listPrompts[prompt] = textarea.value);
             promptEditors.appendChild(label);
-            promptEditors.appendChild(input);
+            promptEditors.appendChild(textarea);
         }
     })
     .catch(error => console.log('Error:', error));
