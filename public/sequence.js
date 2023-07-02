@@ -1,4 +1,5 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
+import { fetchListFromLLM } from './llmService.js';
 
 // A function to fetch a prompt from the listPrompts object
 export const getPrompt = (promptKey) => listPrompts[promptKey];
@@ -13,14 +14,14 @@ export const cleanResponse = (responseText, fullPrompt) => {
 // A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
 export const combineAndCleanList = (initialList, expandedList) => {
 
-  // Combining the initial and expanded lists
-  let combinedList = [...initialList, ...expandedList];
-  
-  // Converting all items to lower case
-  combinedList = combinedList.map(item => item.toLowerCase());
-  combinedList = [...new Set(combinedList)];
-  return combinedList.filter(item => item !== '');
-};
+    // Combining the initial and expanded lists
+    let combinedList = [...initialList, ...expandedList];
+    
+    // Converting all items to lower case
+    combinedList = combinedList.map(item => item.toLowerCase());
+    combinedList = [...new Set(combinedList)];
+    return combinedList.filter(item => item !== '');
+  };
 
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (promptKey, userInput) => {
