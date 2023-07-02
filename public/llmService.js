@@ -1,4 +1,4 @@
-import { appendLog, getModelAndParams } from './sidebar.js';
+import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
 // A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
 export const cleanResponse = (responseText, fullPrompt) => {
@@ -10,7 +10,9 @@ export const cleanResponse = (responseText, fullPrompt) => {
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (prompt, userInput) => {
     try {
-      const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+      // const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+      // appendLog(`Full prompt: ${fullPrompt}`);
+      const fullPrompt = listPrompts[promptKey].replace('<USERINPUT TOPIC>', userInput);
       appendLog(`Full prompt: ${fullPrompt}`);
   
       const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
