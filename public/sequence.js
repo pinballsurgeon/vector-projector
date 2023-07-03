@@ -1,28 +1,10 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM } from './llmService.js';
+import { cleanResponse, combineAndCleanList } from './listProcessor.js';
+
 
 // A function to fetch a prompt from the listPrompts object
 export const getPrompt = (promptKey) => listPrompts[promptKey];
-
-// A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
-export const cleanResponse = (responseText, fullPrompt) => {
-  let cleanText = responseText.replace(fullPrompt, '').trim().split("\n")[0];
-  cleanText = cleanText.replace(/\[|\]|'/g, "").replace(/[^\w\s,-]/g, "");
-  return cleanText.split(",").map(item => item.trim());
-};
-
-// A function to combine two lists, convert all items to lower case, remove duplicates and empty strings
-export const combineAndCleanList = (initialList, expandedList) => {
-
-    // Combining the initial and expanded lists
-    let combinedList = [...initialList, ...expandedList];
-    
-    // Converting all items to lower case
-    combinedList = combinedList.map(item => item.toLowerCase());
-    combinedList = [...new Set(combinedList)];
-    return combinedList.filter(item => item !== '');
-  };
-
 
 // A function to generate and expand a list based on user input
 export const listPerpetuator = async () => {
@@ -40,7 +22,7 @@ export const listPerpetuator = async () => {
     appendLog(`Initial list: ${initialList}`);
     
     // Converting the initial list to a string to use as input for the expanded list
-    const newInput = initialList.join(', ');
+    const newInput = initialList.join(', ');fetchListFromLLM
     appendLog(`New input: ${newInput}`);
     
     // Generating the expanded list using the fetchListFromLLM function
