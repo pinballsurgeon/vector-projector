@@ -1,9 +1,6 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM } from './llmService.js';
-import { cleanResponse, combineAndCleanList } from './listProcessor.js';
-import { differentiatingTopicsGenerator } from './attributeGenerator.js';
-
-
+import { combineAndCleanList } from './listProcessor.js';
 
 // A function to fetch a prompt from the listPrompts object
 export const getPrompt = (promptKey) => listPrompts[promptKey];
