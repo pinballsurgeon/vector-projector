@@ -20,9 +20,6 @@ export const differentiatingTopicsGenerator = async () => {
       // Displaying the final list in the 'gptResponse' element
       document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
   
-      // Update visibility of the button
-      // handleListButtonVisibility();
-  
       // Returning the final list
       return attributeTopics;
   
@@ -31,15 +28,3 @@ export const differentiatingTopicsGenerator = async () => {
       appendLog(`Error in differentiating topics generator: ${error}`);
     }
 };
-
-// Function to handle visibility of the button
-// const handleListButtonVisibility = () => {
-//     const llmListResponse = document.getElementById('llmListResponse');
-//     const listButton = document.getElementById('listButton');
-    
-//     if (llmListResponse.innerText.trim() !== '') {
-//       listButton.style.display = 'inline-block'; // Show button
-//     } else {
-//       listButton.style.display = 'none'; // Hide button
-//     }
-// };
