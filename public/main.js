@@ -1,7 +1,8 @@
 //CLIENT
 import {updateSidebar, initializeModels, initializeModelParams, initializePrompts} from './sidebar.js';
-import {listPerpetuator} from './sequence.js';
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
+import { listPerpetuator } from './listPerpetuator.js';
+
 
 d3.select("#my_dataviz")
   .append("svg")

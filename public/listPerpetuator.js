@@ -1,10 +1,7 @@
-import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
+// listPerpetuator.js
 import { fetchListFromLLM } from './llmService.js';
+import { appendLog } from './sidebar.js';
 import { combineAndCleanList } from './listProcessor.js';
-import { listPerpetuator } from './listPerpetuator.js';
-
-// A function to fetch a prompt from the listPrompts object
-export const getPrompt = (promptKey) => listPrompts[promptKey];
 
 // A function to generate and expand a list based on user input
 export const listPerpetuator = async () => {
@@ -22,7 +19,7 @@ export const listPerpetuator = async () => {
     appendLog(`Initial list: ${initialList}`);
     
     // Converting the initial list to a string to use as input for the expanded list
-    const newInput = initialList.join(', ');fetchListFromLLM
+    const newInput = initialList.join(', ');
     appendLog(`New input: ${newInput}`);
     
     // Generating the expanded list using the fetchListFromLLM function
@@ -58,4 +55,4 @@ const handleListButtonVisibility = () => {
     } else {
       listButton.style.display = 'none'; // Hide button
     }
-  };
+};
