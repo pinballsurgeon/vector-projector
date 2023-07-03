@@ -1,6 +1,8 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM } from './llmService.js';
 import { cleanResponse, combineAndCleanList } from './listProcessor.js';
+import { differentiatingTopicsGenerator } from './attributeGenerator.js';
+
 
 
 // A function to fetch a prompt from the listPrompts object
@@ -59,35 +61,3 @@ const handleListButtonVisibility = () => {
       listButton.style.display = 'none'; // Hide button
     }
   };
-  
-
-  // A function to generate differentiating topics for a list of items
-export const differentiatingTopicsGenerator = async () => {
-    try {
-      // Defining the prompt keys
-      const originalPromptKey = "initialList";
-      const newPromptKey = "distinguishingFeatures";
-  
-      // Getting the user input from the 'userInput' element
-      const LLMListInput = document.getElementById('llmListResponse').innerText;
-      appendLog(`List of items needing attributes: ${LLMListInput}`);  // Use LLMListInput here, not userInput
-            
-      // Generate Attribute Topics
-      const attributeTopics = await fetchListFromLLM(newPromptKey, LLMListInput);
-      appendLog(`Attribute Topics: ${attributeTopics}`);
-  
-      // Displaying the final list in the 'gptResponse' element
-      document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
-  
-      // Update visibility of the button
-      handleListButtonVisibility();
-  
-      // Returning the final list
-      return attributeTopics;
-  
-    } catch (error) {
-      // Logging any errors that occur during the process
-      appendLog(`Error in differentiating topics generator: ${error}`);
-    }
-  };
-  
