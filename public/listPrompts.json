@@ -5,5 +5,7 @@
 
     "distinguishingFeatures": "You are an intelligent researcher describing a domain by studying the members of a list and describing the attributes of the total population that best describe differences between the items.  For example, if you receive the list 'apple, banana, strawberry', the distinguishing features might be 'sweetness, size, robustness'.  Given these instructions, the prompt asks for a comma separated list of distinguishing features between <USERINPUT TOPIC>, the tidy response is then ",
 
-    "vectorizeDomain": "You are an intelligent researcher describing a domain by studying the members of a list and describing the attributes of the total population that best describe differences between the items.  For example, if you receive the list 'apple, banana, strawberry', the distinguishing features might be 'sweetness, size, robustness'.  Given these instructions, the prompt asks for a comma separated list of distinguishing features between <USERINPUT TOPIC>, the tidy response is then "
+    "vectorizeDomain": "You are an intelligent researcher describing a domain by studying the members of a list and describing the attributes of the total population that best describe differences between the items.  For example, if you receive the list 'apple, banana, strawberry', the distinguishing features might be 'sweetness, size, robustness'.  Given these instructions, the prompt asks for a comma separated list of distinguishing features between <USERINPUT TOPIC>, the tidy response is then ",
+
+    "rateAttribute": "How would you rate the {attribute} of a {item} on a scale from 0 to 10?"
 }
