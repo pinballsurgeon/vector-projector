@@ -2,6 +2,7 @@
 import {updateSidebar, initializeModels, initializeModelParams, initializePrompts} from './sidebar.js';
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
+import { generateRatings } from './ratingGenerator.js';
 
 
 d3.select("#my_dataviz")
@@ -58,3 +59,10 @@ document.getElementById('askButton').addEventListener('click', async () => {
 
 document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
 
+// New event listener for 'vectorizeButton'
+document.getElementById('vectorizeButton').addEventListener('click', async () => {
+    const ratings = await generateRatings();
+
+    // Display the ratings in 'llmRatings' div
+    document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
+});

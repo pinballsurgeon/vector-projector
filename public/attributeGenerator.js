@@ -20,6 +20,9 @@ export const differentiatingTopicsGenerator = async () => {
       // Displaying the final list in the 'gptResponse' element
       document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
   
+      // Once the attributes are populated, display the 'vectorizeButton'
+      document.getElementById('vectorizeButton').style.display = 'block';
+
       // Returning the final list
       return attributeTopics;
   
