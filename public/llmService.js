@@ -20,10 +20,7 @@ export const fetchListFromLLM = async (promptKey, userInput, item = null, attrib
         
         const modelAndParams = getModelAndParams();
         
-        appendLog(`Full prompt: ${prompt}`);
-
-
-        const fullPrompt = listPrompts[prompt].replace('<USERINPUT TOPIC>', userInput);
+        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
         appendLog(`Full prompt: ${fullPrompt}`);
     
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
@@ -40,9 +37,9 @@ export const fetchListFromLLM = async (promptKey, userInput, item = null, attrib
             body: JSON.stringify({ 
                 prompt: fullPrompt, 
                 model: model,
-                temperature: temperature,
-                top_p: top_p,
-                num_return_sequences: num_return_sequences
+               // temperature: temperature,
+               // top_p: top_p,
+               // num_return_sequences: num_return_sequences
             }),
         });
     
