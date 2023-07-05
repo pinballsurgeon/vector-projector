@@ -15,8 +15,11 @@ export const generateRatings = async () => {
         const promptKey = "rateAttribute";  // You would need to define this prompt in your listPrompts
         const userInput = `${item} ${attribute}`;
         appendLog(`Generating rating for: ${userInput}`);
+        appendLog(`Generating rating for: ${userInput}`);
 
         const rating = await fetchListFromLLM(promptKey, userInput);
+        appendLog(`Generating rating for: ${rating}`);
+
 
         // Assuming LLM returns a list of one item being the numerical rating. Parse to integer and store it.
         ratings[item][attribute] = parseInt(rating[0]);
