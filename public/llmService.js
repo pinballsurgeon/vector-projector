@@ -8,27 +8,27 @@ export const cleanResponse = (responseText, fullPrompt) => {
 };
 
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
-export const fetchListFromLLM = async (promptKey, userInput, item = null, attribute = null) => {
+export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) => {
     try {
+        
         let prompt = listPrompts[promptKey];
-        if (item) {
-            prompt = prompt.replace("{item}", item);
-        }
-        if (attribute) {
-            prompt = prompt.replace("{attribute}", attribute);
-        }
-        
-        const modelAndParams = getModelAndParams();
-        
-        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
-        appendLog(`Full prompt: ${fullPrompt}`);
     
+        for (const key in replacements) {
+            if (Object.hasOwnProperty.call(replacements, key)) {
+            prompt = prompt.replace(`{${key}}`, replacements[key]);
+            }
+        }
+    
+        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+            
+        appendLog(`Full prompt: ${fullPrompt}`);
+
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
         appendLog(`Selected model: ${model}`);
         //   appendLog(`Selected temperature: ${temperature}`);
         //   appendLog(`Selected top_p: ${top_p}`);
         //   appendLog(`Selected num_return_sequences: ${num_return_sequences}`);
-    
+
         // SEND PROMPT
         appendLog('Sending request to /ask...');
         const response = await fetch('/ask', {
@@ -37,12 +37,12 @@ export const fetchListFromLLM = async (promptKey, userInput, item = null, attrib
             body: JSON.stringify({ 
                 prompt: fullPrompt, 
                 model: model,
-               // temperature: temperature,
-               // top_p: top_p,
-               // num_return_sequences: num_return_sequences
+                // temperature: temperature,
+                // top_p: top_p,
+                // num_return_sequences: num_return_sequences
             }),
         });
-    
+
         // We need to make sure the response is OK before we can parse it as JSON
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
