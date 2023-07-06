@@ -5,7 +5,5 @@
 
     "distinguishingFeatures": "You are an intelligent researcher describing a domain by studying the members of a list and describing the attributes of the total population that best describe differences between the items.  For example, if you receive the list 'apple, banana, strawberry', the distinguishing features might be 'sweetness, size, robustness'.  Given these instructions, the prompt asks for a comma separated list of distinguishing features between <USERINPUT TOPIC>, the tidy response is then ",
 
-    "vectorizeDomain": "You are an intelligent researcher describing a domain by studying the members of a list and describing the attributes of the total population that best describe differences between the items.  For example, if you receive the list 'apple, banana, strawberry', the distinguishing features might be 'sweetness, size, robustness'.  Given these instructions, the prompt asks for a comma separated list of distinguishing features between <USERINPUT TOPIC>, the tidy response is then ",
-
     "rateAttribute": "You are deeply intelligent and able to give 0-10 rating of attributes to items of a domain for puspose of comparison. The user's prompt is prefixed with 'USER:' and your integer reply follows 'INTEGER_RATING:'.  You only replay with an integer and nothing else. USER: How would you rate the {attribute} of a {item} on a scale from 0 to 10? INTEGER_RATING: "
 }
