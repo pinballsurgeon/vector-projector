@@ -3,5 +3,6 @@
 "tiiuae/falcon-7b-instruct",
 "bigcode/starcoderplus",
 "HuggingFaceH4/starchat-beta",
-"BlinkDL/Raven-RWKV-7B"
+"BlinkDL/Raven-RWKV-7B",
+"gpt2"
 ]
