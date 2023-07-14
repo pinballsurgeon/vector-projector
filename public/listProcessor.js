@@ -15,4 +15,3 @@ export const cleanResponse = (responseText, fullPrompt) => {
       combinedList = [...new Set(combinedList)];
       return combinedList.filter(item => item !== '');
   };
-  

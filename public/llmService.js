@@ -10,7 +10,7 @@ export const cleanResponse = (responseText, fullPrompt) => {
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) => {
     try {
-        
+
         let prompt = listPrompts[promptKey];
     
         for (const key in replacements) {
@@ -25,9 +25,6 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
         appendLog(`Selected model: ${model}`);
-        //   appendLog(`Selected temperature: ${temperature}`);
-        //   appendLog(`Selected top_p: ${top_p}`);
-        //   appendLog(`Selected num_return_sequences: ${num_return_sequences}`);
 
         // SEND PROMPT
         appendLog('Sending request to /ask...');
@@ -36,10 +33,7 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 prompt: fullPrompt, 
-                model: model,
-                // temperature: temperature,
-                // top_p: top_p,
-                // num_return_sequences: num_return_sequences
+                model: model
             }),
         });
 
