@@ -66,5 +66,6 @@ document.getElementById('vectorizeButton').addEventListener('click', async () =>
     const ratings = await generateRange();
 
     // Display the ratings in 'llmRatings' div
-    document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
+    // document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
+    document.getElementById('llmRatings').innerText = ratings;
 });
