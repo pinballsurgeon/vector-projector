@@ -57,11 +57,13 @@ document.getElementById('askButton').addEventListener('click', async () => {
     const rootList = await listPerpetuator();
 });
 
+// DIFFERENTIATING ATTRIBUTES
 document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
 
 // New event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
-    const ratings = await generateRatings();
+    // const ratings = await generateRatings();
+    const ratings = await generateRange();
 
     // Display the ratings in 'llmRatings' div
     document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
