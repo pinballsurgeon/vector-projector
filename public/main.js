@@ -62,8 +62,8 @@ document.getElementById('listButton').addEventListener('click', differentiatingT
 
 // New event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
-    // const ratings = await generateRatings();
-    const ratings = await generateRange();
+    const ratings = await generateRatings();
+    // const ratings = await generateRange();
 
     // Display the ratings in 'llmRatings' div
     document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
