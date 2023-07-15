@@ -5,7 +5,7 @@ const OpenAI = require('openai');
 const fs = require('fs');
 
 // Initialize OpenAI with API Key
-const openai = new OpenAI('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');
+const openai = new OpenAI.OpenAI('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');
 const app = express();
 const inference = new HfInference('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');
 
