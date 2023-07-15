@@ -1,11 +1,15 @@
 const express = require('express');
 const path = require('path');
 const { HfInference } = require('@huggingface/inference');
-const { OpenAI } = require('openai');
+const { Configuration, OpenAIApi } = require("openai");
 const fs = require('fs');
 
 // Initialize OpenAI with API Key
-const openai = new OpenAI('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');
+const configuration = new Configuration({
+  apiKey: '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',
+});
+const openai = new OpenAIApi(configuration);
+
 const app = express();
 const inference = new HfInference('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');
 
@@ -33,13 +37,14 @@ app.post('/ask', async (req, res, next) => {
 
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
-            const gptResponse = await openai.complete({
-                engine: 'text-davinci-003',
+            const gptResponse = await openai.createCompletion({
+                model: "text-davinci-003",
                 prompt: userInput,
                 max_tokens: 100
             });
 
-            res.json({ response: gptResponse.choices[0].text.trim() });
+            res.json({ response: gptResponse.data.choices[0].text.trim() });
+      
         } else {
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
