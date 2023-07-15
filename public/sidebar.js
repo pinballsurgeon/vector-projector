@@ -99,7 +99,7 @@ export function appendModelSelection() {
             modelSelectionContent.appendChild(label);
         });
         appendLog('Models fetched successfully');
-        appendLog(`Content objects ${sidebar}`);
+        // appendLog(`Content objects ${sidebar}`);
 
         // Initialize model parameters after models are fetched and appended to DOM
         initializeModelParams();

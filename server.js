@@ -1,13 +1,13 @@
 const express = require('express');
 const path = require('path');
-const { HfInference } = require("@huggingface/inference");
+const { HfInference } = require('@huggingface/inference');
 const OpenAI = require('openai');
 const fs = require('fs');
 
 // Initialize OpenAI with API Key
-const openai = new OpenAI("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");
+const openai = new OpenAI('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');
 const app = express();
-const inference = new HfInference("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");
+const inference = new HfInference('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');
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -28,8 +28,8 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
-        const model = req.body.model || 'gpt2'; // Provide a default value
 
+        const model = req.body.model || 'gpt2'; // Provide a default value
 
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
@@ -41,7 +41,6 @@ app.post('/ask', async (req, res, next) => {
 
             res.json({ response: gptResponse.choices[0].text.trim() });
         } else {
-
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
             const temperature = req.body.temperature || 1.0;
@@ -61,7 +60,6 @@ app.post('/ask', async (req, res, next) => {
                 num_return_sequences: num_return_sequences,
                 do_sample: do_sample
             });
-            
             res.json({ response: generated_text });
         }
     } catch (err) {
@@ -92,4 +90,5 @@ const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-});
+}
+);

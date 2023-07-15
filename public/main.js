@@ -3,6 +3,7 @@ import {updateSidebar, initializeModels, initializeModelParams, initializePrompt
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { generateRatings, generateRange } from './ratingGenerator.js';
+import * as d3 from 'd3';
 
 
 d3.select("#my_dataviz")
@@ -33,22 +34,22 @@ d3.select("#my_dataviz")
     initializePrompts();                // Fetch prompts on page load
 
     
-    // param - TEMPERATURE
-    document.getElementById('temperature').addEventListener('input', (event) => {
-        selectedTemperature = event.target.value;
-    });
+    // // param - TEMPERATURE
+    // document.getElementById('temperature').addEventListener('input', (event) => {
+    //     selectedTemperature = event.target.value;
+    // });
 
-    // param - TOP P
-    document.getElementById('top_p').addEventListener('input', (event) => {
-        selectedTopP = event.target.value;
-    });
+    // // param - TOP P
+    // document.getElementById('top_p').addEventListener('input', (event) => {
+    //     selectedTopP = event.target.value;
+    // });
 
-    // param - RETURN SEQUENCES
-    document.querySelectorAll('input[name="num_return_sequences"]').forEach((element) => {
-        element.addEventListener('change', (event) => {
-            selectedNumSequences = event.target.value;
-        });
-    });
+    // // param - RETURN SEQUENCES
+    // document.querySelectorAll('input[name="num_return_sequences"]').forEach((element) => {
+    //     element.addEventListener('change', (event) => {
+    //         selectedNumSequences = event.target.value;
+    //     });
+    // });
 
 });
 
