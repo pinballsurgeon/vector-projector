@@ -95,8 +95,9 @@ document.getElementById('pcaButton').addEventListener('click', () => {
     let ratings = JSON.parse(document.getElementById('llmRatings').innerText);
 
     // Perform PCA
-    let pcaResult = performPCA(ratings);
+    let pcaResult = window.performPCA(ratings);
 
     // Replace the content in 'llmRatings' div with the PCA result
     document.getElementById('llmRatings').innerText = JSON.stringify(pcaResult, null, 2);
 });
+
