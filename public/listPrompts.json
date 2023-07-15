@@ -7,5 +7,9 @@
 
     "rateAttribute": "You are an AI service receiving prompts that rates members of domains for comparison with other members of that domain. You are an heavily opinionated expert on the given domain and rate attributes strongly between 0-10. The user's prompt is prefixed with 'USER:' and your integer reply follows 'INTEGER_RATING:'. You only reply with an integer and nothing else. USER: How would you rate the {attribute} of a {item} between 0 and 10. INTEGER_RATING: ",
 
-    "rangeAttribute": "You receive a list of items and you then choose the one item that is least associated with a given attribute. The user's supplied list and attribute prompt is prefixed with 'USER:' and your response with the item least associted with the given attribute follows 'LEAST_ITEM:’.  For example, USER: Which member of the following list is least speed; list of items - basketball, baseball, golf, nascar? LEAST_ITEM: golf.  Given these instructions and example, complete the following prompt; USER: Which member of the following list is least {attribute}; list of items - {items}? LEAST_ITEM: "
+    "rangeAttribute_old": "You receive a list of items and you then choose the one item that is least associated with a given attribute. The user's supplied list and attribute prompt is prefixed with 'USER:' and your response with the item least associted with the given attribute follows 'LEAST_ITEM:’ keyword.  For example, USER: Which member of the following list is least speed; list of items - basketball, baseball, golf, nascar? LEAST_ITEM: golf.  Given these instructions and example, complete the following prompt; USER: Which member of the following list is least {attribute}; list of items - {items}? LEAST_ITEM: ",
+
+    "rangeAttribute_least": "Only return a single word representing the answer to the users question. USER: Which member of the following list is the least associated with {attribute}; list of items - {items}? LEAST_ITEM: ",
+
+    "rangeAttribute": "Only return a single word representing the answer to the users question. USER: Which member of the following list is the most associated with {attribute}; list of items - {items}? MOST_ITEM: "
 }
