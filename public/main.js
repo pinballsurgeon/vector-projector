@@ -3,7 +3,6 @@ import {updateSidebar, initializeModels, initializeModelParams, initializePrompt
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { generateRatings, generateRange } from './ratingGenerator.js';
-import * as d3 from 'd3';
 
 
 d3.select("#my_dataviz")
