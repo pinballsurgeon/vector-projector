@@ -1,8 +1,11 @@
 const express = require('express');
 const path = require('path');
 const { HfInference } = require("@huggingface/inference");
+const OpenAI = require('openai');
 const fs = require('fs');
 
+// Initialize OpenAI with API Key
+const openai = new OpenAI("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");
 const app = express();
 const inference = new HfInference("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");
 
@@ -26,27 +29,41 @@ app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
-        const max_length = req.body.max_length || 1000;
-        const min_length = req.body.min_length || 30;
-        const temperature = req.body.temperature || 1.0;
-        const top_p = req.body.top_p || undefined;
-        const top_k = req.body.top_k || undefined;
-        const num_return_sequences = req.body.num_return_sequences || 1;
-        const do_sample = req.body.do_sample || true;
 
-        const { generated_text } = await inference.textGeneration({
-            model: model,
-            inputs: userInput,
-            max_length: max_length,
-            min_length: min_length,
-            temperature: temperature,
-            top_p: top_p,
-            top_k: top_k,
-            num_return_sequences: num_return_sequences,
-            do_sample: do_sample
-        });
-        
-        res.json({ response: generated_text });
+
+        // If model is GPT-3, call OpenAI's API
+        if (model === 'gpt-3') {
+            const gptResponse = await openai.complete({
+                engine: 'text-davinci-003',
+                prompt: userInput,
+                max_tokens: 100
+            });
+
+            res.json({ response: gptResponse.choices[0].text.trim() });
+        } else {
+
+            const max_length = req.body.max_length || 1000;
+            const min_length = req.body.min_length || 30;
+            const temperature = req.body.temperature || 1.0;
+            const top_p = req.body.top_p || undefined;
+            const top_k = req.body.top_k || undefined;
+            const num_return_sequences = req.body.num_return_sequences || 1;
+            const do_sample = req.body.do_sample || true;
+
+            const { generated_text } = await inference.textGeneration({
+                model: model,
+                inputs: userInput,
+                max_length: max_length,
+                min_length: min_length,
+                temperature: temperature,
+                top_p: top_p,
+                top_k: top_k,
+                num_return_sequences: num_return_sequences,
+                do_sample: do_sample
+            });
+            
+            res.json({ response: generated_text });
+        }
     } catch (err) {
         console.error(err);
         next(err);

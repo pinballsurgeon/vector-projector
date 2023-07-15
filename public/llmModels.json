@@ -4,5 +4,6 @@
 "bigcode/starcoderplus",
 "HuggingFaceH4/starchat-beta",
 "BlinkDL/Raven-RWKV-7B",
-"gpt2"
+"gpt2",
+"gpt-3"
 ]
