@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { HfInference } = require('@huggingface/inference');
-const OpenAI = require('openai');
+const { OpenAI } = require('openai');
 const fs = require('fs');
 
 // Initialize OpenAI with API Key
