@@ -5,6 +5,7 @@ const { Configuration, OpenAIApi } = require("openai");
 const fs = require('fs');
 const ss = require('simple-statistics');
 const numeric = require('numeric');
+const math = require('mathjs');
 
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
@@ -18,6 +19,13 @@ const inference = new HfInference('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');
 app.use(express.json());
 app.use(express.static('public'));
 
+function covarianceMatrix(data) {
+    const means = data[0].map((col, i) => math.mean(data.map(row => row[i])));
+    return data[0].map((col, j) => 
+        data[0].map((col, i) => 
+            math.mean(data.map(row => (row[i] - means[i]) * (row[j] - means[j])))));
+}
+
 function performPCA(data) {
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
@@ -27,7 +35,7 @@ function performPCA(data) {
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
 
     // Calculate covariance matrix
-    const covarianceMatrix = ss.sampleCovariance(centeredData);
+    const covarianceMatrix = covarianceMatrix(centeredData);
 
     // Compute the eigenvectors and eigenvalues of the covariance matrix
     const {E: eigenvectors, lambda: {x: eigenvalues}} = numeric.eig(covarianceMatrix);
