@@ -3,6 +3,8 @@ const path = require('path');
 const { HfInference } = require('@huggingface/inference');
 const { Configuration, OpenAIApi } = require("openai");
 const fs = require('fs');
+const ss = require('simple-statistics');
+const numeric = require('numeric');
 
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
@@ -15,6 +17,55 @@ const inference = new HfInference('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');
 
 app.use(express.json());
 app.use(express.static('public'));
+
+// Perform PCA function
+function performPCA(data) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+
+    // Center the data
+    const meanValues = ss.mean(values);
+    const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
+
+    // Calculate covariance matrix
+    const covarianceMatrix = ss.sampleCovariance(centeredData);
+
+    // Compute the eigenvectors and eigenvalues of the covariance matrix
+    const {E: eigenvectors, lambda: {x: eigenvalues}} = numeric.eig(covarianceMatrix);
+
+    // Sort the eigenvectors based on the eigenvalues
+    const sortedIndices = ss.sortIndexes(eigenvalues);
+    const sortedEigenvectors = sortedIndices.map(i => eigenvectors[i]);
+
+    // Select the first three eigenvectors
+    const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
+
+    // Transform the data into the new space
+    const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => ss.dot(row, eigenvector)));
+
+    // Construct the result object
+    const result = {};
+    keys.forEach((key, i) => {
+    result[key] = {
+        x: transformedData[i][0],
+        y: transformedData[i][1],
+        z: transformedData[i][2]
+    };
+    });
+
+    return result;
+}
+
+app.post('/performPCA', (req, res, next) => {
+    try {
+        const data = req.body;
+        const result = performPCA(data);
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 
 app.get('/prompt/:promptKey', (req, res, next) => {
     fs.readFile('public/listPrompts.json', 'utf8', (err, data) => {

@@ -42,16 +42,6 @@ document.getElementById('askButton').addEventListener('click', async () => {
 // DIFFERENTIATING ATTRIBUTES
 document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
 
-// // New event listener for 'vectorizeButton'
-// document.getElementById('vectorizeButton').addEventListener('click', async () => {
-//     const ratings = await generateRatings();
-//     // const ratings = await generateRange();
-
-//     // Display the ratings in 'llmRatings' div
-//     document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
-//     // document.getElementById('llmRatings').innerText = ratings;
-// });
-
 // Event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
     const ratings = await generateRatings();
@@ -64,40 +54,26 @@ document.getElementById('vectorizeButton').addEventListener('click', async () =>
 });
 
 
-// PCA function
-function performPCA(data) {
-    // Transform your data into an array of values
-    let items = Object.keys(data);
-    let values = items.map(item => Object.values(data[item]));
-
-    // Perform PCA
-    let pca = new PCA(values);
-
-    // Get the three first principal components
-    let components = pca.predict(values, { nComponents: 3 });
-
-    // Convert the result back into the original format
-    let result = items.reduce((res, item, index) => {
-        res[item] = {
-            component1: components[index][0],
-            component2: components[index][1],
-            component3: components[index][2],
-        };
-        return res;
-    }, {});
-
-    return result;
-}
-
 // Event listener for 'PCA' button
-document.getElementById('pcaButton').addEventListener('click', () => {
+document.getElementById('pcaButton').addEventListener('click', async () => {
     // Get the ratings from 'llmRatings' div
     let ratings = JSON.parse(document.getElementById('llmRatings').innerText);
 
-    // Perform PCA
-    let pcaResult = window.performPCA(ratings);
+    // Send ratings data to server for PCA
+    const response = await fetch('/performPCA', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ratings)
+    });
+
+    const pcaResult = await response.json();
 
     // Replace the content in 'llmRatings' div with the PCA result
     document.getElementById('llmRatings').innerText = JSON.stringify(pcaResult, null, 2);
+
+    // Write the PCA result into 'llm3dVector' div
+    document.getElementById('llm3dVector').innerText = JSON.stringify(pcaResult, null, 2);
 });
 

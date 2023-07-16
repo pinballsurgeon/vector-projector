@@ -4,32 +4,6 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
-<script>
-    window.performPCA = function(data) {
-      // Transform your data into an array of values
-      let items = Object.keys(data);
-      let values = items.map(item => Object.values(data[item]));
-  
-      // Perform PCA
-      let pca = new PCA(values);
-  
-      // Get the three first principal components
-      let components = pca.predict(values, { nComponents: 3 });
-  
-      // Convert the result back into the original format
-      let result = items.reduce((res, item, index) => {
-          res[item] = {
-              component1: components[index][0],
-              component2: components[index][1],
-              component3: components[index][2],
-          };
-          return res;
-      }, {});
-  
-      return result;
-    }
-  </script>
-  
 <body>
     <h1>Hello LLM!</h1>
     <button id="toggleSidebarButton">Toggle Sidebar</button>
@@ -82,6 +56,8 @@
     <button id="vectorizeButton" style="display: none;">Vectorize</button>
     <button id="pcaButton" style="display: none;">PCA</button>
     <div id="llmRatings"></div>
+    <div id="llm3dVector"></div>
+
 
     
     <script type="module" src="sidebar.js"></script>
