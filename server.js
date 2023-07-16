@@ -18,10 +18,9 @@ const inference = new HfInference('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');
 app.use(express.json());
 app.use(express.static('public'));
 
-// Perform PCA function
 function performPCA(data) {
     const keys = Object.keys(data);
-    const values = Object.values(data);
+    const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
     // Center the data
     const meanValues = ss.mean(values);
@@ -55,6 +54,7 @@ function performPCA(data) {
 
     return result;
 }
+
 
 app.post('/performPCA', (req, res, next) => {
     try {
