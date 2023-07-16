@@ -35,10 +35,10 @@ function performPCA(data) {
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
 
     // Calculate covariance matrix
-    const covarianceMatrix = covarianceMatrix(centeredData);
+    const covMatrix = covarianceMatrix(centeredData);
 
     // Compute the eigenvectors and eigenvalues of the covariance matrix
-    const {E: eigenvectors, lambda: {x: eigenvalues}} = numeric.eig(covarianceMatrix);
+    const {E: eigenvectors, lambda: {x: eigenvalues}} = numeric.eig(covMatrix);
 
     // Sort the eigenvectors based on the eigenvalues
     const sortedIndices = ss.sortIndexes(eigenvalues);
