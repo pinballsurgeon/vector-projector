@@ -7,8 +7,7 @@ import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
 import ss from 'simple-statistics';
 import numeric from 'numeric';
-import math from 'mathjs';
-
+import * as math from 'mathjs';
 
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
