@@ -5,7 +5,7 @@ import path from 'path';
 import { HfInference } from '@huggingface/inference';
 import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
-import ss from 'simple-statistics';
+import * as ss from 'simple-statistics';
 import numeric from 'numeric';
 import * as math from 'mathjs';
 
