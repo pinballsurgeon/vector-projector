@@ -1,5 +1,3 @@
-import { appendLog } from './public/sidebar.js';
-
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
@@ -29,8 +27,6 @@ function covarianceMatrix(data) {
 }
 
 function performPCA(data) {
-
-    appendLog(`Principal Component Analysis`);
 
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
