@@ -1,13 +1,14 @@
 import { appendLog } from './public/sidebar.js';
 
-const express = require('express');
-const path = require('path');
-const { HfInference } = require('@huggingface/inference');
-const { Configuration, OpenAIApi } = require("openai");
-const fs = require('fs');
-const ss = require('simple-statistics');
-const numeric = require('numeric');
-const math = require('mathjs');
+import express from 'express';
+import path from 'path';
+import { HfInference } from '@huggingface/inference';
+import { Configuration, OpenAIApi } from 'openai';
+import fs from 'fs';
+import ss from 'simple-statistics';
+import numeric from 'numeric';
+import math from 'mathjs';
+
 
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
