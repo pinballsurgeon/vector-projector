@@ -1,4 +1,4 @@
-import { appendLog } from './sidebar.js';
+import { appendLog } from './public/sidebar.js';
 
 const express = require('express');
 const path = require('path');
