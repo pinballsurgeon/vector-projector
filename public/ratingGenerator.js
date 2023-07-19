@@ -53,7 +53,7 @@ export const generateRange = async () => {
           appendLog(`Generated ranked list: ${ranks}`);
   
           // Assuming LLM returns a list of one item being the numerical rating. Parse to integer and store it.
-          ratings[attribute] = ranks
+          ratings[attribute] = ranks;
         }
       
   

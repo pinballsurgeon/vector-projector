@@ -67,7 +67,7 @@ document.getElementById('pcaButton').addEventListener('click', async () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: ratings
+        body: JSON.stringify(ratings)
     });
 
     const pcaResult = await response.json();
