@@ -6,6 +6,7 @@ import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
 import * as math from 'mathjs';
+import mlMatrix from 'ml-matrix';
 
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
@@ -38,12 +39,17 @@ function performPCA(data) {
     // Calculate covariance matrix
     const covMatrix = covarianceMatrix(centeredData);
 
+    // Create a new ml-matrix instance from the covariance matrix
+    const M = new mlMatrix.Matrix(covMatrix);
+
     // Compute the eigenvectors and eigenvalues of the covariance matrix
-    const {E: eigenvectors, lambda: {x: eigenvalues}} = numeric.eig(covMatrix);
+    const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
+    const eigenvalues = eigendecomposition.realEigenvalues;
+    const eigenvectors = eigendecomposition.eigenvectorMatrix;
 
     // Sort the eigenvectors based on the eigenvalues
     const sortedIndices = ss.sortIndexes(eigenvalues);
-    const sortedEigenvectors = sortedIndices.map(i => eigenvectors[i]);
+    const sortedEigenvectors = sortedIndices.map(i => eigenvectors.getColumn(i));
 
     // Select the first three eigenvectors
     const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
@@ -63,6 +69,7 @@ function performPCA(data) {
 
     return result;
 }
+
 
 
 app.post('/performPCA', (req, res, next) => {
