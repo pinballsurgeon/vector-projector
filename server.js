@@ -31,17 +31,20 @@ function covarianceMatrix(data) {
 function performPCA(data) {
 
     console.time("performPCA");
-  
+    console.log(data);
+
     console.time("init");
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
     console.timeEnd("init");
+    console.log(values);
 
     console.time("centering");
     // Center the data
     const meanValues = ss.mean(values);
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
     console.timeEnd("centering");
+    console.log(centeredData);
 
     console.time("covMatrix");
     // Calculate covariance matrix
