@@ -26,7 +26,8 @@ function covarianceMatrix(data) {
         data[0].map((col, i) => 
             math.mean(data.map(row => (row[i] - means[i]) * (row[j] - means[j])))));
 }
- 
+
+
 function performPCA(data) {
 
     console.time("performPCA");
