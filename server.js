@@ -65,8 +65,12 @@ function performPCA(data) {
 
     console.time("sorting");
     // Sort the eigenvectors based on the eigenvalues
-    const sortedIndices = ss.sortIndexes(eigenvalues);
-    const sortedEigenvectors = sortedIndices.map(i => eigenvectors.getColumn(i));
+    const sortedEigenvaluesIndices = eigenvalues
+        .map((val, idx) => [val, idx]) // attach the original index positions [eigenvalue, index]
+        .sort(([a], [b]) => b - a) // sort based on the eigenvalue in decreasing order
+        .map(([, idx]) => idx); // discard the sorted eigenvalues, we just want the indices
+    const sortedEigenvectors = sortedEigenvaluesIndices.map(i => eigenvectors.getColumn(i));
+
     console.timeEnd("sorting");
 
     console.time("transformation");
