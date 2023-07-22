@@ -73,7 +73,30 @@ document.getElementById('pcaButton').addEventListener('click', async () => {
     const pcaResult = await response.json();
 
     // Replace the content in 'llmRatings' div with the PCA result
-    document.getElementById('llmRatings').innerText = JSON.stringify(pcaResult, null, 2);
+    document.getElementById('llm3dVector').innerText = JSON.stringify(pcaResult, null, 2);
+
+    // Show the 'Image' button
+    document.getElementById('imageButton').style.display = 'block';
 
 });
 
+
+// Event listener for 'Image' button
+document.getElementById('imageButton').addEventListener('click', async () => {
+    // Get the PCA results from 'llm3dVector' div
+    let pcaResults = JSON.parse(document.getElementById('llm3dVector').innerText);
+
+    // Iterate over each item in PCA results
+    for(let item in pcaResults) {
+        // Call generateImage endpoint with the item
+        const response = await fetch(`/generateImage/${item}`);
+        const result = await response.json();
+
+        // Create an image element
+        let img = document.createElement('img');
+        img.src = result.imageData;
+
+        // Append the image to 'imageSet' div
+        document.getElementById('imageSet').appendChild(img);
+    }
+});

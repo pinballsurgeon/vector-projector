@@ -8,6 +8,13 @@ import numeric from 'numeric';
 import * as math from 'mathjs';
 import mlMatrix from 'ml-matrix';
 
+// DALLE
+import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
+const axios = require('axios'); // Axios for making requests
+
+const hf_key = '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';
+
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
   apiKey: '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',
@@ -15,7 +22,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const app = express();
-const inference = new HfInference('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');
+const inference = new HfInference(hf_key);
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -190,3 +197,33 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 }
 );
+
+async function generateImage(prompt) {
+    try {
+        const dallEUrl = "https://api-inference.huggingface.co/models/FLORA/DALL-E_Mini";
+        const headers = {
+            Authorization: hf_key
+        };
+
+        const payload = {
+            inputs: prompt
+        };
+
+        const response = await axios.post(dallEUrl, payload, { headers: headers });
+        return response.data.generated_text;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+app.get('/generateImage/:prompt', async (req, res, next) => {
+    try {
+        const prompt = req.params.prompt;
+        const result = await generateImage(prompt);
+        res.json({ image: result });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
