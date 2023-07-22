@@ -47,6 +47,7 @@ function performPCA(data) {
     // Calculate covariance matrix
     const covMatrix = covarianceMatrix(centeredData);
     console.timeEnd("covMatrix");
+    console.log(covMatrix);
 
     console.time("eigendecomposition");
     // Create a new ml-matrix instance from the covariance matrix
