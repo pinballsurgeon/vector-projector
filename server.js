@@ -78,7 +78,7 @@ function performPCA(data) {
     const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
 
     // Transform the data into the new space
-    const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => ss.dot(row, eigenvector)));
+    const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => math.dot(row, eigenvector)));
     console.timeEnd("transformation");
 
     console.time("finalizing");
