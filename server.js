@@ -28,17 +28,26 @@ function covarianceMatrix(data) {
 }
  
 function performPCA(data) {
- 
+
+    console.time("performPCA");
+  
+    console.time("init");
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
+    console.timeEnd("init");
 
+    console.time("centering");
     // Center the data
     const meanValues = ss.mean(values);
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
+    console.timeEnd("centering");
 
+    console.time("covMatrix");
     // Calculate covariance matrix
     const covMatrix = covarianceMatrix(centeredData);
+    console.timeEnd("covMatrix");
 
+    console.time("eigendecomposition");
     // Create a new ml-matrix instance from the covariance matrix
     const M = new mlMatrix.Matrix(covMatrix);
 
@@ -46,17 +55,23 @@ function performPCA(data) {
     const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
     const eigenvalues = eigendecomposition.realEigenvalues;
     const eigenvectors = eigendecomposition.eigenvectorMatrix;
+    console.timeEnd("eigendecomposition");
 
+    console.time("sorting");
     // Sort the eigenvectors based on the eigenvalues
     const sortedIndices = ss.sortIndexes(eigenvalues);
     const sortedEigenvectors = sortedIndices.map(i => eigenvectors.getColumn(i));
+    console.timeEnd("sorting");
 
+    console.time("transformation");
     // Select the first three eigenvectors
     const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
 
     // Transform the data into the new space
     const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => ss.dot(row, eigenvector)));
+    console.timeEnd("transformation");
 
+    console.time("finalizing");
     // Construct the result object
     const result = {};
     keys.forEach((key, i) => {
@@ -66,11 +81,12 @@ function performPCA(data) {
         z: transformedData[i][2]
     };
     });
+    console.timeEnd("finalizing");
+
+    console.timeEnd("performPCA");
 
     return result;
 }
-
-
 
 app.post('/performPCA', (req, res, next) => {
     try {
