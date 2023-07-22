@@ -41,7 +41,8 @@ function performPCA(data) {
 
     console.time("centering");
     // Center the data
-    const meanValues = ss.mean(values);
+    const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
+
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
     console.timeEnd("centering");
     console.log(centeredData);
