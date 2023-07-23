@@ -2,7 +2,9 @@
 import {updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog} from './sidebar.js';
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { generateRatings, generateRange } from './ratingGenerator.js';
+import { generateRatings, generateRange, createOrUpdateCube } from './ratingGenerator.js';
+
+const createOrUpdateCubeWithScene = createOrUpdateCube(scene);
 
 d3.select("#my_dataviz")
   .append("svg")
@@ -43,7 +45,7 @@ document.getElementById('listButton').addEventListener('click', differentiatingT
 
 // Event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
-  const ratings = await generateRatings();
+  const ratings = await generateRatings(createOrUpdateCubeWithScene);
 
   // Display the ratings in 'llmRatings' div
   document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);

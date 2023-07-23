@@ -2,7 +2,7 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
-export const generateRatings = async () => {
+export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         const items = document.getElementById('llmListResponse').innerText.split(', ');
         const attributes = document.getElementById('llmTopicAttributes').innerText.split(', ');
@@ -59,7 +59,7 @@ export const generateRatings = async () => {
             });
 
             // Create or update cubes
-            createOrUpdateCube(cubeData);
+            createOrUpdateCubeWithScene(cubeData);
         } 
 
         appendLog(`Ratings: ${JSON.stringify(ratings)}`);

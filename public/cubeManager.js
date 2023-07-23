@@ -1,6 +1,11 @@
 // createOrUpdateCube.js
 
-export function createOrUpdateCube(scene, data) {
+import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
+
+export const createOrUpdateCube = (scene) => (data) => {
+
+    // appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
+
     // Clear previous cubes if necessary
     while(scene.children.length > 0){ 
         scene.remove(scene.children[0]); 
