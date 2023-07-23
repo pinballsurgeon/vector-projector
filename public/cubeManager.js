@@ -1,6 +1,6 @@
 // createOrUpdateCube.js
 
-function createOrUpdateCube(scene, data) {
+export function createOrUpdateCube(scene, data) {
     // Clear previous cubes if necessary
     while(scene.children.length > 0){ 
         scene.remove(scene.children[0]); 
