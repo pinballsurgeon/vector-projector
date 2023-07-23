@@ -186,7 +186,7 @@ app.get('/models', (req, res, next) => {
 // Function to generate image
 async function generateImage(prompt) {
     try {
-        const dallEUrl = "https://api-inference.huggingface.co/models/FLORA/DALL-E_Mini";
+        const dallEUrl = "https://api-inference.huggingface.co/models/dalle-mini/dalle-mini";
         const headers = {
             Authorization: `Bearer ${hf_key}`
         };
