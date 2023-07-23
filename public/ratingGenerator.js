@@ -30,7 +30,10 @@ export const generateRatings = async () => {
             let response = await fetch(`/generateImage/${item}`);
             let result = await response.json();
             const imageUrl = result.image;
-            ratings[item]['imageUrl'] = imageUrl;
+            
+            // Copy ratings without imageUrl for PCA
+            let pcaRatings = JSON.parse(JSON.stringify(ratings[item]));
+            delete pcaRatings['imageUrl'];
 
             // Send ratings data to server for PCA
             response = await fetch('/performPCA', {
@@ -38,7 +41,7 @@ export const generateRatings = async () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(ratings)
+                body: JSON.stringify(pcaRatings)
             });
             const pcaResult = await response.json();
 
@@ -63,7 +66,6 @@ export const generateRatings = async () => {
         appendLog(`Error in rating generator: ${error}`);
     }
 };
-
 
 export const generateRange = async () => {
     try {
