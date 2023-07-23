@@ -1,9 +1,8 @@
-//CLIENT
+// CLIENT
 import {updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog} from './sidebar.js';
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { generateRatings, generateRange } from './ratingGenerator.js';
-
 
 d3.select("#my_dataviz")
   .append("svg")
@@ -15,28 +14,28 @@ d3.select("#my_dataviz")
   .attr("r", 50)
   .attr("fill", "blue");
 
-  // SIDE BAR HANDLER
-  document.addEventListener("DOMContentLoaded", function(){
-    const sidebarSelector = document.getElementById("sidebarSelector");
-    const toggleSidebarButton = document.getElementById("toggleSidebarButton");
-    const sidebar = document.getElementById("sidebar");
+// SIDE BAR HANDLER
+document.addEventListener("DOMContentLoaded", function(){
+  const sidebarSelector = document.getElementById("sidebarSelector");
+  const toggleSidebarButton = document.getElementById("toggleSidebarButton");
+  const sidebar = document.getElementById("sidebar");
 
-    sidebarSelector.addEventListener("change", updateSidebar);
+  sidebarSelector.addEventListener("change", updateSidebar);
 
-    toggleSidebarButton.addEventListener("click", function() {
-        sidebar.classList.toggle("open");
-    });
+  toggleSidebarButton.addEventListener("click", function() {
+    sidebar.classList.toggle("open");
+  });
 
-    updateSidebar();                    // Update sidebar on page load
-    initializeModels();                 // Fetch models on page load
-    initializeModelParams();            // Fetch model parameters on page load
-    initializePrompts();                // Fetch prompts on page load
+  updateSidebar();                    // Update sidebar on page load
+  initializeModels();                 // Fetch models on page load
+  initializeModelParams();            // Fetch model parameters on page load
+  initializePrompts();                // Fetch prompts on page load
 
 });
 
 // TOPIC HANDLER
 document.getElementById('askButton').addEventListener('click', async () => {
-    const rootList = await listPerpetuator();
+  const rootList = await listPerpetuator();
 });
 
 // DIFFERENTIATING ATTRIBUTES
@@ -44,59 +43,8 @@ document.getElementById('listButton').addEventListener('click', differentiatingT
 
 // Event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
-    const ratings = await generateRatings();
+  const ratings = await generateRatings();
 
-    // Display the ratings in 'llmRatings' div
-    document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
-
-    // Show the 'PCA' button
-    document.getElementById('pcaButton').style.display = 'block';
-});
-
-
-// Event listener for 'PCA' button
-document.getElementById('pcaButton').addEventListener('click', async () => {
-    // Get the ratings from 'llmRatings' div
-    let ratings = JSON.parse(document.getElementById('llmRatings').innerText);
-
-    appendLog(`PCA json - ${JSON.stringify(ratings)}`);
-
-    // Send ratings data to server for PCA
-    const response = await fetch('/performPCA', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ratings)
-    });
-
-    const pcaResult = await response.json();
-
-    // Replace the content in 'llmRatings' div with the PCA result
-    document.getElementById('llm3dVector').innerText = JSON.stringify(pcaResult, null, 2);
-
-    // Show the 'Image' button
-    document.getElementById('imageButton').style.display = 'block';
-
-});
-
-
-// Event listener for 'Image' button
-document.getElementById('imageButton').addEventListener('click', async () => {
-    // Get the PCA results from 'llm3dVector' div
-    let pcaResults = JSON.parse(document.getElementById('llm3dVector').innerText);
-
-    // Iterate over each item in PCA results
-    for(let item in pcaResults) {
-        // Call generateImage endpoint with the item
-        const response = await fetch(`/generateImage/${item}`);
-        const result = await response.json();
-
-        // Create an image element
-        let img = document.createElement('img');
-        img.src = result.image;
-
-        // Append the image to 'imageSet' div
-        document.getElementById('imageSet').appendChild(img);
-    }
+  // Display the ratings in 'llmRatings' div
+  document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
 });
