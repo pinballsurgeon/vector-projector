@@ -188,8 +188,9 @@ async function generateImage(prompt) {
     try {
         const dallEUrl = "https://api-inference.huggingface.co/models/FLORA/DALL-E_Mini";
         const headers = {
-            Authorization: hf_key
+            Authorization: `Bearer ${hf_key}`
         };
+        
 
         const payload = {
             inputs: prompt
