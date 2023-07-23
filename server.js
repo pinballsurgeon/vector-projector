@@ -7,8 +7,6 @@ import * as ss from 'simple-statistics';
 import numeric from 'numeric';
 import * as math from 'mathjs';
 import mlMatrix from 'ml-matrix';
-
-// DALLE
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
@@ -185,19 +183,7 @@ app.get('/models', (req, res, next) => {
     });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: err.toString() });
-});
-
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-}
-);
-
+// Function to generate image
 async function generateImage(prompt) {
     try {
         const dallEUrl = "https://api-inference.huggingface.co/models/FLORA/DALL-E_Mini";
@@ -217,6 +203,7 @@ async function generateImage(prompt) {
     }
 }
 
+// New endpoint for image generation
 app.get('/generateImage/:prompt', async (req, res, next) => {
     try {
         const prompt = req.params.prompt;
@@ -227,3 +214,16 @@ app.get('/generateImage/:prompt', async (req, res, next) => {
         next(err);
     }
 });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: err.toString() });
+});
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+}
+);
