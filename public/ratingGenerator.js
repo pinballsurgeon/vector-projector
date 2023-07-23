@@ -95,4 +95,4 @@ export const generateRange = async () => {
     } catch (error) {
       appendLog(`Error in range generator: ${error}`);
     }
-  };
+  }; 
