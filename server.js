@@ -11,8 +11,15 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
 
+// import the Google Images client at the top of your file
+const GoogleImages = require('google-images');
+// create an instance of the Google Images client
+const client = new GoogleImages('17c526ffb4fb140f8', 'AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8');
+
 const hf_key = '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';
 
+// AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8
+// 17c526ffb4fb140f8
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
   apiKey: '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',
@@ -183,33 +190,28 @@ app.get('/models', (req, res, next) => {
     });
 });
 
-// Function to generate image
-async function generateImage(prompt) {
+// Function to search for image
+async function searchImage(query) {
     try {
-        const dallEUrl = "https://api-inference.huggingface.co/models/dalle-mini/dalle-mini";
-        const headers = {
-            Authorization: `Bearer ${hf_key}`
-        };
-        
-
-        const payload = {
-            inputs: prompt
-        };
-
-        const response = await axios.post(dallEUrl, payload, { headers: headers });
-        return response.data.generated_text;
+        const images = await client.search(query);
+        // Return the first image's URL
+        if(images.length > 0) {
+            return images[0].url;
+        } else {
+            return null;
+        }
     } catch (err) {
         console.error(err);
         throw err;
     }
 }
 
-// New endpoint for image generation
+// New endpoint for image search
 app.get('/generateImage/:prompt', async (req, res, next) => {
     try {
-        const prompt = req.params.prompt;
-        const result = await generateImage(prompt);
-        res.json({ image: result });
+        const query = req.params.prompt;
+        const imageUrl = await searchImage(query);
+        res.json({ image: imageUrl });
     } catch (err) {
         console.error(err);
         next(err);

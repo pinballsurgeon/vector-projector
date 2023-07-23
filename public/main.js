@@ -94,7 +94,7 @@ document.getElementById('imageButton').addEventListener('click', async () => {
 
         // Create an image element
         let img = document.createElement('img');
-        img.src = result.imageData;
+        img.src = result.image;
 
         // Append the image to 'imageSet' div
         document.getElementById('imageSet').appendChild(img);
