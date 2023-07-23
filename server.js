@@ -195,7 +195,6 @@ async function searchImage(query) {
     try {
         const images = await client.search(query, {
             size: 'small', // Adjust the size parameter to 'small' to get smaller images
-            rights: 'cc_publicdomain' // Adjust the rights parameter to get images in the public domain
         });
 
         // Return the first image's URL
