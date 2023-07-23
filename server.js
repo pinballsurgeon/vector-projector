@@ -193,7 +193,11 @@ app.get('/models', (req, res, next) => {
 // Function to search for image
 async function searchImage(query) {
     try {
-        const images = await client.search(query);
+        const images = await client.search(query, {
+            size: 'small', // Adjust the size parameter to 'small' to get smaller images
+            rights: 'cc_publicdomain' // Adjust the rights parameter to get images in the public domain
+        });
+
         // Return the first image's URL
         if(images.length > 0) {
             return images[0].url;
