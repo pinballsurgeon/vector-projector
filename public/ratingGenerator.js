@@ -30,10 +30,13 @@ export const generateRatings = async () => {
             let response = await fetch(`/generateImage/${item}`);
             let result = await response.json();
             const imageUrl = result.image;
+            ratings[item]['imageUrl'] = imageUrl;
             
             // Copy ratings without imageUrl for PCA
-            let pcaRatings = JSON.parse(JSON.stringify(ratings[item]));
-            delete pcaRatings['imageUrl'];
+            let pcaRatings = JSON.parse(JSON.stringify(ratings));
+            for (let item in pcaRatings) {
+                delete pcaRatings[item]['imageUrl'];
+            }
 
             // Send ratings data to server for PCA
             response = await fetch('/performPCA', {
