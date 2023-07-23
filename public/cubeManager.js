@@ -36,3 +36,4 @@ export function createOrUpdateCube(scene, data) {
 
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
+
