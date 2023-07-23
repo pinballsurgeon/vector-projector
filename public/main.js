@@ -9,15 +9,16 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
 
-// You may want to add OrbitControls here so that you can navigate through the scene
-const controls = new THREE.OrbitControls(camera);
-controls.update();
-
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Attach renderer to 'my_dataviz' div
 document.getElementById('my_dataviz').appendChild(renderer.domElement);
+
+// You may want to add OrbitControls here so that you can navigate through the scene
+// Pass renderer.domElement as the second argument to THREE.OrbitControls
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.update();
 
 const createOrUpdateCubeWithScene = createOrUpdateCube(scene);
 
