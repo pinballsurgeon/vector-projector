@@ -32,10 +32,11 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             const imageUrl = result.image;
             ratings[item]['imageUrl'] = imageUrl;
             
-            // Copy ratings without imageUrl for PCA
+            // Copy ratings without imageUrl and pcaCoordinates for PCA
             let pcaRatings = JSON.parse(JSON.stringify(ratings));
             for (let item in pcaRatings) {
                 delete pcaRatings[item]['imageUrl'];
+                delete pcaRatings[item]['pcaCoordinates'];
             }
 
             // Send ratings data to server for PCA
@@ -69,6 +70,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         appendLog(`Error in rating generator: ${error}`);
     }
 };
+
 
 export const generateRange = async () => {
     try {
