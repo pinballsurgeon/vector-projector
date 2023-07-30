@@ -35,6 +35,8 @@ export const createOrUpdateCube = (scene) => (data) => {
 
             scene.add(cube);
 
+            appendLog(`Cube added to scene: ${cube}`);
+
             // Add event listeners...
             // Your previous setup here...
 
