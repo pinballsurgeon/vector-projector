@@ -7,9 +7,9 @@ export const createOrUpdateCube = (scene) => (data) => {
     appendLog(`createOrUpdateCube Started: ${data}`);
 
     // Clear previous cubes if necessary
-    while(scene.children.length > 0){ 
-        scene.remove(scene.children[0]); 
-    }
+    // while(scene.children.length > 0){ 
+    //     scene.remove(scene.children[0]); 
+    // }
 
     appendLog(`Clear previous cubes`);
 
