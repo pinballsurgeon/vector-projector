@@ -11,6 +11,8 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
 
+let imageCache = {};  // Create an in-memory image cache
+
 // import the Google Images client at the top of your file
 const GoogleImages = require('google-images');
 // create an instance of the Google Images client
@@ -190,16 +192,25 @@ app.get('/models', (req, res, next) => {
     });
 });
 
-// Function to search for image
 async function searchImage(query) {
+    // If image is in the cache, return it
+    if (imageCache[query]) {
+        return imageCache[query];
+    }
+
     try {
         const images = await client.search(query, {
             size: 'small', // Adjust the size parameter to 'small' to get smaller images
         });
 
-        // Return the first image's URL
+        // Fetch the image and store it in the cache
         if(images.length > 0) {
-            return images[0].url;
+            const imageUrl = images[0].url;
+            const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+            const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
+            imageCache[query] = `data:${response.headers['content-type']};base64,${imageBuffer}`;
+
+            return imageCache[query];
         } else {
             return null;
         }
