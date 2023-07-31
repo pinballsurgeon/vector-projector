@@ -1,8 +1,24 @@
-// createOrUpdateCube.js
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
-export const createOrUpdateCube = (scene) => (data) => {
+// Create scene, camera, and renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+camera.position.z = 20;
+
+// Attach renderer to 'my_dataviz' div
+document.getElementById('my_dataviz').appendChild(renderer.domElement);
+
+// OrbitControls for navigation
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.update();
+
+export const createOrUpdateCube = (data) => {
 
     appendLog(`createOrUpdateCube Started: ${data}`);
 
@@ -50,3 +66,17 @@ export const createOrUpdateCube = (scene) => (data) => {
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
 
+// Make function globally available
+window.createOrUpdateCube = createOrUpdateCube;
+
+// Animation
+export const animate = function () {
+  requestAnimationFrame(animate);
+
+  // required if controls.enableDamping or controls.autoRotate are set to true
+  controls.update();
+
+  renderer.render(scene, camera);
+};
+
+animate();
