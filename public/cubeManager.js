@@ -9,7 +9,9 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// document.body.appendChild(renderer.domElement);
+// document.getElementById('my_dataviz').appendChild(renderer.domElement);
+
 camera.position.z = 20;
 
 // Attach renderer to 'my_dataviz' div
@@ -18,6 +20,9 @@ document.getElementById('my_dataviz').appendChild(renderer.domElement);
 // OrbitControls for navigation
 // const controls = new OrbitControls(camera, renderer.domElement);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+let my_dataviz = document.getElementById('my_dataviz');
+renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 
 controls.update();
 
@@ -70,7 +75,7 @@ export const createOrUpdateCube = (data) => {
 window.createOrUpdateCube = createOrUpdateCube;
 
 // Make function globally available
-window.createOrUpdateCube = createOrUpdateCube;
+// window.createOrUpdateCube = createOrUpdateCube;
 
 // Animation
 export const animate = function () {
