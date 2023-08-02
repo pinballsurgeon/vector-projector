@@ -16,7 +16,9 @@ camera.position.z = 20;
 document.getElementById('my_dataviz').appendChild(renderer.domElement);
 
 // OrbitControls for navigation
-const controls = new OrbitControls(camera, renderer.domElement);
+// const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
 controls.update();
 
 export const createOrUpdateCube = (data) => {
