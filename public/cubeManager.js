@@ -1,7 +1,6 @@
 // import * as THREE from 'three';
-import * as THREE from './node_modules/three/build/three.module.js';
-import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js';
-
+// import * as THREE from './node_modules/three/build/three.module.js';
+// import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js';
 
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
@@ -24,10 +23,10 @@ export const createOrUpdateCube = (data) => {
 
     appendLog(`createOrUpdateCube Started: ${data}`);
 
-    // Clear previous cubes if necessary
-    // while(scene.children.length > 0){ 
-    //     scene.remove(scene.children[0]); 
-    // }
+    Clear previous cubes if necessary
+    while(scene.children.length > 0){ 
+        scene.remove(scene.children[0]); 
+    }
 
     appendLog(`Clear previous cubes`);
 
