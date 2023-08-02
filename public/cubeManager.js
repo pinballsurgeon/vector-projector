@@ -14,16 +14,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 camera.position.z = 20;
 
+let my_dataviz = document.getElementById('my_dataviz');
+renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
+my_dataviz.appendChild(renderer.domElement);
+
 // Attach renderer to 'my_dataviz' div
 document.getElementById('my_dataviz').appendChild(renderer.domElement);
 
 // OrbitControls for navigation
 // const controls = new OrbitControls(camera, renderer.domElement);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-let my_dataviz = document.getElementById('my_dataviz');
-renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
-
 controls.update();
 
 export const createOrUpdateCube = (data) => {
