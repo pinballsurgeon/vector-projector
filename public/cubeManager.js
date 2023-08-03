@@ -41,12 +41,16 @@ export const createOrUpdateCube = (data) => {
         const xPos = parseFloat(item.coordinates[0]);
         const yPos = parseFloat(item.coordinates[1]);
         const zPos = parseFloat(item.coordinates[2]);
-        const jpgPath = item.image;
+        const jpgData = item.imageData; // Assuming 'item.imageData' is a base64 encoded image data
 
         appendLog(`Cube for each: ${item}`);
 
-        const textureLoader = new THREE.TextureLoader();
-        textureLoader.load(jpgPath, function (texture) {
+        const image = new Image();
+        image.onload = function () {
+            const texture = new THREE.Texture();
+            texture.image = this;
+            texture.needsUpdate = true;
+
             const material = new THREE.MeshBasicMaterial({ map: texture });
             const geometry = new THREE.BoxGeometry();
             const cube = new THREE.Mesh(geometry, material);
@@ -55,7 +59,7 @@ export const createOrUpdateCube = (data) => {
             appendLog(`Load Texture: ${item}`);
 
             // Add fields to cube.userData
-            cube.userData = { ...item, x: xPos, y: yPos, z: zPos, path: jpgPath };
+            cube.userData = { ...item, x: xPos, y: yPos, z: zPos, imageData: jpgData };
 
             scene.add(cube);
 
@@ -63,19 +67,18 @@ export const createOrUpdateCube = (data) => {
 
             // Add event listeners...
             // Your previous setup here...
-
-        }, undefined, function (error) {
+        };
+        image.onerror = function (error) {
             appendLog(`Cube creation error: ${error}`);
             console.error('An error occurred while loading the texture:', error);
-        });
+        };
+        image.src = 'data:image/jpeg;base64,' + jpgData;
     });
 }
 
-// Make function globally available
-window.createOrUpdateCube = createOrUpdateCube;
 
 // Make function globally available
-// window.createOrUpdateCube = createOrUpdateCube;
+window.createOrUpdateCube = createOrUpdateCube;
 
 // Animation
 export const animate = function () {
