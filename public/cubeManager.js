@@ -72,7 +72,10 @@ export const createOrUpdateCube = (data) => {
             appendLog(`Cube creation error: ${error}`);
             console.error('An error occurred while loading the texture:', error);
         };
+        // image.src = 'data:image/jpeg;base64,' + jpgData;
+        console.log('Loading image data:', jpgData);
         image.src = 'data:image/jpeg;base64,' + jpgData;
+
     });
 }
 
