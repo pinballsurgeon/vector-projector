@@ -64,6 +64,7 @@ export const createOrUpdateCube = (data) => {
             scene.add(cube);
 
             appendLog(`Cube added to scene: ${cube}`);
+            appendLog(`Iamge being added to scene: ${jpgData}`);
 
             // Add event listeners...
             // Your previous setup here...
@@ -73,6 +74,7 @@ export const createOrUpdateCube = (data) => {
             console.error('An error occurred while loading the texture:', error);
         };
         // image.src = 'data:image/jpeg;base64,' + jpgData;
+        appendLog(`Iamge being added to scene: ${jpgData}`);
         console.log('Loading image data:', jpgData);
         image.src = 'data:image/jpeg;base64,' + jpgData;
 
