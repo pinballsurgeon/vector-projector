@@ -49,7 +49,7 @@ export const createOrUpdateCube = (data) => {
         image.onload = function () {
             // const texture = new THREE.Texture();
             // texture.image = this;
-            const texture = THREE.ImageUtils.loadTexture(this);
+            const texture = THREE.ImageUtils.loadTexture(jpgData);
             texture.needsUpdate = true;
 
             const material = new THREE.MeshBasicMaterial({ map: texture });
