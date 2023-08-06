@@ -27,7 +27,6 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 controls.update();
 
 export const createOrUpdateCube = (data) => {
-
     appendLog(`createOrUpdateCube Started: ${data}`);
 
     // Clear previous cubes if necessary
@@ -41,46 +40,29 @@ export const createOrUpdateCube = (data) => {
         const xPos = parseFloat(item.coordinates[0]);
         const yPos = parseFloat(item.coordinates[1]);
         const zPos = parseFloat(item.coordinates[2]);
-        const jpgData = item.imageUrl; // Assuming 'item.imageData' is a base64 encoded image data
+        const jpgData = 'data:image/jpeg;base64,' + item.imageUrl; // Assuming 'item.imageUrl' is base64 encoded image data
 
-        appendLog(`Cube for each: ${item}`); // w
+        appendLog(`Cube for each: ${item}`);
 
-        const image = new Image();
-        // image.onload = function () {
-            // const texture = new THREE.Texture();
-            // texture.image = this;
-            const texture = THREE.ImageUtils.loadTexture(jpgData);
-            texture.needsUpdate = true;
+        const texture = new THREE.TextureLoader().load(jpgData);
 
-            const material = new THREE.MeshBasicMaterial({ map: texture });
-            const geometry = new THREE.BoxGeometry();
-            const cube = new THREE.Mesh(geometry, material);
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const geometry = new THREE.BoxGeometry();
+        const cube = new THREE.Mesh(geometry, material);
 
-            cube.position.set(xPos, yPos, zPos);
-            appendLog(`Load Texture: ${item}`);
+        cube.position.set(xPos, yPos, zPos);
+        appendLog(`Load Texture: ${item}`);
 
-            // Add fields to cube.userData
-            cube.userData = { ...item, x: xPos, y: yPos, z: zPos, imageData: jpgData };
+        // Add fields to cube.userData
+        cube.userData = { ...item, x: xPos, y: yPos, z: zPos, imageData: jpgData };
 
-            scene.add(cube);
+        scene.add(cube);
 
-            appendLog(`Cube added to scene: ${cube}`);
-            appendLog(`Iamge being added to scene: ${jpgData}`);
-
-            // Add event listeners...
-            // Your previous setup here...
-        // };
-        image.onerror = function (error) {
-            appendLog(`Cube creation error: ${error}`);
-            console.error('An error occurred while loading the texture:', error);
-        };
-        // image.src = 'data:image/jpeg;base64,' + jpgData;
-        appendLog(`Iamge being added to scene: ${jpgData}`);
-        console.log('Loading image data:', jpgData);
-        image.src = 'data:image/jpeg;base64,' + jpgData;
-
+        appendLog(`Cube added to scene: ${cube}`);
+        appendLog(`Image being added to scene: ${jpgData}`);
     });
-}
+};
+
 
 
 // Make function globally available
