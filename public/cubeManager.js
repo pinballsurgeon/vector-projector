@@ -45,7 +45,7 @@ export const createOrUpdateCube = (data) => {
 
         appendLog(`Cube for each: ${item}`);
 
-        // const image = new Image();
+        const image = new Image();
         // image.onload = function () {
             // const texture = new THREE.Texture();
             // texture.image = this;
