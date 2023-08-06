@@ -45,8 +45,8 @@ export const createOrUpdateCube = (data) => {
 
         appendLog(`Cube for each: ${item}`);
 
-        const image = new Image();
-        image.onload = function () {
+        // const image = new Image();
+        // image.onload = function () {
             // const texture = new THREE.Texture();
             // texture.image = this;
             const texture = THREE.ImageUtils.loadTexture(jpgData);
@@ -69,7 +69,7 @@ export const createOrUpdateCube = (data) => {
 
             // Add event listeners...
             // Your previous setup here...
-        };
+        // };
         image.onerror = function (error) {
             appendLog(`Cube creation error: ${error}`);
             console.error('An error occurred while loading the texture:', error);
