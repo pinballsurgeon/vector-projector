@@ -43,7 +43,7 @@ export const createOrUpdateCube = (data) => {
         const zPos = parseFloat(item.coordinates[2]);
         const jpgData = item.imageUrl; // Assuming 'item.imageData' is a base64 encoded image data
 
-        appendLog(`Cube for each: ${item}`);
+        appendLog(`Cube for each: ${item}`); // w
 
         const image = new Image();
         // image.onload = function () {
