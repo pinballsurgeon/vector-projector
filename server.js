@@ -208,7 +208,7 @@ async function searchImage(query) {
             const imageUrl = images[0].url;
             const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
             const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
-            imageCache[query] = `data:${response.headers['content-type']};base64,${imageBuffer}`;
+            imageCache[query] = `data:${response.headers['content-type']};base64, ${imageBuffer}`;
 
             return imageCache[query];
         } else {
