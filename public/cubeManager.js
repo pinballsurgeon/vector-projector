@@ -27,7 +27,9 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 controls.update();
 
 export const createOrUpdateCube = (data) => {
-    appendLog(`createOrUpdateCube Started: ${data}`);
+
+    const data_p = JSON.parse(data);
+    appendLog(`createOrUpdateCube Started: ${data_p}`);
 
     // Clear previous cubes if necessary
     while(scene.children.length > 0){ 
@@ -36,7 +38,7 @@ export const createOrUpdateCube = (data) => {
 
     appendLog(`Clear previous cubes`);
 
-    data.forEach((item) => {
+    data_p.forEach((item) => {
         const xPos = parseFloat(item.coordinates[0]);
         const yPos = parseFloat(item.coordinates[1]);
         const zPos = parseFloat(item.coordinates[2]);
