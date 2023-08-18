@@ -30,7 +30,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             let response = await fetch(`/generateImage/${item}`);
             let result = await response.json();
 
-            appendLog(`TEST TEST: ${result}`);
+            // appendLog(`TEST TEST: ${result}`);
+            result = JSON.parse(JSON.stringify(result));
             const imageUrl = result.image;
             ratings[item]['imageUrl'] = imageUrl;
             
