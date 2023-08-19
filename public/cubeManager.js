@@ -62,7 +62,7 @@ export const createOrUpdateCube = (data) => {
 
         scene.add(cube);
 
-        appendLog(`Cube added to scene: ${json.stringify(cube)}`);
+        appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
         appendLog(`Image being added to scene: ${jpgData}`);
     });
 };
