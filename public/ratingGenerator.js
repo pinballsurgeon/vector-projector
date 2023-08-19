@@ -59,11 +59,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
             appendLog(`FIVE`);
             // Prepare data for cube creation
-            cubeData.push({
-                coordinates: pcaCoordinates,
-                image: imageUrl,
-                // other fields, add as needed...
-            });
+            cubeData.push({ coordinates: pcaCoordinates, image: imageUrl });
 
             appendLog(`SIX`);
             // Create or update cubes
