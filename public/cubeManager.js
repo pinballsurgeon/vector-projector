@@ -29,8 +29,9 @@ controls.update();
 export const createOrUpdateCube = (data) => {
 
 
-    appendLog('YAY');
+    appendLog(data);
     const data_p = JSON.parse(data);
+    // const data_p = JSON.parse(data);
     appendLog(`createOrUpdateCube Started: ${data_p}`);
 
     // Clear previous cubes if necessary
