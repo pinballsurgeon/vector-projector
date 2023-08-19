@@ -56,6 +56,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             const pcaCoordinates = pcaResult[item];
             ratings[item]['pcaCoordinates'] = pcaCoordinates;
 
+
+            appendLog(`FIVE`);
             // Prepare data for cube creation
             cubeData.push({
                 coordinates: pcaCoordinates,
@@ -63,11 +65,15 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 // other fields, add as needed...
             });
 
+            appendLog(`SIX`);
             // Create or update cubes
             createOrUpdateCube(cubeData);
         } 
 
+        appendLog(`SEVEN`);
         appendLog(`Ratings: ${JSON.stringify(ratings)}`);
+
+        appendLog(`EIGHT`);
         return ratings;
 
     } catch (error) {
