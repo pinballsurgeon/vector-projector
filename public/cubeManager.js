@@ -28,7 +28,6 @@ controls.update();
 
 export const createOrUpdateCube = (data) => {
 
-
     appendLog(JSON.stringify(data));
     const data_p = JSON.stringify(data);
     // const data_p = JSON.parse(data);
@@ -45,7 +44,7 @@ export const createOrUpdateCube = (data) => {
         const xPos = parseFloat(item.coordinates[0]);
         const yPos = parseFloat(item.coordinates[1]);
         const zPos = parseFloat(item.coordinates[2]);
-        const jpgData = item.imageUrl; // Assuming 'item.imageUrl' is base64 encoded image data
+        const jpgData = item.image; // Assuming 'item.imageUrl' is base64 encoded image data
 
         appendLog(`Cube for each: ${JSON.stringify(item)}`);
 
