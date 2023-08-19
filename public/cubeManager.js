@@ -41,7 +41,7 @@ export const createOrUpdateCube = (data) => {
 
     appendLog(`Clear previous cubes`);
 
-    data_p.forEach((item) => {
+    data.forEach((item) => {
         const xPos = parseFloat(item.coordinates[0]);
         const yPos = parseFloat(item.coordinates[1]);
         const zPos = parseFloat(item.coordinates[2]);
