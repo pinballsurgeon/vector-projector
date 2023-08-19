@@ -47,7 +47,7 @@ export const createOrUpdateCube = (data) => {
         const zPos = parseFloat(item.coordinates[2]);
         const jpgData = item.imageUrl; // Assuming 'item.imageUrl' is base64 encoded image data
 
-        appendLog(`Cube for each: ${item}`);
+        appendLog(`Cube for each: ${json.stringify(item)}`);
 
         const texture = new THREE.TextureLoader().load(jpgData);
 
@@ -56,14 +56,13 @@ export const createOrUpdateCube = (data) => {
         const cube = new THREE.Mesh(geometry, material);
 
         cube.position.set(xPos, yPos, zPos);
-        appendLog(`Load Texture: ${item}`);
 
         // Add fields to cube.userData
         cube.userData = { ...item, x: xPos, y: yPos, z: zPos, imageData: jpgData };
 
         scene.add(cube);
 
-        appendLog(`Cube added to scene: ${cube}`);
+        appendLog(`Cube added to scene: ${json.stringify(cube)}`);
         appendLog(`Image being added to scene: ${jpgData}`);
     });
 };

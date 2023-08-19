@@ -36,7 +36,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             
             appendLog(`TWO`);
             // Copy ratings without imageUrl for PCA
-            let pcaRatings = JSON.parse(JSON.stringify(ratings));
+            let pcaRatings = ratings;
             for (let item in pcaRatings) {
                 delete pcaRatings[item]['imageUrl'];
             }
