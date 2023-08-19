@@ -29,7 +29,7 @@ controls.update();
 export const createOrUpdateCube = (data) => {
 
 
-    appendLog(data);
+    appendLog(JSON.stringify(data));
     const data_p = JSON.parse(data);
     // const data_p = JSON.parse(data);
     appendLog(`createOrUpdateCube Started: ${data_p}`);
