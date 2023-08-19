@@ -26,18 +26,22 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 ratings[item][attribute] = parseInt(rating[0]);
             }
             
+
+            appendLog(`ONE`);
             // Fetch image for item
             let response = await fetch(`/generateImage/${item}`);
             let result = await response.json();
             const imageUrl = result.image;
             ratings[item]['imageUrl'] = imageUrl;
             
+            appendLog(`TWO`);
             // Copy ratings without imageUrl for PCA
             let pcaRatings = JSON.parse(JSON.stringify(ratings));
             for (let item in pcaRatings) {
                 delete pcaRatings[item]['imageUrl'];
             }
 
+            appendLog(`THREE`);
             // Send ratings data to server for PCA
             response = await fetch('/performPCA', {
                 method: 'POST',
@@ -48,6 +52,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             });
             const pcaResult = await response.json();
 
+            appendLog(`FOUR`);
             const pcaCoordinates = pcaResult[item];
             ratings[item]['pcaCoordinates'] = pcaCoordinates;
 
@@ -59,7 +64,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             });
 
             // Create or update cubes
-            createOrUpdateCubeWithScene(cubeData);
+            createOrUpdateCube(cubeData);
         } 
 
         appendLog(`Ratings: ${JSON.stringify(ratings)}`);
