@@ -18,57 +18,52 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
 
                 const replacements = { item, attribute };
-                const rating = await fetchListFromLLM(promptKey, '', replacements);  // Removed userInput
+                const rating = await fetchListFromLLM(promptKey, '', replacements);
 
                 appendLog(`Generated rating: ${rating}`);
 
-                // Assuming LLM returns a list of one item being the numerical rating. Parse to integer and store it.
                 ratings[item][attribute] = parseInt(rating[0]);
             }
-            
 
             // Fetch image for item
-            let response = await fetch(`/generateImage/${item}`);
-            let result = await response.json();
+            const response = await fetch(`/generateImage/${item}`);
+            const result = await response.json();
             const imageUrl = result.image;
             ratings[item]['imageUrl'] = imageUrl;
-            
             appendLog(`Image URL: ${imageUrl}`);
-            // Copy ratings without imageUrl for PCA
-            let pcaRatings = JSON.parse(JSON.stringify(ratings));
+
+            // Prepare ratings for PCA (without the imageUrl)
+            const pcaRatings = JSON.parse(JSON.stringify(ratings));
             for (let item_sub in pcaRatings) {
                 delete pcaRatings[item_sub]['imageUrl'];
             }
 
-            // Send ratings data to server for PCA
-            response = await fetch('/performPCA', {
+            // Get PCA results
+            const pcaResponse = await fetch('/performPCA', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(pcaRatings)
             });
-            const pcaResult = await response.json();
+            const pcaResult = await pcaResponse.json();
 
+            // Extract PCA coordinates
             const pcaCoordinates = pcaResult[item];
             ratings[item]['pcaCoordinates'] = pcaCoordinates;
 
-            // Prepare data for cube creation
-            // cubeData.push({ coordinates: pcaCoordinates, image: imageUrl });
-            let cubeObj = {
+            // Create the cube object with the PCA coordinates and the image URL
+            const cubeObj = {
                 coordinates: pcaCoordinates,
                 image: imageUrl
             };
 
-
             appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
             cubeData.push(cubeObj);
-            
 
             appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-            // Create or update cubes
             createOrUpdateCube(cubeData);
-        } 
+        }
 
         appendLog(`SEVEN`);
         appendLog(`Ratings: ${JSON.stringify(ratings)}`);
