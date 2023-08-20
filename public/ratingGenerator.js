@@ -59,6 +59,9 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 coordinates: pcaCoordinates,
                 image: imageUrl
             };
+
+
+            appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
             cubeData.push(cubeObj);
             
 
