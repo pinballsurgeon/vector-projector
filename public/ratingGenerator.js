@@ -48,6 +48,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             });
             const pcaResult = await pcaResponse.json();
 
+            ppendLog(`PCA Results: ${JSON.stringify(pcaResult)}`);
+
             // Extract PCA coordinates
             const pcaCoordinates = pcaResult[item];
             ratings[item]['pcaCoordinates'] = pcaCoordinates;
