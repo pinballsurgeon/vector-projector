@@ -194,9 +194,9 @@ app.get('/models', (req, res, next) => {
 
 async function searchImage(query) {
     // If image is in the cache, return it
-    if (imageCache[query]) {
-        return imageCache[query];
-    }
+    // if (imageCache[query]) {
+    //     return imageCache[query];
+    // }
 
     try {
         const images = await client.search(query, {
@@ -206,9 +206,9 @@ async function searchImage(query) {
         // Fetch the image and store it in the cache
         if(images.length > 0) {
             const imageUrl = images[0].url;
-            const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-            const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
-            imageCache[query] = `data:${response.headers['content-type']};base64,${imageBuffer}`;
+            // const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+            // const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
+            // imageCache[query] = `data:${response.headers['content-type']};base64,${imageBuffer}`;
 
             return imageUrl;
             // return imageCache[query];

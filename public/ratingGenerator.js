@@ -28,8 +28,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             // Fetch image for item
             const response = await fetch(`/generateImage/${item}`);
             const result = await response.json();
-            const imageUrl = await result.image;
-            ratings[item]['imageUrl'] = await imageUrl;
+            const imageUrl = result.image;
+            ratings[item]['imageUrl'] = imageUrl;
             appendLog(`Image URL: ${imageUrl}`);
 
             // Prepare ratings for PCA (without the imageUrl)
