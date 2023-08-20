@@ -28,8 +28,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             // Fetch image for item
             const response = await fetch(`/generateImage/${item}`);
             const result = await response.json();
-            const imageUrl = result.image;
-            ratings[item]['imageUrl'] = imageUrl;
+            const imageUrl = await result.image;
+            ratings[item]['imageUrl'] = await imageUrl;
             appendLog(`Image URL: ${imageUrl}`);
 
             // Prepare ratings for PCA (without the imageUrl)
@@ -64,7 +64,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             cubeData.push(cubeObj);
 
             appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-            createOrUpdateCube(cubeData);
+            createOrUpdateCubeWithScene(cubeData);
         }
 
         appendLog(`SEVEN`);
