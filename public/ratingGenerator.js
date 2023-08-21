@@ -75,7 +75,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         // appendLog(`EIGHT`);
         // return ratings;
 
-        return pcaRatings;
+        return pcaResult;
 
     } catch (error) {
         appendLog(`Error in rating generator: ${error}`);
