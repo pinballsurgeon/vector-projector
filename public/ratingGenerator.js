@@ -37,35 +37,36 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             for (let item_sub in pcaRatings) {
                 delete pcaRatings[item_sub]['imageUrl'];
             }
-
-            // Get PCA results
-            const pcaResponse = await fetch('/performPCA', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(pcaRatings)
-            });
-            const pcaResult = await pcaResponse.json();
-
-            appendLog(`PCA Results: ${JSON.stringify(pcaResult)}`);
-
-            // Extract PCA coordinates
-            const pcaCoordinates = pcaResult[item];
-            ratings[item]['pcaCoordinates'] = pcaCoordinates;
-
-            // Create the cube object with the PCA coordinates and the image URL
-            const cubeObj = {
-                coordinates: pcaCoordinates,
-                image: imageUrl
-            };
-
-            appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
-            cubeData.push(cubeObj);
-
-            appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-            createOrUpdateCube(cubeData);
         }
+        
+        // Get PCA results
+        const pcaResponse = await fetch('/performPCA', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pcaRatings)
+        });
+        const pcaResult = await pcaResponse.json();
+
+        appendLog(`PCA Results: ${JSON.stringify(pcaResult)}`);
+
+        // Extract PCA coordinates
+        const pcaCoordinates = pcaResult[item];
+        ratings[item]['pcaCoordinates'] = pcaCoordinates;
+
+        // Create the cube object with the PCA coordinates and the image URL
+        const cubeObj = {
+            coordinates: pcaCoordinates,
+            image: imageUrl
+        };
+
+        appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
+        cubeData.push(cubeObj);
+
+        appendLog(`SIX: ${JSON.stringify(cubeData)}`);
+        createOrUpdateCube(cubeData);
+    
 
         appendLog(`SEVEN`);
         appendLog(`Ratings: ${JSON.stringify(ratings)}`);
