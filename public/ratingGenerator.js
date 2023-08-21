@@ -64,7 +64,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             cubeData.push(cubeObj);
 
             appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-            createOrUpdateCubeWithScene(cubeData);
+            createOrUpdateCube(cubeData);
         }
 
         appendLog(`SEVEN`);
