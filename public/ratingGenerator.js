@@ -8,7 +8,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         const attributes = document.getElementById('llmTopicAttributes').innerText.split(', ');
 
         let ratings = {};
-        let cubeData = [];  // Array to hold the cube data
+        let cubeData = [];
+        let pcaRatings = {};
 
         for (let item of items) {
             ratings[item] = {};
@@ -33,12 +34,12 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             appendLog(`Image URL: ${imageUrl}`);
 
             // Prepare ratings for PCA (without the imageUrl)
-            const pcaRatings = JSON.parse(JSON.stringify(ratings));
+            pcaRatings = JSON.parse(JSON.stringify(ratings));
             for (let item_sub in pcaRatings) {
                 delete pcaRatings[item_sub]['imageUrl'];
             }
         }
-        
+
         // Get PCA results
         const pcaResponse = await fetch('/performPCA', {
             method: 'POST',
@@ -51,28 +52,30 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         appendLog(`PCA Results: ${JSON.stringify(pcaResult)}`);
 
-        // Extract PCA coordinates
-        const pcaCoordinates = pcaResult[item];
-        ratings[item]['pcaCoordinates'] = pcaCoordinates;
+        // // Extract PCA coordinates
+        // const pcaCoordinates = pcaResult[item];
+        // ratings[item]['pcaCoordinates'] = pcaCoordinates;
 
-        // Create the cube object with the PCA coordinates and the image URL
-        const cubeObj = {
-            coordinates: pcaCoordinates,
-            image: imageUrl
-        };
+        // // Create the cube object with the PCA coordinates and the image URL
+        // const cubeObj = {
+        //     coordinates: pcaCoordinates,
+        //     image: imageUrl
+        // };
 
-        appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
-        cubeData.push(cubeObj);
+        // appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
+        // cubeData.push(cubeObj);
 
-        appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-        createOrUpdateCube(cubeData);
+        // appendLog(`SIX: ${JSON.stringify(cubeData)}`);
+        // createOrUpdateCube(cubeData);
     
 
-        appendLog(`SEVEN`);
-        appendLog(`Ratings: ${JSON.stringify(ratings)}`);
+        // appendLog(`SEVEN`);
+        // appendLog(`Ratings: ${JSON.stringify(ratings)}`);
 
-        appendLog(`EIGHT`);
-        return ratings;
+        // appendLog(`EIGHT`);
+        // return ratings;
+
+        return pcaRatings;
 
     } catch (error) {
         appendLog(`Error in rating generator: ${error}`);
