@@ -8,14 +8,13 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         const attributes = document.getElementById('llmTopicAttributes').innerText.split(', ');
 
         let ratings = {};
-        let cubeData = [];
         let pcaRatings = {};
 
         for (let item of items) {
             ratings[item] = {};
 
             for (let attribute of attributes) {
-                const promptKey = "rateAttribute";  // You would need to define this prompt in your listPrompts
+                const promptKey = "rateAttribute";
                 appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
 
                 const replacements = { item, attribute };
@@ -50,30 +49,15 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         });
         const pcaResult = await pcaResponse.json();
 
-        appendLog(`PCA Results: ${JSON.stringify(pcaResult)}`);
+        // Combine PCA coordinates with image URLs for each item
+        for (let item of items) {
+            pcaResult[item] = {
+                coordinates: pcaResult[item],
+                image: ratings[item]['imageUrl']
+            };
+        }
 
-        // // Extract PCA coordinates
-        // const pcaCoordinates = pcaResult[item];
-        // ratings[item]['pcaCoordinates'] = pcaCoordinates;
-
-        // // Create the cube object with the PCA coordinates and the image URL
-        // const cubeObj = {
-        //     coordinates: pcaCoordinates,
-        //     image: imageUrl
-        // };
-
-        // appendLog(`cube object: ${JSON.stringify(cubeObj)}`);
-        // cubeData.push(cubeObj);
-
-        // appendLog(`SIX: ${JSON.stringify(cubeData)}`);
-        // createOrUpdateCube(cubeData);
-    
-
-        // appendLog(`SEVEN`);
-        // appendLog(`Ratings: ${JSON.stringify(ratings)}`);
-
-        // appendLog(`EIGHT`);
-        // return ratings;
+        appendLog(`PCA Results with Images: ${JSON.stringify(pcaResult)}`);
 
         return pcaResult;
 
