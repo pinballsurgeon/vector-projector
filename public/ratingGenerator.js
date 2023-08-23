@@ -59,6 +59,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         appendLog(`PCA Results with Images: ${JSON.stringify(pcaResult)}`);
 
+        createOrUpdateCube(pcaResult);
+
         return pcaResult;
 
     } catch (error) {
