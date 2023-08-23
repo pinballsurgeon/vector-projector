@@ -6,6 +6,11 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+// Define some variables for rotation
+let radius = 20; // Define this based on your scene
+let angle = 0; // Starting angle
+let speed = 0.01; // Define this based on how fast you want the rotation to be
+
 camera.position.z = 20;
 
 // Attach renderer to 'my_dataviz' div
@@ -64,12 +69,20 @@ window.createOrUpdateCube = createOrUpdateCube;
 
 // Animation
 export const animate = function () {
-  requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 
-  // required if controls.enableDamping or controls.autoRotate are set to true
-  controls.update();
+    // Update the camera's position
+    camera.position.x = radius * Math.sin(angle);
+    camera.position.z = radius * Math.cos(angle);
+    
+    angle += speed; // Increment the angle
 
-  renderer.render(scene, camera);
+    // Ensure the camera keeps looking at the center of the scene
+    camera.lookAt(scene.position);
+
+    controls.update();
+
+    renderer.render(scene, camera);
 };
 
 animate(); 
