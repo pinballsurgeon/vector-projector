@@ -38,31 +38,44 @@ export const createOrUpdateCube = (data) => {
 
         appendLog(`Cube for each: ${JSON.stringify(item)}`);
 
-        const texture = new THREE.TextureLoader().load(jpgData);
+        const textureLoader = new THREE.TextureLoader();
 
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const geometry = new THREE.BoxGeometry();
-        const cube = new THREE.Mesh(geometry, material);
+        const onTextureLoad = (texture) => {
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            const geometry = new THREE.BoxGeometry();
+            const cube = new THREE.Mesh(geometry, material);
+            
+            cube.position.set(xPos, yPos, zPos);
 
-        cube.position.set(xPos, yPos, zPos);
+            // Add fields to cube.userData
+            cube.userData = { 
+                ...item, 
+                x: xPos, 
+                y: yPos, 
+                z: zPos, 
+                imageData: jpgData 
+            };
 
-        // Add fields to cube.userData
-        cube.userData = { 
-            ...item, 
-            x: xPos, 
-            y: yPos, 
-            z: zPos, 
-            imageData: jpgData 
+            scene.add(cube);
+
+            appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
+            appendLog(`Image being added to scene: ${jpgData}`);
         };
 
-        scene.add(cube);
+        const onTextureProgress = (xhr) => {
+            appendLog(`Texture ${jpgData} ${xhr.loaded / xhr.total * 100}% loaded.`);
+        };
 
-        appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
-        appendLog(`Image being added to scene: ${jpgData}`);
+        const onTextureError = (error) => {
+            appendLog(`Failed to load texture from URL ${jpgData}. Error: ${JSON.stringify(error)}`);
+
+            // You can have a fallback mechanism here if required
+            // For example, try loading with a different method or use a default texture
+        };
+
+        textureLoader.load(jpgData, onTextureLoad, onTextureProgress, onTextureError);
     }
 };
-
-
 
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
