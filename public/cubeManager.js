@@ -38,44 +38,31 @@ export const createOrUpdateCube = (data) => {
 
         appendLog(`Cube for each: ${JSON.stringify(item)}`);
 
-        const textureLoader = new THREE.TextureLoader();
+        const texture = new THREE.TextureLoader().load(jpgData);
 
-        const onTextureLoad = (texture) => {
-            const material = new THREE.MeshBasicMaterial({ map: texture });
-            const geometry = new THREE.BoxGeometry();
-            const cube = new THREE.Mesh(geometry, material);
-            
-            cube.position.set(xPos, yPos, zPos);
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const geometry = new THREE.BoxGeometry();
+        const cube = new THREE.Mesh(geometry, material);
 
-            // Add fields to cube.userData
-            cube.userData = { 
-                ...item, 
-                x: xPos, 
-                y: yPos, 
-                z: zPos, 
-                imageData: jpgData 
-            };
+        cube.position.set(xPos, yPos, zPos);
 
-            scene.add(cube);
-
-            appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
-            appendLog(`Image being added to scene: ${jpgData}`);
+        // Add fields to cube.userData
+        cube.userData = { 
+            ...item, 
+            x: xPos, 
+            y: yPos, 
+            z: zPos, 
+            imageData: jpgData 
         };
 
-        const onTextureProgress = (xhr) => {
-            appendLog(`Texture ${jpgData} ${xhr.loaded / xhr.total * 100}% loaded.`);
-        };
+        scene.add(cube);
 
-        const onTextureError = (error) => {
-            appendLog(`Failed to load texture from URL ${jpgData}. Error: ${JSON.stringify(error)}`);
-
-            // You can have a fallback mechanism here if required
-            // For example, try loading with a different method or use a default texture
-        };
-
-        textureLoader.load(jpgData, onTextureLoad, onTextureProgress, onTextureError);
+        appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
+        appendLog(`Image being added to scene: ${jpgData}`);
     }
 };
+
+
 
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
