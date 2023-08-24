@@ -28,6 +28,8 @@ controls.update();
 export const createOrUpdateCube = (data) => {
     appendLog(JSON.stringify(data));
 
+    const textureLoader = new THREE.TextureLoader();
+
     for (let itemName in data) {
         const item = data[itemName];
         
@@ -38,30 +40,35 @@ export const createOrUpdateCube = (data) => {
 
         appendLog(`Cube for each: ${JSON.stringify(item)}`);
 
-        const texture = new THREE.TextureLoader().load(jpgData);
+        textureLoader.load(jpgData, 
+            (texture) => { // onLoad callback
+                const material = new THREE.MeshBasicMaterial({ map: texture });
+                const geometry = new THREE.BoxGeometry();
+                const cube = new THREE.Mesh(geometry, material);
 
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const geometry = new THREE.BoxGeometry();
-        const cube = new THREE.Mesh(geometry, material);
+                cube.position.set(xPos, yPos, zPos);
 
-        cube.position.set(xPos, yPos, zPos);
+                // Add fields to cube.userData
+                cube.userData = { 
+                    ...item, 
+                    x: xPos, 
+                    y: yPos, 
+                    z: zPos, 
+                    imageData: jpgData 
+                };
 
-        // Add fields to cube.userData
-        cube.userData = { 
-            ...item, 
-            x: xPos, 
-            y: yPos, 
-            z: zPos, 
-            imageData: jpgData 
-        };
+                scene.add(cube);
 
-        scene.add(cube);
-
-        appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
-        appendLog(`Image being added to scene: ${jpgData}`);
+                appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
+                appendLog(`Image being added to scene: ${jpgData}`);
+            },
+            undefined, // onProgress callback can be undefined if not needed
+            (error) => { // onError callback
+                appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
+            }
+        );
     }
 };
-
 
 
 // Make function globally available

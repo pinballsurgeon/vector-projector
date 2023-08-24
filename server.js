@@ -193,31 +193,41 @@ app.get('/models', (req, res, next) => {
 });
 
 async function searchImage(query) {
-    // If image is in the cache, return it
-    // if (imageCache[query]) {
-    //     return imageCache[query];
-    // }
-
     try {
         const images = await client.search(query, {
             size: 'small', // Adjust the size parameter to 'small' to get smaller images
         });
 
-        // Fetch the image and store it in the cache
-        if(images.length > 0) {
-            const imageUrl = images[0].url;
-            // const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-            // const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
-            // imageCache[query] = `data:${response.headers['content-type']};base64,${imageBuffer}`;
-
-            return imageUrl;
-            // return imageCache[query];
-        } else {
-            return null;
+        for (let image of images) {
+            const imageUrl = image.url;
+            if (await isImageCORSCompliant(imageUrl)) {
+                return imageUrl;
+            }
         }
+
+        return null; // Return null if no usable image is found
+
     } catch (err) {
         console.error(err);
         throw err;
+    }
+}
+
+async function isImageCORSCompliant(url) {
+    try {
+        const response = await axios.head(url);
+        // Ensure the response headers have access-control-allow-origin set to '*'
+        if (response.headers['access-control-allow-origin'] === '*') {
+            return true;
+        }
+        return false;
+    } catch (err) {
+        // Handle the error here; for CORS issue, simply return false
+        if (err.response && err.response.headers && !err.response.headers['access-control-allow-origin']) {
+            return false;
+        }
+        console.error("Failed to fetch image headers:", err);
+        return false; // Assuming any error means the image isn't compliant
     }
 }
 
