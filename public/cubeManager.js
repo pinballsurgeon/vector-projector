@@ -59,7 +59,6 @@ export const createOrUpdateCube = (data) => {
 
                 scene.add(cube);
 
-                appendLog(`Cube added to scene: ${JSON.stringify(cube)}`);
                 appendLog(`Image being added to scene: ${jpgData}`);
             },
             undefined, // onProgress callback can be undefined if not needed
@@ -80,9 +79,8 @@ export const animate = function () {
     requestAnimationFrame(animate);
 
     // Update the camera's position
-    // camera.position.x = radius * Math.sin(angle);
-    // camera.position.z = radius * Math.cos(angle);
-    
+    scene.rotation.y += 0.001;
+
     angle += speed; // Increment the angle
 
     // Ensure the camera keeps looking at the center of the scene
