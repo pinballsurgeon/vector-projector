@@ -71,6 +71,7 @@ export const createOrUpdateCube = (data) => {
 };
 
 
+
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
 
@@ -79,8 +80,8 @@ export const animate = function () {
     requestAnimationFrame(animate);
 
     // Update the camera's position
-    camera.position.x = radius * Math.sin(angle);
-    camera.position.z = radius * Math.cos(angle);
+    // camera.position.x = radius * Math.sin(angle);
+    // camera.position.z = radius * Math.cos(angle);
     
     angle += speed; // Increment the angle
 
