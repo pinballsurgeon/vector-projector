@@ -16,6 +16,7 @@
         <option value="logs">Logs</option>
         <option value="modelSelection">Model Selection</option>
         <option value="prompts">Prompts</option>
+        <option value="cubeContent">Cube Analytics</option>
     </select>    
     <div id="my_dataviz"></div>
     
@@ -41,6 +42,11 @@
                 <label for="two">2</label>
                 <input type="radio" id="three" name="num_return_sequences" value="3">
                 <label for="three">3</label>
+            </div>
+            <div id="cubeContent" style="display: none;">
+                <!-- The image element where the cube's image will be displayed -->
+                <img id="sidebarCubeImage" src="" alt="Cube Image" width="100%" height="auto">
+                <!-- Additional cube details can be added here -->
             </div>
         </div>
     </div>    

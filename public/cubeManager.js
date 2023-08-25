@@ -1,4 +1,4 @@
-import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
+import { appendLog, getModelAndParams, listPrompts, setCubeImageInSidebar, toggleSidebarContent } from './sidebar.js';
 
 // Create scene, camera, and renderer
 const scene = new THREE.Scene();
@@ -7,7 +7,6 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Define some variables for rotation
-let radius = 20; // Define this based on your scene
 let angle = 0; // Starting angle
 let speed = 0.01; // Define this based on how fast you want the rotation to be
 
@@ -16,8 +15,6 @@ camera.position.z = 20;
 // Attach renderer to 'my_dataviz' div
 document.getElementById('my_dataviz').appendChild(renderer.domElement);
 
-// OrbitControls for navigation
-// const controls = new OrbitControls(camera, renderer.domElement);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 let my_dataviz = document.getElementById('my_dataviz');
@@ -37,8 +34,6 @@ export const createOrUpdateCube = (data) => {
         const yPos = parseFloat(item.coordinates.y);
         const zPos = parseFloat(item.coordinates.z);
         const jpgData = item.image;
-
-        appendLog(`Cube for each: ${JSON.stringify(item)}`);
 
         textureLoader.load(jpgData, 
             (texture) => { // onLoad callback
@@ -92,3 +87,36 @@ export const animate = function () {
 };
 
 animate(); 
+
+
+function checkForCubeClick() {
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        // Assuming cubes are the primary target, but can be refined further
+        onCubeClick(intersects[0].object);
+    }
+}
+
+// ray caster
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onMouseClick(event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    checkForCubeClick();
+}
+
+window.addEventListener('click', onMouseClick, false);
+
+function onCubeClick(intersectedCube) {
+    const imageUrl = intersectedCube.userData.imageData;
+    setCubeImageInSidebar(imageUrl);
+    toggleSidebarContent('cubeContent');
+}

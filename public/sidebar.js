@@ -131,3 +131,8 @@ export function initializePrompts() {
     })
     .catch(error => console.log('Error:', error));
 }
+
+export function setCubeImageInSidebar(imageUrl) {
+    const sidebarCubeImage = document.getElementById('sidebarCubeImage');
+    sidebarCubeImage.src = imageUrl;
+}
