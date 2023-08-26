@@ -88,6 +88,13 @@ export const animate = function () {
 
 animate(); 
 
+window.addEventListener('click', onMouseClick, false);
+
+function onCubeClick(intersectedCube) {
+    const imageUrl = intersectedCube.userData.imageData;
+    setCubeImageInSidebar(imageUrl);
+    // toggleSidebarContent('cubeContent');
+}
 
 function checkForCubeClick() {
 
@@ -116,10 +123,3 @@ function onMouseClick(event) {
     checkForCubeClick();
 }
 
-window.addEventListener('click', onMouseClick, false);
-
-function onCubeClick(intersectedCube) {
-    const imageUrl = intersectedCube.userData.imageData;
-    setCubeImageInSidebar(imageUrl);
-    // toggleSidebarContent('cubeContent');
-}
