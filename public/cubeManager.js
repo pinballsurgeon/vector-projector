@@ -107,6 +107,7 @@ function checkForCubeClick() {
     const intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length > 0) {
+        appendLog(`Check for cube click ${intersects.length}`);
         // Assuming cubes are the primary target, but can be refined further
         onCubeClick(intersects[0].object);
     }
