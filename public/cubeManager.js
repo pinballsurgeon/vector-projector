@@ -88,7 +88,9 @@ export const animate = function () {
 
 animate(); 
 
-window.addEventListener('click', onMouseClick, false);
+// window.addEventListener('click', onMouseClick, false);
+renderer.domElement.addEventListener('click', onMouseClick, false);
+
 
 function onCubeClick(intersectedCube) {
     const imageUrl = intersectedCube.userData.imageData;
