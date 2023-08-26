@@ -38,6 +38,7 @@ export function updateSidebar() {
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
+    const cubeContent = document.getElementById('cubeContent');
     
     const promptEditors = document.getElementById('promptEditors');
 
@@ -50,13 +51,22 @@ export function updateSidebar() {
     if(sidebarSelector.value === 'prompts') {
         sidebarTitle.textContent = 'Prompts';
         promptEditors.style.display = 'block'; // Show promptEditors
+        
     } else if(sidebarSelector.value === 'logs') {
         sidebarTitle.textContent = 'Logs';
         logsContent.style.display = 'block'; // Show logsContent
+
+    } else if(sidebarSelector.value === 'cubeContent') {
+        sidebarTitle.textContent = 'Cube Analytics';
+        
+        // Make sure the 'cubeContent' div is visible
+        document.getElementById('cubeContent').style.display = 'block';
+        cubeContent.style.display = 'block';
+        
     } else {
         sidebarTitle.textContent = 'Model Selection';
-        modelSelectionContent.style.display = 'block'; // Show modelSelectionContent
-        modelParametersContent.style.display = 'block'; // Show modelParametersContent
+        modelSelectionContent.style.display = 'block';
+        modelParametersContent.style.display = 'block';
     }
 }
 

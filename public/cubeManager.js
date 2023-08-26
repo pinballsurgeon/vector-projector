@@ -1,4 +1,4 @@
-import { appendLog, getModelAndParams, listPrompts, setCubeImageInSidebar } from './sidebar.js';
+import { appendLog, getModelAndParams, updateSidebar, setCubeImageInSidebar } from './sidebar.js';
 
 // Create scene, camera, and renderer
 const scene = new THREE.Scene();
@@ -98,7 +98,10 @@ renderer.domElement.addEventListener('click', onMouseClick, false);
 function onCubeClick(intersectedCube) {
     const imageUrl = intersectedCube.userData.imageData;
     setCubeImageInSidebar(imageUrl);
-    // toggleSidebarContent('cubeContent');
+
+    if (document.getElementById('sidebarSelector').value === 'cubeContent') {
+        updateSidebar();
+    }
 }
 
 function checkForCubeClick() {
@@ -126,7 +129,7 @@ const mouse = new THREE.Vector2();
 function onMouseClick(event) {
 
     if(event.target !== renderer.domElement) return;
-    
+
     const rect = renderer.domElement.getBoundingClientRect();
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
