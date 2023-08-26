@@ -22,6 +22,8 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 
 controls.update();
 
+let cubes = [];
+
 export const createOrUpdateCube = (data) => {
     appendLog(JSON.stringify(data));
 
@@ -53,6 +55,7 @@ export const createOrUpdateCube = (data) => {
                 };
 
                 scene.add(cube);
+                cubes.push(cube);  // Add cube to cubes array
 
                 appendLog(`Image being added to scene: ${jpgData}`);
             },
@@ -106,7 +109,7 @@ function checkForCubeClick() {
     raycaster.setFromCamera(mouse, camera);
 
     // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(cubes);
 
     appendLog(`Check for cube click ${intersects.length}`);
     if (intersects.length > 0) {
@@ -121,9 +124,14 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 function onMouseClick(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    if(event.target !== renderer.domElement) return;
+    
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
     checkForCubeClick();
 }
+
 
