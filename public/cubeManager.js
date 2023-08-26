@@ -90,6 +90,9 @@ animate();
 
 
 function checkForCubeClick() {
+
+    appendLog('Check for cube click');
+
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 
