@@ -1,4 +1,4 @@
-import { appendLog, getModelAndParams, listPrompts, setCubeImageInSidebar, toggleSidebarContent } from './sidebar.js';
+import { appendLog, getModelAndParams, listPrompts, setCubeImageInSidebar } from './sidebar.js';
 
 // Create scene, camera, and renderer
 const scene = new THREE.Scene();
@@ -118,5 +118,5 @@ window.addEventListener('click', onMouseClick, false);
 function onCubeClick(intersectedCube) {
     const imageUrl = intersectedCube.userData.imageData;
     setCubeImageInSidebar(imageUrl);
-    toggleSidebarContent('cubeContent');
+    // toggleSidebarContent('cubeContent');
 }
