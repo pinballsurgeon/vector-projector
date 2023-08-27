@@ -25,8 +25,7 @@ controls.update();
 let cubes = [];
 
 export const createOrUpdateCube = (data) => {
-    appendLog(JSON.stringify(data));
-
+   
     const textureLoader = new THREE.TextureLoader();
 
     for (let itemName in data) {
@@ -70,9 +69,12 @@ export const createOrUpdateCube = (data) => {
 };
 
 
-
 // Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
+
+
+
+
 
 // Animation
 export const animate = function () {
@@ -93,11 +95,30 @@ export const animate = function () {
 
 animate(); 
 
-// window.addEventListener('click', onMouseClick, false);
+
+
+
+
+
+
+
+
+
+
+
+// CLICK INTERACTION
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
+// ray caster
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
+// When a cube is clicked
 function onCubeClick(intersectedCube) {
+
+    appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
+
+    // Write Image/desc to sidebar
     const imageUrl = intersectedCube.userData.imageData;
     const itemName = intersectedCube.userData.itemName;
     setCubeImageInSidebar(imageUrl, itemName);
@@ -107,6 +128,7 @@ function onCubeClick(intersectedCube) {
     }
 }
 
+// Check for type of object clicked
 function checkForCubeClick() {
 
     // Update the picking ray with the camera and mouse position
@@ -122,12 +144,10 @@ function checkForCubeClick() {
     }
 }
 
-// ray caster
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
+// Check for user clocking mouse
 function onMouseClick(event) {
 
+    // ensure only expected items for clickery ect.
     if(event.target !== renderer.domElement) return;
 
     const rect = renderer.domElement.getBoundingClientRect();
