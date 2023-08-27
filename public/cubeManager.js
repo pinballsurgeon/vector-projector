@@ -51,12 +51,14 @@ export const createOrUpdateCube = (data) => {
                     x: xPos, 
                     y: yPos, 
                     z: zPos, 
-                    imageData: jpgData 
+                    imageData: jpgData,
+                    itemName
                 };
 
                 scene.add(cube);
                 cubes.push(cube);  // Add cube to cubes array
 
+                appendLog(`Cube Structure ${cube}`);
                 appendLog(`Image being added to scene: ${jpgData}`);
             },
             undefined, // onProgress callback can be undefined if not needed
@@ -97,7 +99,8 @@ renderer.domElement.addEventListener('click', onMouseClick, false);
 
 function onCubeClick(intersectedCube) {
     const imageUrl = intersectedCube.userData.imageData;
-    setCubeImageInSidebar(imageUrl);
+    const itemName = intersectedCube.userData.itemName;
+    setCubeImageInSidebar(imageUrl, itemName);
 
     if (document.getElementById('sidebarSelector').value === 'cubeContent') {
         updateSidebar();
@@ -106,17 +109,14 @@ function onCubeClick(intersectedCube) {
 
 function checkForCubeClick() {
 
-    appendLog('Check for cube click');
-
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 
     // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(cubes);
 
-    appendLog(`Check for cube click ${intersects.length}`);
     if (intersects.length > 0) {
-        appendLog(`Check for cube click ${intersects.length}`);
+
         // Assuming cubes are the primary target, but can be refined further
         onCubeClick(intersects[0].object);
     }
