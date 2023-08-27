@@ -143,8 +143,10 @@ export function initializePrompts() {
 }
 
 export function setCubeImageInSidebar(imageUrl, itemName) {
+
     const sidebarCubeImage = document.getElementById('sidebarCubeImage');
     const sidebarTitle = document.getElementById("sidebarTitle");
+    appendLog(`Sidebar Selection Name: ${itemName}`);
     sidebarCubeImage.src = imageUrl;
     sidebarTitle.textContent = itemName;
 }
