@@ -57,7 +57,12 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             };
         }
 
-        appendLog(`PCA Results with Images: ${JSON.stringify(pcaResult)}`);
+        try {
+            appendLog(`PCA Results with Images: ${JSON.stringify(pcaResult)}`);
+        }
+        catch {
+            appendLog(pcaResult);
+        }
 
         createOrUpdateCube(pcaResult);
 
