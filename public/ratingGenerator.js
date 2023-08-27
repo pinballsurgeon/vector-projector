@@ -49,16 +49,20 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         });
         const pcaResult = await pcaResponse.json();
 
-        // Combine PCA coordinates with image URLs for each item
+        // Combine PCA coordinates with image URLs and original ratings for each item
         for (let item of items) {
             pcaResult[item] = {
                 coordinates: pcaResult[item],
-                image: ratings[item]['imageUrl']
+                image: ratings[item]['imageUrl'],
+                originalRatings: ratings[item]
             };
+
+            // Remove the 'imageUrl' key from originalRatings as it's redundant
+            delete pcaResult[item].originalRatings['imageUrl'];
         }
 
         try {
-            appendLog(`PCA Results with Images: ${JSON.stringify(pcaResult)}`);
+            appendLog(`PCA Results with Images and Original Ratings: ${JSON.stringify(pcaResult)}`);
         }
         catch {
             appendLog(pcaResult);
