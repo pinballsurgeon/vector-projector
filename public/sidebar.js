@@ -146,7 +146,24 @@ export function setCubeImageInSidebar(imageUrl, itemName) {
 
     const sidebarCubeImage = document.getElementById('sidebarCubeImage');
     const sidebarTitle = document.getElementById("sidebarTitle");
-    appendLog(`Sidebar Selection Name: ${itemName}`);
+    const logsContent = document.getElementById('logsContent');
+    const modelSelectionContent = document.getElementById('modelSelectionContent');
+    const modelParametersContent = document.getElementById('modelParametersContent');
+    const cubeContent = document.getElementById('cubeContent');
+    
+    const promptEditors = document.getElementById('promptEditors');
+
+    // Start by hiding all contents
+    logsContent.style.display = 'none';
+    modelSelectionContent.style.display = 'none';
+    modelParametersContent.style.display = 'none';
+    promptEditors.style.display = 'none';
+        
+    // Make sure the 'cubeContent' div is visible
+    document.getElementById('cubeContent').style.display = 'block';
+    cubeContent.style.display = 'block';
+        
     sidebarCubeImage.src = imageUrl;
     sidebarTitle.textContent = itemName;
+
 }
