@@ -22,7 +22,12 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 
 controls.update();
 
+// Container for cube features
 let cubes = [];
+
+
+
+
 
 export const createOrUpdateCube = (data) => {
    
@@ -121,7 +126,8 @@ function onCubeClick(intersectedCube) {
     // Write Image/desc to sidebar
     const imageUrl = intersectedCube.userData.imageData;
     const itemName = intersectedCube.userData.itemName;
-    setCubeImageInSidebar(imageUrl, itemName);
+    const originalRatings = intersectedCube.userData.originalRatings;
+    setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
 
     if (document.getElementById('sidebarSelector').value === 'cubeContent') {
         updateSidebar();
