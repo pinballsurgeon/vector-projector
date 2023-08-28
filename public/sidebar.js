@@ -142,7 +142,7 @@ export function initializePrompts() {
     .catch(error => console.log('Error:', error));
 }
 
-import Chart from 'chart.js'; // Assuming you've imported Chart.js via a package manager or script tag
+// import Chart from 'chart.js'; // Assuming you've imported Chart.js via a package manager or script tag
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
     // ... (your existing code)
@@ -172,7 +172,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     };
 
     // Create the bar chart
-    new Chart(ratingsBarChartCanvas, {
+    Chart(ratingsBarChartCanvas, {
         type: 'bar',
         data: barChartData,
         options: {
