@@ -142,28 +142,74 @@ export function initializePrompts() {
     .catch(error => console.log('Error:', error));
 }
 
-export function setCubeImageInSidebar(imageUrl, itemName) {
+import Chart from 'chart.js'; // Assuming you've imported Chart.js via a package manager or script tag
 
-    const sidebarCubeImage = document.getElementById('sidebarCubeImage');
-    const sidebarTitle = document.getElementById("sidebarTitle");
-    const logsContent = document.getElementById('logsContent');
-    const modelSelectionContent = document.getElementById('modelSelectionContent');
-    const modelParametersContent = document.getElementById('modelParametersContent');
-    const cubeContent = document.getElementById('cubeContent');
+export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
+    // ... (your existing code)
     
-    const promptEditors = document.getElementById('promptEditors');
+    const ratingsBarChartCanvas = document.getElementById('ratingsBarChart');
 
-    // Start by hiding all contents
-    logsContent.style.display = 'none';
-    modelSelectionContent.style.display = 'none';
-    modelParametersContent.style.display = 'none';
-    promptEditors.style.display = 'none';
-        
-    // Make sure the 'cubeContent' div is visible
-    document.getElementById('cubeContent').style.display = 'block';
-    cubeContent.style.display = 'block';
-        
-    sidebarCubeImage.src = imageUrl;
-    sidebarTitle.textContent = itemName;
+    // Calculate average ratings for all other cubes
+    const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
+    // Create the data for Chart.js
+    const barChartData = {
+        labels: Object.keys(originalRatings),
+        datasets: [{
+            label: 'Selected Cube Ratings',
+            data: Object.values(originalRatings),
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            borderWidth: 1,
+        }, {
+            type: 'line',
+            label: 'Average Ratings',
+            data: averageRatings,
+            borderColor: 'red',
+            borderWidth: 2,
+            fill: false
+        }]
+    };
+
+    // Create the bar chart
+    new Chart(ratingsBarChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        max: 10
+                    }
+                }]
+            }
+        }
+    });
+}
+
+// Helper function to calculate average ratings
+function calculateAverageRatingsExceptFor(itemName, cubes) {
+    const attributes = Object.keys(cubes[itemName].originalRatings);
+    let summedRatings = {};
+    let totalCount = Object.keys(cubes).length - 1; // minus the selected cube
+
+    for (let attribute of attributes) {
+        summedRatings[attribute] = 0;  // initialize
+    }
+
+    for (let cubeName in cubes) {
+        if (cubeName !== itemName) {
+            for (let attribute of attributes) {
+                summedRatings[attribute] += cubes[cubeName].originalRatings[attribute];
+            }
+        }
+    }
+
+    // Calculate the averages
+    for (let attribute of attributes) {
+        summedRatings[attribute] = summedRatings[attribute] / totalCount;
+    }
+
+    return Object.values(summedRatings);
 }
