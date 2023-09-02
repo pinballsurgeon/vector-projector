@@ -125,7 +125,7 @@ function onCubeClick(intersectedCube) {
         appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.userData)}`);
     }
     catch {
-        appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.object)}`);
+        appendLog(`Clicked object - ${JSON.stringify(intersectedCube.object)}`);
     }
 
 
