@@ -39,38 +39,38 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
             }
         }
 
-        // Get PCA results
-        const pcaResponse = await fetch('/performPCA', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(pcaRatings)
-        });
-        const pcaResult = await pcaResponse.json();
+    // Get PCA results
+    const pcaResponse = await fetch('/performPCA', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pcaRatings)
+    });
+    const pcaResult = await pcaResponse.json();
 
-        // Combine PCA coordinates with image URLs and original ratings for each item
-        for (let item of items) {
-            pcaResult[item] = {
-                coordinates: pcaResult[item],
-                image: ratings[item]['imageUrl'],
-                originalRatings: ratings[item]
-            };
+    // Combine PCA coordinates with image URLs and original ratings for each item
+    for (let item of items) {
+        pcaResult[item] = {
+            coordinates: pcaResult[item],
+            image: ratings[item]['imageUrl'],
+            originalRatings: ratings[item]
+        };
 
-            // Remove the 'imageUrl' key from originalRatings as it's redundant
-            delete pcaResult[item].originalRatings['imageUrl'];
-        }
+        // Remove the 'imageUrl' key from originalRatings as it's redundant
+        delete pcaResult[item].originalRatings['imageUrl'];
+    }
 
-        try {
-            appendLog(`PCA Results with Images and Original Ratings: ${JSON.stringify(pcaResult)}`);
-        }
-        catch {
-            appendLog(pcaResult);
-        }
+    try {
+        appendLog(`PCA Results with Images and Original Ratings: ${JSON.stringify(pcaResult)}`);
+    }
+    catch {
+        appendLog(pcaResult);
+    }
 
-        createOrUpdateCube(pcaResult);
+    createOrUpdateCube(pcaResult);
 
-        return pcaResult;
+    return pcaResult;
 
     } catch (error) {
         appendLog(`Error in rating generator: ${error}`);

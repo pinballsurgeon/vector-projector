@@ -118,21 +118,21 @@ renderer.domElement.addEventListener('click', onMouseClick, false);
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// When a cube is clicked
 function onCubeClick(intersectedCube) {
-
     appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
 
-    // Write Image/desc to sidebar
-    const imageUrl = intersectedCube.object.userData.image;
+    // Make sure to access nested 'object' and then 'userData' properties
+    const imageUrl = intersectedCube.object.userData.imageData;
     const itemName = intersectedCube.object.userData.itemName;
     const originalRatings = intersectedCube.object.userData.originalRatings;
+
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
 
     if (document.getElementById('sidebarSelector').value === 'cubeContent') {
         updateSidebar();
     }
 }
+
 
 // Check for type of object clicked
 function checkForCubeClick() {

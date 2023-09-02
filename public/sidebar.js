@@ -210,6 +210,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 
 // Helper function to calculate average ratings
 function calculateAverageRatingsExceptFor(itemName, cubes) {
+    
     const attributes = Object.keys(cubes[itemName].originalRatings);
     let summedRatings = {};
     let totalCount = Object.keys(cubes).length - 1; // minus the selected cube
