@@ -130,9 +130,12 @@ function onCubeClick(intersectedCube) {
 
 
     // Make sure to access nested 'object' and then 'userData' properties
-    const imageUrl = intersectedCube.object.userData.imageData;
-    const itemName = intersectedCube.object.userData.itemName;
-    const originalRatings = intersectedCube.object.userData.originalRatings;
+    const imageUrl = intersectedCube.userData.image;
+    appendLog(`image url - ${imageUrl}`);
+    const itemName = intersectedCube.userData.itemName;
+    appendLog(`image name - ${itemName}`);
+    const originalRatings = intersectedCube.userData.originalRatings;
+    appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
 
