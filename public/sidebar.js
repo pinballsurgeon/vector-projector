@@ -211,7 +211,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 // Helper function to calculate average ratings
 function calculateAverageRatingsExceptFor(itemName, cubes) {
     
-    appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cbues: ${cubes}`);
+    appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cbues: ${JSON.stringify(cubes)}`);
     const attributes = Object.keys(cubes[itemName].originalRatings);
     let summedRatings = {};
     let totalCount = Object.keys(cubes).length - 1; // minus the selected cube
