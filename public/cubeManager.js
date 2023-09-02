@@ -124,9 +124,9 @@ function onCubeClick(intersectedCube) {
     appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
 
     // Write Image/desc to sidebar
-    const imageUrl = intersectedCube.userData.imageData;
-    const itemName = intersectedCube.userData.itemName;
-    const originalRatings = intersectedCube.userData.originalRatings;
+    const imageUrl = intersectedCube.object.userData.imageData;
+    const itemName = intersectedCube.object.userData.itemName;
+    const originalRatings = intersectedCube.object.userData.originalRatings;
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
 
     if (document.getElementById('sidebarSelector').value === 'cubeContent') {
