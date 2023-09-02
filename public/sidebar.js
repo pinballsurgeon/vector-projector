@@ -208,22 +208,37 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     });
 }
 
-// Helper function to calculate average ratings
 function calculateAverageRatingsExceptFor(itemName, cubes) {
+    // Initialize logging
+    appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cubes: ${JSON.stringify(cubes)}`);
     
-    appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cbues: ${JSON.stringify(cubes)}`);
-    const attributes = Object.keys(cubes[itemName].originalRatings);
+    // Check if cubes is empty
+    if (cubes.length === 0) {
+        return [];
+    }
+
+    // Locate the originalRatings keys from the selected item
+    let attributes = [];
+    for (let cube of cubes) {
+        if (cube.object.userData.itemName === itemName) {
+            attributes = Object.keys(cube.object.userData.originalRatings);
+            break;
+        }
+    }
+
+    // Initialize summed ratings and total count
     let summedRatings = {};
-    let totalCount = Object.keys(cubes).length - 1; // minus the selected cube
+    let totalCount = cubes.length - 1; // minus the selected cube
 
     for (let attribute of attributes) {
         summedRatings[attribute] = 0;  // initialize
     }
 
-    for (let cubeName in cubes) {
-        if (cubeName !== itemName) {
+    // Sum up the ratings
+    for (let cube of cubes) {
+        if (cube.object.userData.itemName !== itemName) {
             for (let attribute of attributes) {
-                summedRatings[attribute] += cubes[cubeName].originalRatings[attribute];
+                summedRatings[attribute] += cube.object.userData.originalRatings[attribute];
             }
         }
     }
