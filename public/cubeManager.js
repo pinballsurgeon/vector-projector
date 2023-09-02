@@ -121,6 +121,14 @@ const mouse = new THREE.Vector2();
 function onCubeClick(intersectedCube) {
     appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
 
+    try {
+        appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.userData)}`);
+    }
+    catch {
+        appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.object)}`);
+    }
+
+
     // Make sure to access nested 'object' and then 'userData' properties
     const imageUrl = intersectedCube.object.userData.imageData;
     const itemName = intersectedCube.object.userData.itemName;
