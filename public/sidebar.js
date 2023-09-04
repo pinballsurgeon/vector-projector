@@ -144,8 +144,6 @@ export function initializePrompts() {
 
 
 
-
-
 let myBarChart;
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
@@ -219,16 +217,16 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     ticks: {
                         maxRotation: 90,
                         minRotation: 90
-                    } 
+                    }
                 },
                 y: {
-                    min: 0,
-                    max: 11
+                    suggestedMin: 0,
+                    suggestedMax: 11
                 }
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: false
                 }
             }
         }
