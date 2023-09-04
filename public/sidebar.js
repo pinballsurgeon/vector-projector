@@ -1,3 +1,5 @@
+import { Chart } from 'chart.js';
+
 export let selectedModel;                   // Save selected model
 export let selectedTemperature;             // Save selected temperature
 export let selectedTopP;                    // Save selected top_p
@@ -144,6 +146,8 @@ export function initializePrompts() {
 
 // import Chart from 'chart.js'; // Assuming you've imported Chart.js via a package manager or script tag
 
+let myBarChart;
+
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
     const sidebarCubeImage = document.getElementById('sidebarCubeImage');
     const sidebarTitle = document.getElementById("sidebarTitle");
@@ -169,6 +173,20 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
     const ratingsBarChartCanvas = document.getElementById('ratingsBarChart');
 
+    // Destroy the previous chart instance if it exists
+    if (myBarChart) {
+        myBarChart.destroy();
+    }
+    
+    // Make sure the canvas element exists
+    if (ratingsBarChartCanvas === null) {
+        console.error("Canvas element not found");
+        return;
+    }
+
+    const ctx = ratingsBarChartCanvas.getContext('2d'); // Get the context
+
+
     // Calculate average ratings for all other cubes
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
@@ -191,18 +209,21 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         }]
     };
 
-    // Create the bar chart
-    Chart(ratingsBarChartCanvas, {
+    // Create the new chart instance
+    myBarChart = new Chart(ctx, {
         type: 'bar',
         data: barChartData,
         options: {
             scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        max: 10
-                    }
-                }]
+                y: {
+                    beginAtZero: true,
+                    max: 11 // Adjust based on your dataset
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true // Adjust based on your requirements
+                }
             }
         }
     });
