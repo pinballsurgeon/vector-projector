@@ -1,5 +1,3 @@
-import { Chart } from 'chart.js';
-
 export let selectedModel;                   // Save selected model
 export let selectedTemperature;             // Save selected temperature
 export let selectedTopP;                    // Save selected top_p
