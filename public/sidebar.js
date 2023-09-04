@@ -226,8 +226,8 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
     // Locate the originalRatings keys from the selected item
     let attributes = [];
     for (let cube of cubes) {
-        if (cube.object.userData.itemName === itemName) {
-            attributes = Object.keys(cube.object.userData.originalRatings);
+        if (cube.userData.itemName === itemName) {
+            attributes = Object.keys(cube.userData.originalRatings);
             break;
         }
     }
@@ -242,9 +242,9 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
 
     // Sum up the ratings
     for (let cube of cubes) {
-        if (cube.object.userData.itemName !== itemName) {
+        if (cube.userData.itemName !== itemName) {
             for (let attribute of attributes) {
-                summedRatings[attribute] += cube.object.userData.originalRatings[attribute];
+                summedRatings[attribute] += cube.userData.originalRatings[attribute];
             }
         }
     }
