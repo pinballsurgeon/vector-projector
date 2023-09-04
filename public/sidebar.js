@@ -211,7 +211,16 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 function calculateAverageRatingsExceptFor(itemName, cubes) {
     // Initialize logging
     appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cubes: ${JSON.stringify(cubes)}`);
-    
+
+    try {
+        appendLog(`sublet item ${JSON.stringify(cubes[0].object)}`);
+    }
+    catch {
+        appendLog(`sub sublet${JSON.stringify(cubes[0])}`);
+    }
+
+    appendLog(`LENGTH${cubes.length}`);
+
     // Check if cubes is empty
     if (cubes.length === 0) {
         return [];
