@@ -212,12 +212,9 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
     // Initialize logging
     appendLog(`calculateAverageRatingsExceptFor item - ${itemName}, all_cubes: ${JSON.stringify(cubes)}`);
 
-    try {
-        appendLog(`sublet item ${JSON.stringify(cubes[0].object)}`);
-    }
-    catch {
-        appendLog(`sub sublet${JSON.stringify(cubes[0])}`);
-    }
+    appendLog(`sublet item ${JSON.stringify(cubes[0].object)}`);
+
+    appendLog(`sub sublet${JSON.stringify(cubes[0])}`);
 
     appendLog(`LENGTH${cubes.length}`);
 
