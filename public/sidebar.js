@@ -215,6 +215,11 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         data: barChartData,
         options: {
             scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 90
+                    },
                 y: {
                     min: 0,
                     max: 11
