@@ -139,9 +139,10 @@ function onCubeClick(intersectedCube) {
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
 
-    if (document.getElementById('sidebarSelector').value === 'cubeContent') {
-        updateSidebar();
-    }
+    updateSidebar();
+    // if (document.getElementById('sidebarSelector').value === 'cubeContent') {
+    //     updateSidebar();
+    // }
 }
 
 
