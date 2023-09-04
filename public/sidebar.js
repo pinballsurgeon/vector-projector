@@ -142,7 +142,9 @@ export function initializePrompts() {
     .catch(error => console.log('Error:', error));
 }
 
-// import Chart from 'chart.js'; // Assuming you've imported Chart.js via a package manager or script tag
+
+
+
 
 let myBarChart;
 
