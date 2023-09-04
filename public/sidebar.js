@@ -216,13 +216,13 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         options: {
             scales: {
                 y: {
-                    beginAtZero: true,
-                    max: 11 // Adjust based on your dataset
+                    min: 0,
+                    max: 11
                 }
             },
             plugins: {
                 legend: {
-                    display: true // Adjust based on your requirements
+                    display: true
                 }
             }
         }
