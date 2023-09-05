@@ -10,6 +10,10 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         let ratings = {};
         let pcaRatings = {};
 
+        const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+
+        appendLog(`SELECTED MODEL: ${model}`);
+
         for (let item of items) {
             ratings[item] = {};
 
