@@ -26,9 +26,6 @@ controls.update();
 let cubes = [];
 
 
-
-
-
 export const createOrUpdateCube = (data) => {
    
     const textureLoader = new THREE.TextureLoader();
