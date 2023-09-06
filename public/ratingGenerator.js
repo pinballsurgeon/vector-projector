@@ -59,7 +59,11 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
                 appendLog(`GPT3 SINGLE RATING: ${rating}`);
 
-                ratings[item] = JSON.parse(rating);
+
+                const validJsonString = rating.replace(/'/g, '"');
+                const jsonObject = JSON.parse(validJsonString);
+
+                ratings[item] = JSON.parse(jsonObject);
 
                 // Fetch image for item
                 const response = await fetch(`/generateImage/${item}`);
