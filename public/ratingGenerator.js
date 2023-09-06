@@ -57,13 +57,13 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 const replacements = { item, attributes_str };
                 const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
-                appendLog(`GPT3 SINGLE RATING: ${rating}`);
-
-
                 const validJsonString = rating.replace(/'/g, '"');
+
+                appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
+
                 const jsonObject = JSON.parse(validJsonString);
 
-                ratings[item] = JSON.parse(jsonObject);
+                ratings[item] = jsonObject;
 
                 // Fetch image for item
                 const response = await fetch(`/generateImage/${item}`);
