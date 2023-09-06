@@ -1,14 +1,68 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
 // A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
-export const cleanResponse = (responseText, fullPrompt) => {
+export const cleanResponse_punct = (responseText, fullPrompt) => {
   let cleanText = responseText.replace(fullPrompt, '').trim().split("\n")[0];
   cleanText = cleanText.replace(/\[|\]|'/g, "").replace(/[^\w\s,-]/g, "");
   return cleanText.split(",").map(item => item.trim());
 };
 
+// A function to clean the GPT response text by removing the full prompt, replacing unwanted characters and splitting it into an array of strings
+export const cleanResponse = (responseText, fullPrompt) => {
+    let cleanText = responseText.replace(fullPrompt, '');
+    return cleanText;
+  };
+
 // A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) => {
+    try {
+
+        let prompt = listPrompts[promptKey];
+    
+        for (const key in replacements) {
+            if (Object.hasOwnProperty.call(replacements, key)) {
+            prompt = prompt.replace(`{${key}}`, replacements[key]);
+            }
+        }
+    
+        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
+            
+        appendLog(`Full prompt: ${fullPrompt}`);
+
+        const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+        appendLog(`Selected model: ${model}`);
+
+        // SEND PROMPT
+        appendLog('Sending request to /ask...');
+        const response = await fetch('/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                prompt: fullPrompt, 
+                model: model
+            }),
+        });
+
+        // We need to make sure the response is OK before we can parse it as JSON
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+        }
+
+        // clean prompt results
+        const data = await response.json(); // Parsing the response data as JSON
+        const cleanedResponse = cleanResponse_punct(data.response, fullPrompt);
+        appendLog(`Cleaned response: ${cleanedResponse}`);
+
+        // RETURN CLEANED RESPONSE
+        return cleanedResponse;
+
+    } catch (error) {
+      appendLog(`Error during list generation: ${error}`);
+    }
+};
+
+// A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
+export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) => {
     try {
 
         let prompt = listPrompts[promptKey];

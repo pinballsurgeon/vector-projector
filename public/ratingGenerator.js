@@ -1,5 +1,5 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
-import { fetchListFromLLM } from './llmService.js';
+import { fetchListFromLLM, fetchJSONFromLLM } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
@@ -55,7 +55,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
                 // Fetch ratings in one go for this item and all its attributes
                 const replacements = { item, attributes_str };
-                const rating = await fetchListFromLLM(promptKey, '', replacements);
+                const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
                 appendLog(`GPT3 SINGLE RATING: ${rating}`);
 
