@@ -57,7 +57,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 const replacements = { item, attributes_str };
                 const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
-                const validJsonString = rating.replace(/'/g, '"');
+                let validJsonString = rating.replace(/'/g, '"');
+                validJsonString = validJsonString.replace('.', '');
 
                 appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
 
