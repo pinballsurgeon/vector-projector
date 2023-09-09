@@ -147,19 +147,14 @@ export function initializePrompts() {
 let myBarChart;
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
-    const sidebarSelector = document.getElementById("sidebarSelector");
+    const sidebarCubeImage = document.getElementById('sidebarCubeImage');
     const sidebarTitle = document.getElementById("sidebarTitle");
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
     const cubeContent = document.getElementById('cubeContent');
-    const promptEditors = document.getElementById('promptEditors');
     
-    // Set sidebar to 'Cube Analytics'
-    sidebarSelector.value = 'cubeContent';
-
-    // Update sidebar content based on the new value
-    updateSidebar();
+    const promptEditors = document.getElementById('promptEditors');
 
     // Start by hiding all contents
     logsContent.style.display = 'none';

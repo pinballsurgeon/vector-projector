@@ -39,11 +39,6 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 ratings[item]['imageUrl'] = imageUrl;
                 appendLog(`Image URL: ${imageUrl}`);
 
-                // Prepare ratings for PCA (without the imageUrl)
-                pcaRatings = JSON.parse(JSON.stringify(ratings));
-                for (let item_sub in pcaRatings) {
-                    delete pcaRatings[item_sub]['imageUrl'];
-                }
             }
         } else {
 
@@ -73,13 +68,16 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 ratings[item]['imageUrl'] = imageUrl;
                 appendLog(`Image URL: ${imageUrl}`);
                 
-                // Prepare ratings for PCA (without the imageUrl)
-                pcaRatings = JSON.parse(JSON.stringify(ratings));
-                for (let item_sub in pcaRatings) {
-                    delete pcaRatings[item_sub]['imageUrl'];
-                }
             }
         }
+
+    // Prepare ratings for PCA (without the imageUrl)
+    pcaRatings = JSON.parse(JSON.stringify(ratings));
+    for (let item_sub in pcaRatings) {
+        delete pcaRatings[item_sub]['imageUrl'];
+    }
+
+    appendLog(`Image URL: ${pcaRatings}`);
 
     // Get PCA results
     const pcaResponse = await fetch('/performPCA', {
