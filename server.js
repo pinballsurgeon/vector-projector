@@ -192,10 +192,12 @@ app.get('/models', (req, res, next) => {
     });
 });
 
+const DEFAULT_IMAGE_URL = "https://cdn.iconscout.com/icon/premium/png-256-thumb/error-management-2410698-2024636.png";
+
 async function searchImage(query) {
     try {
         const images = await client.search(query, {
-            size: 'small', // Adjust the size parameter to 'small' to get smaller images
+            size: 'small',
         });
 
         for (let image of images) {
@@ -205,33 +207,27 @@ async function searchImage(query) {
             }
         }
 
-        return null; // Return null if no usable image is found
+        return DEFAULT_IMAGE_URL;
 
     } catch (err) {
         console.error(err);
-        throw err;
+        return DEFAULT_IMAGE_URL;
     }
 }
 
 async function isImageCORSCompliant(url) {
     try {
-        const response = await axios.head(url);
-        // Ensure the response headers have access-control-allow-origin set to '*'
+        const response = await axios.head(url, { timeout: 1000 });
         if (response.headers['access-control-allow-origin'] === '*') {
             return true;
         }
         return false;
     } catch (err) {
-        // Handle the error here; for CORS issue, simply return false
-        if (err.response && err.response.headers && !err.response.headers['access-control-allow-origin']) {
-            return false;
-        }
         console.error("Failed to fetch image headers:", err);
-        return false; // Assuming any error means the image isn't compliant
+        return false;
     }
 }
 
-// New endpoint for image search
 app.get('/generateImage/:prompt', async (req, res, next) => {
     try {
         const query = req.params.prompt;
