@@ -10,17 +10,20 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         let ratings = {};
         let pcaRatings = {};
+        let ratings_str = "{";  // Initialize ratings_str as a string
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
         appendLog(`SELECTED MODEL: ${model}`);
 
         if (model !== 'gpt-3') {
-            
-            for (let item of items) {
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
                 ratings[item] = {};
+                ratings_str += `"${item}": {`;  // Add item to the ratings_str
 
-                for (let attribute of attributes) {
+                for (let j = 0; j < attributes.length; j++) {
+                    let attribute = attributes[j];
                     const promptKey = "rateAttribute";
                     appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
 
@@ -28,8 +31,10 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                     const rating = await fetchListFromLLM(promptKey, '', replacements);
 
                     appendLog(`Generated rating: ${rating}`);
-
                     ratings[item][attribute] = parseInt(rating[0]);
+                    ratings_str += `"${attribute}": ${rating[0]}`;  // Add attribute and rating to ratings_str
+
+                    if (j < attributes.length - 1) ratings_str += ", ";
                 }
 
                 // Fetch image for item
@@ -37,47 +42,55 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 const result = await response.json();
                 const imageUrl = result.image;
                 ratings[item]['imageUrl'] = imageUrl;
-                appendLog(`Image URL: ${imageUrl}`);
-
+                ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
+                ratings_str += "}";
+                if (i < items.length - 1) ratings_str += ", ";
             }
         } else {
-
-            // GPT-3
-            for (let item of items) {
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
                 ratings[item] = {};
+                ratings_str += `"${item}": {`;  // Add item to the ratings_str
 
                 const promptKey = "rateAllAttributes";
-
-                // Fetch ratings in one go for this item and all its attributes
                 const replacements = { item, attributes_str };
                 const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
-                let validJsonString = rating.replace(/'/g, '"');
-                validJsonString = validJsonString.replace('.', '');
-
+                let validJsonString = rating.replace(/'/g, '"').replace('.', '');
                 appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
 
                 const jsonObject = JSON.parse(validJsonString);
-
                 ratings[item] = jsonObject;
+
+                let keys = Object.keys(jsonObject);
+                for (let j = 0; j < keys.length; j++) {
+                    let key = keys[j];
+                    ratings_str += `"${key}": "${jsonObject[key]}"`;  // Add key and value to ratings_str
+                    if (j < keys.length - 1) ratings_str += ", ";
+                }
 
                 // Fetch image for item
                 const response = await fetch(`/generateImage/${item}`);
                 const result = await response.json();
                 const imageUrl = result.image;
                 ratings[item]['imageUrl'] = imageUrl;
-                appendLog(`Image URL: ${imageUrl}`);
-                
+                ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
+                ratings_str += "}";
+                if (i < items.length - 1) ratings_str += ", ";
             }
         }
 
-    // Prepare ratings for PCA (without the imageUrl)
+    ratings_str += "}";  // Close the JSON object represented as a string
+
+
+    appendLog(`Ratings Str: ${ratings_str}`);  // Log the ratings_str at the end to inspect it
+
+        // Prepare ratings for PCA (without the imageUrl)
     pcaRatings = JSON.parse(JSON.stringify(ratings));
     for (let item_sub in pcaRatings) {
         delete pcaRatings[item_sub]['imageUrl'];
     }
 
-    appendLog(`Image URL: ${pcaRatings}`);
 
     // Get PCA results
     const pcaResponse = await fetch('/performPCA', {
@@ -112,7 +125,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
     return pcaResult;
 
-    } catch (error) {
-        appendLog(`Error in rating generator: ${error}`);
-    }
+} catch (error) {
+    appendLog(`Error in rating generator: ${error}`);
+}
 };
