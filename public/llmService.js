@@ -101,7 +101,8 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
             // clean prompt results
             const data = await response.json(); // Parsing the response data as JSON
-            let cleanedResponse = cleanResponse(data.response, fullPrompt);
+            let cleanedResponse = data.response;
+            // let cleanedResponse = cleanResponse(data.response, fullPrompt);
             appendLog(`Cleaned response: ${cleanedResponse}`);
 
             // Remove trailing text if occurs
@@ -114,6 +115,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
             // Check if the response is complete
             if (cleanedResponse.includes('}')) {
+                cleanedResponse = cleanResponse(cleanedResponse, fullPrompt);
                 break;  
             }
 
