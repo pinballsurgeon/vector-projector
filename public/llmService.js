@@ -61,50 +61,66 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
     }
 };
 
-// A function to fetch a list from the Language Learning Model (LLM) given a promptKey and user input
 export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) => {
     try {
-
         let prompt = listPrompts[promptKey];
     
         for (const key in replacements) {
             if (Object.hasOwnProperty.call(replacements, key)) {
-            prompt = prompt.replace(`{${key}}`, replacements[key]);
+                prompt = prompt.replace(`{${key}}`, replacements[key]);
             }
         }
     
-        const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
-            
-        appendLog(`Full prompt: ${fullPrompt}`);
+        let fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
 
-        const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
-        appendLog(`Selected model: ${model}`);
+        let completeResponse = "";
+        let attempts = 0;  // Keep track of attempts to avoid infinite loops
+        const maxAttempts = 5;  // Set a maximum number of attempts
 
-        // SEND PROMPT
-        appendLog('Sending request to /ask...');
-        const response = await fetch('/ask', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                prompt: fullPrompt, 
-                model: model
-            }),
-        });
+        while (attempts < maxAttempts) {
+            appendLog(`Full prompt: ${fullPrompt}`);
 
-        // We need to make sure the response is OK before we can parse it as JSON
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+            const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+            appendLog(`Selected model: ${model}`);
+
+            // SEND PROMPT
+            appendLog('Sending request to /ask...');
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    prompt: fullPrompt, 
+                    model: model
+                }),
+            });
+
+            // We need to make sure the response is OK before we can parse it as JSON
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+            }
+
+            // clean prompt results
+            const data = await response.json(); // Parsing the response data as JSON
+            let cleanedResponse = cleanResponse(data.response, fullPrompt);
+            appendLog(`Cleaned response: ${cleanedResponse}`);
+
+            // Append the cleaned response to the complete response
+            completeResponse += cleanedResponse;
+
+            // Check if the response is complete
+            if (cleanedResponse.endsWith('.') || cleanedResponse.endsWith('!') || cleanedResponse.endsWith('}')) {
+                break;  // If the response ends with a punctuation mark, consider it complete
+            }
+
+            // If the response is not complete, create a new prompt with the incomplete response
+            fullPrompt = cleanedResponse;
+            attempts += 1;
         }
 
-        // clean prompt results
-        const data = await response.json(); // Parsing the response data as JSON
-        const cleanedResponse = cleanResponse(data.response, fullPrompt);
-        appendLog(`Cleaned response: ${cleanedResponse}`);
-
-        // RETURN CLEANED RESPONSE
-        return cleanedResponse;
+        // RETURN COMPLETE RESPONSE
+        return completeResponse;
 
     } catch (error) {
-      appendLog(`Error during list generation: ${error}`);
+        appendLog(`Error during list generation: ${error}`);
     }
 };
