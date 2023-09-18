@@ -108,8 +108,8 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
             completeResponse += cleanedResponse;
 
             // Check if the response is complete
-            if (cleanedResponse.endsWith('.') || cleanedResponse.endsWith('!') || cleanedResponse.endsWith('}')) {
-                break;  // If the response ends with a punctuation mark, consider it complete
+            if (cleanedResponse.includes('}')) {
+                break;  
             }
 
             // If the response is not complete, create a new prompt with the incomplete response
