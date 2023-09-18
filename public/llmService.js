@@ -77,6 +77,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
         let attempts = 0;  // Keep track of attempts to avoid infinite loops
         const maxAttempts = 5;  // Set a maximum number of attempts
 
+        let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
             appendLog(`Full prompt: ${fullPrompt}`);
 
@@ -105,8 +106,9 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
             // let cleanedResponse = cleanResponse(data.response, fullPrompt);
             appendLog(`Cleaned response: ${cleanedResponse}`);
 
+            let checkResponse = cleanResponse(cleanedResponse, original_fullprompt);
             // Remove trailing text if occurs
-            if (cleanedResponse.includes('}')) {
+            if (checkResponse.includes('}')) {
                 cleanedResponse = cleanedResponse.substring(0, cleanedResponse.indexOf('}') + 1); 
             }
             
@@ -114,8 +116,8 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
             completeResponse += cleanedResponse;
 
             // Check if the response is complete
-            if (cleanedResponse.includes('}')) {
-                cleanedResponse = cleanResponse(cleanedResponse, fullPrompt);
+            if (checkResponse.includes('}')) {
+                cleanedResponse = cleanResponse(cleanedResponse, original_fullprompt);
                 break;  
             }
 
