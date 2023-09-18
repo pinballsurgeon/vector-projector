@@ -106,7 +106,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
             // Remove trailing text if occurs
             if (cleanedResponse.includes('}')) {
-                cleanedResponse = cleanedResponse.substring(0, cleanedResponse.indexOf('}')); 
+                cleanedResponse = cleanedResponse.substring(0, cleanedResponse.indexOf('}') + 1); 
             }
             
             // Append the cleaned response to the complete response
