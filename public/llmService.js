@@ -79,8 +79,8 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
         let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
-            appendLog(`Full prompt: ${}`);
-fullPrompt
+            appendLog(`Full prompt: ${fullPrompt}`);
+
             const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
             appendLog(`Selected model: ${model}`);
 
