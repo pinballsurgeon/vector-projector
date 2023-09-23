@@ -135,8 +135,13 @@ function onCubeClick(intersectedCube) {
     appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
-
+    
+    // Update the sidebar selector to 'Cube Analytics' (which is represented by 'cubeContent' value)
+    document.getElementById('sidebarSelector').value = 'cubeContent';
+    
+    // Call the updateSidebar function to reflect this change
     updateSidebar();
+    // updateSidebar();
     // if (document.getElementById('sidebarSelector').value === 'cubeContent') {
     //     updateSidebar();
     // }
