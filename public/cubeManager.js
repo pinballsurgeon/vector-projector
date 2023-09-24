@@ -130,6 +130,7 @@ function onCubeClick(intersectedCube) {
     const imageUrl = intersectedCube.userData.image;
     appendLog(`image url - ${imageUrl}`);
     const itemName = intersectedCube.userData.itemName;
+    
     appendLog(`image name - ${itemName}`);
     const originalRatings = intersectedCube.userData.originalRatings;
     appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
@@ -138,13 +139,11 @@ function onCubeClick(intersectedCube) {
     
     // Update the sidebar selector to 'Cube Analytics' (which is represented by 'cubeContent' value)
     document.getElementById('sidebarSelector').value = 'cubeContent';
+    document.getElementById('cubeName').textContent = itemName;
+
     
     // Call the updateSidebar function to reflect this change
     updateSidebar();
-    // updateSidebar();
-    // if (document.getElementById('sidebarSelector').value === 'cubeContent') {
-    //     updateSidebar();
-    // }
 }
 
 

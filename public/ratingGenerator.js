@@ -1,5 +1,5 @@
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
-import { fetchListFromLLM, fetchJSONFromLLM } from './llmService.js';
+import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
@@ -47,20 +47,36 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 if (i < items.length - 1) ratings_str += ", ";
             }
         } else {
+
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
                 ratings[item] = {};
                 ratings_str += `"${item}": {`;  // Add item to the ratings_str
 
-                const promptKey = "rateAllAttributes";
-                const replacements = { item, attributes_str };
+                let promptKey = "rateAllAttributes";
+                let replacements = { item, attributes_str };
                 const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
                 let validJsonString = rating.replace(/'/g, '"').replace('.', '');
                 appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
 
-                const jsonObject = JSON.parse(validJsonString);
-                ratings[item] = jsonObject;
+                // correct json issues
+                let jsonObject = {};
+                try {
+                    jsonObject = JSON.parse(validJsonString);
+                    ratings[item] = jsonObject;
+                }
+                catch (json_parse_error) {
+
+                    appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
+
+                    promptKey = "correctJsonObject";
+                    replacements = { json_parse_error, validJsonString };
+                    let corrected_json = await correctJsonObject(promptKey, replacements);
+
+                    jsonObject = JSON.parse(corrected_json);
+                    ratings[item] = jsonObject;
+                }
 
                 let keys = Object.keys(jsonObject);
                 for (let j = 0; j < keys.length; j++) {
