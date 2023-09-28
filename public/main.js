@@ -38,3 +38,20 @@ document.getElementById('vectorizeButton').addEventListener('click', async () =>
     // Display the ratings in 'llmRatings' div
     document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
 });
+
+// Assuming svg is your d3.js canvas
+let svg = d3.select("#my_dataviz").append("svg");
+
+// Function to resize the canvas
+function resize() {
+    let width = document.getElementById('canvas-container').offsetWidth - 40;  // 40 is double the padding
+    let height = window.innerHeight - 40;  // Assuming you want to leave 20px padding on all sides
+    svg.attr("width", width)
+        .attr("height", height);
+}
+
+// Call the resize function on window resize
+window.addEventListener('resize', resize);
+
+// Initial call to set up the canvas size properly
+resize();

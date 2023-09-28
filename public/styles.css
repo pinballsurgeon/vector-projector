@@ -24,3 +24,13 @@ body {
 .sidebar-content {
     padding: 20px;
 }
+
+/* Add this to your styles.css file */
+#canvas-container {
+    padding: 20px;
+    width: 100%;
+    max-width: 100vw;
+    height: auto;
+    box-sizing: border-box;
+    position: relative;
+}
