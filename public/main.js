@@ -44,8 +44,8 @@ let svg = d3.select("#my_dataviz").append("svg");
 
 // Function to resize the canvas
 function resize() {
-    let width = document.getElementById('canvas-container').offsetWidth - 40;  // 40 is double the padding
-    let height = window.innerHeight - 40;  // Assuming you want to leave 20px padding on all sides
+    let width = document.getElementById('canvas-container').offsetWidth - 40;  // subtracting padding
+    let height = (window.innerHeight * 0.75) - 40;  // 75% of the view height, subtracting padding
     svg.attr("width", width)
         .attr("height", height);
 }
@@ -55,3 +55,4 @@ window.addEventListener('resize', resize);
 
 // Initial call to set up the canvas size properly
 resize();
+

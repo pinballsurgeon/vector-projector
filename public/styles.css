@@ -1,6 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
-  }
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
   .sidebar {
     position: fixed;
     width: 250px;
@@ -25,12 +29,22 @@ body {
     padding: 20px;
 }
 
-/* Add this to your styles.css file */
 #canvas-container {
     padding: 20px;
-    width: 100%;
-    max-width: 100vw;
-    height: auto;
+    flex-grow: 1;
     box-sizing: border-box;
     position: relative;
+    overflow: auto;
+}
+
+/* This is to ensure the remaining lower part of the page is compact */
+#userInput,
+#askButton,
+#llmListResponse,
+#llmTopicAttributes,
+#imageSet,
+#llmRatings,
+#llm3dVector {
+    margin: 0;
+    padding: 10px;
 }
