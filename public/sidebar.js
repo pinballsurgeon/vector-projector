@@ -192,18 +192,18 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     const barChartData = {
         labels: Object.keys(originalRatings),
         datasets: [{
-            label: 'Selected Cube Ratings',
-            data: Object.values(originalRatings),
-            backgroundColor: 'blue',
-            borderColor: 'blue',
-            borderWidth: 1,
-        }, {
             type: 'line',
             label: 'Average Ratings',
             data: averageRatings,
             borderColor: 'red',
             borderWidth: 2,
             fill: false
+        }, {
+            label: 'Selected Cube Ratings',
+            data: Object.values(originalRatings),
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            borderWidth: 1,
         }]
     };
 
