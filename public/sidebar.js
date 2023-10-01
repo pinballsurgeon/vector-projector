@@ -206,7 +206,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         return diffB - diffA;  // For descending order
     });
 
-    // Now build the datasets using the sorted array
     const barChartData = {
         labels: attributesArray.map(attribute => attribute.name),
         datasets: [{
@@ -224,6 +223,31 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             borderWidth: 1,
         }]
     };
+
+    // Create the new chart instance
+    myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 90
+                    }
+                },
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 11
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
 }
 
 function calculateAverageRatingsExceptFor(itemName, cubes) {
