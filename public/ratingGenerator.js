@@ -7,10 +7,11 @@ import { createOrUpdateCube } from './cubeManager.js';
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         // Use the functions from dataStore.js to get the data
-        const items = getLLMListResponse().split(', ');
-        const attributes = getLLMTopicAttributes().split(', ');
+        const items = getLLMListResponse().split(',');
+        const attributes = getLLMTopicAttributes().split(',');
         const attributes_str = getLLMTopicAttributes();  // This line will get the attributes as a string
         
+
         let ratings = {};
         let pcaRatings = {};
         let ratings_str = "{";  // Initialize ratings_str as a string
