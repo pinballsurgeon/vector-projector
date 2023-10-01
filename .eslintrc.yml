@@ -1,0 +1,31 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+extends: standard
+parserOptions:
+  ecmaVersion: latest
+rules:
+  indent: off
+  semi: [error, always]
+  camelcase: off
+  prefer-const: off
+  quotes: off
+  padded-blocks: off
+  no-multi-spaces: off
+  space-before-function-paren: off
+  keyword-spacing: off
+  no-unused-vars: off
+  eqeqeq: off
+  comma-dangle: off
+  brace-style: off
+  space-before-blocks: off
+  curly: off
+  no-sequences: off
+  dot-notation: off
+  no-return-assign: off
+  no-trailing-spaces: off
+  no-prototype-builtins: off
+  standard/no-callback-literal: off
+  no-multiple-empty-lines: off
+  eol-last: off

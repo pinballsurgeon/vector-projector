@@ -1,13 +1,16 @@
+// Import the necessary functions from dataStore.js
+import { getLLMListResponse, getLLMTopicAttributes } from './dataStore.js';
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
-        const items = document.getElementById('llmListResponse').innerText.split(', ');
-        const attributes = document.getElementById('llmTopicAttributes').innerText.split(', ');
-        const attributes_str = document.getElementById('llmTopicAttributes').innerText;
-
+        // Use the functions from dataStore.js to get the data
+        const items = getLLMListResponse().split(', ');
+        const attributes = getLLMTopicAttributes().split(', ');
+        const attributes_str = getLLMTopicAttributes();  // This line will get the attributes as a string
+        
         let ratings = {};
         let pcaRatings = {};
         let ratings_str = "{";  // Initialize ratings_str as a string
@@ -99,9 +102,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     ratings_str += "}";  // Close the JSON object represented as a string
 
 
-    // appendLog(`Ratings Str: ${ratings_str}`);  // Log the ratings_str at the end to inspect it
-
-        // Prepare ratings for PCA (without the imageUrl)
+    // Prepare ratings for PCA (without the imageUrl)
     pcaRatings = JSON.parse(JSON.stringify(ratings));
     for (let item_sub in pcaRatings) {
         delete pcaRatings[item_sub]['imageUrl'];
