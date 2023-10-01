@@ -14,7 +14,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
-        appendLog(`SELECTED MODEL: ${model}`);
+        // appendLog(`SELECTED MODEL: ${model}`);
 
         if (model !== 'gpt-3') {
             for (let i = 0; i < items.length; i++) {
@@ -25,12 +25,12 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 for (let j = 0; j < attributes.length; j++) {
                     let attribute = attributes[j];
                     const promptKey = "rateAttribute";
-                    appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
+                    // appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
 
                     const replacements = { item, attribute };
                     const rating = await fetchListFromLLM(promptKey, '', replacements);
 
-                    appendLog(`Generated rating: ${rating}`);
+                    // appendLog(`Generated rating: ${rating}`);
                     ratings[item][attribute] = parseInt(rating[0]);
                     ratings_str += `"${attribute}": ${rating[0]}`;  // Add attribute and rating to ratings_str
 
@@ -58,7 +58,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 const rating = await fetchJSONFromLLM(promptKey, '', replacements);
 
                 let validJsonString = rating.replace(/'/g, '"').replace('.', '');
-                appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
+                // appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
 
                 // correct json issues
                 let jsonObject = {};
@@ -68,7 +68,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 }
                 catch (json_parse_error) {
 
-                    appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
+                    // appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
 
                     promptKey = "correctJsonObject";
                     replacements = { json_parse_error, validJsonString };
@@ -99,7 +99,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     ratings_str += "}";  // Close the JSON object represented as a string
 
 
-    appendLog(`Ratings Str: ${ratings_str}`);  // Log the ratings_str at the end to inspect it
+    // appendLog(`Ratings Str: ${ratings_str}`);  // Log the ratings_str at the end to inspect it
 
         // Prepare ratings for PCA (without the imageUrl)
     pcaRatings = JSON.parse(JSON.stringify(ratings));
@@ -145,3 +145,5 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     appendLog(`Error in rating generator: ${error}`);
 }
 };
+
+

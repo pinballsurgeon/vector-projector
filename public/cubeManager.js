@@ -59,8 +59,8 @@ export const createOrUpdateCube = (data) => {
                 scene.add(cube);
                 cubes.push(cube);  // Add cube to cubes array
 
-                appendLog(`Cube Structure ${cube}`);
-                appendLog(`Image being added to scene: ${jpgData}`);
+                // appendLog(`Cube Structure ${cube}`);
+                // appendLog(`Image being added to scene: ${jpgData}`);
             },
             undefined, // onProgress callback can be undefined if not needed
             (error) => { // onError callback
@@ -116,24 +116,24 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 function onCubeClick(intersectedCube) {
-    appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
+    // appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
 
-    try {
-        appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.userData)}`);
-    }
-    catch {
-        appendLog(`Clicked object - ${JSON.stringify(intersectedCube.object)}`);
-    }
+    // try {
+    //     appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.userData)}`);
+    // }
+    // catch {
+    //     appendLog(`Clicked object - ${JSON.stringify(intersectedCube.object)}`);
+    // }
 
 
     // Make sure to access nested 'object' and then 'userData' properties
     const imageUrl = intersectedCube.userData.image;
-    appendLog(`image url - ${imageUrl}`);
+    // appendLog(`image url - ${imageUrl}`);
     const itemName = intersectedCube.userData.itemName;
     
-    appendLog(`image name - ${itemName}`);
+    // appendLog(`image name - ${itemName}`);
     const originalRatings = intersectedCube.userData.originalRatings;
-    appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
+    // appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
     
