@@ -1,26 +1,22 @@
-// dataStore.js
-let llmListResponseData = null;
-let llmTopicAttributesData = null;
+let llmListResponse = "";
+let llmTopicAttributes = "";
 
-function setLLMListResponse(data) {
-    llmListResponseData = data;
-}
+// Function to update llmListResponse
+export const setLLMListResponse = (data) => {
+    llmListResponse = data;
+};
 
-function getLLMListResponse() {
-    return llmListResponseData;
-}
+// Function to retrieve llmListResponse
+export const getLLMListResponse = () => {
+    return llmListResponse;
+};
 
-function setLLMTopicAttributes(data) {
-    llmTopicAttributesData = data;
-}
+// Function to update llmTopicAttributes
+export const setLLMTopicAttributes = (data) => {
+    llmTopicAttributes = data;
+};
 
-function getLLMTopicAttributes() {
-    return llmTopicAttributesData;
-}
-
-module.exports = {
-    setLLMListResponse,
-    getLLMListResponse,
-    setLLMTopicAttributes,
-    getLLMTopicAttributes
+// Function to retrieve llmTopicAttributes
+export const getLLMTopicAttributes = () => {
+    return llmTopicAttributes;
 };
