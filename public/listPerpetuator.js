@@ -2,6 +2,7 @@
 import { fetchListFromLLM } from './llmService.js';
 import { appendLog } from './sidebar.js';
 import { combineAndCleanList } from './listProcessor.js';
+import { setLLMListResponse } from './dataStore.js';
 
 // A function to generate and expand a list based on user input
 export const listPerpetuator = async () => {
@@ -31,6 +32,7 @@ export const listPerpetuator = async () => {
     appendLog(`List perpetuator response: ${combinedList}`);
     
     // Displaying the final list in the 'gptResponse' element
+    setLLMListResponse(combinedList.join(", "));
     document.getElementById('llmListResponse').innerText = combinedList.join(", ");
 
     // Update visibility of the button
