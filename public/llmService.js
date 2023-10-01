@@ -24,7 +24,8 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
             prompt = prompt.replace(`{${key}}`, replacements[key]);
             }
         }
-    
+
+        appendLog(`User input: ${userInput}`);
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
             
         appendLog(`Full prompt: ${fullPrompt}`);
@@ -33,7 +34,6 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
         appendLog(`Selected model: ${model}`);
 
         // SEND PROMPT
-        appendLog('Sending request to /ask...');
         const response = await fetch('/ask', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -71,6 +71,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
             }
         }
     
+        appendLog(`Build json input: ${userInput}`);
         let fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
 
         let completeResponse = "";
@@ -79,7 +80,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
         let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
-            appendLog(`Full prompt: ${fullPrompt}`);
+            appendLog(`Build json full prompt: ${fullPrompt}`);
 
             const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
             appendLog(`Selected model: ${model}`);
