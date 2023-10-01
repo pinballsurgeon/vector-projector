@@ -196,9 +196,7 @@ const DEFAULT_IMAGE_URL = "https://cdn.iconscout.com/icon/premium/png-256-thumb/
 
 async function searchImage(query) {
     try {
-        const images = await client.search(query, {
-            size: 'small',
-        });
+        const images = await client.search(query);
 
         for (let image of images) {
             const imageUrl = image.url;
