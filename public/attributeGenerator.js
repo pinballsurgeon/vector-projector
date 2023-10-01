@@ -2,6 +2,8 @@
 import { fetchListFromLLM } from './llmService.js';
 import { appendLog } from './sidebar.js';
 import { setLLMTopicAttributes, getLLMListResponse } from './dataStore.js';  // Import from dataStore.js
+import { generateRatings } from './ratingGenerator.js';
+import { createOrUpdateCube } from './cubeManager.js';
 
 // A function to generate differentiating topics for a list of items
 export const differentiatingTopicsGenerator = async () => {
@@ -24,6 +26,8 @@ export const differentiatingTopicsGenerator = async () => {
   
       // Once the attributes are populated, display the 'vectorizeButton'
       document.getElementById('vectorizeButton').style.display = 'block';
+
+      await generateRatings(createOrUpdateCube);
 
       // Returning the final list
       return attributeTopics;

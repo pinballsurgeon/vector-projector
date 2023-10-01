@@ -1,4 +1,4 @@
-import {updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
+import { updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { differentiatingTopicsGenerator } from './attributeGenerator.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { generateRatings } from './ratingGenerator.js';
@@ -29,7 +29,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
 });
 
 // DIFFERENTIATING ATTRIBUTES
-document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
+// document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
 
 // Event listener for 'vectorizeButton'
 document.getElementById('vectorizeButton').addEventListener('click', async () => {
