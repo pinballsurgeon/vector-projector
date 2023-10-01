@@ -11,6 +11,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         const attributes = getLLMTopicAttributes().split(',');
         const attributes_str = getLLMTopicAttributes();  // This line will get the attributes as a string
         
+        appendLog(`fetched items: ${items}`);
         appendLog(`fetched attributes: ${attributes_str}`);
 
         let ratings = {};
