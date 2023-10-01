@@ -105,11 +105,35 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     ratings_str += "}";  // Close the JSON object represented as a string
 
 
-    // Prepare ratings for PCA (without the imageUrl)
-    pcaRatings = JSON.parse(JSON.stringify(ratings));
-    for (let item_sub in pcaRatings) {
-        delete pcaRatings[item_sub]['imageUrl'];
+    // Assume ratings is your original JSON object
+    let standardizedRatings = {};
+
+    // Capture the keys from the first item in the JSON object
+    let standardKeys = Object.keys(ratings[Object.keys(ratings)[0]]);
+
+    // Iterate through each item in the original JSON object
+    for (let itemKey in ratings) {
+        let item = ratings[itemKey];
+        let standardizedItem = {};
+
+        // Iterate through the standard keys and map the values from the original item
+        standardKeys.forEach((key, index) => {
+            let originalKeys = Object.keys(item);
+            standardizedItem[key] = item[originalKeys[index]];
+        });
+
+        // Store the standardized item in the new JSON object
+        standardizedRatings[itemKey] = standardizedItem;
     }
+
+    ratings = standardizedRatings;
+
+    // Prepare ratings for PCA (without the imageUrl)
+    pcaRatings = JSON.parse(JSON.stringify(standardizedRatings));
+    for (let itemKey in pcaRatings) {
+        delete pcaRatings[itemKey]['imageUrl'];
+    }
+
 
 
     // Get PCA results
