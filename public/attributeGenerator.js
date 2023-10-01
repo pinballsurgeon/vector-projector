@@ -19,7 +19,7 @@ export const differentiatingTopicsGenerator = async () => {
       appendLog(`Attribute Topics: ${attributeTopics}`);
   
       // Saving the final list to dataStore.js
-      document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
+      // document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
       setLLMTopicAttributes(attributeTopics.join(", "));  // Use setLLMTopicAttributes here
   
       // Once the attributes are populated, display the 'vectorizeButton'

@@ -33,7 +33,7 @@ export const listPerpetuator = async () => {
     
     // Displaying the final list in the 'gptResponse' element
     setLLMListResponse(combinedList.join(", "));
-    document.getElementById('llmListResponse').innerText = combinedList.join(", ");
+    // document.getElementById('llmListResponse').innerText = combinedList.join(", ");
 
     // Update visibility of the button
     handleListButtonVisibility();
