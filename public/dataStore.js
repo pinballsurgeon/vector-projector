@@ -16,7 +16,16 @@ export const setLLMTopicAttributes = (data) => {
     llmTopicAttributes = data;
 };
 
-// Function to retrieve llmTopicAttributes
+// // Function to retrieve llmTopicAttributes
+// export const getLLMTopicAttributes = () => {
+//     return llmTopicAttributes;
+// };
+
 export const getLLMTopicAttributes = () => {
-    return llmTopicAttributes;
+    if (typeof llmTopicAttributes === 'string') {
+        return llmTopicAttributes;
+    } else {
+        console.error('llmTopicAttributes is not a string:', llmTopicAttributes);
+        return '';
+    }
 };
