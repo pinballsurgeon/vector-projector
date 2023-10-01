@@ -55,6 +55,7 @@ const handleListButtonVisibility = () => {
     if (llmListResponse.innerText.trim() !== '') {
       listButton.style.display = 'inline-block'; // Show button
     } else {
-      listButton.style.display = 'none'; // Hide button
+      // listButton.style.display = 'none'; // Hide button
+      listButton.style.display = 'inline-block'; // Show button
     }
 };
