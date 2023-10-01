@@ -189,48 +189,41 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
     // Create the data for Chart.js
+    // First, build an array of objects for sorting
+    let attributesArray = [];
+    Object.keys(originalRatings).forEach((attribute, index) => {
+        attributesArray.push({
+            name: attribute,
+            selectedValue: originalRatings[attribute],
+            averageValue: averageRatings[index]
+        });
+    });
+
+    // Sort the array based on the absolute difference between the selected cube's value and the average value
+    attributesArray.sort((a, b) => {
+        let diffA = Math.abs(a.selectedValue - a.averageValue);
+        let diffB = Math.abs(b.selectedValue - b.averageValue);
+        return diffB - diffA;  // For descending order
+    });
+
+    // Now build the datasets using the sorted array
     const barChartData = {
-        labels: Object.keys(originalRatings),
+        labels: attributesArray.map(attribute => attribute.name),
         datasets: [{
             type: 'line',
             label: 'Average Ratings',
-            data: averageRatings,
+            data: attributesArray.map(attribute => attribute.averageValue),
             borderColor: 'red',
             borderWidth: 2,
             fill: false
         }, {
             label: 'Selected Cube Ratings',
-            data: Object.values(originalRatings),
+            data: attributesArray.map(attribute => attribute.selectedValue),
             backgroundColor: 'blue',
             borderColor: 'blue',
             borderWidth: 1,
         }]
     };
-
-    // Create the new chart instance
-    myBarChart = new Chart(ctx, {
-        type: 'bar',
-        data: barChartData,
-        options: {
-            scales: {
-                x: {
-                    ticks: {
-                        maxRotation: 90,
-                        minRotation: 90
-                    }
-                },
-                y: {
-                    suggestedMin: 0,
-                    suggestedMax: 11
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
 }
 
 function calculateAverageRatingsExceptFor(itemName, cubes) {
