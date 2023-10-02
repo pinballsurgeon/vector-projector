@@ -233,8 +233,8 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 x: {
                     ticks: {
                         autoSkip: false, // ensures that labels are not skipped
-                        maxRotation: 0, // keeps the labels horizontal
-                        minRotation: 0
+                        maxRotation: 90, // keeps the labels horizontal
+                        minRotation: 90
                     }
                 },
                 y: {
@@ -244,10 +244,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             },
             layout: {
                 padding: {
-                    left: 10,
-                    right: 10,
-                    top: 10,
-                    bottom: 20 // adjust this value to provide more space below the chart
+                    left: 2,
+                    right: 2,
+                    top: 5,
+                    bottom: 50 // adjust this value to provide more space below the chart
                 }
             },
             plugins: {
