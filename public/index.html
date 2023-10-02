@@ -20,6 +20,9 @@
         <option value="prompts">Prompts</option>
         <option value="cubeContent">Cube Analytics</option>
     </select>    
+    <!-- User input field and ask button -->
+    <input type="text" id="userInput" placeholder="What topic...">
+    <button id="askButton">Ask</button>
     <div id="canvas-container">
         <div id="my_dataviz"></div>
     </div>    
@@ -55,11 +58,9 @@
         </div>
     </div>    
 
-    <!-- User input field and ask button -->
-    <input type="text" id="userInput" placeholder="What topic...">
-    <button id="askButton">Ask</button>
+
     
-    <!-- Area to display LLM responses -->
+    Area to display LLM responses
     <!-- <button id="listButton" style="display: none;">Proceed</button> -->
     <button id="listButton">Proceed</button> 
     <p id="llmListResponse"></p>
