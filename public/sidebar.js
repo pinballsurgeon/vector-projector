@@ -232,13 +232,22 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             scales: {
                 x: {
                     ticks: {
-                        maxRotation: 90,
-                        minRotation: 90
+                        autoSkip: false, // ensures that labels are not skipped
+                        maxRotation: 0, // keeps the labels horizontal
+                        minRotation: 0
                     }
                 },
                 y: {
                     suggestedMin: 0,
                     suggestedMax: 11
+                }
+            },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: 20 // adjust this value to provide more space below the chart
                 }
             },
             plugins: {
@@ -247,6 +256,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 }
             }
         }
+        
     });
 }
 
