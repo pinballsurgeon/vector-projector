@@ -4,6 +4,8 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
+import { Client } from 'pg';
+
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         // Use the functions from dataStore.js to get the data
@@ -164,8 +166,6 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     catch {
         appendLog(pcaResult);
     }
-
-    const { Client } = require('pg');
 
     const client = new Client({
     connectionString: process.env.DATABASE_URL,
