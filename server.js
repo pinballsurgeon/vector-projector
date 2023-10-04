@@ -145,9 +145,9 @@ app.post('/ask', async (req, res, next) => {
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
             const gptResponse = await openai.createCompletion({
-                model: "text-davinci-003",
+                model: "gpt-4",
                 prompt: userInput,
-                max_tokens: 100
+                max_tokens: 200
             });
 
             res.json({ response: gptResponse.data.choices[0].text.trim() });
