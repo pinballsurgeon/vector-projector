@@ -24,9 +24,6 @@ export const differentiatingTopicsGenerator = async () => {
       // document.getElementById('llmTopicAttributes').innerText = attributeTopics.join(", ");
       setLLMTopicAttributes(attributeTopics.join(", "));  // Use setLLMTopicAttributes here
   
-      // Once the attributes are populated, display the 'vectorizeButton'
-      document.getElementById('vectorizeButton').style.display = 'block';
-
       await generateRatings(createOrUpdateCube);
 
       // Returning the final list
