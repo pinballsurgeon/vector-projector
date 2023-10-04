@@ -184,7 +184,7 @@ app.post('/ask', async (req, res, next) => {
         // });
 
             const gptResponse = await openai.createCompletion({
-                model: "davinci-002",
+                model: "gpt-3.5-turbo-instruct",
                 prompt: userInput,
                 max_tokens: 200
             });
