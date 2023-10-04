@@ -168,26 +168,26 @@ app.post('/ask', async (req, res, next) => {
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
 
-        const gptResponse = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: userInput
-            }
-          ],
-          temperature: 1,
-          max_tokens: 256,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0,
-        });
+        // const gptResponse = await openai.chat.completions.create({
+        //   model: "gpt-3.5-turbo",
+        //   messages: [
+        //     {
+        //       role: "user",
+        //       content: userInput
+        //     }
+        //   ],
+        //   temperature: 1,
+        //   max_tokens: 256,
+        //   top_p: 1,
+        //   frequency_penalty: 0,
+        //   presence_penalty: 0,
+        // });
 
-            // const gptResponse = await openai.createCompletion({
-            //     model: "gpt-4",
-            //     prompt: userInput,
-            //     max_tokens: 200
-            // });
+            const gptResponse = await openai.createCompletion({
+                model: "davinci-002",
+                prompt: userInput,
+                max_tokens: 200
+            });
 
             res.json({ response: gptResponse.data.choices[0].text.trim() });
       
