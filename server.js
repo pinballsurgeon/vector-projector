@@ -8,8 +8,10 @@ import numeric from 'numeric';
 import * as math from 'mathjs';
 import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
-import { Client } from 'pg';
 import bodyParser from 'body-parser';
+import pg from 'pg';
+const { Client } = pg;
+
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
