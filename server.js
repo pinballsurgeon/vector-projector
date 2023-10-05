@@ -8,8 +8,11 @@ import numeric from 'numeric';
 import * as math from 'mathjs';
 import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+import { Client } from 'pg';
+
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
+
 
 let imageCache = {};  // Create an in-memory image cache
 
@@ -288,3 +291,32 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 }
 );
+
+
+app.get('/vector_db/:pca_result', async (req, res_sub, next) => {
+
+    const pca_result = req.params.pca_result;
+
+    const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+    });
+
+    client.connect();
+
+    const query = document.getElementById('userInput').value;
+    client.query('INSERT INTO cache (query, cube_data) VALUES ($1, $2) ON CONFLICT (query) DO UPDATE SET cube_data = $2',
+                [query, JSON.stringify(pca_result)], (err, res) => {
+        if (err) throw err;
+        for (let row of res.rows) {
+            console.log(JSON.stringify(row));
+        }
+        client.end();
+        });
+    
+    res_sub = "Done";
+});
+
+

@@ -4,7 +4,7 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
-import { Client } from 'pg';
+
 
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
@@ -137,7 +137,6 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     }
 
 
-
     // Get PCA results
     const pcaResponse = await fetch('/performPCA', {
         method: 'POST',
@@ -167,26 +166,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         appendLog(pcaResult);
     }
 
-    const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-    });
-
-    client.connect();
-
-    const query = document.getElementById('userInput').value;
-    client.query('INSERT INTO cache (query, cube_data) VALUES ($1, $2) ON CONFLICT (query) DO UPDATE SET cube_data = $2',
-                [query, JSON.stringify(pcaResult)], (err, res) => {
-        if (err) throw err;
-        for (let row of res.rows) {
-          console.log(JSON.stringify(row));
-        }
-        client.end();
-      });
-
-
+    await fetch(`/vector_db/${pcaResult}`);
     createOrUpdateCube(pcaResult);
 
     return pcaResult;
