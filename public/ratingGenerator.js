@@ -165,8 +165,22 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     catch {
         appendLog(pcaResult);
     }
+    
+    const userInputValue = document.getElementById('userInput').value;
 
-    await fetch(`/vector_db/${pcaResult}`);
+    const payload = {
+        pcaResult,
+        query: userInputValue
+    };
+        
+    await fetch('/vector_db', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    
     createOrUpdateCube(pcaResult);
 
     return pcaResult;
