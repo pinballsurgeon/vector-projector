@@ -295,6 +295,8 @@ app.listen(port, () => {
 
 app.get('/vector_db/:pca_result', async (req, res_sub, next) => {
 
+
+    console.log(`We made it!`);
     const pca_result = req.params.pca_result;
 
     const client = new Client({
