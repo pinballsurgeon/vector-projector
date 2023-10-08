@@ -180,11 +180,13 @@ app.post('/ask', async (req, res, next) => {
             //     max_tokens: 200
             // });
 
+            console.log("CREATE CHAT COMPLETION");
             const gptResponse = await openai.createChatCompletion({
                 model: "gpt-4",
                 messages: [{ role: "user", content: "Hello world" }],
               });
 
+            console.log(gptResponse);
             // res.json({ response: gptResponse.data.choices[0].text.trim() });
             res.json({ response: gptResponse.data.choices[0].message });
       
