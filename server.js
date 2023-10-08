@@ -176,16 +176,14 @@ const OPENAI_COMPLETION_MODELS = {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
 
-        // If model is in the dictionary for OPENAI_COMPLETION_MODELS
-        if (OPENAI_COMPLETION_MODELS[model]) {
+        if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
             const gptResponse = await openai.createCompletion({
                 model: model,
                 prompt: userInput,
                 max_tokens: 200
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
-
-        } else if (model === 'gpt-4' || model === 'gpt-3.5-turbo') {
+        } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
             const gptResponse = await openai.chat.completions.create({
                 model: model,
                 messages: [
@@ -200,10 +198,7 @@ const OPENAI_COMPLETION_MODELS = {
                 frequency_penalty: 0,
                 presence_penalty: 0,
             });
-            
-            console.log(gptResponse);
-            res.json({ response: gptResponse.data.choices[0].message.content.trim() });
-
+            res.json({ response: gptResponse.choices[0].message.content.trim() });
         } else {
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
