@@ -1,9 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
-// import { Configuration, OpenAIApi, OpenAI } from 'openai';
-// import pkg from 'openai';
-import OpenAI from "openai";
+import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -13,7 +11,7 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 const { Client } = pg;
-// const { Configuration, OpenAIApi, OpenAI } = pkg;
+
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
@@ -31,14 +29,10 @@ const hf_key = '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';
 // AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8
 // 17c526ffb4fb140f8
 // Initialize OpenAI with API Key
-// const configuration = new Configuration({
-//   apiKey: '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',
-// });
-// const openai = new OpenAIApi(configuration);
-
-const openai = new OpenAI({
-  apiKey: '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'
+const configuration = new Configuration({
+  apiKey: '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',
 });
+const openai = new OpenAIApi(configuration);
 
 const app = express();
 const inference = new HfInference(hf_key);
@@ -171,40 +165,38 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 //   presence_penalty: 0,
 // });
 
-const OPENAI_COMPLETION_MODELS = {
-    "text-davinci-003": true,
-    "text-davinci-002": true,
-    "gpt-3.5-turbo-instruct": true
-  };
-
-  app.post('/ask', async (req, res, next) => {
+app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
+
         const model = req.body.model || 'gpt2'; // Provide a default value
 
-        if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
+        // If model is GPT-3, call OpenAI's API
+        if (model === 'gpt-3') {
+
+        // const gptResponse = await openai.chat.completions.create({
+        //   model: "gpt-3.5-turbo",
+        //   messages: [
+        //     {
+        //       role: "user",
+        //       content: userInput
+        //     }
+        //   ],
+        //   temperature: 1,
+        //   max_tokens: 256,
+        //   top_p: 1,
+        //   frequency_penalty: 0,
+        //   presence_penalty: 0,
+        // });
+
             const gptResponse = await openai.createCompletion({
-                model: model,
+                model: "text-davinci-003",
                 prompt: userInput,
                 max_tokens: 200
             });
+
             res.json({ response: gptResponse.data.choices[0].text.trim() });
-        } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
-            const gptResponse = await openai.chat.completions.create({
-                model: model,
-                messages: [
-                    {
-                        role: "user",
-                        content: userInput
-                    }
-                ],
-                temperature: 1,
-                max_tokens: 256,
-                top_p: 1,
-                frequency_penalty: 0,
-                presence_penalty: 0,
-            });
-            res.json({ response: gptResponse.choices[0].message.content.trim() });
+      
         } else {
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
