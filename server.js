@@ -186,7 +186,7 @@ app.post('/ask', async (req, res, next) => {
                 messages: [{ role: "user", content: "Hello world" }],
               });
 
-            console.log(gptResponse);
+            console.log(gptResponse.data);
             // res.json({ response: gptResponse.data.choices[0].text.trim() });
             res.json({ response: gptResponse.data.choices[0].message });
       
