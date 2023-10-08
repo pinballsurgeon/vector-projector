@@ -1,8 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
-import { Configuration, OpenAIApi } from 'openai';
-import OpenAI from "openai";
+import { Configuration, OpenAIApi, OpenAI } from 'openai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
