@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
-import { Configuration, OpenAIApi, OpenAI } from 'openai';
+// import { Configuration, OpenAIApi, OpenAI } from 'openai';
+import pkg from 'openai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -11,7 +12,7 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 const { Client } = pg;
-
+const { Configuration, OpenAIApi, OpenAI } = pkg;
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
