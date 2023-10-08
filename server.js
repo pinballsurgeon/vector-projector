@@ -184,7 +184,7 @@ const OPENAI_COMPLETION_MODELS = {
                 max_tokens: 200
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
-            
+
         } else if (model === 'gpt-4' || model === 'gpt-3.5-turbo') {
             const gptResponse = await openai.chat.completions.create({
                 model: model,
@@ -200,6 +200,8 @@ const OPENAI_COMPLETION_MODELS = {
                 frequency_penalty: 0,
                 presence_penalty: 0,
             });
+            
+            console.log(gptResponse);
             res.json({ response: gptResponse.data.choices[0].message.content.trim() });
 
         } else {
