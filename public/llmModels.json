@@ -5,6 +5,11 @@
 "HuggingFaceH4/starchat-beta",
 "BlinkDL/Raven-RWKV-7B",
 "gpt2",
-"gpt-3",
-"meta-llama/Llama-2-7b-hf"
+"meta-llama/Llama-2-7b-hf",
+"text-davinci-003",
+"text-davinci-002",
+"gpt-3.5-turbo-instruct",
+"gpt-3.5-turbo",
+"gpt-4",
+"mistralai/Mistral-7B-v0.1"
 ]
