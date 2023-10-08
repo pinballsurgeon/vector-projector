@@ -2,7 +2,8 @@ import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
 // import { Configuration, OpenAIApi, OpenAI } from 'openai';
-import pkg from 'openai';
+// import pkg from 'openai';
+import OpenAI from "openai";
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -12,7 +13,7 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 const { Client } = pg;
-const { Configuration, OpenAIApi, OpenAI } = pkg;
+// const { Configuration, OpenAIApi, OpenAI } = pkg;
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
@@ -30,12 +31,12 @@ const hf_key = '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';
 // AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8
 // 17c526ffb4fb140f8
 // Initialize OpenAI with API Key
-const configuration = new Configuration({
-  apiKey: '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',
-});
-const openai = new OpenAIApi(configuration);
+// const configuration = new Configuration({
+//   apiKey: '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',
+// });
+// const openai = new OpenAIApi(configuration);
 
-const openai_compl = new OpenAI({
+const openai = new OpenAI({
   apiKey: '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'
 });
 
@@ -189,7 +190,7 @@ const OPENAI_COMPLETION_MODELS = {
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
         } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
-            const gptResponse = await openai_compl.chat.completions.create({
+            const gptResponse = await openai.chat.completions.create({
                 model: model,
                 messages: [
                     {
