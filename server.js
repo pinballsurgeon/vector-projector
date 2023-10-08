@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
-import { Configuration, OpenAIApi } from 'openai';
+// import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -16,7 +16,7 @@ const { Client } = pg;
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
 
-
+const { Configuration, OpenAIApi } = require("openai");
 let imageCache = {};  // Create an in-memory image cache
 
 // import the Google Images client at the top of your file
@@ -174,28 +174,19 @@ app.post('/ask', async (req, res, next) => {
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
 
-        // const gptResponse = await openai.chat.completions.create({
-        //   model: "gpt-3.5-turbo",
-        //   messages: [
-        //     {
-        //       role: "user",
-        //       content: userInput
-        //     }
-        //   ],
-        //   temperature: 1,
-        //   max_tokens: 256,
-        //   top_p: 1,
-        //   frequency_penalty: 0,
-        //   presence_penalty: 0,
-        // });
+            // const gptResponse = await openai.createCompletion({
+            //     model: "text-davinci-003",
+            //     prompt: userInput,
+            //     max_tokens: 200
+            // });
 
-            const gptResponse = await openai.createCompletion({
-                model: "text-davinci-003",
-                prompt: userInput,
-                max_tokens: 200
-            });
+            const gptResponse = await openai.createChatCompletion({
+                model: "gpt-4",
+                messages: [{ role: "user", content: "Hello world" }],
+              });
 
-            res.json({ response: gptResponse.data.choices[0].text.trim() });
+            // res.json({ response: gptResponse.data.choices[0].text.trim() });
+            res.json({ response: gptResponse.data.choices[0].message });
       
         } else {
             const max_length = req.body.max_length || 1000;
