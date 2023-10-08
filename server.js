@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
 import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from "openai";
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -33,6 +34,10 @@ const configuration = new Configuration({
   apiKey: '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',
 });
 const openai = new OpenAIApi(configuration);
+
+const openai_compl = new OpenAI({
+  apiKey: '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'
+});
 
 const app = express();
 const inference = new HfInference(hf_key);
@@ -184,7 +189,7 @@ const OPENAI_COMPLETION_MODELS = {
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
         } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
-            const gptResponse = await openai.chat.completions.create({
+            const gptResponse = await openai_compl.chat.completions.create({
                 model: model,
                 messages: [
                     {
