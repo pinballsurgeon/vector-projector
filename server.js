@@ -183,10 +183,14 @@ app.post('/ask', async (req, res, next) => {
             console.log("CREATE CHAT COMPLETION");
             const gptResponse = await openai.createChatCompletion({
                 model: "gpt-4",
-                messages: [{ role: "user", content: "Hello world" }],
+                messages: [{ role: "user", content: "Hello world, what is the reason this term is used so frequently?" }],
               });
 
-            console.log(gptResponse.data);
+            console.log(gptResponse.data.choices);
+            console.log("START CHOICES");
+            console.log(gptResponse.data.choices[0]);
+            console.log("START MESSAGES");
+            console.log(gptResponse.data.choices[0].message);
             // res.json({ response: gptResponse.data.choices[0].text.trim() });
             res.json({ response: gptResponse.data.choices[0].message });
       
