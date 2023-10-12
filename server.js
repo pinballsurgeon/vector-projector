@@ -190,9 +190,11 @@ app.post('/ask', async (req, res, next) => {
             // console.log("START CHOICES");
             // console.log(gptResponse.data.choices[0]);
             // console.log("START MESSAGES");
-            console.log(gptResponse.data.choices[0].message.content);
-            // res.json({ response: gptResponse.data.choices[0].text.trim() });
-            res.json({ response: gptResponse.data.choices[0].message.content });
+            
+            
+            // console.log(gptResponse.data.choices[0].message.content);
+            res.json({ response: gptResponse.data.choices[0].text.trim() });
+            // res.json({ response: gptResponse.data.choices[0].message.content });
       
         } else {
             const max_length = req.body.max_length || 1000;
