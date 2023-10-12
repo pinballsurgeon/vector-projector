@@ -174,17 +174,17 @@ app.post('/ask', async (req, res, next) => {
         // If model is GPT-3, call OpenAI's API
         if (model === 'gpt-3') {
 
-            // const gptResponse = await openai.createCompletion({
-            //     model: "text-davinci-003",
-            //     prompt: userInput,
-            //     max_tokens: 200
-            // });
+            const gptResponse = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: userInput,
+                max_tokens: 200
+            });
 
-            console.log("CREATE CHAT COMPLETION");
-            const gptResponse = await openai.createChatCompletion({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: userInput }],
-              });
+            // console.log("CREATE CHAT COMPLETION");
+            // const gptResponse = await openai.createChatCompletion({
+            //     model: "gpt-3.5-turbo",
+            //     messages: [{ role: "user", content: userInput }],
+            //   });
 
             // console.log(gptResponse.data.choices);
             // console.log("START CHOICES");
