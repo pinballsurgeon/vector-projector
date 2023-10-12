@@ -131,7 +131,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
         return completeResponse;
 
     } catch (error) {
-        appendLog(`Error during list generation: ${error}`);
+        appendLog(`Error during building vector json: ${error}`);
     }
 };
 
@@ -204,6 +204,6 @@ export const correctJsonObject = async (promptKey, replacements = {}) => {
         return completeResponse;
 
     } catch (error) {
-        appendLog(`Error during list generation: ${error}`);
+        appendLog(`Error during JSON correction: ${error}`);
     }
 };
