@@ -178,21 +178,12 @@ app.post('/ask', async (req, res, next) => {
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
         } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
-            const gptResponse = await openai.chat.completions.create({
-                model: model,
-                messages: [
-                    {
-                        role: "user",
-                        content: userInput
-                    }
-                ],
-                temperature: 1,
-                max_tokens: 256,
-                top_p: 1,
-                frequency_penalty: 0,
-                presence_penalty: 0,
-            });
-            // res.json({ response: gptResponse.choices[0].message.content.trim() });
+
+            const gptResponse = await openai.createChatCompletion({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: userInput }],
+              });
+
             res.json({ response: gptResponse.data.choices[0].message.content });
       
         } else {
