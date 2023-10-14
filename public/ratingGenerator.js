@@ -22,9 +22,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
-        // appendLog(`SELECTED MODEL: ${model}`);
-
-        if (model !== 'gpt-3') {
+        if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct','gpt-3.5-turbo', 'gpt-4'].includes(model)) {
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
                 ratings[item] = {};
@@ -165,7 +163,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     catch {
         appendLog(pcaResult);
     }
-    
+
     const userInputValue = document.getElementById('userInput').value;
 
     const payload = {
