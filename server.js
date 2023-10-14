@@ -168,33 +168,31 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
-
         const model = req.body.model || 'gpt2'; // Provide a default value
 
-        // If model is GPT-3, call OpenAI's API
-        if (model === 'gpt-3') {
-
+        if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
             const gptResponse = await openai.createCompletion({
-                model: "text-davinci-003",
+                model: model,
                 prompt: userInput,
                 max_tokens: 200
             });
-
-            // console.log("CREATE CHAT COMPLETION");
-            // const gptResponse = await openai.createChatCompletion({
-            //     model: "gpt-3.5-turbo",
-            //     messages: [{ role: "user", content: userInput }],
-            //   });
-
-            // console.log(gptResponse.data.choices);
-            // console.log("START CHOICES");
-            // console.log(gptResponse.data.choices[0]);
-            // console.log("START MESSAGES");
-            
-            
-            // console.log(gptResponse.data.choices[0].message.content);
             res.json({ response: gptResponse.data.choices[0].text.trim() });
-            // res.json({ response: gptResponse.data.choices[0].message.content });
+        } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
+            const gptResponse = await openai.chat.completions.create({
+                model: model,
+                messages: [
+                    {
+                        role: "user",
+                        content: userInput
+                    }
+                ],
+                temperature: 1,
+                max_tokens: 256,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0,
+            });
+            res.json({ response: gptResponse.choices[0].message.content.trim() });
       
         } else {
             const max_length = req.body.max_length || 1000;
@@ -219,8 +217,8 @@ app.post('/ask', async (req, res, next) => {
             res.json({ response: generated_text });
         }
     } catch (err) {
-        console.error(err);
-        next(err);
+        console.error("Error processing the ask endpoint:", err);
+        res.status(500).json({ error: 'Internal Server Error', message: err.message });
     }
 });
 
