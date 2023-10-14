@@ -192,7 +192,8 @@ app.post('/ask', async (req, res, next) => {
                 frequency_penalty: 0,
                 presence_penalty: 0,
             });
-            res.json({ response: gptResponse.choices[0].message.content.trim() });
+            // res.json({ response: gptResponse.choices[0].message.content.trim() });
+            res.json({ response: gptResponse.data.choices[0].message.content });
       
         } else {
             const max_length = req.body.max_length || 1000;
