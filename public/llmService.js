@@ -80,51 +80,66 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
         let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
-            appendLog(`Build json full prompt: ${fullPrompt}`);
 
-            const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
-            appendLog(`Selected model: ${model}`);
+            try {
 
-            // SEND PROMPT
-            appendLog('Sending request to /ask...');
-            const response = await fetch('/ask', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    prompt: fullPrompt, 
-                    model: model
-                }),
-            });
+                appendLog(`Build json full prompt: ${fullPrompt}`);
 
-            // We need to make sure the response is OK before we can parse it as JSON
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+                const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+                appendLog(`Selected model: ${model}`);
+
+                // SEND PROMPT
+                appendLog('Sending request to /ask...');
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        prompt: fullPrompt, 
+                        model: model
+                    }),
+                });
+
+                // We need to make sure the response is OK before we can parse it as JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+                }
+
+                // clean prompt results
+                const data = await response.json(); // Parsing the response data as JSON
+                let cleanedResponse = data.response;
+                // let cleanedResponse = cleanResponse(data.response, fullPrompt);
+                appendLog(`Cleaned response: ${cleanedResponse}`);
+
+                let checkResponse = cleanResponse(cleanedResponse, original_fullprompt);
+                // Remove trailing text if occurs
+                if (checkResponse.includes('}')) {
+                    cleanedResponse = cleanedResponse.substring(0, cleanedResponse.indexOf('}') + 1); 
+                }
+                
+                // Append the cleaned response to the complete response
+                completeResponse += cleanedResponse;
+
+                // Check if the response is complete
+                if (checkResponse.includes('}')) {
+                    cleanedResponse = cleanResponse(cleanedResponse, original_fullprompt);
+                    break;  
+                }
+
+                // If the response is not complete, create a new prompt with the incomplete response
+                fullPrompt = original_fullprompt + ' ' + cleanedResponse;
+                attempts += 1;
+
+            } catch (error) {
+                appendLog(`Error during request attempt ${attempts + 1}: ${error}`);
+                attempts += 1;
+        
+                if (attempts === maxAttempts) {
+                    appendLog('Exhausted all attempts. Exiting...');
+                    // Optionally throw an error to exit the main function or decide another way to handle it.
+                    throw new Error("Failed after 3 attempts");
+                }
             }
 
-            // clean prompt results
-            const data = await response.json(); // Parsing the response data as JSON
-            let cleanedResponse = data.response;
-            // let cleanedResponse = cleanResponse(data.response, fullPrompt);
-            appendLog(`Cleaned response: ${cleanedResponse}`);
-
-            let checkResponse = cleanResponse(cleanedResponse, original_fullprompt);
-            // Remove trailing text if occurs
-            if (checkResponse.includes('}')) {
-                cleanedResponse = cleanedResponse.substring(0, cleanedResponse.indexOf('}') + 1); 
-            }
-            
-            // Append the cleaned response to the complete response
-            completeResponse += cleanedResponse;
-
-            // Check if the response is complete
-            if (checkResponse.includes('}')) {
-                cleanedResponse = cleanResponse(cleanedResponse, original_fullprompt);
-                break;  
-            }
-
-            // If the response is not complete, create a new prompt with the incomplete response
-            fullPrompt = original_fullprompt + ' ' + cleanedResponse;
-            attempts += 1;
         }
 
         // RETURN COMPLETE RESPONSE
