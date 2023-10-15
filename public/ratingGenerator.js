@@ -6,6 +6,9 @@ import { createOrUpdateCube } from './cubeManager.js';
 
 
 
+
+
+
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         // Use the functions from dataStore.js to get the data
@@ -22,83 +25,100 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
-        if (!['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4'].includes(model)) {
+        if (!['text-davinci-003', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4'].includes(model)) {
             for (let i = 0; i < items.length; i++) {
+
                 let item = items[i];
-                ratings[item] = {};
-                ratings_str += `"${item}": {`;  // Add item to the ratings_str
+                try {
+                    ratings[item] = {};
+                    ratings_str += `"${item}": {`;  // Add item to the ratings_str
 
-                for (let j = 0; j < attributes.length; j++) {
-                    let attribute = attributes[j];
-                    const promptKey = "rateAttribute";
-                    // appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
+                    for (let j = 0; j < attributes.length; j++) {
+                        let attribute = attributes[j];
+                        const promptKey = "rateAttribute";
+                        // appendLog(`Generating rating for item: ${item}, attribute: ${attribute}`);
 
-                    const replacements = { item, attribute };
-                    const rating = await fetchListFromLLM(promptKey, '', replacements);
+                        const replacements = { item, attribute };
+                        const rating = await fetchListFromLLM(promptKey, '', replacements);
 
-                    // appendLog(`Generated rating: ${rating}`);
-                    ratings[item][attribute] = parseInt(rating[0]);
-                    ratings_str += `"${attribute}": ${rating[0]}`;  // Add attribute and rating to ratings_str
+                        // appendLog(`Generated rating: ${rating}`);
+                        ratings[item][attribute] = parseInt(rating[0]);
+                        ratings_str += `"${attribute}": ${rating[0]}`;  // Add attribute and rating to ratings_str
 
-                    if (j < attributes.length - 1) ratings_str += ", ";
+                        if (j < attributes.length - 1) ratings_str += ", ";
+                    }
+
+                    // Fetch image for item
+                    const response = await fetch(`/generateImage/${item}`);
+                    const result = await response.json();
+                    const imageUrl = result.image;
+                    ratings[item]['imageUrl'] = imageUrl;
+                    ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
+                    ratings_str += "}";
+                    if (i < items.length - 1) ratings_str += ", ";
+
+                } catch (error) {
+                    // Handle or skip errors for that particular item
+                    appendLog(`Error fetching rating for item: ${item}. Error: ${error}`);
+                    continue; // Skip to the next item
                 }
-
-                // Fetch image for item
-                const response = await fetch(`/generateImage/${item}`);
-                const result = await response.json();
-                const imageUrl = result.image;
-                ratings[item]['imageUrl'] = imageUrl;
-                ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
-                ratings_str += "}";
-                if (i < items.length - 1) ratings_str += ", ";
             }
         } else {
 
             for (let i = 0; i < items.length; i++) {
+
                 let item = items[i];
-                ratings[item] = {};
-                ratings_str += `"${item}": {`;  // Add item to the ratings_str
-
-                let promptKey = "rateAllAttributes";
-                let replacements = { item, attributes_str };
-                const rating = await fetchJSONFromLLM(promptKey, '', replacements);
-
-                let validJsonString = rating.replace(/'/g, '"').replace('.', '');
-                // appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
-
-                // correct json issues
-                let jsonObject = {};
                 try {
-                    jsonObject = JSON.parse(validJsonString);
-                    ratings[item] = jsonObject;
+                    
+                    ratings[item] = {};
+                    ratings_str += `"${item}": {`;  // Add item to the ratings_str
+
+                    let promptKey = "rateAllAttributes";
+                    let replacements = { item, attributes_str };
+                    const rating = await fetchJSONFromLLM(promptKey, '', replacements);
+
+                    let validJsonString = rating.replace(/'/g, '"').replace('.', '');
+                    // appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
+
+                    // correct json issues
+                    let jsonObject = {};
+                    try {
+                        jsonObject = JSON.parse(validJsonString);
+                        ratings[item] = jsonObject;
+                    }
+                    catch (json_parse_error) {
+
+                        // appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
+
+                        promptKey = "correctJsonObject";
+                        replacements = { json_parse_error, validJsonString };
+                        let corrected_json = await correctJsonObject(promptKey, replacements);
+
+                        jsonObject = JSON.parse(corrected_json);
+                        ratings[item] = jsonObject;
+                    }
+
+                    let keys = Object.keys(jsonObject);
+                    for (let j = 0; j < keys.length; j++) {
+                        let key = keys[j];
+                        ratings_str += `"${key}": "${jsonObject[key]}"`;  // Add key and value to ratings_str
+                        if (j < keys.length - 1) ratings_str += ", ";
+                    }
+
+                    // Fetch image for item
+                    const response = await fetch(`/generateImage/${item}`);
+                    const result = await response.json();
+                    const imageUrl = result.image;
+                    ratings[item]['imageUrl'] = imageUrl;
+                    ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
+                    ratings_str += "}";
+                    if (i < items.length - 1) ratings_str += ", ";
+
+                } catch (error) {
+                    // Handle or skip errors for that particular item
+                    appendLog(`Error fetching rating for item: ${item}. Error: ${error}`);
+                    continue; // Skip to the next item
                 }
-                catch (json_parse_error) {
-
-                    // appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
-
-                    promptKey = "correctJsonObject";
-                    replacements = { json_parse_error, validJsonString };
-                    let corrected_json = await correctJsonObject(promptKey, replacements);
-
-                    jsonObject = JSON.parse(corrected_json);
-                    ratings[item] = jsonObject;
-                }
-
-                let keys = Object.keys(jsonObject);
-                for (let j = 0; j < keys.length; j++) {
-                    let key = keys[j];
-                    ratings_str += `"${key}": "${jsonObject[key]}"`;  // Add key and value to ratings_str
-                    if (j < keys.length - 1) ratings_str += ", ";
-                }
-
-                // Fetch image for item
-                const response = await fetch(`/generateImage/${item}`);
-                const result = await response.json();
-                const imageUrl = result.image;
-                ratings[item]['imageUrl'] = imageUrl;
-                ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
-                ratings_str += "}";
-                if (i < items.length - 1) ratings_str += ", ";
             }
         }
 

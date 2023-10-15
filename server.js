@@ -53,27 +53,16 @@ function performPCA(data) {
     console.time("performPCA");
     console.log(data);
 
-    console.time("init");
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
-    console.timeEnd("init");
-    console.log(values);
 
-    console.time("centering");
     // Center the data
     const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
-
     const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
-    console.timeEnd("centering");
-    console.log(centeredData);
 
-    console.time("covMatrix");
     // Calculate covariance matrix
     const covMatrix = covarianceMatrix(centeredData);
-    console.timeEnd("covMatrix");
-    console.log(covMatrix);
 
-    console.time("eigendecomposition");
     // Create a new ml-matrix instance from the covariance matrix
     const M = new mlMatrix.Matrix(covMatrix);
 
@@ -81,9 +70,7 @@ function performPCA(data) {
     const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
     const eigenvalues = eigendecomposition.realEigenvalues;
     const eigenvectors = eigendecomposition.eigenvectorMatrix;
-    console.timeEnd("eigendecomposition");
 
-    console.time("sorting");
     // Sort the eigenvectors based on the eigenvalues
     const sortedEigenvaluesIndices = eigenvalues
         .map((val, idx) => [val, idx]) // attach the original index positions [eigenvalue, index]
@@ -91,17 +78,12 @@ function performPCA(data) {
         .map(([, idx]) => idx); // discard the sorted eigenvalues, we just want the indices
     const sortedEigenvectors = sortedEigenvaluesIndices.map(i => eigenvectors.getColumn(i));
 
-    console.timeEnd("sorting");
-
-    console.time("transformation");
     // Select the first three eigenvectors
     const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
 
     // Transform the data into the new space
     const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => math.dot(row, eigenvector)));
-    console.timeEnd("transformation");
-
-    console.time("finalizing");
+ 
     // Construct the result object
     const result = {};
     keys.forEach((key, i) => {
@@ -111,9 +93,6 @@ function performPCA(data) {
         z: transformedData[i][2]
     };
     });
-    console.timeEnd("finalizing");
-
-    console.timeEnd("performPCA");
 
     return result;
 }
@@ -143,33 +122,13 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 });
 
 
-// // This code is for v4 of the openai package: npmjs.com/package/openai
-// import OpenAI from "openai";
-
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// const response = await openai.chat.completions.create({
-//   model: "gpt-3.5-turbo",
-//   messages: [
-//     {
-//       "role": "user",
-//       "content": ""
-//     }
-//   ],
-//   temperature: 1,
-//   max_tokens: 256,
-//   top_p: 1,
-//   frequency_penalty: 0,
-//   presence_penalty: 0,
-// });
 
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
 
+        // OpenAI - Create Completion 
         if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
             const gptResponse = await openai.createCompletion({
                 model: model,
@@ -177,6 +136,8 @@ app.post('/ask', async (req, res, next) => {
                 max_tokens: 200
             });
             res.json({ response: gptResponse.data.choices[0].text.trim() });
+
+        // OpenAI - Create Chat Completion 
         } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
 
             const gptResponse = await openai.createChatCompletion({
@@ -186,6 +147,7 @@ app.post('/ask', async (req, res, next) => {
 
             res.json({ response: gptResponse.data.choices[0].message.content });
       
+        // HuggingFace - Transformers
         } else {
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
