@@ -138,7 +138,7 @@ app.post('/ask', async (req, res, next) => {
             res.json({ response: gptResponse.data.choices[0].text.trim() });
 
         // OpenAI - Create Chat Completion 
-        } else if (['gpt-3.5-turbo', 'gpt-4'].includes(model)) {
+        } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview'].includes(model)) {
 
             const gptResponse = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
