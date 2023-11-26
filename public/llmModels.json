@@ -13,5 +13,6 @@
 "gpt-4",
 "gpt-3",
 "mistralai/Mistral-7B-v0.1",
-"gpt-4-1106-preview"
+"gpt-4-1106-preview",
+"Intel/neural-chat-7b-v3-1"
 ]
