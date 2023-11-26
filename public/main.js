@@ -41,7 +41,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
   // if (data.exists && data.pcaResult) {
     if (data.exists) {
       // Query exists, use saved PCA results
-      createOrUpdateCube(data);
+      createOrUpdateCube(data.pcaResult);
   } else {
       // Query does not exist, proceed with generating new results
       const rootList = await listPerpetuator();
