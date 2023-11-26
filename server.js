@@ -280,7 +280,7 @@ app.get('/check_query/:query', async (req, res) => {
         const query = req.params.query;
 
         const client = new Client({
-            connectionString: process.env.DATABASE_URL,
+            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
             ssl: {
                 rejectUnauthorized: false
             }
@@ -289,6 +289,8 @@ app.get('/check_query/:query', async (req, res) => {
         await client.connect();
 
         const result = await client.query('SELECT cube_data FROM cache WHERE query = $1', [query]);
+
+        console.error("Error processing request:", result);
 
         if (result.rows.length > 0) {
             // Query exists in the database
