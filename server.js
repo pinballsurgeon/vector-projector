@@ -292,22 +292,36 @@ app.get('/check_query/:query', async (req, res) => {
 
         console.info("VECTORDB result:", queryResult);
 
-        // Check if there is any result
+
         if (queryResult.rows.length > 0) {
             const cubeData = queryResult.rows[0].cube_data;
-
-            console.info("VECTORDB CUBEDATA result:", cubeData);
-
-            // If cube_data is already an object, send it directly
-            if (typeof cubeData === 'object') {
-                res.json(cubeData);
-            } else {
-                // If cube_data is a string, parse it as JSON
-                res.json(JSON.parse(cubeData));
-            }
+    
+            // Construct a response with 'exists' property
+            const responseData = {
+                exists: true,
+                pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
+            };
+            res.json(responseData);
         } else {
-            res.status(404).json({ message: "No data found for this query" });
+            res.json({ exists: false, message: "No data found for this query" });
         }
+
+        // // Check if there is any result
+        // if (queryResult.rows.length > 0) {
+        //     const cubeData = queryResult.rows[0].cube_data;
+
+        //     console.info("VECTORDB CUBEDATA result:", cubeData);
+
+        //     // If cube_data is already an object, send it directly
+        //     if (typeof cubeData === 'object') {
+        //         res.json(cubeData);
+        //     } else {
+        //         // If cube_data is a string, parse it as JSON
+        //         res.json(JSON.parse(cubeData));
+        //     }
+        // } else {
+        //     res.status(404).json({ message: "No data found for this query" });
+        // }
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
