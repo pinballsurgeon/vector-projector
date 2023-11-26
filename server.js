@@ -275,4 +275,33 @@ app.post('/vector_db', async (req, res) => {
     }
 });
 
+app.get('/check_query/:query', async (req, res) => {
+    try {
+        const query = req.params.query;
+
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+
+        await client.connect();
+
+        const result = await client.query('SELECT cube_data FROM cache WHERE query = $1', [query]);
+
+        if (result.rows.length > 0) {
+            // Query exists in the database
+            res.json({ exists: true, pcaResult: JSON.parse(result.rows[0].cube_data) });
+        } else {
+            // Query does not exist
+            res.json({ exists: false });
+        }
+
+        client.end();
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    }
+});
 

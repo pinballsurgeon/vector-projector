@@ -23,9 +23,26 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 
+// // TOPIC HANDLER
+// document.getElementById('askButton').addEventListener('click', async () => {
+//   const rootList = await listPerpetuator();
+// });
+
 // TOPIC HANDLER
 document.getElementById('askButton').addEventListener('click', async () => {
-  const rootList = await listPerpetuator();
+  const userInputValue = document.getElementById('userInput').value;
+
+  // Check if the query has been run before
+  const response = await fetch(`/check_query/${userInputValue}`);
+  const data = await response.json();
+
+  if (data.exists && data.pcaResult) {
+      // Query exists, use saved PCA results
+      createOrUpdateCube(data.pcaResult);
+  } else {
+      // Query does not exist, proceed with generating new results
+      const rootList = await listPerpetuator();
+  }
 });
 
 // DIFFERENTIATING ATTRIBUTES
