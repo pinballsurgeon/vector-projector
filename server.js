@@ -296,6 +296,8 @@ app.get('/check_query/:query', async (req, res) => {
         if (queryResult.rows.length > 0) {
             const cubeData = queryResult.rows[0].cube_data;
 
+            console.info("VECTORDB CUBEDATA result:", cubeData);
+
             // If cube_data is already an object, send it directly
             if (typeof cubeData === 'object') {
                 res.json(cubeData);
