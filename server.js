@@ -290,6 +290,8 @@ app.get('/check_query/:query', async (req, res) => {
 
         const queryResult = await client.query('SELECT cube_data FROM cache WHERE query = $1', [query]);
 
+        console.info("VECTORDB result:", queryResult);
+
         // Check if there is any result
         if (queryResult.rows.length > 0) {
             const cubeData = queryResult.rows[0].cube_data;
