@@ -36,6 +36,8 @@ document.getElementById('askButton').addEventListener('click', async () => {
   const response = await fetch(`/check_query/${userInputValue}`);
   const data = await response.json();
 
+
+  appendLog(`Fethced history: ${data}`);
   // if (data.exists && data.pcaResult) {
     if (data.exists) {
       // Query exists, use saved PCA results
