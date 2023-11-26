@@ -5,9 +5,11 @@ body {
     margin: 0;
     overflow: hidden;
 }
-  .sidebar {
+
+.sidebar {
     position: fixed;
-    width: 250px;
+    width: 80%; /* Adjust for smaller screens */
+    max-width: 250px; /* Ensure it doesn't become too wide on larger screens */
     max-height: 100vh;
     overflow: auto;
     right: 0;
@@ -21,30 +23,35 @@ body {
     transform: translateX(0);
 }
 
-.sidebar-header {
-    padding: 20px;
-}
-
-.sidebar-content {
+.sidebar-header, .sidebar-content, #canvas-container {
     padding: 20px;
 }
 
 #canvas-container {
-    padding: 20px;
     flex-grow: 1;
     box-sizing: border-box;
     position: relative;
     overflow: auto;
 }
 
-/* This is to ensure the remaining lower part of the page is compact */
-#userInput,
-#askButton,
-#llmListResponse,
-#llmTopicAttributes,
-#imageSet,
-#llmRatings,
-#llm3dVector {
-    margin: 0;
-    padding: 10px;
+/* Responsive styles for inputs and buttons */
+button, input[type="text"], select {
+    width: 90%; /* Larger width for touch devices */
+    margin: 10px 5%; /* Centering */
+    padding: 12px; /* Larger touch targets */
+    font-size: 16px; /* Larger font for readability */
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .sidebar {
+        width: 250px; /* Fixed width for larger screens */
+    }
+
+    button, input[type="text"], select {
+        width: auto; /* Revert to default width */
+        margin: 10px 0; /* Revert to default margin */
+        padding: 8px; /* Smaller padding */
+        font-size: 14px; /* Smaller font size */
+    }
 }
