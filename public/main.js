@@ -36,9 +36,10 @@ document.getElementById('askButton').addEventListener('click', async () => {
   const response = await fetch(`/check_query/${userInputValue}`);
   const data = await response.json();
 
-  if (data.exists && data.pcaResult) {
+  // if (data.exists && data.pcaResult) {
+    if (data.exists) {
       // Query exists, use saved PCA results
-      createOrUpdateCube(data.pcaResult);
+      createOrUpdateCube(data);
   } else {
       // Query does not exist, proceed with generating new results
       const rootList = await listPerpetuator();
