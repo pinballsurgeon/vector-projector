@@ -1,68 +1,89 @@
-/* Style for the header and buttons */
+/* Reset margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style the body to use full viewport height and enable scroll */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Style the header */
 .header {
     background-color: #333;
     color: white;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 2em; /* Large text size for header */
-}
-
-/* Style for the input field */
-#userInput {
-    width: calc(100% - 20px); /* Full width minus padding */
     padding: 10px;
-    margin: 10px 0;
-    box-sizing: border-box; /* Include padding in width calculation */
-    font-size: 1.5em; /* Larger text size for easy touch */
-}
-
-/* Style for the buttons */
-.button {
-    background-color: #4CAF50; /* Green background */
-    border: none;
-    color: white;
-    padding: 15px 32px; /* Larger padding for easy touch */
+    font-size: 2em; /* Large text size for the header */
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.5em; /* Larger text size for buttons */
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px; /* Rounded corners for the button */
 }
 
-/* Style for the canvas container */
+/* Style the main content area where canvas will be */
 #canvas-container {
-    position: relative;
-    padding: 20px;
-    overflow: hidden; /* Hide scrollbars */
-    /* Adjust the height as needed */
+    flex: 1;
+    position: relative; /* For absolute positioning of the canvas */
+    overflow: hidden; /* Hide the overflow */
 }
 
-/* Ensure the whole body is scrollable and the sidebar is above everything */
-body {
-    overflow: auto;
+/* Make input fields and buttons large and easily clickable */
+#userInput, .button {
+    width: calc(100% - 20px); /* Subtract padding */
+    margin: 10px;
+    padding: 15px;
+    font-size: 1.5em; /* Larger text size */
 }
 
+/* Style the sidebar for mobile devices */
 .sidebar {
-    z-index: 1000; /* Make sure sidebar is above the canvas */
+    position: fixed;
+    top: 0;
+    right: -85%; /* Start offscreen to the right */
+    width: 85%; /* Take up most of the screen on mobile */
+    max-width: 300px; /* But don't get too wide on larger screens */
+    height: 100%; /* Full height */
+    background: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Shadow to the left */
+    transition: right 0.3s; /* Animate the transition */
+    z-index: 2; /* Above content */
+    overflow-y: auto; /* Scroll long content */
 }
 
-/* Adjustments for mobile screens */
-@media (max-width: 768px) {
-    /* Make the header smaller on mobile devices */
+/* When sidebar is open, it should take up 85% of the screen */
+.sidebar.open {
+    right: 0; /* Align to the right edge of the viewport */
+}
+
+/* Style the sidebar content */
+.sidebar-header, .sidebar-content {
+    padding: 20px;
+}
+
+/* Style adjustments for larger screens */
+@media (min-width: 768px) {
+    .sidebar {
+        width: 250px; /* Standard sidebar width */
+        right: -250px; /* Start offscreen to the right */
+    }
+
+    .sidebar.open {
+        right: 0; /* Align to the right edge of the viewport */
+    }
+
+    /* Adjust font sizes and paddings for larger screens */
     .header {
         font-size: 1.5em;
     }
 
-    /* Adjust button sizes on mobile devices */
-    .button {
-        padding: 10px 20px;
+    #userInput, .button {
         font-size: 1em;
+        padding: 10px;
     }
 
-    /* Adjust input field size on mobile devices */
-    #userInput {
-        font-size: 1em;
-    }
+    /* Additional styling as needed for larger screens */
 }
