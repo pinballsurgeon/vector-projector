@@ -66,11 +66,23 @@ export function updateSidebar() {
         document.getElementById('cubeContent').style.display = 'block';
         cubeContent.style.display = 'block';
         
+    } else if(sidebarSelector.value === 'modelSelection') {
+        sidebarTitle.textContent = 'Model Selection';
+        modelSelectionContent.style.display = 'block';
+        modelParametersContent.style.display = 'block';
+
+    } else if(sidebarSelector.value === 'groups') {
+        // } else {
+            sidebarTitle.textContent = 'Grouping';
+            groupsContent.style.display = 'block';
     } else {
         sidebarTitle.textContent = 'Model Selection';
         modelSelectionContent.style.display = 'block';
         modelParametersContent.style.display = 'block';
+
     }
+    
+    
 }
 
 // Write to log
