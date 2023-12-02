@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+// import * as THREE from 'three';
 
 // This function will check for closeness between all cubes and create spheres around those that are close
 export const encaseCubesInSpheres = (cubes, scene, threshold = 0.1) => {
