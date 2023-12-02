@@ -95,13 +95,12 @@ export const animate = function () {
 
     renderer.render(scene, camera);
 
-    encaseCubesInSpheres(cubes, scene);
 };
 
 animate(); 
 
 
-
+encaseCubesInSpheres(cubes, scene);
 
 
 
