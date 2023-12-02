@@ -4,11 +4,6 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
-
-
-
-
-
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         // Use the functions from dataStore.js to get the data
@@ -200,7 +195,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     });
     
     createOrUpdateCube(pcaResult);
-
+    
     return pcaResult;
 
 } catch (error) {
