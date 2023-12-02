@@ -1,7 +1,10 @@
 // import * as THREE from 'three';
-
+import { appendLog} from './sidebar.js';
 // This function will check for closeness between all cubes and create spheres around those that are close
 export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
+
+
+    appendLog(`SPHERES HERES`);
     const sphereMaterial = new THREE.MeshBasicMaterial({
         color: 0x00ff00, // green color
         transparent: true,
