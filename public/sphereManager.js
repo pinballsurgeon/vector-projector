@@ -1,7 +1,7 @@
 // import * as THREE from 'three';
 
 // This function will check for closeness between all cubes and create spheres around those that are close
-export const encaseCubesInSpheres = (cubes, scene, threshold = 0.1) => {
+export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
     const sphereMaterial = new THREE.MeshBasicMaterial({
         color: 0x00ff00, // green color
         transparent: true,
@@ -35,5 +35,3 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.1) => {
         });
     });
 };
-
-// Make sure to export this function so it can be imported in the main script
