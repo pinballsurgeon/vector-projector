@@ -1,5 +1,5 @@
 import { appendLog, getModelAndParams, updateSidebar, setCubeImageInSidebar } from './sidebar.js';
-import { encaseCubesInSpheres } from './sphereManager.js';
+//import { encaseCubesInSpheres } from './sphereManager.js';
 
 // Create scene, camera, and renderer
 export const scene = new THREE.Scene();
@@ -100,7 +100,7 @@ export const animate = function () {
 animate(); 
 
 
-encaseCubesInSpheres(cubes, scene);
+// encaseCubesInSpheres(cubes, scene);
 
 // CLICK INTERACTION
 renderer.domElement.addEventListener('click', onMouseClick, false);
