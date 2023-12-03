@@ -1,5 +1,7 @@
 // import * as THREE from 'three';
 import { appendLog} from './sidebar.js';
+import { cubes, scene } from './cubeManager.js';
+
 // This function will check for closeness between all cubes and create spheres around those that are close
 export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
 
@@ -38,3 +40,10 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
         });
     });
 };
+
+
+export const updateSpheres = (newThreshold) => {
+
+    // Encase cubes in new spheres with updated threshold
+    encaseCubesInSpheres(cubes, scene, newThreshold);
+  };

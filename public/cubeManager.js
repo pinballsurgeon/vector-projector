@@ -2,7 +2,7 @@ import { appendLog, getModelAndParams, updateSidebar, setCubeImageInSidebar } fr
 import { encaseCubesInSpheres } from './sphereManager.js';
 
 // Create scene, camera, and renderer
-const scene = new THREE.Scene();
+export const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -24,7 +24,7 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 controls.update();
 
 // Container for cube features
-let cubes = [];
+export let cubes = [];
 
 
 export const createOrUpdateCube = (data) => {
@@ -101,14 +101,6 @@ animate();
 
 
 encaseCubesInSpheres(cubes, scene);
-
-
-
-
-
-
-
-
 
 // CLICK INTERACTION
 renderer.domElement.addEventListener('click', onMouseClick, false);

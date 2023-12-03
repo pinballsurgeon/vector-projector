@@ -64,6 +64,16 @@ body {
     padding: 20px;
 }
 
+#sphereThreshold {
+    width: 80%; /* Adjust width of slider as needed */
+  }
+  
+  #thresholdValue {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+  }
+  
 /* Style adjustments for larger screens */
 @media (min-width: 768px) {
     .sidebar {
