@@ -52,12 +52,12 @@ document.getElementById('askButton').addEventListener('click', async () => {
 // document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
 
 // Event listener for 'vectorizeButton'
-document.getElementById('vectorizeButton').addEventListener('click', async () => {
-    const ratings = await generateRatings(createOrUpdateCube); // changed this line
+// document.getElementById('vectorizeButton').addEventListener('click', async () => {
+//     const ratings = await generateRatings(createOrUpdateCube); // changed this line
   
-    // Display the ratings in 'llmRatings' div
-    // document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
-});
+//     // Display the ratings in 'llmRatings' div
+//     // document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
+// });
 
 // Assuming svg is your d3.js canvas
 let svg = d3.select("#my_dataviz").append("svg");
