@@ -8,6 +8,7 @@ let spheres = [];
 // Function to clear all spheres from the scene
 const clearSpheres = () => {
     spheres.forEach(sphere => {
+        appendLog(`SPHERES CLEARED ${sphere}`);
         scene.remove(sphere);
     });
     spheres = [];
