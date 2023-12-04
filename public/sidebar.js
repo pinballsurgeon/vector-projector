@@ -285,13 +285,13 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         
     });
 
-    const selectedCube = { x: selectedX, y: selectedY, z: selectedZ }; 
-    const distances = cubes.map(cube => ({
-        cube,
-        distance: cosineDistance(selectedCube, cube)
-    }));
+    // const selectedCube = { x: selectedX, y: selectedY, z: selectedZ }; 
+    // const distances = cubes.map(cube => ({
+    //     cube,
+    //     distance: cosineDistance(selectedCube, cube)
+    // }));
     
-    distances.sort((a, b) => a.distance - b.distance);
+    // distances.sort((a, b) => a.distance - b.distance);
 
 
 }
