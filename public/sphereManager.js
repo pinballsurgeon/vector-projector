@@ -7,18 +7,17 @@ let spheres = [];
 
 // Function to clear all spheres from the scene
 const clearSpheres = () => {
-    appendLog(`CHECKING SPHERES ${spheres}`);
     spheres.forEach(sphere => {
-        appendLog(`SPHERES CLEARED ${sphere}`);
-        scene.remove(sphere);
+        scene.remove(sphere); // Remove the sphere from the scene
+        if (sphere.geometry) sphere.geometry.dispose(); // Dispose geometry
+        if (sphere.material) sphere.material.dispose(); // Dispose material
     });
-    spheres = [];
+    spheres.length = 0; // Clear the array
 };
 
 // This function will check for closeness between all cubes and create spheres around those that are close
 export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
-
-    appendLog(`SPHERES HERES`);
+    clearSpheres(); // Clear previous spheres first
     const sphereMaterial = new THREE.MeshBasicMaterial({
         color: 0x00ff00, // green color
         transparent: true,
@@ -48,6 +47,9 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
 
                 sphere.position.set(midX, midY, midZ);
                 scene.add(sphere);
+
+                // add to spheres
+                spheres.push(sphere);
             }
         });
     });
