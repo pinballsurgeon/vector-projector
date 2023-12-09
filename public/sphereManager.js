@@ -16,6 +16,7 @@ const clearSpheres = () => {
 };
 
 const canAddSphere = (newSphere, maxOverlapPercentage) => {
+    appendLog(`Can Add Sphere Function`);
     for (let existingSphere of spheres) {
         if (isOverlapTooMuch(newSphere, existingSphere, maxOverlapPercentage)) {
             return false; // Do not add the new sphere if overlap is too much
@@ -25,6 +26,7 @@ const canAddSphere = (newSphere, maxOverlapPercentage) => {
 };
 
 const isOverlapTooMuch = (sphere1, sphere2, maxOverlapPercentage) => {
+    appendLog(`Overlap Too Much Function`);
     const distanceBetweenCenters = sphere1.position.distanceTo(sphere2.position);
     const radiiSum = sphere1.geometry.parameters.radius + sphere2.geometry.parameters.radius;
     const allowedOverlapDistance = radiiSum * (1 - (maxOverlapPercentage / 100));
@@ -34,6 +36,7 @@ const isOverlapTooMuch = (sphere1, sphere2, maxOverlapPercentage) => {
 
 
 const calculateCentroid = (group) => {
+    appendLog(`calculateCentroid Function`);
     let sumX = 0, sumY = 0, sumZ = 0;
     group.forEach(cube => {
         sumX += cube.position.x;
@@ -52,6 +55,7 @@ const groupCubes = (cubes, threshold) => {
     let groups = [];
     let visited = new Set();
 
+    appendLog(`Group Cubes Function`);
     // Helper function to find all cubes close to the given cube
     const findCloseCubes = (cube, group) => {
         visited.add(cube);
