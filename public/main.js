@@ -85,3 +85,11 @@ document.getElementById('sphereThreshold').addEventListener('input', function(ev
   updateSpheres(thresholdValue);
 });
 
+document.getElementById('minCubesSlider').addEventListener('input', function() {
+  updateSpheres(this.value, document.getElementById('overlapSlider').value);
+});
+
+document.getElementById('overlapSlider').addEventListener('input', function() {
+  updateSpheres(document.getElementById('minCubesSlider').value, this.value);
+});
+
