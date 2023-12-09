@@ -118,9 +118,6 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5, minCubesPerS
 };
     
 
-
-
-
 export const updateSpheres = (newThreshold) => {
 
     // Clear existing spheres first
