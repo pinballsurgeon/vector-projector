@@ -197,6 +197,17 @@ export const calculateAverageAttributesForOtherCubes = (selectedSphere, allCubes
     return totalAttributes;
 };
 
+const calculateCentroid_selection = (cubes) => {
+    let sumX = 0, sumY = 0, sumZ = 0;
+    cubes.forEach(cube => {
+        sumX += cube.position.x;
+        sumY += cube.position.y;
+        sumZ += cube.position.z;
+    });
+    return new THREE.Vector3(sumX / cubes.length, sumY / cubes.length, sumZ / cubes.length);
+};
+
+
 function onSphereClick(intersectedSphere) {
     const sphereAverages = calculateAverageAttributes(intersectedSphere);
     // const otherCubesAverages = calculateAverageAttributesForOtherCubes(intersectedSphere);
@@ -285,6 +296,15 @@ function onSphereClick(intersectedSphere) {
         }
     });
 
+    const centroid = calculateCentroid_selection(intersectedSphere.userData.cubes);
+
+    intersectedSphere.userData.cubes.sort((a, b) => {
+        const distanceA = a.position.distanceTo(centroid);
+        const distanceB = b.position.distanceTo(centroid);
+        return distanceA - distanceB; // Sort in ascending order of distance
+    });
+
+    
     const imagesContainer = document.getElementById('groupsImagesContainer');
     imagesContainer.innerHTML = ''; // Clear existing images
     
@@ -307,7 +327,8 @@ function onSphereClick(intersectedSphere) {
         cubeContainer.appendChild(img);
         cubeContainer.appendChild(nameElement);
         imagesContainer.appendChild(cubeContainer);
-    });    
+    });
+    
     
     // Update the sidebar selector
     document.getElementById('sidebarSelector').value = 'groups';
