@@ -122,11 +122,8 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5, minCubesPerS
 };
     
 
-export const updateSpheres = (newThreshold) => {
-
-    // Clear existing spheres first
-    clearSpheres();
-
-    // Encase cubes in new spheres with updated threshold
-    encaseCubesInSpheres(cubes, scene, newThreshold);
-  };
+// Update spheres based on the slider values
+export const updateSpheres = (threshold, minCubesPerSphere, maxOverlapPercentage) => {
+    clearSpheres(); // Clear existing spheres
+    encaseCubesInSpheres(cubes, scene, threshold, minCubesPerSphere, maxOverlapPercentage);
+};

@@ -48,16 +48,6 @@ document.getElementById('askButton').addEventListener('click', async () => {
   }
 });
 
-// DIFFERENTIATING ATTRIBUTES
-// document.getElementById('listButton').addEventListener('click', differentiatingTopicsGenerator);
-
-// Event listener for 'vectorizeButton'
-// document.getElementById('vectorizeButton').addEventListener('click', async () => {
-//     const ratings = await generateRatings(createOrUpdateCube); // changed this line
-  
-//     // Display the ratings in 'llmRatings' div
-//     // document.getElementById('llmRatings').innerText = JSON.stringify(ratings, null, 2);
-// });
 
 // Assuming svg is your d3.js canvas
 let svg = d3.select("#my_dataviz").append("svg");
@@ -76,20 +66,27 @@ window.addEventListener('resize', resize);
 // Initial call to set up the canvas size properly
 resize();
 
-document.getElementById('sphereThreshold').addEventListener('input', function(event) {
-  const thresholdValue = parseFloat(event.target.value);
-  document.getElementById('thresholdValue').textContent = thresholdValue.toFixed(1); // Update the display value
-
-  // Call the function to update the spheres with the new threshold
-  // This function should be in your sphereManager.js or wherever you handle the sphere creation
-  updateSpheres(thresholdValue);
+// Event listener for the sliders
+document.getElementById('sphereThreshold').addEventListener('input', function() {
+  const thresholdValue = parseFloat(this.value);
+  const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
+  const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
+  
+  updateSpheres(thresholdValue, minCubesValue, overlapValue);
 });
 
 document.getElementById('minCubesSlider').addEventListener('input', function() {
-  updateSpheres(this.value, document.getElementById('overlapSlider').value);
+  const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
+  const minCubesValue = parseInt(this.value);
+  const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
+  
+  updateSpheres(thresholdValue, minCubesValue, overlapValue);
 });
 
 document.getElementById('overlapSlider').addEventListener('input', function() {
-  updateSpheres(document.getElementById('minCubesSlider').value, this.value);
+  const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
+  const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
+  const overlapValue = parseFloat(this.value);
+  
+  updateSpheres(thresholdValue, minCubesValue, overlapValue);
 });
-
