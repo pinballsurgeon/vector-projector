@@ -1,10 +1,10 @@
 import { appendLog, getModelAndParams, updateSidebar, setCubeImageInSidebar } from './sidebar.js';
-//import { encaseCubesInSpheres } from './sphereManager.js';
+import { checkForSphereClick } from './sphereManager.js';
 
 // Create scene, camera, and renderer
 export const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+export const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Define some variables for rotation
@@ -106,19 +106,10 @@ animate();
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
 // ray caster
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+export const raycaster = new THREE.Raycaster();
+export const mouse = new THREE.Vector2();
 
 function onCubeClick(intersectedCube) {
-    // appendLog(`Clicked cube - ${JSON.stringify(intersectedCube)}`);
-
-    // try {
-    //     appendLog(`Clicked userdata - ${JSON.stringify(intersectedCube.userData)}`);
-    // }
-    // catch {
-    //     appendLog(`Clicked object - ${JSON.stringify(intersectedCube.object)}`);
-    // }
-
 
     // Make sure to access nested 'object' and then 'userData' properties
     const imageUrl = intersectedCube.userData.image;
@@ -168,6 +159,7 @@ function onMouseClick(event) {
     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
     checkForCubeClick();
+    checkForSphereClick(); 
 }
 
 

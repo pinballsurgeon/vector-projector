@@ -1,6 +1,6 @@
 // import * as THREE from 'three';
-import { appendLog} from './sidebar.js';
-import { cubes, scene } from './cubeManager.js';
+import { appendLog, updateSidebar} from './sidebar.js';
+import { cubes, scene, raycaster, mouse, camera, renderer } from './cubeManager.js';
 
 // Global array to track spheres
 let spheres = [];
@@ -90,6 +90,32 @@ THREE.Vector3.prototype.distanceTo = function (v) {
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
 };
 
+// sphere cube averages
+export const calculateAverageAttributes = (sphere) => {
+    if (!sphere.userData || !sphere.userData.cubes) {
+        return null;
+    }
+
+    let totalAttributes = {};
+    let cubeCount = sphere.userData.cubes.length;
+
+    sphere.userData.cubes.forEach(cube => {
+        for (let attr in cube.userData.originalRatings) {
+            if (!totalAttributes[attr]) {
+                totalAttributes[attr] = 0;
+            }
+            totalAttributes[attr] += cube.userData.originalRatings[attr];
+        }
+    });
+
+    // Averaging the attributes
+    for (let attr in totalAttributes) {
+        totalAttributes[attr] = totalAttributes[attr] / cubeCount;
+    }
+
+    return totalAttributes;
+};
+
 
 // This function will check for closeness between all cubes and create spheres around those that are close
 // export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5) => {
@@ -112,11 +138,13 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5, minCubesPerS
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
             sphere.position.set(centroid.x, centroid.y, centroid.z);
 
-            // Now check for overlap before adding the sphere
+
             if (canAddSphere(sphere, maxOverlapPercentage)) {
                 scene.add(sphere);
+                sphere.userData = { cubes: group }; // Store the group of cubes in the sphere's userData
                 spheres.push(sphere); // Track the sphere
             }
+
         }
     });
 };
@@ -127,3 +155,89 @@ export const updateSpheres = (threshold, minCubesPerSphere, maxOverlapPercentage
     clearSpheres(); // Clear existing spheres
     encaseCubesInSpheres(cubes, scene, threshold, minCubesPerSphere, maxOverlapPercentage);
 };
+
+
+export function checkForSphereClick() {
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(spheres); // Assuming 'spheres' is your array of sphere objects
+
+    if (intersects.length > 0) {
+        onSphereClick(intersects[0].object);
+    }
+}
+
+export const calculateAverageAttributesForOtherCubes = (selectedSphere, allCubes) => {
+    const selectedCubesSet = new Set(selectedSphere.userData.cubes);
+
+    let totalAttributes = {};
+    let nonSelectedCubesCount = 0;
+
+    allCubes.forEach(cube => {
+        if (!selectedCubesSet.has(cube)) {
+            nonSelectedCubesCount++;
+            for (let attr in cube.userData.originalRatings) {
+                if (!totalAttributes[attr]) {
+                    totalAttributes[attr] = 0;
+                }
+                totalAttributes[attr] += cube.userData.originalRatings[attr];
+            }
+        }
+    });
+
+    if (nonSelectedCubesCount === 0) {
+        return null; // Return null if there are no non-selected cubes
+    }
+
+    // Averaging the attributes for non-selected cubes
+    for (let attr in totalAttributes) {
+        totalAttributes[attr] = totalAttributes[attr] / nonSelectedCubesCount;
+    }
+
+    return totalAttributes;
+};
+
+function onSphereClick(intersectedSphere) {
+    const sphereAverages = calculateAverageAttributes(intersectedSphere);
+    const otherCubesAverages = calculateAverageAttributesForOtherCubes(intersectedSphere);
+
+    // Prepare data for Chart.js
+    const labels = Object.keys(sphereAverages);
+    const sphereData = Object.values(sphereAverages);
+    const otherCubesData = Object.values(otherCubesAverages);
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Sphere Average',
+                data: sphereData,
+                backgroundColor: 'blue'
+            },
+            {
+                label: 'Other Cubes Average',
+                data: otherCubesData,
+                backgroundColor: 'grey'
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Assuming 'groupsContentChart' is the id of your canvas element in the sidebar
+    const ctx = document.getElementById('groupsContentChart').getContext('2d');
+    new Chart(ctx, config); // Create the chart
+
+    // Update the sidebar selector
+    document.getElementById('sidebarSelector').value = 'groupsContent';
+    updateSidebar(); // Reflect the change
+}
