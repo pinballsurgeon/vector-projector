@@ -54,6 +54,14 @@ body {
     overflow-y: auto; /* Scroll long content */
 }
 
+.sidebar-cube-image {
+    width: 100px; /* or any other size */
+    height: auto;
+    margin: 5px;
+    border: 1px solid #ddd; /* optional */
+    border-radius: 4px; /* optional */
+}
+
 /* When sidebar is open, it should take up 85% of the screen */
 .sidebar.open {
     right: 0; /* Align to the right edge of the viewport */
