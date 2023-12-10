@@ -208,42 +208,83 @@ function onSphereClick(intersectedSphere) {
     const sphereData = Object.values(sphereAverages);
     const otherCubesData = Object.values(otherCubesAverages);
 
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Sphere Average',
-                data: sphereData,
-                backgroundColor: 'blue'
-            },
-            {
-                label: 'Other Cubes Average',
-                data: otherCubesData,
-                backgroundColor: 'grey'
-            }
-        ]
-    };
+    let attributesArray = [];
+    Object.keys(sphereAverages).forEach((attribute) => {
+        attributesArray.push({
+            name: attribute,
+            selectedSphereValue: sphereAverages[attribute],
+            otherCubesValue: otherCubesAverages[attribute]
+        });
+    });
 
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+    // Sort based on the difference
+    attributesArray.sort((a, b) => {
+        let diffA = Math.abs(a.selectedSphereValue - a.otherCubesValue);
+        let diffB = Math.abs(b.selectedSphereValue - b.otherCubesValue);
+        return diffB - diffA;  // For descending order
+    });
+
+
+    const barChartData = {
+        labels: attributesArray.map(attribute => attribute.name),
+        datasets: [{
+            label: 'Selected Sphere Average',
+            data: attributesArray.map(attribute => attribute.selectedSphereValue),
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            borderWidth: 1,
+        }, {
+            type: 'line',
+            label: 'Other Cubes Average',
+            data: attributesArray.map(attribute => attribute.otherCubesValue),
+            borderColor: 'red',
+            borderWidth: 2,
+            fill: false
+        }]
     };
+    
+    // Assuming 'groupsContentChart' is your canvas ID
+    const ctx = document.getElementById('groupsContentChart').getContext('2d');
 
     // Destroy the existing chart if it exists
     if (myChart != null) {
         myChart.destroy();
     }
 
-    // Assuming 'groupsContentChart' is the id of your canvas element in the sidebar
-    const ctx = document.getElementById('groupsContentChart').getContext('2d');
-    myChart = new Chart(ctx, config); // Assign the new chart instance to myChart
+    // Create the new chart instance
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            scales: {
+                x: {
+                    ticks: {
+                        autoSkip: false,
+                        maxRotation: 90,
+                        minRotation: 90
+                    }
+                },
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 11
+                }
+            },
+            layout: {
+                padding: {
+                    left: 2,
+                    right: 2,
+                    top: 5,
+                    bottom: 50
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
 
     // Update the sidebar selector
     document.getElementById('sidebarSelector').value = 'groupsContent';
