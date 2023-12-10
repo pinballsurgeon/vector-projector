@@ -4,6 +4,30 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { createOrUpdateCube } from './cubeManager.js';
 
+async function fetchRatingsAndImageForItem(item, attributes_str) {
+    try {
+        let promptKey = "rateAllAttributes";
+        let replacements = { item, attributes_str };
+        const ratingResponse = await fetchJSONFromLLM(promptKey, '', replacements);
+
+        let validJsonString = ratingResponse.replace(/'/g, '"').replace('.', '');
+        let jsonObject = JSON.parse(validJsonString);
+        
+        // Fetch image for item
+        const imageResponse = await fetch(`/generateImage/${item}`);
+        const imageResult = await imageResponse.json();
+
+        return {
+            item: item,
+            ratings: jsonObject,
+            imageUrl: imageResult.image
+        };
+    } catch (error) {
+        appendLog(`Error fetching data for item: ${item}. Error: ${error}`);
+        return null; // Return null or handle the error as needed
+    }
+}
+
 export const generateRatings = async (createOrUpdateCubeWithScene) => {
     try {
         // Use the functions from dataStore.js to get the data
@@ -59,62 +83,29 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 }
             }
         } else {
-
-            for (let i = 0; i < items.length; i++) {
-
-                let item = items[i];
-                try {
-                    
-                    ratings[item] = {};
-                    ratings_str += `"${item}": {`;  // Add item to the ratings_str
-
-                    let promptKey = "rateAllAttributes";
-                    let replacements = { item, attributes_str };
-                    const rating = await fetchJSONFromLLM(promptKey, '', replacements);
-
-                    let validJsonString = rating.replace(/'/g, '"').replace('.', '');
-                    // appendLog(`GPT3 SINGLE RATING: ${validJsonString}`);
-
-                    // correct json issues
-                    let jsonObject = {};
-                    try {
-                        jsonObject = JSON.parse(validJsonString);
-                        ratings[item] = jsonObject;
-                    }
-                    catch (json_parse_error) {
-
-                        // appendLog(`Correcting Error ${json_parse_error} In: ${validJsonString}`);
-
-                        promptKey = "correctJsonObject";
-                        replacements = { json_parse_error, validJsonString };
-                        let corrected_json = await correctJsonObject(promptKey, replacements);
-
-                        jsonObject = JSON.parse(corrected_json);
-                        ratings[item] = jsonObject;
-                    }
-
-                    let keys = Object.keys(jsonObject);
-                    for (let j = 0; j < keys.length; j++) {
-                        let key = keys[j];
-                        ratings_str += `"${key}": "${jsonObject[key]}"`;  // Add key and value to ratings_str
-                        if (j < keys.length - 1) ratings_str += ", ";
-                    }
-
-                    // Fetch image for item
-                    const response = await fetch(`/generateImage/${item}`);
-                    const result = await response.json();
-                    const imageUrl = result.image;
-                    ratings[item]['imageUrl'] = imageUrl;
-                    ratings_str += `, "imageUrl": "${imageUrl}"`;  // Add imageUrl to ratings_str
+            // Create an array of promises
+            let promises = items.map(item => fetchRatingsAndImageForItem(item, attributes_str));
+        
+            // Use Promise.all to wait for all promises to resolve
+            let results = await Promise.all(promises);
+        
+            // Process the results
+            results.forEach(result => {
+                if (result) {
+                    ratings[result.item] = result.ratings;
+                    ratings[result.item]['imageUrl'] = result.imageUrl;
+        
+                    // Build ratings_str
+                    ratings_str += `"${result.item}": {`;
+                    Object.entries(result.ratings).forEach(([key, value], index, array) => {
+                        ratings_str += `"${key}": "${value}"`;
+                        if (index < array.length - 1) ratings_str += ", ";
+                    });
+                    ratings_str += `, "imageUrl": "${result.imageUrl}"`;
                     ratings_str += "}";
-                    if (i < items.length - 1) ratings_str += ", ";
-
-                } catch (error) {
-                    // Handle or skip errors for that particular item
-                    appendLog(`Error fetching rating for item: ${item}. Error: ${error}`);
-                    continue; // Skip to the next item
+                    if (items.indexOf(result.item) < items.length - 1) ratings_str += ", ";
                 }
-            }
+            });
         }
 
     ratings_str += "}";  // Close the JSON object represented as a string
