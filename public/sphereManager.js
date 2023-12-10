@@ -198,7 +198,9 @@ export const calculateAverageAttributesForOtherCubes = (selectedSphere, allCubes
 
 function onSphereClick(intersectedSphere) {
     const sphereAverages = calculateAverageAttributes(intersectedSphere);
-    const otherCubesAverages = calculateAverageAttributesForOtherCubes(intersectedSphere);
+    // const otherCubesAverages = calculateAverageAttributesForOtherCubes(intersectedSphere);
+    const otherCubesAverages = calculateAverageAttributesForOtherCubes(intersectedSphere, cubes);
+
 
     // Prepare data for Chart.js
     const labels = Object.keys(sphereAverages);
