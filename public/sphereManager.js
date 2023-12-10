@@ -285,6 +285,19 @@ function onSphereClick(intersectedSphere) {
         }
     });
 
+    const imagesContainer = document.getElementById('groupsImagesContainer');
+    imagesContainer.innerHTML = ''; // Clear existing images
+    
+    intersectedSphere.userData.cubes.forEach(cube => {
+        const imageUrl = cube.userData.image; // Assuming 'image' holds the URL
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = "Cube Image";
+        img.className = "sidebar-cube-image"; // A class for styling
+        imagesContainer.appendChild(img);
+    });
+    
+
 
     // Update the sidebar selector
     document.getElementById('sidebarSelector').value = 'groups';
