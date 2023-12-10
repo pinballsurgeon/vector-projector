@@ -4,6 +4,7 @@ import { cubes, scene, raycaster, mouse, camera, renderer } from './cubeManager.
 
 // Global array to track spheres
 let spheres = [];
+let myChart = null;
 
 // Function to clear all spheres from the scene
 const clearSpheres = () => {
@@ -235,9 +236,14 @@ function onSphereClick(intersectedSphere) {
         }
     };
 
+    // Destroy the existing chart if it exists
+    if (myChart != null) {
+        myChart.destroy();
+    }
+
     // Assuming 'groupsContentChart' is the id of your canvas element in the sidebar
     const ctx = document.getElementById('groupsContentChart').getContext('2d');
-    new Chart(ctx, config); // Create the chart
+    myChart = new Chart(ctx, config); // Assign the new chart instance to myChart
 
     // Update the sidebar selector
     document.getElementById('sidebarSelector').value = 'groupsContent';
