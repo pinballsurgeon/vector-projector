@@ -287,6 +287,6 @@ function onSphereClick(intersectedSphere) {
 
 
     // Update the sidebar selector
-    document.getElementById('sidebarSelector').value = 'groupsContent';
+    document.getElementById('sidebarSelector').value = 'groups';
     updateSidebar(); // Reflect the change
 }
