@@ -290,15 +290,25 @@ function onSphereClick(intersectedSphere) {
     
     intersectedSphere.userData.cubes.forEach(cube => {
         const imageUrl = cube.userData.image; // Assuming 'image' holds the URL
+        const cubeName = cube.userData.itemName; // Assuming 'itemName' holds the name
+    
+        const cubeContainer = document.createElement('div');
+        cubeContainer.className = "cube-container"; // A class for styling
+    
         const img = document.createElement('img');
         img.src = imageUrl;
         img.alt = "Cube Image";
         img.className = "sidebar-cube-image"; // A class for styling
-        imagesContainer.appendChild(img);
-    });
     
-
-
+        const nameElement = document.createElement('span');
+        nameElement.textContent = cubeName;
+        nameElement.className = "cube-name"; // A class for styling
+    
+        cubeContainer.appendChild(img);
+        cubeContainer.appendChild(nameElement);
+        imagesContainer.appendChild(cubeContainer);
+    });    
+    
     // Update the sidebar selector
     document.getElementById('sidebarSelector').value = 'groups';
     updateSidebar(); // Reflect the change

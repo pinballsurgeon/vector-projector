@@ -54,12 +54,25 @@ body {
     overflow-y: auto; /* Scroll long content */
 }
 
+.cube-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .sidebar-cube-image {
     width: 100px; /* or any other size */
     height: auto;
     margin: 5px;
     border: 1px solid #ddd; /* optional */
     border-radius: 4px; /* optional */
+}
+
+.cube-name {
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
 }
 
 /* When sidebar is open, it should take up 85% of the screen */
