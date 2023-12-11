@@ -253,8 +253,6 @@ app.post('/vector_db', async (req, res) => {
     try {
         const { pcaResult, query } = req.body;  // Destructure the JSON payload
 
-        console.log(`We made it!`);
-
         const client = new Client({
             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
             ssl: {
@@ -306,22 +304,6 @@ app.get('/check_query/:query', async (req, res) => {
             res.json({ exists: false, message: "No data found for this query" });
         }
 
-        // // Check if there is any result
-        // if (queryResult.rows.length > 0) {
-        //     const cubeData = queryResult.rows[0].cube_data;
-
-        //     console.info("VECTORDB CUBEDATA result:", cubeData);
-
-        //     // If cube_data is already an object, send it directly
-        //     if (typeof cubeData === 'object') {
-        //         res.json(cubeData);
-        //     } else {
-        //         // If cube_data is a string, parse it as JSON
-        //         res.json(JSON.parse(cubeData));
-        //     }
-        // } else {
-        //     res.status(404).json({ message: "No data found for this query" });
-        // }
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");

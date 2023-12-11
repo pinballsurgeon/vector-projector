@@ -174,7 +174,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
     const payload = {
         pcaResult,
-        query: userInputValue
+        query: userInputValue,
+        model
     };
         
     await fetch('/vector_db', {
