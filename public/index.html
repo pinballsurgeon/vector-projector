@@ -20,7 +20,7 @@
         <option value="prompts">Prompts</option>
         <option value="cubeContent">Cube Analytics</option>
         <option value="groups">Groups and Clustering</option>
-        <option value="vectorMetrics">Vector Metrics</option>
+        <option value="vectorMetricsContent">Vector Metrics</option>
     </select>    
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
@@ -40,10 +40,8 @@
             <div id="modelParametersContent" style="display: none;"> 
                 <label for="temperature">Temperature:</label>
                 <input type="range" id="temperature" name="temperature" min="0" max="1" step="0.01" value="0.5">
-                
                 <label for="top_p">Top P:</label>
                 <input type="range" id="top_p" name="top_p" min="0" max="1" step="0.01" value="0.5">
-                
                 <p>Num return sequences:</p>
                 <input type="radio" id="one" name="num_return_sequences" value="1" checked>
                 <label for="one">1</label>
@@ -52,11 +50,13 @@
                 <input type="radio" id="three" name="num_return_sequences" value="3">
                 <label for="three">3</label>
             </div>
+
             <div id="cubeContent" style="display: none;">
                 <div id="cubeName"></div>
                 <img id="sidebarCubeImage" src="" alt="Cube Image" width="100%" height="auto">
                 <canvas id="ratingsBarChart" width="600" height="500"></canvas>
             </div>
+
             <div id="groupsContent" style="display: none;">
                 <p>Groups sidebar:</p>
                 <label for="sphereThreshold">Sphere Threshold (0-10):</label>
@@ -68,7 +68,11 @@
                 <input type="range" id="overlapSlider" min="0" max="100" value="100">
                 <canvas id="groupsContentChart" width="600" height="500"></canvas>
                 <div id="groupsImagesContainer"></div>
-            </div>            
+            </div>
+
+            <div id="vectorMetricsContent" style="display: none;">
+                <p>Vector Metrics:</p>  
+            </div>          
         </div>
     </div>    
 
