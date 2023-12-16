@@ -23,10 +23,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 
-// // TOPIC HANDLER
-// document.getElementById('askButton').addEventListener('click', async () => {
-//   const rootList = await listPerpetuator();
-// });
 
 // TOPIC HANDLER
 document.getElementById('askButton').addEventListener('click', async () => {

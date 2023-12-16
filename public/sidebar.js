@@ -40,7 +40,7 @@ export function updateSidebar() {
     const modelParametersContent = document.getElementById('modelParametersContent');
     const cubeContent = document.getElementById('cubeContent');
     const groupsContent = document.getElementById('groupsContent');
-    
+    const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     const promptEditors = document.getElementById('promptEditors');
 
     // Start by hiding all contents
@@ -50,6 +50,8 @@ export function updateSidebar() {
     promptEditors.style.display = 'none';
     cubeContent.style.display = 'none';
     groupsContent.style.display = 'none';
+    vectorMetricsContent.style.display = 'none'; // Hide the new content by default
+
 
     if(sidebarSelector.value === 'prompts') {
         sidebarTitle.textContent = 'Prompts';
@@ -75,6 +77,9 @@ export function updateSidebar() {
         // } else {
             sidebarTitle.textContent = 'Grouping';
             groupsContent.style.display = 'block';
+    } else if(sidebarSelector.value === 'vectorMetrics') {
+                sidebarTitle.textContent = 'Vector Metrics';
+                vectorMetricsContent.style.display = 'block';
     } else {
         sidebarTitle.textContent = 'Model Selection';
         modelSelectionContent.style.display = 'block';
@@ -155,18 +160,6 @@ export function initializePrompts() {
         }
     })
     .catch(error => console.log('Error:', error));
-}
-
-
-function cosineDistance(A, B) {
-    const dotProduct = A.x * B.x + A.y * B.y + A.z * B.z;
-    const magnitudeA = Math.sqrt(A.x ** 2 + A.y ** 2 + A.z ** 2);
-    const magnitudeB = Math.sqrt(B.x ** 2 + B.y ** 2 + B.z ** 2);
-
-    const similarity = dotProduct / (magnitudeA * magnitudeB);
-    
-    // Return the distance, which is 1 minus similarity
-    return 1 - similarity;
 }
 
 
@@ -284,15 +277,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         }
         
     });
-
-    // const selectedCube = { x: selectedX, y: selectedY, z: selectedZ }; 
-    // const distances = cubes.map(cube => ({
-    //     cube,
-    //     distance: cosineDistance(selectedCube, cube)
-    // }));
-    
-    // distances.sort((a, b) => a.distance - b.distance);
-
 
 }
 
