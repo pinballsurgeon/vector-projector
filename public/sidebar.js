@@ -74,12 +74,13 @@ export function updateSidebar() {
         modelParametersContent.style.display = 'block';
 
     } else if(sidebarSelector.value === 'groups') {
-        // } else {
-            sidebarTitle.textContent = 'Grouping';
-            groupsContent.style.display = 'block';
+        sidebarTitle.textContent = 'Grouping';
+        groupsContent.style.display = 'block';
+
     } else if(sidebarSelector.value === 'vectorMetrics') {
-                sidebarTitle.textContent = 'Vector Metrics';
-                vectorMetricsContent.style.display = 'block';
+        sidebarTitle.textContent = 'Vector Metrics';
+        vectorMetricsContent.style.display = 'block';
+
     } else {
         sidebarTitle.textContent = 'Model Selection';
         modelSelectionContent.style.display = 'block';
