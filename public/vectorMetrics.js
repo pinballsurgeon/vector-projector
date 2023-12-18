@@ -1,22 +1,18 @@
-import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
+import { appendLog } from './sidebar.js';
 
 export function calculateConvexHull(cubes) {
-
     appendLog(`vectorMetrics: Initiated`);
 
-    const geometry = new THREE.Geometry();
-
-    appendLog(`vectorMetrics: Geometry ${geometry}`);
+    const vertices = [];
     cubes.forEach(cube => {
         appendLog(`vectorMetrics: Cube added ${cube.position.x}`);
-        geometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
+        vertices.push(cube.position.x, cube.position.y, cube.position.z);
     });
 
-    const convexGeometry = new THREE.ConvexBufferGeometry(geometry.vertices);
-    // Process convexGeometry to extract meaningful information for display
-    // This could be vertices, faces, etc., depending on what you want to show
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-
+    const convexGeometry = new THREE.ConvexBufferGeometry(geometry);
     appendLog(`vectorMetrics: Return ${convexGeometry}`);
     return convexGeometry; // Simplified for example purposes
 }
