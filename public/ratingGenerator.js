@@ -198,14 +198,19 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 };
 
 function updateVectorMetricsContent() {
+
+    appendLog(`Vector Hulls: Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     vectorMetricsContent.innerHTML = '<p>Vector Metrics:</p>'; // Reset content
 
     const convexHull = calculateConvexHull(cubes); // Assuming cubes is accessible
+    appendLog(`Vector Hulls: ${convexHull}`);
 
     // Display information about convex hull
     // For example, list vertices or faces
     const list = document.createElement('ul');
+    appendLog(`Vector Hulls List: ${list}`);
+
     convexHull.vertices.forEach(vertex => {
         const listItem = document.createElement('li');
         listItem.textContent = `Vertex: ${vertex.x.toFixed(2)}, ${vertex.y.toFixed(2)}, ${vertex.z.toFixed(2)}`;
