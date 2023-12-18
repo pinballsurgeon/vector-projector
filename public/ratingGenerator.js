@@ -201,7 +201,9 @@ export function updateVectorMetricsContent() {
 
     appendLog(`Vector Hulls: Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
-    vectorMetricsContent.innerHTML = '<p>Vector Metrics:</p>'; // Reset content
+    vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>'; // Reset content
+
+    appendLog(`Vector Hulls DIV Content: ${vectorMetricsContent}`);
 
     const convexHull = calculateConvexHull(cubes); // Assuming cubes is accessible
     appendLog(`Vector Hulls: ${convexHull}`);
