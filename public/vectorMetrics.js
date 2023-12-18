@@ -1,5 +1,9 @@
+import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 
 export function calculateConvexHull(cubes) {
+
+    appendLog(`vectorMetrics: Initiated`);
+
     const geometry = new THREE.Geometry();
     cubes.forEach(cube => {
         geometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
