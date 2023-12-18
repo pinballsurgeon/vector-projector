@@ -1,8 +1,8 @@
 import { updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { generateRatings } from './ratingGenerator.js';
 import { createOrUpdateCube } from './cubeManager.js';
+import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
 
 // SIDE BAR HANDLER
 document.addEventListener("DOMContentLoaded", function(){
@@ -38,6 +38,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
     if (data.exists) {
       // Query exists, use saved PCA results
       createOrUpdateCube(data.pcaResult);
+      updateVectorMetricsContent();
   } else {
       // Query does not exist, proceed with generating new results
       const rootList = await listPerpetuator();

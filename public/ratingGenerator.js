@@ -197,7 +197,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 }
 };
 
-function updateVectorMetricsContent() {
+export function updateVectorMetricsContent() {
 
     appendLog(`Vector Hulls: Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
