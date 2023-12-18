@@ -2,7 +2,8 @@
 import { getLLMListResponse, getLLMTopicAttributes } from './dataStore.js';
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
-import { createOrUpdateCube } from './cubeManager.js';
+import { cubes, createOrUpdateCube } from './cubeManager.js';
+import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
 
 async function fetchRatingsAndImageForItem(item, attributes_str) {
     try {
@@ -187,6 +188,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
     });
     
     createOrUpdateCube(pcaResult);
+    updateVectorMetricsContent();
     
     return pcaResult;
 
@@ -195,4 +197,19 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 }
 };
 
+function updateVectorMetricsContent() {
+    const vectorMetricsContent = document.getElementById('vectorMetricsContent');
+    vectorMetricsContent.innerHTML = '<p>Vector Metrics:</p>'; // Reset content
 
+    const convexHull = calculateConvexHull(cubes); // Assuming cubes is accessible
+
+    // Display information about convex hull
+    // For example, list vertices or faces
+    const list = document.createElement('ul');
+    convexHull.vertices.forEach(vertex => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Vertex: ${vertex.x.toFixed(2)}, ${vertex.y.toFixed(2)}, ${vertex.z.toFixed(2)}`;
+        list.appendChild(listItem);
+    });
+    vectorMetricsContent.appendChild(list);
+}

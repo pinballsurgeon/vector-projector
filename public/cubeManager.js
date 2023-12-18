@@ -60,8 +60,6 @@ export const createOrUpdateCube = (data) => {
                 scene.add(cube);
                 cubes.push(cube);  // Add cube to cubes array
 
-                // appendLog(`Cube Structure ${cube}`);
-                // appendLog(`Image being added to scene: ${jpgData}`);
             },
             undefined, // onProgress callback can be undefined if not needed
             (error) => { // onError callback
