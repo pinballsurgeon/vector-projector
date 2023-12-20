@@ -37,7 +37,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
   // if (data.exists && data.pcaResult) {
     if (data.exists) {
       // Query exists, use saved PCA results
-      createOrUpdateCube(data.pcaResult);
+      await createOrUpdateCube(data.pcaResult);
       updateVectorMetricsContent();
   } else {
       // Query does not exist, proceed with generating new results
