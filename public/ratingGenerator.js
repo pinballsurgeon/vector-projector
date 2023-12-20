@@ -197,26 +197,82 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 }
 };
 
+function calculateCentroid(cubes) {
+    let sumX = 0, sumY = 0, sumZ = 0, count = 0;
+    cubes.forEach(cube => {
+        sumX += cube.position.x;
+        sumY += cube.position.y;
+        sumZ += cube.position.z;
+        count++;
+    });
+    return { x: sumX / count, y: sumY / count, z: sumZ / count };
+}
+
+function calculateBoundingBox(cubes) {
+    let minX = Infinity, minY = Infinity, minZ = Infinity;
+    let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+
+    cubes.forEach(cube => {
+        minX = Math.min(cube.position.x, minX);
+        minY = Math.min(cube.position.y, minY);
+        minZ = Math.min(cube.position.z, minZ);
+        maxX = Math.max(cube.position.x, maxX);
+        maxY = Math.max(cube.position.y, maxY);
+        maxZ = Math.max(cube.position.z, maxZ);
+    });
+
+    return { minX, minY, minZ, maxX, maxY, maxZ };
+}
+
+function calculatePairwiseDistances(cubes) {
+    let totalDistance = 0;
+    let count = 0;
+    for (let i = 0; i < cubes.length; i++) {
+        for (let j = i + 1; j < cubes.length; j++) {
+            let distance = Math.sqrt(
+                Math.pow(cubes[i].position.x - cubes[j].position.x, 2) +
+                Math.pow(cubes[i].position.y - cubes[j].position.y, 2) +
+                Math.pow(cubes[i].position.z - cubes[j].position.z, 2)
+            );
+            totalDistance += distance;
+            count++;
+        }
+    }
+    return totalDistance / count; // average distance
+}
+
+function estimateDensity(cubes, radius) {
+    let densities = cubes.map(cube => {
+        let count = 0;
+        cubes.forEach(otherCube => {
+            let distance = Math.sqrt(
+                Math.pow(cube.position.x - otherCube.position.x, 2) +
+                Math.pow(cube.position.y - otherCube.position.y, 2) +
+                Math.pow(cube.position.z - otherCube.position.z, 2)
+            );
+            if (distance <= radius) count++;
+        });
+        return count; // Number of points within the radius
+    });
+    return densities; // Array of densities for each point
+}
+
+
 export function updateVectorMetricsContent() {
 
     appendLog(`Vector Hulls: Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>'; // Reset content
 
-    appendLog(`Vector Hulls DIV Content: ${vectorMetricsContent}`);
+    const centroid = calculateCentroid(cubes);
+    const boundingBox = calculateBoundingBox(cubes);
+    const avgDistance = calculatePairwiseDistances(cubes);
+    const densities = estimateDensity(cubes, 1);
 
-    const convexHull = calculateConvexHull(cubes); // Assuming cubes is accessible
-    appendLog(`Vector Hulls: ${convexHull}`);
+    // Display these values in vectorMetricsContent
+    vectorMetricsContent.innerHTML += `<p>Centroid: (${centroid.x.toFixed(2)}, ${centroid.y.toFixed(2)}, ${centroid.z.toFixed(2)})</p>`;
+    vectorMetricsContent.innerHTML += `<p>Bounding Box: Min (${boundingBox.minX.toFixed(2)}, ${boundingBox.minY.toFixed(2)}, ${boundingBox.minZ.toFixed(2)}) - Max (${boundingBox.maxX.toFixed(2)}, ${boundingBox.maxY.toFixed(2)}, ${boundingBox.maxZ.toFixed(2)})</p>`;
+    vectorMetricsContent.innerHTML += `<p>Average Pairwise Distance: ${avgDistance.toFixed(2)}</p>`;
+    vectorMetricsContent.innerHTML += `<p>Estimated Density: ${densities.toFixed(2)}</p>`;
 
-    // Display information about convex hull
-    // For example, list vertices or faces
-    const list = document.createElement('ul');
-    appendLog(`Vector Hulls List: ${list}`);
-
-    convexHull.vertices.forEach(vertex => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `Vertex: ${vertex.x.toFixed(2)}, ${vertex.y.toFixed(2)}, ${vertex.z.toFixed(2)}`;
-        list.appendChild(listItem);
-    });
-    vectorMetricsContent.appendChild(list);
 }
