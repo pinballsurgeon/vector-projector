@@ -188,9 +188,8 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         body: JSON.stringify(payload)
     });
     
-    createOrUpdateCube(pcaResult);
-    updateVectorMetricsContent();
-    
+    await createOrUpdateCube(pcaResult); // Wait for all cubes to be created
+    updateVectorMetricsContent(); // Now update the vector metrics content
     return pcaResult;
 
 } catch (error) {

@@ -28,45 +28,45 @@ export let cubes = [];
 
 
 export const createOrUpdateCube = (data) => {
-   
     const textureLoader = new THREE.TextureLoader();
+    let cubeCreationPromises = [];
 
     for (let itemName in data) {
         const item = data[itemName];
-        
-        const xPos = parseFloat(item.coordinates.x);
-        const yPos = parseFloat(item.coordinates.y);
-        const zPos = parseFloat(item.coordinates.z);
-        const jpgData = item.image;
 
-        textureLoader.load(jpgData, 
-            (texture) => { // onLoad callback
-                const material = new THREE.MeshBasicMaterial({ map: texture });
-                const geometry = new THREE.BoxGeometry();
-                const cube = new THREE.Mesh(geometry, material);
+        // Create a new promise for each cube
+        let cubePromise = new Promise((resolve, reject) => {
+            const xPos = parseFloat(item.coordinates.x);
+            const yPos = parseFloat(item.coordinates.y);
+            const zPos = parseFloat(item.coordinates.z);
+            const jpgData = item.image;
 
-                cube.position.set(xPos, yPos, zPos);
+            textureLoader.load(jpgData, 
+                (texture) => {
+                    const material = new THREE.MeshBasicMaterial({ map: texture });
+                    const geometry = new THREE.BoxGeometry();
+                    const cube = new THREE.Mesh(geometry, material);
 
-                // Add fields to cube.userData
-                cube.userData = { 
-                    ...item, 
-                    x: xPos, 
-                    y: yPos, 
-                    z: zPos, 
-                    imageData: jpgData,
-                    itemName
-                };
+                    cube.position.set(xPos, yPos, zPos);
+                    cube.userData = { ...item, x: xPos, y: yPos, z: zPos, imageData: jpgData, itemName };
+                    scene.add(cube);
+                    cubes.push(cube);
 
-                scene.add(cube);
-                cubes.push(cube);  // Add cube to cubes array
+                    resolve(); // Resolve the promise when the cube is loaded
+                },
+                undefined, 
+                (error) => {
+                    appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
+                    reject(error); // Reject the promise on error
+                }
+            );
+        });
 
-            },
-            undefined, // onProgress callback can be undefined if not needed
-            (error) => { // onError callback
-                appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
-            }
-        );
+        cubeCreationPromises.push(cubePromise);
     }
+
+    // Return a promise that resolves when all cubes have been created
+    return Promise.all(cubeCreationPromises);
 };
 
 
