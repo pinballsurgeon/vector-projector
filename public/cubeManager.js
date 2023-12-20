@@ -160,6 +160,33 @@ function onMouseClick(event) {
     checkForSphereClick(); 
 }
 
+function createHistogramData(distances, binCount) {
+    let maxDistance = Math.max(...distances);
+    let minDistance = Math.min(...distances);
+    let binSize = (maxDistance - minDistance) / binCount;
+    let histogramData = new Array(binCount).fill(0);
+
+    distances.forEach(distance => {
+        let binIndex = Math.floor((distance - minDistance) / binSize);
+        binIndex = binIndex >= binCount ? binCount - 1 : binIndex; // Ensure the index is within the array
+        histogramData[binIndex]++;
+    });
+
+    return histogramData;
+}
+
+function calculateDistancesToCentroid(cubes) {
+    const centroid = calculateCentroid(cubes);
+    let distances = cubes.map(cube => {
+        return Math.sqrt(
+            Math.pow(cube.position.x - centroid.x, 2) +
+            Math.pow(cube.position.y - centroid.y, 2) +
+            Math.pow(cube.position.z - centroid.z, 2)
+        );
+    });
+    return distances;
+}
+
 
 function calculateCentroid(cubes) {
     let sumX = 0, sumY = 0, sumZ = 0, count = 0;
@@ -239,4 +266,33 @@ export function updateVectorMetricsContent() {
     vectorMetricsContent.innerHTML += `<p>Average Pairwise Distance: ${avgDistance.toFixed(2)}</p>`;
     vectorMetricsContent.innerHTML += `<p>Estimated Density: ${densities.toFixed(2)}</p>`;
 
+    // Calculate distances to centroid and create histogram data
+    const distances = calculateDistancesToCentroid(cubes);
+    const histogramData = createHistogramData(distances, 10); // 10 bins for example
+
+    // Create the histogram chart
+    const histogramCanvas = document.createElement('canvas');
+    vectorMetricsContent.appendChild(histogramCanvas);
+    const ctx = histogramCanvas.getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: histogramData.map((_, index) => `Bin ${index + 1}`),
+            datasets: [{
+                label: 'Number of Cubes',
+                data: histogramData,
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
