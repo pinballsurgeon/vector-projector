@@ -1,8 +1,8 @@
 import { updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { createOrUpdateCube } from './cubeManager.js';
-import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
+import { createOrUpdateCube, updateVectorMetricsContent } from './cubeManager.js';
+// import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
 
 // SIDE BAR HANDLER
 document.addEventListener("DOMContentLoaded", function(){
