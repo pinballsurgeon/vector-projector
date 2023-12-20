@@ -264,7 +264,7 @@ export function updateVectorMetricsContent() {
     vectorMetricsContent.innerHTML += `<p>Centroid: (${centroid.x.toFixed(8)}, ${centroid.y.toFixed(8)}, ${centroid.z.toFixed(8)})</p>`;
     vectorMetricsContent.innerHTML += `<p>Bounding Box: Min (${boundingBox.minX.toFixed(2)}, ${boundingBox.minY.toFixed(2)}, ${boundingBox.minZ.toFixed(2)}) - Max (${boundingBox.maxX.toFixed(2)}, ${boundingBox.maxY.toFixed(2)}, ${boundingBox.maxZ.toFixed(2)})</p>`;
     vectorMetricsContent.innerHTML += `<p>Average Pairwise Distance: ${avgDistance.toFixed(2)}</p>`;
-    vectorMetricsContent.innerHTML += `<p>Estimated Density: ${densities.toFixed(2)}</p>`;
+    vectorMetricsContent.innerHTML += `<p>Estimated Density: ${densities}</p>`;
 
     // Calculate distances to centroid and create histogram data
     const distances = calculateDistancesToCentroid(cubes);
