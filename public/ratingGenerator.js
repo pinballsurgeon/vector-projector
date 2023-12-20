@@ -4,6 +4,7 @@ import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { cubes, createOrUpdateCube } from './cubeManager.js';
 import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
+import { cubeDependencies } from 'mathjs';
 
 async function fetchRatingsAndImageForItem(item, attributes_str) {
     try {
@@ -260,10 +261,11 @@ function estimateDensity(cubes, radius) {
 
 export function updateVectorMetricsContent() {
 
-    appendLog(`Vector Hulls: Start`);
+    appendLog(`Vector Metrics - Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>'; // Reset content
 
+    appendLog(`Vector Metrics - Cubes - ${JSON.stringify(cubes)}`);
     const centroid = calculateCentroid(cubes);
     const boundingBox = calculateBoundingBox(cubes);
     const avgDistance = calculatePairwiseDistances(cubes);
