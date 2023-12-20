@@ -228,7 +228,6 @@ export function updateVectorMetricsContent() {
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>'; // Reset content
 
-    appendLog(`Vector Metrics - Cubes - ${JSON.stringify(cubes)}`);
     const centroid = calculateCentroid(cubes);
     const boundingBox = calculateBoundingBox(cubes);
     const avgDistance = calculatePairwiseDistances(cubes);
