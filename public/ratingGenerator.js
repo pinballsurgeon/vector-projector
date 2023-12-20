@@ -3,8 +3,8 @@ import { getLLMListResponse, getLLMTopicAttributes } from './dataStore.js';
 import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
 import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
 import { cubes, createOrUpdateCube } from './cubeManager.js';
-import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
-import { cubeDependencies } from 'mathjs';
+// import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
+// import { cubeDependencies } from 'mathjs';
 
 async function fetchRatingsAndImageForItem(item, attributes_str) {
     try {
