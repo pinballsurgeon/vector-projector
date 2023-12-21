@@ -165,15 +165,23 @@ function createHistogramData(distances, binCount) {
     let minDistance = Math.min(...distances);
     let binSize = (maxDistance - minDistance) / binCount;
     let histogramData = new Array(binCount).fill(0);
+    let binRanges = new Array(binCount);
 
     distances.forEach(distance => {
         let binIndex = Math.floor((distance - minDistance) / binSize);
-        binIndex = binIndex >= binCount ? binCount - 1 : binIndex; // Ensure the index is within the array
+        binIndex = binIndex >= binCount ? binCount - 1 : binIndex;
         histogramData[binIndex]++;
     });
 
-    return histogramData;
+    for (let i = 0; i < binCount; i++) {
+        let rangeStart = minDistance + i * binSize;
+        let rangeEnd = rangeStart + binSize;
+        binRanges[i] = `${rangeStart.toFixed(2)}-${rangeEnd.toFixed(2)}`;
+    }
+
+    return { histogramData, binRanges };
 }
+
 
 function calculateDistancesToCentroid(cubes) {
     const centroid = calculateCentroid(cubes);
@@ -268,7 +276,7 @@ export function updateVectorMetricsContent() {
 
     // Calculate distances to centroid and create histogram data
     const distances = calculateDistancesToCentroid(cubes);
-    const histogramData = createHistogramData(distances, 10); // 10 bins for example
+    const { histogramData, binRanges } = createHistogramData(distances, 10); // 10 bins
 
     // Create the histogram chart
     const histogramCanvas = document.createElement('canvas');
@@ -278,7 +286,7 @@ export function updateVectorMetricsContent() {
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: histogramData.map((_, index) => `Bin ${index + 1}`),
+            labels: binRanges, // Use binRanges as labels
             datasets: [{
                 label: 'Number of Cubes',
                 data: histogramData,
