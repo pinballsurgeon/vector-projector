@@ -256,6 +256,24 @@ function estimateDensity(cubes, radius) {
     return densities; // Array of densities for each point
 }
 
+function drawBoundingBox(boundingBox) {
+    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    const points = [];
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.minY, boundingBox.minZ));
+    points.push(new THREE.Vector3(boundingBox.maxX, boundingBox.minY, boundingBox.minZ));
+    points.push(new THREE.Vector3(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ));
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.maxY, boundingBox.minZ));
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.minY, boundingBox.minZ));
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.minY, boundingBox.maxZ));
+    points.push(new THREE.Vector3(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ));
+    points.push(new THREE.Vector3(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ));
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ));
+    points.push(new THREE.Vector3(boundingBox.minX, boundingBox.minY, boundingBox.maxZ));
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geometry, material);
+    scene.add(line);
+}
 
 export function updateVectorMetricsContent() {
 
@@ -266,7 +284,7 @@ export function updateVectorMetricsContent() {
     const centroid = calculateCentroid(cubes);
     const boundingBox = calculateBoundingBox(cubes);
     const avgDistance = calculatePairwiseDistances(cubes);
-    const densities = estimateDensity(cubes, 1);
+    const densities = estimateDensity(cubes, 5);
 
     // Display these values in vectorMetricsContent
     vectorMetricsContent.innerHTML += `<p>Centroid: (${centroid.x.toFixed(8)}, ${centroid.y.toFixed(8)}, ${centroid.z.toFixed(8)})</p>`;
@@ -282,6 +300,8 @@ export function updateVectorMetricsContent() {
     const histogramCanvas = document.createElement('canvas');
     vectorMetricsContent.appendChild(histogramCanvas);
     const ctx = histogramCanvas.getContext('2d');
+
+    drawBoundingBox(boundingBox);
 
     new Chart(ctx, {
         type: 'bar',
