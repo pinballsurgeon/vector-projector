@@ -262,7 +262,7 @@ app.post('/vector_db', async (req, res) => {
 
         await client.connect();
 
-        await client.query('INSERT INTO cache (query, cube_data, model) VALUES ($1, $2, $3) ON CONFLICT (query, model) DO UPDATE SET cube_data = $2', [query, JSON.stringify(pcaResult), model]);
+        await client.query('INSERT INTO cache (query, cube_data, model) VALUES ($1, $2, $3) ON CONFLICT (concat(query, model)) DO UPDATE SET cube_data = $2', [query, JSON.stringify(pcaResult), model]);
 
         client.end();
     
