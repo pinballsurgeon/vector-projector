@@ -275,6 +275,22 @@ function drawBoundingBox(boundingBox) {
     scene.add(line);
 }
 
+function calculateDensityHistogramData(densities) {
+    let frequencyMap = {};
+    densities.forEach(density => {
+        frequencyMap[density] = (frequencyMap[density] || 0) + 1;
+    });
+
+    let histogramData = [];
+    let labels = [];
+    for (let density in frequencyMap) {
+        labels.push(density);
+        histogramData.push(frequencyMap[density]);
+    }
+
+    return { histogramData, labels };
+}
+
 export function updateVectorMetricsContent() {
 
     appendLog(`Vector Metrics - Start`);
@@ -323,4 +339,34 @@ export function updateVectorMetricsContent() {
             }
         }
     });
+
+    const densityHistogramCanvas = document.createElement('canvas');
+    vectorMetricsContent.appendChild(densityHistogramCanvas);
+    const densityCtx = densityHistogramCanvas.getContext('2d');
+
+    // Calculate histogram data for densities
+    const { histogramData: densityHistogramData, labels: densityLabels } = calculateDensityHistogramData(densities);
+
+    // Create the density histogram chart
+    new Chart(densityCtx, {
+        type: 'bar',
+        data: {
+            labels: densityLabels,
+            datasets: [{
+                label: 'Frequency of Density',
+                data: densityHistogramData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
 }
