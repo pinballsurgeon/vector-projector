@@ -284,7 +284,7 @@ export function updateVectorMetricsContent() {
     const centroid = calculateCentroid(cubes);
     const boundingBox = calculateBoundingBox(cubes);
     const avgDistance = calculatePairwiseDistances(cubes);
-    const densities = estimateDensity(cubes, 5);
+    const densities = estimateDensity(cubes, (avgDistance / 2).toFixed(0));
 
     // Display these values in vectorMetricsContent
     vectorMetricsContent.innerHTML += `<p>Centroid: (${centroid.x.toFixed(8)}, ${centroid.y.toFixed(8)}, ${centroid.z.toFixed(8)})</p>`;
