@@ -251,7 +251,7 @@ app.use(bodyParser.json());  // This middleware parses incoming requests with JS
 
 app.post('/vector_db', async (req, res) => {
     try {
-        const { pcaResult, query } = req.body;  // Destructure the JSON payload
+        const { pcaResult, query, model } = req.body;  // Destructure the JSON payload
 
         const client = new Client({
             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
@@ -262,7 +262,7 @@ app.post('/vector_db', async (req, res) => {
 
         await client.connect();
 
-        await client.query('INSERT INTO cache (query, cube_data) VALUES ($1, $2) ON CONFLICT (query) DO UPDATE SET cube_data = $2', [query, JSON.stringify(pcaResult)]);
+        await client.query('INSERT INTO cache (query, cube_data, model) VALUES ($1, $2, $3) ON CONFLICT (query, model) DO UPDATE SET cube_data = $2', [query, JSON.stringify(pcaResult), model]);
 
         client.end();
     
