@@ -297,7 +297,7 @@ app.get('/check_query/:query', async (req, res) => {
 
         console.info("VECTORDB query:", query_dynamic);
         
-        const queryResult = await client.query(query_dynamic, [userInputValue, model]);
+        const queryResult = await client.query(query_dynamic);
         console.info("VECTORDB result length:", queryResult.rows.length);
         
 
