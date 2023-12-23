@@ -34,6 +34,10 @@ document.getElementById('askButton').addEventListener('click', async () => {
     model
   };
 
+  appendLog(`Fethc history payload: ${payload}`);
+  appendLog(`Fethc history model: ${model}`);
+  appendLog(`Fethc history query: ${userInputValue}`);
+
   // Check if the query has been run before
   const response = await fetch(`/check_query/${payload}`);
   const data = await response.json();
