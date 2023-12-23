@@ -34,7 +34,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
     model
   };
 
-  appendLog(`Fethc history payload: ${payload}`);
+  appendLog(`Fethc history payload: ${JSON.stringify(payload)}`);
   appendLog(`Fethc history model: ${model}`);
   appendLog(`Fethc history query: ${userInputValue}`);
 

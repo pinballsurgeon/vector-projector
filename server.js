@@ -292,7 +292,7 @@ app.get('/check_query/:query', async (req, res) => {
 
         await client.connect();
 
-        const queryResult = await client.query('SELECT cube_data FROM cache WHERE query = $1 and model = $2', [userInputValue, model]);
+        const queryResult = await client.query("SELECT cube_data FROM cache WHERE query = '$1' and model = '$2'", [userInputValue, model]);
 
         console.info("VECTORDB result:", queryResult);
 
