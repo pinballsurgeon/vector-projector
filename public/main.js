@@ -35,17 +35,15 @@ document.getElementById('askButton').addEventListener('click', async () => {
   };
 
   appendLog(`Fethc history payload: ${JSON.stringify(payload)}`);
-  appendLog(`Fethc history model: ${model}`);
-  appendLog(`Fethc history query: ${userInputValue}`);
 
   // Check if the query has been run before
   const response = await fetch(`/check_query/${payload}`);
   const data = await response.json();
 
 
-  appendLog(`Fethced history: ${data}`);
+  appendLog(`Fethced history response: ${JSON.stringify(data)}`);
   // if (data.exists && data.pcaResult) {
-    if (data.exists) {
+  if (data.exists) {
       // Query exists, use saved PCA results
       await createOrUpdateCube(data.pcaResult);
       updateVectorMetricsContent();
