@@ -292,7 +292,9 @@ app.get('/check_query/:query', async (req, res) => {
 
         await client.connect();
 
-        const query_dynamic = ("SELECT cube_data FROM cache WHERE query = $1 AND model = $2", [userInputValue, model]);
+        // const query_dynamic = ("SELECT cube_data FROM cache WHERE query = $1 AND model = $2", [userInputValue, model]);
+        const query_dynamic = `SELECT cube_data FROM cache WHERE query = '${userInputValue}' AND model = '${model}'`;
+
         console.info("VECTORDB query:", query_dynamic);
         
         const queryResult = await client.query(query_dynamic, [userInputValue, model]);
