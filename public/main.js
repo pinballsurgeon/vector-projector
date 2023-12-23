@@ -1,4 +1,4 @@
-import { updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
+import { getModelAndParams, updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent } from './cubeManager.js';
@@ -27,9 +27,15 @@ document.addEventListener("DOMContentLoaded", function(){
 // TOPIC HANDLER
 document.getElementById('askButton').addEventListener('click', async () => {
   const userInputValue = document.getElementById('userInput').value;
+  const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+
+  const payload = {
+    userInputValue,
+    model
+  };
 
   // Check if the query has been run before
-  const response = await fetch(`/check_query/${userInputValue}`);
+  const response = await fetch(`/check_query/${payload}`);
   const data = await response.json();
 
 

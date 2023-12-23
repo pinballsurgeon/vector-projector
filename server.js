@@ -280,7 +280,8 @@ app.post('/vector_db', async (req, res) => {
 
 app.get('/check_query/:query', async (req, res) => {
     try {
-        const query = req.params.query;
+        // const query = req.params.query;
+        const { userInputValue, model } = req.body;
 
         const client = new Client({
             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
@@ -291,7 +292,7 @@ app.get('/check_query/:query', async (req, res) => {
 
         await client.connect();
 
-        const queryResult = await client.query('SELECT cube_data FROM cache WHERE query = $1', [query]);
+        const queryResult = await client.query('SELECT cube_data FROM cache WHERE query = $1 and model = $2', [userInputValue, model]);
 
         console.info("VECTORDB result:", queryResult);
 
