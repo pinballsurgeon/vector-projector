@@ -24,22 +24,31 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 
-// TOPIC HANDLER
+// // TOPIC HANDLER
+// document.getElementById('askButton').addEventListener('click', async () => {
+//   const userInputValue = document.getElementById('userInput').value;
+//   const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+
+//   const payload = {
+//     userInputValue,
+//     model
+//   };
+
+//   appendLog(`Fethc history payload: ${JSON.stringify(payload)}`);
+
+//   // Check if the query has been run before
+//   const response = await fetch(`/check_query/${payload}`);
+//   const data = await response.json();
+
 document.getElementById('askButton').addEventListener('click', async () => {
   const userInputValue = document.getElementById('userInput').value;
-  const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
+  const { model } = getModelAndParams();
 
-  const payload = {
-    userInputValue,
-    model
-  };
+  const queryParams = new URLSearchParams({ userInputValue, model }).toString();
+  appendLog(`Fetch history payload: ${queryParams}`);
 
-  appendLog(`Fethc history payload: ${JSON.stringify(payload)}`);
-
-  // Check if the query has been run before
-  const response = await fetch(`/check_query/${payload}`);
+  const response = await fetch(`/check_query?${queryParams}`);
   const data = await response.json();
-
 
   appendLog(`Fethced history response: ${JSON.stringify(data)}`);
   // if (data.exists && data.pcaResult) {
