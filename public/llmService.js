@@ -51,7 +51,7 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
         // clean prompt results
         const data = await response.json(); // Parsing the response data as JSON
         const cleanedResponse = cleanResponse_punct(data.response, fullPrompt);
-        appendLog(`Cleaned response: ${cleanedResponse}`);
+        // appendLog(`Cleaned response: ${cleanedResponse}`);
 
         // RETURN CLEANED RESPONSE
         return cleanedResponse;
@@ -108,7 +108,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
                 const data = await response.json(); // Parsing the response data as JSON
                 let cleanedResponse = data.response;
                 // let cleanedResponse = cleanResponse(data.response, fullPrompt);
-                appendLog(`Cleaned response: ${cleanedResponse}`);
+                // appendLog(`Cleaned response: ${cleanedResponse}`);
 
                 let checkResponse = cleanResponse(cleanedResponse, original_fullprompt);
                 // Remove trailing text if occurs
@@ -193,7 +193,7 @@ export const correctJsonObject = async (promptKey, replacements = {}) => {
             // Process received results object
             const data = await response.json(); // Parsing the response data as JSON
             let cleanedResponse = data.response;
-            appendLog(`Cleaned response: ${cleanedResponse}`);
+            // appendLog(`Cleaned response: ${cleanedResponse}`);
 
             let checkResponse = cleanResponse(cleanedResponse, original_fullprompt);
             // Remove trailing text if occurs
