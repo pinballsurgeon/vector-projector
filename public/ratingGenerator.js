@@ -26,7 +26,7 @@ async function fetchRatingsAndImageForItem(item, attributes_str) {
         };
     } catch (error) {
         appendLog(`Error fetching data for item: ${item}. Error: ${error}`);
-        return null; // Return null or handle the error as needed
+        return { item, error: true }; // Indicate that an error occurred
     }
 }
 
@@ -87,16 +87,16 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
         } else {
             // Create an array of promises
             let promises = items.map(item => fetchRatingsAndImageForItem(item, attributes_str));
-        
+
             // Use Promise.all to wait for all promises to resolve
             let results = await Promise.all(promises);
-        
+
             // Process the results
             results.forEach(result => {
-                if (result) {
+                if (result && !result.error) { // Check if result is valid and no error
                     ratings[result.item] = result.ratings;
                     ratings[result.item]['imageUrl'] = result.imageUrl;
-        
+
                     // Build ratings_str
                     ratings_str += `"${result.item}": {`;
                     Object.entries(result.ratings).forEach(([key, value], index, array) => {
@@ -108,6 +108,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                     if (items.indexOf(result.item) < items.length - 1) ratings_str += ", ";
                 }
             });
+
         }
 
     ratings_str += "}";  // Close the JSON object represented as a string
