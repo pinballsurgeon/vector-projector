@@ -51,7 +51,6 @@ function covarianceMatrix(data) {
 function performPCA(data) {
 
     console.time("performPCA");
-    console.log(data);
 
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
