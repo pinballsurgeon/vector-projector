@@ -25,21 +25,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 // // TOPIC HANDLER
-// document.getElementById('askButton').addEventListener('click', async () => {
-//   const userInputValue = document.getElementById('userInput').value;
-//   const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
-
-//   const payload = {
-//     userInputValue,
-//     model
-//   };
-
-//   appendLog(`Fethc history payload: ${JSON.stringify(payload)}`);
-
-//   // Check if the query has been run before
-//   const response = await fetch(`/check_query/${payload}`);
-//   const data = await response.json();
-
 document.getElementById('askButton').addEventListener('click', async () => {
   const userInputValue = document.getElementById('userInput').value;
   const { model } = getModelAndParams();
@@ -154,3 +139,7 @@ async function openModelTab(evt, modelName) {
 
   }
 
+  document.getElementById('tab-gpt3').addEventListener('click', (event) => openModelTab(event, 'GPT-3'));
+  document.getElementById('tab-gpt3-turbo').addEventListener('click', (event) => openModelTab(event, 'GPT-3-Turbo'));
+  document.getElementById('tab-gpt4').addEventListener('click', (event) => openModelTab(event, 'GPT-4'));
+  
