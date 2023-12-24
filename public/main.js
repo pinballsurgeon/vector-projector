@@ -107,28 +107,47 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 
 
 function openModelTab(evt, modelName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
+    // Declare all variables
+    let i, tabcontent, tablinks;
 
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(modelName).style.display = "block";
+    evt.currentTarget.className += " active";
+
+    // // Load or update the canvas for the selected model
+    // updateCanvasForModel(modelName);
+
+    const userInputValue = document.getElementById('userInput').value;
+    const { model } = getModelAndParams();
+
+    const queryParams = new URLSearchParams({ userInputValue, model }).toString();
+    appendLog(`Fetch history payload: ${queryParams}`);
+
+    const response = await fetch(`/check_query?${queryParams}`);
+    const data = await response.json();
+
+    appendLog(`Fethced history response: ${JSON.stringify(data)}`);
+    // if (data.exists && data.pcaResult) {
+    if (data.exists) {
+        // Query exists, use saved PCA results
+        await createOrUpdateCube(data.pcaResult);
+        updateVectorMetricsContent();
+    } else {
+        // Query does not exist, proceed with generating new results
+        const rootList = await listPerpetuator();
+    }
+
   }
 
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(modelName).style.display = "block";
-  evt.currentTarget.className += " active";
-
-  // Load or update the canvas for the selected model
-  updateCanvasForModel(modelName);
-}
-
-// Initial tab open (default to GPT-4)
-openModelTab(event, 'GPT-4');
