@@ -70,6 +70,9 @@ let svg = d3.select("#my_dataviz").append("svg");
 function resize() {
     let width = document.getElementById('canvas-container').offsetWidth - 40;  // subtracting padding
     let height = (window.innerHeight * 0.75) - 40;  // 75% of the view height, subtracting padding
+    if (width < 0){
+      width = 0;
+    };
     svg.attr("width", width)
         .attr("height", height);
 }
