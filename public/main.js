@@ -95,6 +95,9 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 
 
 async function openModelTab(evt, modelName) {
+
+    appendLog(`Open Model Tab - Started`);
+
     // Declare all variables
     let i, tabcontent, tablinks;
 
