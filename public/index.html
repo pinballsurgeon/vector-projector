@@ -25,9 +25,29 @@
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
     <button id="askButton">Ask</button>
-    <div id="canvas-container">
+    <div class="tab">
+        <button class="tablinks" onclick="openModelTab(event, 'GPT-3')">GPT-3</button>
+        <button class="tablinks" onclick="openModelTab(event, 'GPT-3-Turbo')">GPT-3-Turbo</button>
+        <button class="tablinks" onclick="openModelTab(event, 'GPT-4')">GPT-4</button>
+      </div>
+      
+      <div id="GPT-3" class="tabcontent">
+        <div id="canvas-container">
+            <div id="my_dataviz"></div>
+        </div>   
+      </div>
+      
+      <div id="GPT-3-Turbo" class="tabcontent">
+        <div id="canvasGPT3Turbo"></div>
+      </div>
+      
+      <div id="GPT-4" class="tabcontent">
+        <div id="canvasGPT4"></div>
+      </div>
+      
+    <!-- <div id="canvas-container">
         <div id="my_dataviz"></div>
-    </div>    
+    </div>     -->
     
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
