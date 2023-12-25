@@ -117,32 +117,35 @@ async function openModelTab(evt, modelName) {
     document.getElementById(modelName).style.display = "block";
     evt.currentTarget.className += " active";
 
-    // // Load or update the canvas for the selected model
-    // updateCanvasForModel(modelName);
-
     const userInputValue = document.getElementById('userInput').value;
-    const { model } = getModelAndParams();
+    if (!userInputValue.trim()) {
+        alert('Please enter a query');
+        return;
+    }
+
+    // Set the model based on the clicked tab
+    const model = modelName; // modelName is the ID of the clicked tab button
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     appendLog(`Fetch history payload: ${queryParams}`);
 
-    const response = await fetch(`/check_query?${queryParams}`);
-    const data = await response.json();
+    try {
+        const response = await fetch(`/check_query?${queryParams}`);
+        const data = await response.json();
 
-    appendLog(`Fethced history response: ${JSON.stringify(data)}`);
-    // if (data.exists && data.pcaResult) {
-    if (data.exists) {
-        // Query exists, use saved PCA results
-        await createOrUpdateCube(data.pcaResult);
-        updateVectorMetricsContent();
-    } else {
-        // Query does not exist, proceed with generating new results
-        const rootList = await listPerpetuator();
+        appendLog(`Fetched history response: ${JSON.stringify(data)}`);
+        if (data.exists) {
+            // Query exists, use saved PCA results
+            await createOrUpdateCube(data.pcaResult);
+            updateVectorMetricsContent();
+        } else {
+            // Query does not exist, proceed with generating new results
+            // You might need to modify listPerpetuator or create a new function to handle this
+        }
+    } catch (error) {
+        appendLog(`Error: ${error}`);
     }
+}
 
-  }
-
-  document.getElementById('tab-gpt3').addEventListener('click', (event) => openModelTab(event, 'GPT-3'));
-  document.getElementById('tab-gpt3-turbo').addEventListener('click', (event) => openModelTab(event, 'GPT-3-Turbo'));
-  document.getElementById('tab-gpt4').addEventListener('click', (event) => openModelTab(event, 'GPT-4'));
-  
+document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'text-davinci-003'));
+document.getElementById('tab-gpt-3.5-turbo-instruct').addEventListener('click', (event) => openModelTab(event, 'gpt-3.5-turbo-instruct'));
