@@ -129,8 +129,8 @@ async function openModelTab(evt, modelName) {
         case "tab-text-davinci-003":
             model = "text-davinci-003";
             break;
-        case "tab-gpt-3.5-turbo-instruct":
-            model = "gpt-3.5-turbo-instruct";
+        case "tab-gpt-3.5-turbo":
+            model = "gpt-3.5-turbo";
             break;
         case "tab-gpt-4":
             model = "gpt-4";
@@ -161,7 +161,15 @@ async function openModelTab(evt, modelName) {
     }
 }
 
+// Visually select the 'gpt-3.5-turbo' tab when the page loads
+document.addEventListener("DOMContentLoaded", () => {
+  const gpt35TurboTab = document.getElementById("tab-gpt-3.5-turbo");
+  if (gpt35TurboTab) {
+    gpt35TurboTab.className += " active";
+  }
+});
+
 document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
-document.getElementById('tab-gpt-3.5-turbo-instruct').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo-instruct'));
+document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
