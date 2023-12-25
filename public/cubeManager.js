@@ -28,6 +28,9 @@ export let cubes = [];
 
 
 export const createOrUpdateCube = (data) => {
+
+    clearCanvas();
+
     const textureLoader = new THREE.TextureLoader();
     let cubeCreationPromises = [];
 
@@ -369,4 +372,10 @@ export function updateVectorMetricsContent() {
         }
     });
 
+}
+
+function clearCanvas() {
+    // Logic to clear the canvas goes here
+    cubes.forEach(cube => scene.remove(cube));
+    cubes = [];
 }
