@@ -139,8 +139,7 @@ async function openModelTab(evt, modelName) {
             await createOrUpdateCube(data.pcaResult);
             updateVectorMetricsContent();
         } else {
-            // Query does not exist, proceed with generating new results
-            // You might need to modify listPerpetuator or create a new function to handle this
+            const rootList = await listPerpetuator();
         }
     } catch (error) {
         appendLog(`Error: ${error}`);
