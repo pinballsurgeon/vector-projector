@@ -9,8 +9,11 @@ export function getModelAndParams() {
     selectedTopP = document.getElementById('top_p').value;
     selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
     
+    const selectedModelTab = document.querySelector('.tablinks.active');
+    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+
     return { 
-        model: selectedModel, 
+        model: model, 
         temperature: selectedTemperature, 
         top_p: selectedTopP, 
         num_return_sequences: selectedNumSequences 
@@ -21,7 +24,7 @@ export function getModelAndParams() {
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     modelSelectionContent.innerHTML = '';
-    appendModelSelection();
+    // appendModelSelection();
 }
 
 // Initialize Model Parameters
