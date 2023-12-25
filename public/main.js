@@ -132,6 +132,12 @@ async function openModelTab(evt, modelName) {
         case "tab-gpt-3.5-turbo-instruct":
             model = "gpt-3.5-turbo-instruct";
             break;
+        case "tab-gpt-4":
+            model = "gpt-4";
+            break;
+        case "tab-gpt-4-1106-preview":
+            model = "gpt-4-1106-preview";
+            break;
         // Add cases for other models
     }
 
