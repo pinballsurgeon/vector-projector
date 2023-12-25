@@ -375,7 +375,25 @@ export function updateVectorMetricsContent() {
 }
 
 function clearCanvas() {
-    // Logic to clear the canvas goes here
-    cubes.forEach(cube => scene.remove(cube));
-    cubes = [];
+    while(scene.children.length > 0){ 
+        let object = scene.children[0];
+
+        if (object.isMesh) {
+            // Dispose geometry and material
+            if (object.geometry) {
+                object.geometry.dispose();
+            }
+
+            if (object.material) {
+                if (object.material instanceof Array) {
+                    // In case of multi-materials
+                    object.material.forEach(material => material.dispose());
+                } else {
+                    object.material.dispose();
+                }
+            }
+        }
+
+        scene.remove(object); 
+    }
 }
