@@ -123,8 +123,17 @@ async function openModelTab(evt, modelName) {
         return;
     }
 
-    // Set the model based on the clicked tab
-    const model = modelName; // modelName is the ID of the clicked tab button
+    // Extract the model name from the button ID if necessary
+    let model = "";
+    switch (modelName) {
+        case "tab-text-davinci-003":
+            model = "text-davinci-003";
+            break;
+        case "tab-gpt-3.5-turbo-instruct":
+            model = "gpt-3.5-turbo-instruct";
+            break;
+        // Add cases for other models
+    }
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     appendLog(`Fetch history payload: ${queryParams}`);
@@ -146,5 +155,5 @@ async function openModelTab(evt, modelName) {
     }
 }
 
-document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'text-davinci-003'));
-document.getElementById('tab-gpt-3.5-turbo-instruct').addEventListener('click', (event) => openModelTab(event, 'gpt-3.5-turbo-instruct'));
+document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
+document.getElementById('tab-gpt-3.5-turbo-instruct').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo-instruct'));
