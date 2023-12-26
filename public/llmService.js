@@ -71,7 +71,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
             }
         }
     
-        appendLog(`Build json input: ${userInput}`);
+        // ppendLog(`Build json input: ${userInput}`);
         let fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
 
         let completeResponse = "";
@@ -83,7 +83,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
             try {
 
-                appendLog(`Build json full prompt: ${fullPrompt}`);
+                // appendLog(`Build json full prompt: ${fullPrompt}`);
 
                 const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
                 appendLog(`Selected model: ${model}`);
