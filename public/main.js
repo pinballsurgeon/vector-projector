@@ -30,12 +30,12 @@ document.getElementById('askButton').addEventListener('click', async () => {
   const { model } = getModelAndParams();
 
   const queryParams = new URLSearchParams({ userInputValue, model }).toString();
-  appendLog(`Fetch history payload: ${queryParams}`);
+  // appendLog(`Fetch history payload: ${queryParams}`);
 
   const response = await fetch(`/check_query?${queryParams}`);
   const data = await response.json();
 
-  appendLog(`Fethced history response: ${JSON.stringify(data)}`);
+  // appendLog(`Fethced history response: ${JSON.stringify(data)}`);
   // if (data.exists && data.pcaResult) {
   if (data.exists) {
       // Query exists, use saved PCA results
