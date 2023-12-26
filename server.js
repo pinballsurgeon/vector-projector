@@ -50,8 +50,6 @@ function covarianceMatrix(data) {
 
 function performPCA(data) {
 
-    console.time("performPCA");
-
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
@@ -103,6 +101,7 @@ app.post('/performPCA', (req, res, next) => {
         res.json(result);
     } catch (err) {
         console.error(err);
+        console.error("performPCA error");
         next(err);
     }
 });
@@ -140,7 +139,7 @@ app.post('/ask', async (req, res, next) => {
         } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview'].includes(model)) {
 
             const gptResponse = await openai.createChatCompletion({
-                model: "gpt-3.5-turbo",
+                model: model,
                 messages: [{ role: "user", content: userInput }],
               });
 
@@ -241,7 +240,7 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening`);
 }
 );
 
