@@ -113,6 +113,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
     ratings_str += "}";  // Close the JSON object represented as a string
 
+    appendLog(`Generative AI Complete.`);
 
     // Assume ratings is your original JSON object
     let standardizedRatings = {};
@@ -122,27 +123,34 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
     // Iterate through each item in the original JSON object
     for (let itemKey in ratings) {
-        let item = ratings[itemKey];
-        let standardizedItem = {};
-
-        // Iterate through the standard keys and map the values from the original item
-        standardKeys.forEach((key, index) => {
-            let originalKeys = Object.keys(item);
-            standardizedItem[key] = item[originalKeys[index]];
-        });
-
-        // Store the standardized item in the new JSON object
-        standardizedRatings[itemKey] = standardizedItem;
+        try {
+            let item = ratings[itemKey];
+            let standardizedItem = {};
+    
+            standardKeys.forEach((key, index) => {
+                let originalKeys = Object.keys(item);
+                standardizedItem[key] = item[originalKeys[index]];
+            });
+    
+            standardizedRatings[itemKey] = standardizedItem;
+        } catch (error) {
+            appendLog(`Error processing item ${itemKey}: ${error}`);
+        }
     }
+    
 
     ratings = standardizedRatings;
 
     // Prepare ratings for PCA (without the imageUrl)
     pcaRatings = JSON.parse(JSON.stringify(standardizedRatings));
     for (let itemKey in pcaRatings) {
-        delete pcaRatings[itemKey]['imageUrl'];
+        try {
+            delete pcaRatings[itemKey]['imageUrl'];
+        } catch (error) {
+            appendLog(`Error processing PCA rating for item ${itemKey}: ${error}`);
+        }
     }
-
+    
 
     // Get PCA results
     const pcaResponse = await fetch('/performPCA', {
@@ -156,22 +164,17 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
     // Combine PCA coordinates with image URLs and original ratings for each item
     for (let item of items) {
-        pcaResult[item] = {
-            coordinates: pcaResult[item],
-            image: ratings[item]['imageUrl'],
-            originalRatings: ratings[item]
-        };
-
-        // Remove the 'imageUrl' key from originalRatings as it's redundant
-        delete pcaResult[item].originalRatings['imageUrl'];
-    }
-
-    try {
-        appendLog(`PCA Results with Images and Original Ratings: ${JSON.stringify(pcaResult)}`);
-    }
-    catch {
-        appendLog(pcaResult);
-    }
+        try {
+            pcaResult[item] = {
+                coordinates: pcaResult[item],
+                image: ratings[item]['imageUrl'],
+                originalRatings: ratings[item]
+            };
+            delete pcaResult[item].originalRatings['imageUrl'];
+        } catch (error) {
+            appendLog(`Error combining PCA results for item ${item}: ${error}`);
+        }
+    }    
 
     const userInputValue = document.getElementById('userInput').value;
 
