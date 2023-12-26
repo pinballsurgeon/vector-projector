@@ -248,18 +248,18 @@ app.listen(port, () => {
 
 app.use(bodyParser.json());  // This middleware parses incoming requests with JSON payloads
 
+
+
 app.post('/vector_db', async (req, res) => {
+    const client = new Client({
+        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
     try {
-        const { pcaResult, query, model } = req.body;  // Destructure the JSON payload
-
-        const client = new Client({
-            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-            ssl: {
-                rejectUnauthorized: false
-            }
-        });
-
         await client.connect();
+        const { pcaResult, query, model } = req.body;
 
         await client.query(`
             INSERT INTO cache (query, cube_data, model)
@@ -267,58 +267,116 @@ app.post('/vector_db', async (req, res) => {
             ON CONFLICT (model, query) 
             DO UPDATE SET cube_data = EXCLUDED.cube_data
         `, [query, JSON.stringify(pcaResult), model]);
-        
-        client.end();
-    
-        res.status(200).send("Done");  // Send a success response
-    } catch (error) {
-        console.error("Error processing request:", error);
-        res.status(500).send("Internal server error");  // Send a generic error response
-    }
-});
-
-// app.get('/check_query/:query', async (req, res) => {
-//     try {
-//         // const query = req.params.query;
-//         const { userInputValue, model } = req.body;
-
-app.get('/check_query', async (req, res) => {
-    try {
-        const { userInputValue, model } = req.query;
-  
-        const client = new Client({
-            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-            ssl: {
-                rejectUnauthorized: false
-            }
-        });
-
-        await client.connect();
-
-        // const query_dynamic = ("SELECT cube_data FROM cache WHERE query = $1 AND model = $2", [userInputValue, model]);
-        const query_dynamic = `SELECT cube_data FROM cache WHERE query = '${userInputValue}' AND model = '${model}'`;
-
-        console.info("VECTORDB query:", query_dynamic);
-        
-        const queryResult = await client.query(query_dynamic);
-        console.info("VECTORDB result length:", queryResult.rows.length);
-        
-
-        if (queryResult.rows.length > 0) {
-            const cubeData = queryResult.rows[0].cube_data;
-    
-            // Construct a response with 'exists' property
-            const responseData = {
-                exists: true,
-                pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
-            };
-            res.json(responseData);
-        } else {
-            res.json({ exists: false, message: "No data found for this query" });
-        }
-
+        res.status(200).send("Done");
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
+    } finally {
+        client.end(); // Ensure the client connection is closed
     }
 });
+
+
+// app.post('/vector_db', async (req, res) => {
+//     try {
+//         const { pcaResult, query, model } = req.body;  // Destructure the JSON payload
+
+//         const client = new Client({
+//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+//             ssl: {
+//                 rejectUnauthorized: false
+//             }
+//         });
+
+//         await client.connect();
+
+//         await client.query(`
+//             INSERT INTO cache (query, cube_data, model)
+//             VALUES ($1, $2, $3)
+//             ON CONFLICT (model, query) 
+//             DO UPDATE SET cube_data = EXCLUDED.cube_data
+//         `, [query, JSON.stringify(pcaResult), model]);
+        
+//         client.end();
+    
+//         res.status(200).send("Done");  // Send a success response
+//     } catch (error) {
+//         console.error("Error processing request:", error);
+//         res.status(500).send("Internal server error");  // Send a generic error response
+//     }
+// });
+
+
+app.get('/check_query', async (req, res) => {
+    const client = new Client({
+        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+    try {
+        await client.connect();
+        const { userInputValue, model } = req.query;
+
+        const queryResult = await client.query(`
+            SELECT cube_data FROM cache WHERE query = $1 AND model = $2
+        `, [userInputValue, model]);
+
+        if (queryResult.rows.length > 0) {
+            const cubeData = queryResult.rows[0].cube_data;
+            res.json({
+                exists: true,
+                pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
+            });
+        } else {
+            res.json({ exists: false, message: "No data found for this query" });
+        }
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        client.end(); // Ensure the client connection is closed
+    }
+});
+
+
+// app.get('/check_query', async (req, res) => {
+//     try {
+//         const { userInputValue, model } = req.query;
+  
+//         const client = new Client({
+//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+//             ssl: {
+//                 rejectUnauthorized: false
+//             }
+//         });
+
+//         await client.connect();
+
+//         // const query_dynamic = ("SELECT cube_data FROM cache WHERE query = $1 AND model = $2", [userInputValue, model]);
+//         const query_dynamic = `SELECT cube_data FROM cache WHERE query = '${userInputValue}' AND model = '${model}'`;
+
+//         console.info("VECTORDB query:", query_dynamic);
+        
+//         const queryResult = await client.query(query_dynamic);
+//         console.info("VECTORDB result length:", queryResult.rows.length);
+        
+
+//         if (queryResult.rows.length > 0) {
+//             const cubeData = queryResult.rows[0].cube_data;
+    
+//             // Construct a response with 'exists' property
+//             const responseData = {
+//                 exists: true,
+//                 pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
+//             };
+//             res.json(responseData);
+//         } else {
+//             res.json({ exists: false, message: "No data found for this query" });
+//         }
+
+//     } catch (error) {
+//         console.error("Error processing request:", error);
+//         res.status(500).send("Internal server error");
+//     }
+// });
