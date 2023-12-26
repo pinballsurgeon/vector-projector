@@ -375,6 +375,10 @@ export function updateVectorMetricsContent() {
 }
 
 function clearCanvas() {
+
+    cubes.forEach(cube => scene.remove(cube));
+    cubes = [];
+
     while(scene.children.length > 0){ 
         let object = scene.children[0];
 
