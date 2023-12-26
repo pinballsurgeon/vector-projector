@@ -38,7 +38,7 @@ export const createOrUpdateCube = (data) => {
         const item = data[itemName];
 
         // Create a new promise for each cube
-        let cubePromise = new Promise((resolve, reject) => {
+        let cubePromise = new Promise((resolve) => {  // Note: Only using resolve here
             const xPos = parseFloat(item.coordinates.x);
             const yPos = parseFloat(item.coordinates.y);
             const zPos = parseFloat(item.coordinates.z);
@@ -60,7 +60,7 @@ export const createOrUpdateCube = (data) => {
                 undefined, 
                 (error) => {
                     appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
-                    reject(error); // Reject the promise on error
+                    resolve('error'); // Resolve the promise on error with an 'error' flag or message
                 }
             );
         });
@@ -68,9 +68,10 @@ export const createOrUpdateCube = (data) => {
         cubeCreationPromises.push(cubePromise);
     }
 
-    // Return a promise that resolves when all cubes have been created
+    // Return a promise that resolves when all cubes have been created, including those that failed to load
     return Promise.all(cubeCreationPromises);
 };
+
 
 
 // Make function globally available
