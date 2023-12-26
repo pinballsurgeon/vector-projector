@@ -142,13 +142,13 @@ async function openModelTab(evt, modelName) {
     }
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
-    appendLog(`Fetch history payload: ${queryParams}`);
+    // appendLog(`Fetch history payload: ${queryParams}`);
 
     try {
         const response = await fetch(`/check_query?${queryParams}`);
         const data = await response.json();
 
-        appendLog(`Fetched history response: ${JSON.stringify(data)}`);
+        // appendLog(`Fetched history response: ${JSON.stringify(data)}`);
         if (data.exists) {
             // Query exists, use saved PCA results
             await createOrUpdateCube(data.pcaResult);
