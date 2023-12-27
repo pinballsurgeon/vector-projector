@@ -321,6 +321,7 @@ function processComparisonResults(rows) {
         const model = row.model;
         const cubeData = JSON.parse(row.cube_data); // Assuming cube_data is stored as a JSON string
 
+        console.info("COMPARE VECTORS DB MODELS:", model);
         // Calculate metrics for this model
         const metrics = calculateModelMetrics(cubeData);
 
@@ -426,6 +427,7 @@ app.get('/compare_vectors', async (req, res) => {
         // Close the database connection
         client.end();
 
+        console.info("COMPARE VECTORS DB:", queryResult.rows);
         const compareData = processComparisonResults(queryResult.rows);
         res.json(compareData);
     } catch (error) {
