@@ -173,3 +173,36 @@ document.getElementById('tab-text-davinci-003').addEventListener('click', (event
 document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
+
+
+document.getElementById('compareTab').addEventListener('click', compareModels);
+
+async function compareModels() {
+    const userInputValue = document.getElementById('userInput').value;
+    if (!userInputValue) {
+        alert("Please enter a query to compare.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/compare_vectors?query=${userInputValue}`);
+        const compareData = await response.json();
+        
+        // Clear existing data
+        const compareContainer = document.getElementById('compare-container');
+        compareContainer.innerHTML = '';
+        compareContainer.style.display = 'block';
+        
+        // Iterate over models and create summary for each
+        for (const modelResult of compareData) {
+            const modelDiv = document.createElement('div');
+            modelDiv.classList.add('model-result-container');
+
+
+
+            compareContainer.appendChild(modelDiv);
+        }
+    } catch (error) {
+        console.error(`Error during comparison: ${error}`);
+    }
+}

@@ -276,36 +276,6 @@ app.post('/vector_db', async (req, res) => {
 });
 
 
-// app.post('/vector_db', async (req, res) => {
-//     try {
-//         const { pcaResult, query, model } = req.body;  // Destructure the JSON payload
-
-//         const client = new Client({
-//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-//             ssl: {
-//                 rejectUnauthorized: false
-//             }
-//         });
-
-//         await client.connect();
-
-//         await client.query(`
-//             INSERT INTO cache (query, cube_data, model)
-//             VALUES ($1, $2, $3)
-//             ON CONFLICT (model, query) 
-//             DO UPDATE SET cube_data = EXCLUDED.cube_data
-//         `, [query, JSON.stringify(pcaResult), model]);
-        
-//         client.end();
-    
-//         res.status(200).send("Done");  // Send a success response
-//     } catch (error) {
-//         console.error("Error processing request:", error);
-//         res.status(500).send("Internal server error");  // Send a generic error response
-//     }
-// });
-
-
 app.get('/check_query', async (req, res) => {
     const client = new Client({
         connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
@@ -339,43 +309,126 @@ app.get('/check_query', async (req, res) => {
 });
 
 
-// app.get('/check_query', async (req, res) => {
-//     try {
-//         const { userInputValue, model } = req.query;
-  
-//         const client = new Client({
-//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-//             ssl: {
-//                 rejectUnauthorized: false
-//             }
-//         });
 
-//         await client.connect();
 
-//         // const query_dynamic = ("SELECT cube_data FROM cache WHERE query = $1 AND model = $2", [userInputValue, model]);
-//         const query_dynamic = `SELECT cube_data FROM cache WHERE query = '${userInputValue}' AND model = '${model}'`;
 
-//         console.info("VECTORDB query:", query_dynamic);
+function processComparisonResults(rows) {
+    // This will hold the comparison data for each model
+    let comparisonData = {};
+
+    // Iterate over each row, which represents a model's result for a query
+    rows.forEach(row => {
+        const model = row.model;
+        const cubeData = JSON.parse(row.cube_data); // Assuming cube_data is stored as a JSON string
+
+        // Calculate metrics for this model
+        const metrics = calculateModelMetrics(cubeData);
+
+        // Add the calculated metrics to the comparisonData object
+        comparisonData[model] = metrics;
+    });
+
+    return comparisonData;
+}
+
+function calculateModelMetrics(cubeData) {
+    // Extract coordinates for pairwise distance calculation
+    const coordinates = Object.values(cubeData).map(item => item.coordinates);
+    const numOfCubes = coordinates.length;
+    const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
+    const averagePairwiseDistance = calculateAverage(pairwiseDistances);
+    const boundingBoxArea = calculateBoundingBoxArea(coordinates);
+
+    // You would have functions for each of these calculations
+    const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
+    const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
+
+    // Return the calculated metrics
+    return {
+        numberOfCubes: numOfCubes,
+        pairwiseAvgDistance: averagePairwiseDistance,
+        vectorArea: boundingBoxArea,
+        pairwiseDistanceHistogram: pairwiseDistanceHistogram,
+        densityHistogram: densityHistogram
+    };
+}
+
+// Dummy function for calculating all pairwise distances
+function calculateAllPairwiseDistances(coordinates) {
+    // Implement the actual calculation of pairwise distances
+    // This is just a placeholder
+    return coordinates.flatMap((coord, index, arr) =>
+        arr.slice(index + 1).map(otherCoord => calculateDistance(coord, otherCoord))
+    );
+}
+
+// Dummy function for calculating the average of an array
+function calculateAverage(array) {
+    const sum = array.reduce((acc, val) => acc + val, 0);
+    return sum / array.length;
+}
+
+// Dummy function for calculating the area of the bounding box
+function calculateBoundingBoxArea(coordinates) {
+    // Implement the actual calculation
+    // This is just a placeholder
+    return Math.random() * 100; // Placeholder value
+}
+
+// Dummy function to create a histogram
+function createHistogram(data) {
+    // Implement actual histogram creation
+    // This is just a placeholder
+    return data.reduce((hist, x) => {
+        // Your binning logic here
+        return hist;
+    }, {});
+}
+
+// Dummy function to calculate density histogram
+function calculateDensityHistogram(coordinates, radius) {
+    // Implement actual density histogram calculation
+    // This is just a placeholder
+    return coordinates.map(coord => {
+        // Your density calculation logic here
+        return Math.random(); // Placeholder value
+    });
+}
+
+// Dummy function to calculate distance between two points
+function calculateDistance(pointA, pointB) {
+    // Implement the actual distance formula
+    return Math.sqrt(
+        Math.pow(pointB.x - pointA.x, 2) +
+        Math.pow(pointB.y - pointA.y, 2) +
+        Math.pow(pointB.z - pointA.z, 2)
+    );
+}
+
+app.get('/compare_vectors', async (req, res) => {
+    const userInputValue = req.query.query;
+
+    try {
+        const client = new Client({
+            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const queryResult = await client.query(`
+            SELECT model, cube_data
+            FROM cache
+            WHERE query = $1
+        `, [userInputValue]);
         
-//         const queryResult = await client.query(query_dynamic);
-//         console.info("VECTORDB result length:", queryResult.rows.length);
-        
+        // Close the database connection
+        client.end();
 
-//         if (queryResult.rows.length > 0) {
-//             const cubeData = queryResult.rows[0].cube_data;
-    
-//             // Construct a response with 'exists' property
-//             const responseData = {
-//                 exists: true,
-//                 pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
-//             };
-//             res.json(responseData);
-//         } else {
-//             res.json({ exists: false, message: "No data found for this query" });
-//         }
-
-//     } catch (error) {
-//         console.error("Error processing request:", error);
-//         res.status(500).send("Internal server error");
-//     }
-// });
+        const compareData = processComparisonResults(queryResult.rows);
+        res.json(compareData);
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    }
+});
