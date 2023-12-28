@@ -407,7 +407,12 @@ app.get('/compare_vectors', async (req, res) => {
     console.info("COMPARE VECTORS INPUT:", userInputValue);
 
     try {
-        const client = new Client(dbConfig);
+        const client = new Client({
+                        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+                        ssl: {
+                            rejectUnauthorized: false
+                        }
+                    });
         await client.connect();
 
         const queryResult = await client.query(`
