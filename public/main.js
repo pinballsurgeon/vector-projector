@@ -1,7 +1,7 @@
 import { getModelAndParams, updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { createOrUpdateCube, updateVectorMetricsContent } from './cubeManager.js';
+import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
 // import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
 
 // SIDE BAR HANDLER
@@ -174,7 +174,6 @@ document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) =
 document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
 
-
 document.getElementById('compareTab').addEventListener('click', compareModels);
 
 async function compareModels() {
@@ -184,11 +183,16 @@ async function compareModels() {
         return;
     }
 
+    // Hide and clear the canvas
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.style.display = 'none';
+    clearCanvas(); // Make sure this function is imported or accessible
+
     try {
         const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
         const compareData = await response.json();
         
-        // Clear existing data
+        // Clear existing data in the compare container
         const compareContainer = document.getElementById('compare-container');
         compareContainer.innerHTML = '';
         compareContainer.style.display = 'block';
