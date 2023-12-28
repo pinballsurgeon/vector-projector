@@ -424,7 +424,7 @@ app.get('/compare_vectors', async (req, res) => {
         // Close the database connection
         client.end();
 
-        console.info("COMPARE VECTORS DB:", queryResult.rows);
+        // console.info("COMPARE VECTORS DB:", queryResult.rows);
 
         // Process each row and ensure cube_data is an object
         const compareData = queryResult.rows.map(row => {
