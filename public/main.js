@@ -208,7 +208,7 @@ async function compareModels() {
 
             // Create a paragraph for the item count
             const itemCountParagraph = document.createElement('p');
-            itemCountParagraph.textContent = `Number of items: ${modelResult.itemCount}`;
+            itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
             modelDiv.appendChild(itemCountParagraph);
 
             // Append the model container to the compare container
