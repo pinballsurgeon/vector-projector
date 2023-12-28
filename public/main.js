@@ -305,11 +305,13 @@ function append3DVisualization(modelDiv, modelResult) {
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
   scene.add(directionalLight);
 
-  // Create a geometry and add texture
+  // Create a geometry with a light blue transparent material
   const geometry = new THREE.BoxGeometry(); // Example: Box geometry
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load('path_to_texture.jpg'); // Replace with your texture path
-  const material = new THREE.MeshBasicMaterial({ map: texture });
+  const material = new THREE.MeshBasicMaterial({
+      color: 'lightblue', // Set the color to light blue
+      transparent: true,  // Ensure the material supports transparency
+      opacity: 0.5        // Set opacity to 50%
+  });
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 
