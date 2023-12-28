@@ -216,8 +216,7 @@ async function compareModels() {
             modelTitle.textContent = `Model: ${modelResult.model}`;
             modelDiv.appendChild(modelTitle);
 
-            // Append 3D visualization
-            append3DVisualization(modelDiv, modelResult);
+            append2DVisualization(modelDiv, modelResult);
 
             // Create a paragraph for the item count
             const itemCountParagraph = document.createElement('p');
@@ -284,46 +283,52 @@ async function compareModels() {
 }
 
 // main.js
+function append2DVisualization(modelDiv, modelResult) {
+  // Create a canvas element
+  const canvas = document.createElement('canvas');
+  canvas.width = 200; // Set width
+  canvas.height = 200; // Set height
+  modelDiv.appendChild(canvas);
 
-function append3DVisualization(modelDiv, modelResult) {
-  const vizContainer = document.createElement('div');
-  vizContainer.classList.add('model-viz-container');
-  modelDiv.appendChild(vizContainer);
+  const ctx = canvas.getContext('2d');
 
-  // Set up the scene, camera, and renderer
-  const width = vizContainer.offsetWidth;
-  const height = 300; // Set a fixed height or make it responsive
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(width, height);
-  vizContainer.appendChild(renderer.domElement);
+  // Assume we have a set of points (vector representations) for the modelResult
+  const points = modelResult.vectorPoints; // This should be an array of {x, y, z} objects
 
-  // Add lights to the scene
-  const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-  scene.add(directionalLight);
+  // Normalize the points to fit the canvas
+  const normalizedPoints = normalizePoints(points, canvas.width, canvas.height);
 
-  // Create a geometry with a light blue transparent material
-  const geometry = new THREE.BoxGeometry(); // Example: Box geometry
-  const material = new THREE.MeshBasicMaterial({
-      color: 'lightblue', // Set the color to light blue
-      transparent: true,  // Ensure the material supports transparency
-      opacity: 0.5        // Set opacity to 50%
+  // Draw each point
+  normalizedPoints.forEach(point => {
+      // Use the z-coordinate to determine the color and size (as a simple depth effect)
+      const depth = (point.z + 1) / 2; // Normalize z value between 0 and 1
+      const size = depth * 5 + 2; // Size based on depth
+      const blueIntensity = depth * 255;
+
+      // Draw a circle for each point
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, size, 0, 2 * Math.PI, false);
+      ctx.fillStyle = `rgba(135, 206, 250, ${0.5 + depth * 0.5})`; // Light blue with transparency
+      ctx.fill();
   });
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+}
 
-  // Set the camera position
-  camera.position.z = 5;
+function normalizePoints(points, width, height) {
+  // Find the range of the points
+  const xValues = points.map(p => p.x);
+  const yValues = points.map(p => p.y);
+  const zValues = points.map(p => p.z);
+  const xMax = Math.max(...xValues);
+  const xMin = Math.min(...xValues);
+  const yMax = Math.max(...yValues);
+  const yMin = Math.min(...yValues);
+  const zMax = Math.max(...zValues);
+  const zMin = Math.min(...zValues);
 
-  // Animation loop to rotate the cube and render the scene
-  function animate() {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
-  }
-  animate();
+  // Normalize points to fit within the canvas
+  return points.map(p => ({
+      x: ((p.x - xMin) / (xMax - xMin)) * width,
+      y: ((p.y - yMin) / (yMax - yMin)) * height,
+      z: (p.z - zMin) / (zMax - zMin) // Normalized between 0 and 1 for depth effect
+  }));
 }
