@@ -339,12 +339,15 @@ function calculateModelMetrics(cubeData) {
     const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const boundingBoxVolume = calculateBoundingVolumeArea(coordinates);
+    const histogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
+
 
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
-        boundingBoxVolume
+        boundingBoxVolume,
+        histogramData
     };
 }
 
@@ -397,14 +400,26 @@ function calculateBoundingVolumeArea(coordinates) {
 }
 
 
-// Dummy function to create a histogram
-function createHistogram(data) {
-    // Implement actual histogram creation
-    // This is just a placeholder
-    return data.reduce((hist, x) => {
-        // Your binning logic here
-        return hist;
-    }, {});
+function calculateHistogramBins(pairwiseDistances, binCount) {
+    const maxDistance = Math.max(...pairwiseDistances);
+    const minDistance = Math.min(...pairwiseDistances);
+    const binSize = (maxDistance - minDistance) / binCount;
+    let bins = new Array(binCount).fill(0);
+    let binEdges = [];
+
+    for (let i = 0; i < binCount; i++) {
+        binEdges.push(minDistance + i * binSize);
+    }
+    binEdges.push(maxDistance); // Include the max edge
+
+    pairwiseDistances.forEach(distance => {
+        let binIndex = Math.floor((distance - minDistance) / binSize);
+        // Make sure the maximum distance falls into the last bin
+        binIndex = binIndex === binCount ? binCount - 1 : binIndex;
+        bins[binIndex]++;
+    });
+
+    return { bins, binEdges };
 }
 
 // Dummy function to calculate density histogram

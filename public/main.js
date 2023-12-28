@@ -233,8 +233,50 @@ async function compareModels() {
 
             // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
-        });
-    } catch (error) {
-        console.error(`Error during comparison: ${error}`);
-    }
-}
+             // Create canvas for the histogram chart
+             const canvas = document.createElement('canvas');
+             canvas.id = `histogram-${modelResult.model}`; // Dynamic ID for the canvas
+             modelDiv.appendChild(canvas);
+ 
+             // Prepare histogram data
+             const histogramLabels = modelResult.histogramData.binEdges.map((edge, index, array) => {
+                 if (index === array.length - 1) return;
+                 return `${edge.toFixed(2)}-${array[index + 1].toFixed(2)}`;
+             }).slice(0, -1); // Skip the last undefined label
+ 
+             const histogramData = {
+                 labels: histogramLabels,
+                 datasets: [{
+                     label: 'Pairwise distances',
+                     data: modelResult.histogramData.bins,
+                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                     borderColor: 'rgba(54, 162, 235, 1)',
+                     borderWidth: 1
+                 }]
+             };
+ 
+             // Create the histogram chart
+             new Chart(canvas.getContext('2d'), {
+                 type: 'bar',
+                 data: histogramData,
+                 options: {
+                     scales: {
+                         y: {
+                             beginAtZero: true
+                         }
+                     },
+                     plugins: {
+                         legend: {
+                             display: false
+                         }
+                     }
+                 }
+             });
+ 
+             // Append the model container to the compare container
+             compareContainer.appendChild(modelDiv);
+         });
+     } catch (error) {
+         console.error(`Error during comparison: ${error}`);
+     }
+ }
