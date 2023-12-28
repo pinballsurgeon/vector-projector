@@ -331,8 +331,8 @@ function processComparisonResults(dbRows) {
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
     const coordinates = Object.values(cubeData).map(item => item.coordinates);
-    const numOfCubes = 4;
-    // const numOfCubes = coordinates.length;
+    // const numOfCubes = 4;
+    const numOfCubes = coordinates.length;
     // const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     // const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     // const boundingBoxArea = calculateBoundingBoxArea(coordinates);
