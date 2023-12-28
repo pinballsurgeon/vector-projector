@@ -338,16 +338,21 @@ function calculateModelMetrics(cubeData) {
     const numOfCubes = coordinates.length;
     const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
-    const boundingBoxVolume = calculateBoundingVolumeArea(coordinates);
-    const histogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
+    const densities = estimateDensity(coordinates, averagePairwiseDistance);
 
+    // Calculate the histogram for pairwise distances
+    const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
+
+    // Calculate the histogram for densities
+    const densityHistogramData = calculateHistogramBins(densities, 5); // 5 bins for density histogram
 
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
-        boundingBoxVolume,
-        histogramData
+        boundingBoxVolume: calculateBoundingVolumeArea(coordinates),
+        pairwiseHistogramData,
+        densityHistogramData
     };
 }
 
@@ -422,16 +427,15 @@ function calculateHistogramBins(pairwiseDistances, binCount) {
     return { bins, binEdges };
 }
 
-// Dummy function to calculate density histogram
-function calculateDensityHistogram(coordinates, radius) {
-    // Implement actual density histogram calculation
-    // This is just a placeholder
-    return coordinates.map(coord => {
-        // Your density calculation logic here
-        return Math.random(); // Placeholder value
-    });
+// Function to estimate density based on average pairwise distance
+function estimateDensity(coordinates, avgDistance) {
+    let halfAvgDistance = avgDistance / 2;
+    return coordinates.map(coord => 
+        coordinates.filter(otherCoord => 
+            calculateDistance(coord, otherCoord) <= halfAvgDistance
+        ).length - 1 // Subtract 1 to exclude the point itself
+    );
 }
-
 
 app.get('/compare_vectors', async (req, res) => {
     const userInputValue = req.query.query;

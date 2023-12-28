@@ -231,52 +231,51 @@ async function compareModels() {
             boundingBoxVolumeParagraph.textContent = `Bounding Box Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
             modelDiv.appendChild(boundingBoxVolumeParagraph);
 
+            // Append histogram canvases for pairwise distances and density
+            appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
+            appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
+
             // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
-             // Create canvas for the histogram chart
-             const canvas = document.createElement('canvas');
-             canvas.id = `histogram-${modelResult.model}`; // Dynamic ID for the canvas
-             modelDiv.appendChild(canvas);
- 
-             // Prepare histogram data
-             const histogramLabels = modelResult.histogramData.binEdges.map((edge, index, array) => {
-                 if (index === array.length - 1) return;
-                 return `${edge.toFixed(2)}-${array[index + 1].toFixed(2)}`;
-             }).slice(0, -1); // Skip the last undefined label
- 
-             const histogramData = {
-                 labels: histogramLabels,
-                 datasets: [{
-                     label: 'Pairwise distances',
-                     data: modelResult.histogramData.bins,
-                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                     borderColor: 'rgba(54, 162, 235, 1)',
-                     borderWidth: 1
-                 }]
-             };
- 
-             // Create the histogram chart
-             new Chart(canvas.getContext('2d'), {
-                 type: 'bar',
-                 data: histogramData,
-                 options: {
-                     scales: {
-                         y: {
-                             beginAtZero: true
-                         }
-                     },
-                     plugins: {
-                         legend: {
-                             display: false
-                         }
-                     }
-                 }
-             });
- 
-             // Append the model container to the compare container
-             compareContainer.appendChild(modelDiv);
-         });
-     } catch (error) {
-         console.error(`Error during comparison: ${error}`);
-     }
- }
+        });
+    } catch (error) {
+        console.error(`Error during comparison: ${error}`);
+    }
+}
+
+ function appendHistogramCanvas(modelDiv, histogramData, chartLabel) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  modelDiv.appendChild(canvas);
+
+  // Prepare histogram data for chart
+  const { bins, binEdges } = histogramData;
+  const histogramLabels = binEdges.map((edge, index) => {
+      if (index === bins.length) return;
+      return `${edge.toFixed(2)}-${binEdges[index + 1].toFixed(2)}`;
+  }).slice(0, -1);
+
+  new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: histogramLabels,
+          datasets: [{
+              label: chartLabel,
+              data: bins,
+              backgroundColor: 'rgba(54, 162, 235, 0.5)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  ticks: {
+                      stepSize: 1 // Ensure that density is always a whole number
+                  }
+              }
+          }
+      }
+  });
+}
