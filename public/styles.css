@@ -155,3 +155,33 @@ body {
     border-top: none;
   }
   
+  /* Style the compare container to display as a grid */
+.compare-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* adaptive to the number of items */
+    gap: 10px; /* space between cards */
+    padding: 10px; /* padding around the grid */
+}
+
+/* Style each model's card */
+.model-card {
+    border: 1px solid #ddd; /* add a border */
+    border-radius: 8px; /* rounded corners */
+    padding: 20px; /* padding inside the card */
+    background-color: #fff; /* white background */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
+    display: flex; /* use flexbox for internal layout */
+    flex-direction: column; /* stack children vertically */
+    justify-content: center; /* center content vertically */
+    align-items: center; /* center content horizontally */
+    text-align: center; /* center text */
+}
+
+.model-result-container h3 {
+    margin-bottom: 15px; /* space below the title */
+}
+
+.model-result-container p {
+    font-size: 1em; /* readable font size */
+    margin-bottom: 10px; /* space below the paragraph */
+}

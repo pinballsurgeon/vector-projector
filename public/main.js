@@ -200,14 +200,15 @@ async function compareModels() {
         // Clear existing data in the compare container
         const compareContainer = document.getElementById('compare-container');
         compareContainer.innerHTML = '';
-        compareContainer.style.display = 'block';
+        compareContainer.style.display = 'flex'; // use flexbox to align items neatly
+        compareContainer.classList.add('compare-results-grid'); // add a class for grid styling
         
         // Iterate over models and create a summary for each
         compareData.forEach(modelResult => {
             // Create a container for the model
             const modelDiv = document.createElement('div');
-            modelDiv.classList.add('model-result-container');
-
+            modelDiv.classList.add('model-result-container', 'model-card'); // added 'model-card' for styling
+            
             appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
 
             // Create a title for the model
