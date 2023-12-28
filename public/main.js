@@ -185,7 +185,7 @@ async function compareModels() {
     }
 
     try {
-        const response = await fetch(`/compare_vectors?query=${userInputValue}`);
+        const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
         const compareData = await response.json();
         
         // Clear existing data
@@ -193,15 +193,25 @@ async function compareModels() {
         compareContainer.innerHTML = '';
         compareContainer.style.display = 'block';
         
-        // Iterate over models and create summary for each
-        for (const modelResult of compareData) {
+        // Iterate over models and create a summary for each
+        compareData.forEach(modelResult => {
+            // Create a container for the model
             const modelDiv = document.createElement('div');
             modelDiv.classList.add('model-result-container');
 
+            // Create a title for the model
+            const modelTitle = document.createElement('h3');
+            modelTitle.textContent = `Model: ${modelResult.model}`;
+            modelDiv.appendChild(modelTitle);
 
+            // Create a paragraph for the item count
+            const itemCountParagraph = document.createElement('p');
+            itemCountParagraph.textContent = `Number of items: ${modelResult.itemCount}`;
+            modelDiv.appendChild(itemCountParagraph);
 
+            // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
-        }
+        });
     } catch (error) {
         console.error(`Error during comparison: ${error}`);
     }

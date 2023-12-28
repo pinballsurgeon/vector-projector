@@ -312,25 +312,21 @@ app.get('/check_query', async (req, res) => {
 
 
 
-function processComparisonResults(rows) {
-    // This will hold the comparison data for each model
-    let comparisonData = {};
+function processComparisonResults(dbRows) {
+    // Map each row to a model and its item count
+    const modelMetrics = dbRows.map(row => {
+        const cubeData = JSON.parse(row.cube_data);
+        const numberOfCubes = Object.keys(cubeData).length; // Count the number of items
 
-    // Iterate over each row, which represents a model's result for a query
-    rows.forEach(row => {
-        const model = row.model;
-        const cubeData = JSON.parse(row.cube_data); // Assuming cube_data is stored as a JSON string
-
-        console.info("COMPARE VECTORS DB MODELS:", model);
-        // Calculate metrics for this model
-        const metrics = calculateModelMetrics(cubeData);
-
-        // Add the calculated metrics to the comparisonData object
-        comparisonData[model] = metrics;
+        return {
+            model: row.model,
+            numberOfCubes
+        };
     });
 
-    return comparisonData;
+    return modelMetrics;
 }
+
 
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
@@ -409,7 +405,6 @@ function calculateDistance(pointA, pointB) {
 app.get('/compare_vectors', async (req, res) => {
     const userInputValue = req.query.query;
 
-    console.info("COMPARE VECTORS INPUT:", userInputValue);
     try {
         const client = new Client({
             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
@@ -418,20 +413,60 @@ app.get('/compare_vectors', async (req, res) => {
             }
         });
 
+        await client.connect();
+
         const queryResult = await client.query(`
             SELECT model, cube_data
             FROM cache
             WHERE query = $1
         `, [userInputValue]);
         
-        // Close the database connection
-        client.end();
+        // After the query, immediately end the client connection to avoid timeouts and overloading
+        await client.end();
 
-        console.info("COMPARE VECTORS DB:", queryResult.rows);
-        const compareData = processComparisonResults(queryResult.rows);
-        res.json(compareData);
+        // Process each model's results
+        const modelMetrics = processComparisonResults(queryResult.rows);
+
+        // Send back only the number of cubes for each model
+        const itemCounts = modelMetrics.map(m => ({
+            model: m.model,
+            itemCount: m.numberOfCubes
+        }));
+
+        res.json(itemCounts);
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     }
 });
+
+
+// app.get('/compare_vectors', async (req, res) => {
+//     const userInputValue = req.query.query;
+
+//     console.info("COMPARE VECTORS INPUT:", userInputValue);
+//     try {
+//         const client = new Client({
+//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+//             ssl: {
+//                 rejectUnauthorized: false
+//             }
+//         });
+
+//         const queryResult = await client.query(`
+//             SELECT model, cube_data
+//             FROM cache
+//             WHERE query = $1
+//         `, [userInputValue]);
+        
+//         // Close the database connection
+//         client.end();
+
+//         console.info("COMPARE VECTORS DB:", queryResult.rows);
+//         const compareData = processComparisonResults(queryResult.rows);
+//         res.json(compareData);
+//     } catch (error) {
+//         console.error("Error processing request:", error);
+//         res.status(500).send("Internal server error");
+//     }
+// });
