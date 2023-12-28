@@ -332,21 +332,21 @@ function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
     const coordinates = Object.values(cubeData).map(item => item.coordinates);
     const numOfCubes = coordinates.length;
-    const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
-    const averagePairwiseDistance = calculateAverage(pairwiseDistances);
-    const boundingBoxArea = calculateBoundingBoxArea(coordinates);
+    // const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
+    // const averagePairwiseDistance = calculateAverage(pairwiseDistances);
+    // const boundingBoxArea = calculateBoundingBoxArea(coordinates);
 
     // You would have functions for each of these calculations
-    const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
-    const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
+    // const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
+    // const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
 
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
-        pairwiseAvgDistance: averagePairwiseDistance,
-        vectorArea: boundingBoxArea,
-        pairwiseDistanceHistogram: pairwiseDistanceHistogram,
-        densityHistogram: densityHistogram
+        // pairwiseAvgDistance: averagePairwiseDistance,
+        // vectorArea: boundingBoxArea,
+        // pairwiseDistanceHistogram: pairwiseDistanceHistogram,
+        // densityHistogram: densityHistogram
     };
 }
 
@@ -450,34 +450,3 @@ app.get('/compare_vectors', async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
-
-
-// app.get('/compare_vectors', async (req, res) => {
-//     const userInputValue = req.query.query;
-
-//     console.info("COMPARE VECTORS INPUT:", userInputValue);
-//     try {
-//         const client = new Client({
-//             connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-//             ssl: {
-//                 rejectUnauthorized: false
-//             }
-//         });
-
-//         const queryResult = await client.query(`
-//             SELECT model, cube_data
-//             FROM cache
-//             WHERE query = $1
-//         `, [userInputValue]);
-        
-//         // Close the database connection
-//         client.end();
-
-//         console.info("COMPARE VECTORS DB:", queryResult.rows);
-//         const compareData = processComparisonResults(queryResult.rows);
-//         res.json(compareData);
-//     } catch (error) {
-//         console.error("Error processing request:", error);
-//         res.status(500).send("Internal server error");
-//     }
-// });
