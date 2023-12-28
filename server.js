@@ -404,15 +404,10 @@ function calculateDistance(pointA, pointB) {
 
 app.get('/compare_vectors', async (req, res) => {
     const userInputValue = req.query.query;
+    console.info("COMPARE VECTORS INPUT:", userInputValue);
 
     try {
-        const client = new Client({
-            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-            ssl: {
-                rejectUnauthorized: false
-            }
-        });
-
+        const client = new Client(dbConfig);
         await client.connect();
 
         const queryResult = await client.query(`
@@ -420,20 +415,31 @@ app.get('/compare_vectors', async (req, res) => {
             FROM cache
             WHERE query = $1
         `, [userInputValue]);
-        
-        // After the query, immediately end the client connection to avoid timeouts and overloading
-        await client.end();
 
-        // Process each model's results
-        const modelMetrics = processComparisonResults(queryResult.rows);
+        // Close the database connection
+        client.end();
 
-        // Send back only the number of cubes for each model
-        const itemCounts = modelMetrics.map(m => ({
-            model: m.model,
-            itemCount: m.numberOfCubes
-        }));
+        console.info("COMPARE VECTORS DB:", queryResult.rows);
 
-        res.json(itemCounts);
+        // Process each row and ensure cube_data is an object
+        const compareData = queryResult.rows.map(row => {
+            const model = row.model;
+            let cubeData;
+
+            try {
+                // Attempt to parse cube_data if it's a string
+                cubeData = (typeof row.cube_data === 'string') ? JSON.parse(row.cube_data) : row.cube_data;
+            } catch (e) {
+                console.error(`Failed to parse cube_data for model ${model}:`, e);
+                cubeData = {}; // default to an empty object in case of error
+            }
+
+            // Now you have a valid cubeData object to work with
+            const metrics = calculateModelMetrics(cubeData); // Assumes calculateModelMetrics is defined correctly
+            return { model, ...metrics };
+        });
+
+        res.json(compareData);
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
