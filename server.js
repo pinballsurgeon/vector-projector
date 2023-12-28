@@ -352,7 +352,8 @@ function calculateModelMetrics(cubeData) {
         pairwiseAvgDistance: averagePairwiseDistance,
         boundingBoxVolume: calculateBoundingVolumeArea(coordinates),
         pairwiseHistogramData,
-        densityHistogramData
+        densityHistogramData,
+        vectorPoints: coordinates
     };
 }
 
