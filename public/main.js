@@ -199,6 +199,8 @@ async function compareModels() {
             const modelDiv = document.createElement('div');
             modelDiv.classList.add('model-result-container');
 
+            appendLog(`Model Result - ${modelResult}`);
+
             // Create a title for the model
             const modelTitle = document.createElement('h3');
             modelTitle.textContent = `Model: ${modelResult.model}`;
