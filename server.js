@@ -331,40 +331,47 @@ function processComparisonResults(dbRows) {
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
     const coordinates = Object.values(cubeData).map(item => item.coordinates);
-    // const numOfCubes = 4;
     const numOfCubes = coordinates.length;
-    // const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
-    // const averagePairwiseDistance = calculateAverage(pairwiseDistances);
+    const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
+    const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     // const boundingBoxArea = calculateBoundingBoxArea(coordinates);
 
     // You would have functions for each of these calculations
     // const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
     // const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
 
+
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
-        // pairwiseAvgDistance: averagePairwiseDistance,
-        // vectorArea: boundingBoxArea,
-        // pairwiseDistanceHistogram: pairwiseDistanceHistogram,
-        // densityHistogram: densityHistogram
+        pairwiseAvgDistance: averagePairwiseDistance,
     };
 }
 
-// Dummy function for calculating all pairwise distances
+// Function for calculating all pairwise distances
 function calculateAllPairwiseDistances(coordinates) {
-    // Implement the actual calculation of pairwise distances
-    // This is just a placeholder
+    // Flatten the array of distances between each pair of coordinates
     return coordinates.flatMap((coord, index, arr) =>
         arr.slice(index + 1).map(otherCoord => calculateDistance(coord, otherCoord))
     );
 }
 
-// Dummy function for calculating the average of an array
+// Function to calculate the distance between two points in 3D space
+function calculateDistance(coord1, coord2) {
+    return Math.sqrt(
+        Math.pow(coord1.x - coord2.x, 2) +
+        Math.pow(coord1.y - coord2.y, 2) +
+        Math.pow(coord1.z - coord2.z, 2)
+    );
+}
+
+// Function for calculating the average of an array
 function calculateAverage(array) {
     const sum = array.reduce((acc, val) => acc + val, 0);
     return sum / array.length;
 }
+
+
 
 // Dummy function for calculating the area of the bounding box
 function calculateBoundingBoxArea(coordinates) {
@@ -393,15 +400,6 @@ function calculateDensityHistogram(coordinates, radius) {
     });
 }
 
-// Dummy function to calculate distance between two points
-function calculateDistance(pointA, pointB) {
-    // Implement the actual distance formula
-    return Math.sqrt(
-        Math.pow(pointB.x - pointA.x, 2) +
-        Math.pow(pointB.y - pointA.y, 2) +
-        Math.pow(pointB.z - pointA.z, 2)
-    );
-}
 
 app.get('/compare_vectors', async (req, res) => {
     const userInputValue = req.query.query;

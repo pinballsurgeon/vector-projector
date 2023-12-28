@@ -221,6 +221,11 @@ async function compareModels() {
             itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
             modelDiv.appendChild(itemCountParagraph);
 
+            // Create a paragraph for the average pairwise distance
+            const avgDistanceParagraph = document.createElement('p');
+            avgDistanceParagraph.textContent = `Average pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+            modelDiv.appendChild(avgDistanceParagraph);
+
             // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
         });
