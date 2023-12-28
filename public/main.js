@@ -216,6 +216,9 @@ async function compareModels() {
             modelTitle.textContent = `Model: ${modelResult.model}`;
             modelDiv.appendChild(modelTitle);
 
+            // Append 3D visualization
+            append3DVisualization(modelDiv, modelResult);
+
             // Create a paragraph for the item count
             const itemCountParagraph = document.createElement('p');
             itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
@@ -278,4 +281,47 @@ async function compareModels() {
           }
       }
   });
+}
+
+// main.js
+
+function append3DVisualization(modelDiv, modelResult) {
+  const vizContainer = document.createElement('div');
+  vizContainer.classList.add('model-viz-container');
+  modelDiv.appendChild(vizContainer);
+
+  // Set up the scene, camera, and renderer
+  const width = vizContainer.offsetWidth;
+  const height = 300; // Set a fixed height or make it responsive
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(width, height);
+  vizContainer.appendChild(renderer.domElement);
+
+  // Add lights to the scene
+  const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+  scene.add(ambientLight);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  scene.add(directionalLight);
+
+  // Create a geometry and add texture
+  const geometry = new THREE.BoxGeometry(); // Example: Box geometry
+  const textureLoader = new THREE.TextureLoader();
+  const texture = textureLoader.load('path_to_texture.jpg'); // Replace with your texture path
+  const material = new THREE.MeshBasicMaterial({ map: texture });
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+
+  // Set the camera position
+  camera.position.z = 5;
+
+  // Animation loop to rotate the cube and render the scene
+  function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+  }
+  animate();
 }
