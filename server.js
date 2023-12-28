@@ -327,6 +327,10 @@ function processComparisonResults(dbRows) {
     return modelMetrics;
 }
 
+    // You would have functions for each of these calculations
+    // const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
+    // const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
+
 
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
@@ -334,17 +338,13 @@ function calculateModelMetrics(cubeData) {
     const numOfCubes = coordinates.length;
     const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
-    // const boundingBoxArea = calculateBoundingBoxArea(coordinates);
-
-    // You would have functions for each of these calculations
-    // const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
-    // const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
-
+    const boundingBoxVolume = calculateBoundingVolumeArea(coordinates);
 
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
+        boundingBoxVolume
     };
 }
 
@@ -372,13 +372,30 @@ function calculateAverage(array) {
 }
 
 
+function calculateBoundingVolumeArea(coordinates) {
+    // Initialize min and max coordinates
+    let minX = Infinity, minY = Infinity, minZ = Infinity;
+    let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
 
-// Dummy function for calculating the area of the bounding box
-function calculateBoundingBoxArea(coordinates) {
-    // Implement the actual calculation
-    // This is just a placeholder
-    return Math.random() * 100; // Placeholder value
+    // Find min and max values for each coordinate axis
+    coordinates.forEach(coord => {
+        if (coord.x < minX) minX = coord.x;
+        if (coord.y < minY) minY = coord.y;
+        if (coord.z < minZ) minZ = coord.z;
+        if (coord.x > maxX) maxX = coord.x;
+        if (coord.y > maxY) maxY = coord.y;
+        if (coord.z > maxZ) maxZ = coord.z;
+    });
+
+    // Calculate differences for each axis
+    let length = maxX - minX;
+    let width = maxY - minY;
+    let height = maxZ - minZ;
+
+    // Calculate volume
+    return length * width * height;
 }
+
 
 // Dummy function to create a histogram
 function createHistogram(data) {

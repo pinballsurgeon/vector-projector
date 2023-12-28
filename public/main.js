@@ -226,6 +226,11 @@ async function compareModels() {
             avgDistanceParagraph.textContent = `Average pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
             modelDiv.appendChild(avgDistanceParagraph);
 
+            // Create a paragraph for the bounding box volume
+            const boundingBoxVolumeParagraph = document.createElement('p');
+            boundingBoxVolumeParagraph.textContent = `Bounding Box Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
+            modelDiv.appendChild(boundingBoxVolumeParagraph);
+
             // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
         });
