@@ -225,12 +225,17 @@ async function compareModels() {
 
             // Create a paragraph for the average pairwise distance
             const avgDistanceParagraph = document.createElement('p');
-            avgDistanceParagraph.textContent = `Average pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+            avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
             modelDiv.appendChild(avgDistanceParagraph);
+
+            // Create a paragraph for the average neighbors within half pair wise distance
+            const avgDensityParagraph = document.createElement('p');
+            avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
+            modelDiv.appendChild(avgDensityParagraph);
 
             // Create a paragraph for the bounding box volume
             const boundingBoxVolumeParagraph = document.createElement('p');
-            boundingBoxVolumeParagraph.textContent = `Bounding Box Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
+            boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
             modelDiv.appendChild(boundingBoxVolumeParagraph);
 
             // Append histogram canvases for pairwise distances and density
