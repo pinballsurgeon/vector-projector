@@ -310,35 +310,18 @@ app.get('/check_query', async (req, res) => {
 
 
 
-
-
-function processComparisonResults(dbRows) {
-    // Map each row to a model and its item count
-    const modelMetrics = dbRows.map(row => {
-        const cubeData = JSON.parse(row.cube_data);
-        const numberOfCubes = Object.keys(cubeData).length; // Count the number of items
-
-        return {
-            model: row.model,
-            numberOfCubes
-        };
-    });
-
-    return modelMetrics;
-}
-
-    // You would have functions for each of these calculations
-    // const pairwiseDistanceHistogram = createHistogram(pairwiseDistances);
-    // const densityHistogram = calculateDensityHistogram(coordinates, averagePairwiseDistance / 2);
-
-
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
     const coordinates = Object.values(cubeData).map(item => item.coordinates);
     const numOfCubes = coordinates.length;
     const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
+    console.info("pairwiseDistances:", pairwiseDistances);
+    console.info("AVG. pairwiseDistances:", averagePairwiseDistance);
     const densities = estimateDensity(coordinates, averagePairwiseDistance);
+    const averageDensities = calculateAverage(densities);
+    console.info("DENSITIES:", densities);
+    console.info("AVG. DENSITIES:", averageDensities);
 
     // Calculate the histogram for pairwise distances
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
@@ -353,7 +336,8 @@ function calculateModelMetrics(cubeData) {
         boundingBoxVolume: calculateBoundingVolumeArea(coordinates),
         pairwiseHistogramData,
         densityHistogramData,
-        vectorPoints: coordinates
+        vectorPoints: coordinates,
+        averageDensities
     };
 }
 
