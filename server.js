@@ -308,7 +308,14 @@ app.get('/check_query', async (req, res) => {
     }
 });
 
-
+function calculateShannonEntropy(densities) {
+    let totalPoints = densities.reduce((sum, val) => sum + val, 0);
+    let probabilities = densities.map(density => density / totalPoints);
+    let entropy = probabilities.reduce((sum, p) => {
+        return p > 0 ? sum - p * Math.log2(p) : sum;
+    }, 0);
+    return entropy;
+}
 
 function calculateModelMetrics(cubeData) {
     // Extract coordinates for pairwise distance calculation
@@ -316,12 +323,9 @@ function calculateModelMetrics(cubeData) {
     const numOfCubes = coordinates.length;
     const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
-    console.info("pairwiseDistances:", pairwiseDistances);
-    console.info("AVG. pairwiseDistances:", averagePairwiseDistance);
     const densities = estimateDensity(coordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    console.info("DENSITIES:", densities);
-    console.info("AVG. DENSITIES:", averageDensities);
+    const shannonEntropy = calculateShannonEntropy(densities);
 
     // Calculate the histogram for pairwise distances
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
@@ -337,7 +341,8 @@ function calculateModelMetrics(cubeData) {
         pairwiseHistogramData,
         densityHistogramData,
         vectorPoints: coordinates,
-        averageDensities
+        averageDensities,
+        shannonEntropy
     };
 }
 

@@ -238,6 +238,11 @@ async function compareModels() {
             boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
             modelDiv.appendChild(boundingBoxVolumeParagraph);
 
+            // Create a paragraph for Shannon Entropy
+            const entropyParagraph = document.createElement('p');
+            entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
+            modelDiv.appendChild(entropyParagraph);
+
             // Append histogram canvases for pairwise distances and density
             appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
             appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
