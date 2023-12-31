@@ -507,19 +507,14 @@ function calculateAttributeMetrics(modelData) {
 
     return attributeMetrics;
 }
-
-// Assume you have an endpoint /get_model_data that returns model data for a given query
 app.get('/get_model_data', async (req, res) => {
     const userInputValue = req.query.query;
     console.info("COMPARE ATTRIBUTES:", userInputValue);
 
     try {
         const client = new Client({
-                        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
-                        ssl: {
-                            rejectUnauthorized: false
-                        }
-                    });
+            // ... your database connection config ...
+        });
         await client.connect();
 
         const queryResult = await client.query(`
@@ -528,35 +523,30 @@ app.get('/get_model_data', async (req, res) => {
             WHERE query = $1
         `, [userInputValue]);
 
-        // Close the database connection
         client.end();
 
-
-        // Process each row and ensure cube_data is an object
         const attributeMetrics = queryResult.rows.map(row => {
-            const modelData = row.model;
             let cubeData;
-
             try {
-                // Attempt to parse cube_data if it's a string
                 cubeData = (typeof row.cube_data === 'string') ? JSON.parse(row.cube_data) : row.cube_data;
             } catch (e) {
-                console.error(`Failed to parse cube_data for model ${modelData}:`, e);
-                cubeData = {}; // default to an empty object in case of error
+                console.error(`Failed to parse cube_data for model ${row.model}:`, e);
+                return { model: row.model, error: "Failed to parse cube data" };
             }
 
-            // Now you have a valid cubeData object to work with
-            const metrics = calculateAttributeMetrics(modelData);
-            return { modelData, ...metrics };
+            try {
+                const metrics = calculateAttributeMetrics(cubeData);
+                return { model: row.model, ...metrics };
+            } catch (e) {
+                console.error(`Error in calculateAttributeMetrics for model ${row.model}:`, e);
+                return { model: row.model, error: "Error in attribute metrics calculation" };
+            }
         });
 
-        // Send the response
         res.json(attributeMetrics);
-        
+
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     }
-    
-
 });
