@@ -373,36 +373,39 @@ async function compareAttributes() {
             modelTitle.textContent = `${attributes.model}`;
             modelDiv.appendChild(modelTitle);
 
-            Object.entries(attributes).forEach(([attribute, stats]) => {
-              // Check if any stat is undefined and skip this attribute if so
-              if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
-                  return; // Skip this attribute
-              }
-          
-              const attributeContainer = document.createElement('div');
-              attributeContainer.classList.add('attribute-container');
-          
-              const attributeTitle = document.createElement('p');
-              attributeTitle.textContent = `Attribute: ${attribute}`;
-              attributeContainer.appendChild(attributeTitle);
-          
-              // Since we've checked, these values should now be defined
-              const max = stats.max.toFixed(2);
-              const min = stats.min.toFixed(2);
-              const avg = stats.avg.toFixed(2);
-              const stdDev = stats.stdDev.toFixed(2);
-          
-              const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
-              const statsParagraph = document.createElement('p');
-              statsParagraph.textContent = statsText;
-              attributeContainer.appendChild(statsParagraph);
-          
-              // Optionally, create and append a bar graph here
-          
-              modelDiv.appendChild(attributeContainer);
-          });
+            // Convert attribute entries to an array, sort by stdDev, and then iterate
+            Object.entries(attributes)
+              .sort((a, b) => b[1].stdDev - a[1].stdDev) // Sort by stdDev descending
+              .forEach(([attribute, stats]) => {
+                // Check if any stat is undefined and skip this attribute if so
+                if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
+                    return; // Skip this attribute
+                }
 
-          compareContainer.appendChild(modelDiv);
+                const attributeContainer = document.createElement('div');
+                attributeContainer.classList.add('attribute-container');
+
+                const attributeTitle = document.createElement('p');
+                attributeTitle.textContent = `Attribute: ${attribute}`;
+                attributeContainer.appendChild(attributeTitle);
+
+                // Since we've checked, these values should now be defined
+                const max = stats.max.toFixed(2);
+                const min = stats.min.toFixed(2);
+                const avg = stats.avg.toFixed(2);
+                const stdDev = stats.stdDev.toFixed(2);
+
+                const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
+                const statsParagraph = document.createElement('p');
+                statsParagraph.textContent = statsText;
+                attributeContainer.appendChild(statsParagraph);
+
+                // Optionally, create and append a bar graph here
+
+                modelDiv.appendChild(attributeContainer);
+            });
+
+            compareContainer.appendChild(modelDiv);
         });
     } catch (error) {
         console.error(`Error during attributes comparison: ${error}`);
