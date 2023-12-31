@@ -449,7 +449,6 @@ app.get('/compare_vectors', async (req, res) => {
         // Close the database connection
         client.end();
 
-        // console.info("COMPARE VECTORS DB:", queryResult.rows);
 
         // Process each row and ensure cube_data is an object
         const compareData = queryResult.rows.map(row => {
@@ -474,4 +473,90 @@ app.get('/compare_vectors', async (req, res) => {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     }
+});
+
+
+
+function calculateAttributeMetrics(modelData) {
+    // Object to store the aggregated results
+    let attributesAggregated = {};
+
+    // Iterate over each item in the model data
+    Object.values(modelData).forEach(item => {
+        const attributes = item.originalRatings;
+
+        // Iterate over each attribute in the item
+        for (let [key, value] of Object.entries(attributes)) {
+            if (!attributesAggregated[key]) {
+                attributesAggregated[key] = [];
+            }
+            attributesAggregated[key].push(value);
+        }
+    });
+
+    // Calculate aggregated metrics for each attribute
+    let attributeMetrics = {};
+    for (let [key, values] of Object.entries(attributesAggregated)) {
+        const max = Math.max(...values);
+        const min = Math.min(...values);
+        const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const stdDev = Math.sqrt(values.map(val => Math.pow(val - avg, 2)).reduce((sum, val) => sum + val, 0) / values.length);
+
+        attributeMetrics[key] = { max, min, avg, stdDev };
+    }
+
+    return attributeMetrics;
+}
+
+// Assume you have an endpoint /get_model_data that returns model data for a given query
+app.get('/get_model_data', async (req, res) => {
+    const userInputValue = req.query.query;
+    console.info("COMPARE ATTRIBUTES:", userInputValue);
+
+    try {
+        const client = new Client({
+                        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+                        ssl: {
+                            rejectUnauthorized: false
+                        }
+                    });
+        await client.connect();
+
+        const queryResult = await client.query(`
+            SELECT model, cube_data
+            FROM cache
+            WHERE query = $1
+        `, [userInputValue]);
+
+        // Close the database connection
+        client.end();
+
+
+        // Process each row and ensure cube_data is an object
+        const attributeMetrics = queryResult.rows.map(row => {
+            const modelData = row.model;
+            let cubeData;
+
+            try {
+                // Attempt to parse cube_data if it's a string
+                cubeData = (typeof row.cube_data === 'string') ? JSON.parse(row.cube_data) : row.cube_data;
+            } catch (e) {
+                console.error(`Failed to parse cube_data for model ${modelData}:`, e);
+                cubeData = {}; // default to an empty object in case of error
+            }
+
+            // Now you have a valid cubeData object to work with
+            const metrics = calculateAttributeMetrics(modelData);
+            return { modelData, ...metrics };
+        });
+
+        // Send the response
+        res.json(attributeMetrics);
+        
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    }
+    
+
 });

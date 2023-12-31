@@ -185,3 +185,16 @@ body {
     font-size: 1em; /* readable font size */
     margin-bottom: 10px; /* space below the paragraph */
 }
+
+.model-result-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.attribute-container {
+    margin-top: 10px;
+    padding: 5px;
+    border-top: 1px solid #eee;
+}

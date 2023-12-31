@@ -342,3 +342,57 @@ function normalizePoints(points, width, height) {
       z: (p.z - zMin) / (zMax - zMin) // Normalized between 0 and 1 for depth effect
   }));
 }
+
+document.getElementById('attributesTab').addEventListener('click', compareAttributes);
+
+async function compareAttributes() {
+    const userInputValue = document.getElementById('userInput').value;
+    if (!userInputValue) {
+        alert("Please enter a query to compare.");
+        return;
+    }
+
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.style.display = 'none';
+    clearCanvas();
+
+    try {
+        const response = await fetch(`/get_model_data?query=${encodeURIComponent(userInputValue)}`);
+        const modelsAttributeData = await response.json();
+
+        const compareContainer = document.getElementById('compare-container');
+        compareContainer.innerHTML = '';
+        compareContainer.style.display = 'flex';
+
+        Object.entries(modelsAttributeData).forEach(([modelName, attributes]) => {
+            const modelDiv = document.createElement('div');
+            modelDiv.classList.add('model-result-container', 'model-card');
+
+            const modelTitle = document.createElement('h3');
+            modelTitle.textContent = `Model: ${modelName}`;
+            modelDiv.appendChild(modelTitle);
+
+            Object.entries(attributes).forEach(([attribute, stats]) => {
+                const attributeContainer = document.createElement('div');
+                attributeContainer.classList.add('attribute-container');
+
+                const attributeTitle = document.createElement('p');
+                attributeTitle.textContent = `Attribute: ${attribute}`;
+                attributeContainer.appendChild(attributeTitle);
+
+                const statsText = `Max: ${stats.max.toFixed(2)}, Min: ${stats.min.toFixed(2)}, Avg: ${stats.avg.toFixed(2)}, Std Dev: ${stats.stdDev.toFixed(2)}`;
+                const statsParagraph = document.createElement('p');
+                statsParagraph.textContent = statsText;
+                attributeContainer.appendChild(statsParagraph);
+
+                // Optionally, create and append a bar graph here
+
+                modelDiv.appendChild(attributeContainer);
+            });
+
+            compareContainer.appendChild(modelDiv);
+        });
+    } catch (error) {
+        console.error(`Error during attributes comparison: ${error}`);
+    }
+}
