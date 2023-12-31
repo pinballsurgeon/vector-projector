@@ -213,7 +213,7 @@ async function compareModels() {
 
             // Create a title for the model
             const modelTitle = document.createElement('h3');
-            modelTitle.textContent = `Model: ${modelResult.model}`;
+            modelTitle.textContent = `${modelResult.model}`;
             modelDiv.appendChild(modelTitle);
 
             append2DVisualization(modelDiv, modelResult);
@@ -368,13 +368,9 @@ async function compareAttributes() {
             const modelDiv = document.createElement('div');
             modelDiv.classList.add('model-result-container', 'model-card');
 
-            // const modelTitle = document.createElement('h3');
-            // modelTitle.textContent = `Model: ${modelName}`;
-            // modelDiv.appendChild(modelTitle);
-
             // Create a title for the model
             const modelTitle = document.createElement('h3');
-            modelTitle.textContent = `Model: ${attributes.model}`;
+            modelTitle.textContent = `${attributes.model}`;
             modelDiv.appendChild(modelTitle);
 
             Object.entries(attributes).forEach(([attribute, stats]) => {
