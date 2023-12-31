@@ -186,15 +186,9 @@ body {
     margin-bottom: 10px; /* space below the paragraph */
 }
 
-.model-result-container {
-    margin-bottom: 20px;
+.model-result-container, .attribute-container {
+    margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-}
-
-.attribute-container {
-    margin-top: 10px;
-    padding: 5px;
-    border-top: 1px solid #eee;
 }
