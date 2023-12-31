@@ -172,7 +172,6 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
     display: flex; /* use flexbox for internal layout */
     flex-direction: column; /* stack children vertically */
-    justify-content: center; /* center content vertically */
     align-items: center; /* center content horizontally */
     text-align: center; /* center text */
 }
