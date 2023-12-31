@@ -346,66 +346,64 @@ function normalizePoints(points, width, height) {
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
 async function compareAttributes() {
-  const userInputValue = document.getElementById('userInput').value;
-  if (!userInputValue) {
-      alert("Please enter a query to compare.");
-      return;
-  }
+    const userInputValue = document.getElementById('userInput').value;
+    if (!userInputValue) {
+        alert("Please enter a query to compare.");
+        return;
+    }
 
-  const canvasContainer = document.getElementById('canvas-container');
-  canvasContainer.style.display = 'none';
-  clearCanvas();
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.style.display = 'none';
+    clearCanvas();
 
-  try {
-      const response = await fetch(`/get_model_data?query=${encodeURIComponent(userInputValue)}`);
-      const modelsAttributeData = await response.json();
+    try {
+        const response = await fetch(`/get_model_data?query=${encodeURIComponent(userInputValue)}`);
+        const modelsAttributeData = await response.json();
 
-      const compareContainer = document.getElementById('compare-container');
-      compareContainer.innerHTML = '';
-      compareContainer.style.display = 'flex';
+        const compareContainer = document.getElementById('compare-container');
+        compareContainer.innerHTML = '';
+        compareContainer.style.display = 'flex';
 
-      modelsAttributeData.forEach(modelData => {
-          if (modelData.error || !modelData.attributes) {
-              console.error(`Error in model ${modelData.model}: ${modelData.error || 'Attributes data missing'}`);
-              return;
-          }
+        Object.entries(modelsAttributeData).forEach(([modelName, attributes]) => {
+            const modelDiv = document.createElement('div');
+            modelDiv.classList.add('model-result-container', 'model-card');
 
-          const modelDiv = document.createElement('div');
-          modelDiv.classList.add('model-result-container', 'model-card');
+            const modelTitle = document.createElement('h3');
+            modelTitle.textContent = `Model: ${modelName}`;
+            modelDiv.appendChild(modelTitle);
 
-          const modelTitle = document.createElement('h3');
-          modelTitle.textContent = `Model: ${modelData.model}`;
-          modelDiv.appendChild(modelTitle);
-
-          Object.entries(modelData.attributes).forEach(([attribute, stats]) => {
-              // Skip if any stat is not a number
-              if (typeof stats.max !== 'number' || typeof stats.min !== 'number' || typeof stats.avg !== 'number' || typeof stats.stdDev !== 'number') {
-                  return;
+            Object.entries(attributes).forEach(([attribute, stats]) => {
+              // Check if any stat is undefined and skip this attribute if so
+              if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
+                  return; // Skip this attribute
               }
-
+          
               const attributeContainer = document.createElement('div');
               attributeContainer.classList.add('attribute-container');
-
+          
               const attributeTitle = document.createElement('p');
               attributeTitle.textContent = `Attribute: ${attribute}`;
               attributeContainer.appendChild(attributeTitle);
-
+          
+              // Since we've checked, these values should now be defined
               const max = stats.max.toFixed(2);
               const min = stats.min.toFixed(2);
               const avg = stats.avg.toFixed(2);
               const stdDev = stats.stdDev.toFixed(2);
-
+          
               const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
               const statsParagraph = document.createElement('p');
               statsParagraph.textContent = statsText;
               attributeContainer.appendChild(statsParagraph);
-
+          
+              // Optionally, create and append a bar graph here
+          
               modelDiv.appendChild(attributeContainer);
           });
 
           compareContainer.appendChild(modelDiv);
-      });
-  } catch (error) {
-      console.error(`Error during attributes comparison: ${error}`);
-  }
+        });
+    } catch (error) {
+        console.error(`Error during attributes comparison: ${error}`);
+    }
 }
