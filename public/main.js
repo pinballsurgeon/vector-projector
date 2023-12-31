@@ -369,7 +369,7 @@ function createHistogramBar(counts, maxCount) {
     const barWidth = (binCount / maxCount) * 100;
     bar.style.width = `${barWidth}%`; // Calculate bar width based on count
     bar.style.height = '20px'; // Fixed height for the bar
-    bar.style.backgroundColor = getBarColor(binCount); // Dynamic color based on value
+    bar.style.backgroundColor = getBarColor(index); // Dynamic color based on value
     bar.style.marginRight = '2px'; // Space between bars
     bar.style.position = 'relative'; // To position the index value inside
 
