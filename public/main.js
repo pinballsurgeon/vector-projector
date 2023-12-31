@@ -355,7 +355,6 @@ function createHistogramBar(counts, maxCount) {
   barContainer.style.overflow = 'hidden'; // Ensures the inner bar doesn't overflow
   barContainer.style.display = 'flex';
   barContainer.style.position = 'relative'; // Needed to position values
-  barContainer.style.paddingTop = '20px'; // Room for the values
 
   // Function to determine the bar color based on value
   const getBarColor = value => {
@@ -372,20 +371,23 @@ function createHistogramBar(counts, maxCount) {
     bar.style.height = '20px'; // Fixed height for the bar
     bar.style.backgroundColor = getBarColor(binCount); // Dynamic color based on value
     bar.style.marginRight = '2px'; // Space between bars
+    bar.style.position = 'relative'; // To position the index value inside
 
-    // Create a span for the value
-    const valueText = document.createElement('span');
-    valueText.textContent = index;
-    valueText.style.position = 'absolute'; // Position absolutely within the container
-    valueText.style.left = `${index * (100 / counts.length)}%`; // Position at the start of the bar
-    valueText.style.top = '0'; // Position above the bar
-    valueText.style.fontSize = '0.75rem'; // Smaller font size for the value
-    valueText.style.width = `${100 / counts.length}%`; // Span width of one bin
-    valueText.style.textAlign = 'center'; // Center text in the span
+    // Check if the bar is large enough for the index value
+    if (barWidth > 5) { // Set a threshold percentage for minimum width
+      const valueText = document.createElement('span');
+      valueText.textContent = index; // Set text as the index value
+      valueText.style.position = 'absolute';
+      valueText.style.left = '50%'; // Center in the bar
+      valueText.style.top = '50%'; // Middle of the bar
+      valueText.style.transform = 'translate(-50%, -50%)'; // Adjust for centering
+      valueText.style.fontSize = '0.75rem';
+      valueText.style.color = 'white'; // Ensure the text stands out
+      valueText.style.pointerEvents = 'none'; // Ignore pointer events
+      bar.appendChild(valueText); // Append the index value inside the bar
+    }
 
-    // Append elements
     barContainer.appendChild(bar);
-    barContainer.appendChild(valueText);
   });
 
   return barContainer;
