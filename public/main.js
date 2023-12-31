@@ -364,15 +364,9 @@ async function compareAttributes() {
       compareContainer.innerHTML = '';
       compareContainer.style.display = 'flex';
 
-      // Ensure modelsAttributeData is an array
-      if (!Array.isArray(modelsAttributeData)) {
-          console.error('Expected modelsAttributeData to be an array.');
-          return;
-      }
-
       modelsAttributeData.forEach(modelData => {
-          if (modelData.error) {
-              console.error(`Error in model ${modelData.model}: ${modelData.error}`);
+          if (modelData.error || !modelData.attributes) {
+              console.error(`Error in model ${modelData.model}: ${modelData.error || 'Attributes data missing'}`);
               return;
           }
 
@@ -384,8 +378,8 @@ async function compareAttributes() {
           modelDiv.appendChild(modelTitle);
 
           Object.entries(modelData.attributes).forEach(([attribute, stats]) => {
-              // Skip if any stat is undefined
-              if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
+              // Skip if any stat is not a number
+              if (typeof stats.max !== 'number' || typeof stats.min !== 'number' || typeof stats.avg !== 'number' || typeof stats.stdDev !== 'number') {
                   return;
               }
 
