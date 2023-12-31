@@ -494,7 +494,7 @@ function calculateAttributeMetrics(modelData) {
     });
 
     let attributeMetrics = {};
-    for (let [key, values] of Object.entries(attributesAggregated)) {
+    for (let [key, { values, items }] of Object.entries(attributesAggregated)) {
         const max = Math.max(...values);
         const min = Math.min(...values);
         const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -502,11 +502,13 @@ function calculateAttributeMetrics(modelData) {
 
         // Calculate histogram data
         // Assuming 10 bins for simplicity, each bin representing an interval [0-1, 1-2, ..., 9-10]
-        const bins = Array(10).fill(0);
-        values.forEach(value => {
+        // Calculate histogram data with item names
+        const bins = Array(10).fill(null).map(() => ({ count: 0, items: [] }));
+        values.forEach((value, index) => {
             const binIndex = Math.floor(value); // Assuming value is from 0 to 10
             if (binIndex >= 0 && binIndex < bins.length) {
-                bins[binIndex]++;
+                bins[binIndex].count++;
+                bins[binIndex].items.push(items[index]); // Add the item name to the bin
             }
         });
 

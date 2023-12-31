@@ -343,10 +343,27 @@ function normalizePoints(points, width, height) {
   }));
 }
 
+function showTooltip(x, y, items) {
+  const tooltip = document.createElement('div');
+  tooltip.id = 'histogram-tooltip';
+  tooltip.style.position = 'absolute';
+  tooltip.style.left = `${x}px`;
+  tooltip.style.top = `${y}px`;
+  tooltip.innerHTML = items.join('<br>');
+  document.body.appendChild(tooltip);
+}
+
+function hideTooltip() {
+  const tooltip = document.getElementById('histogram-tooltip');
+  if (tooltip) {
+      tooltip.remove();
+  }
+}
+
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
 // Function to create a histogram bar
-function createHistogramBar(counts, maxCount) {
+function createHistogramBar(counts, itemsForBins, maxCount) {
   const barContainer = document.createElement('div');
   barContainer.style.width = '100%'; // Full width of the container
   barContainer.style.backgroundColor = '#f0f0f0'; // Light grey background
@@ -386,6 +403,12 @@ function createHistogramBar(counts, maxCount) {
       valueText.style.pointerEvents = 'none'; // Ignore pointer events
       bar.appendChild(valueText); // Append the index value inside the bar
     }
+
+    bar.onmouseenter = (event) => {
+      // Show tooltip with items for this bin
+      showTooltip(event.clientX, event.clientY, itemsForBins[index]);
+    };
+    bar.onmouseleave = hideTooltip;
 
     barContainer.appendChild(bar);
   });
