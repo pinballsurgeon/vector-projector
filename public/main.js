@@ -345,6 +345,24 @@ function normalizePoints(points, width, height) {
 
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
+function createBar(value, max) {
+  const barContainer = document.createElement('div');
+  barContainer.style.width = '100%'; // Full width of the container
+  barContainer.style.backgroundColor = '#f0f0f0'; // Light grey background
+  barContainer.style.border = '1px solid #ccc'; // Border for the bar container
+  barContainer.style.borderRadius = '5px'; // Rounded corners for aesthetics
+  barContainer.style.overflow = 'hidden'; // Ensures the inner bar doesn't overflow
+
+  const bar = document.createElement('div');
+  bar.style.width = `${(value / max) * 100}%`; // Calculate bar width based on value
+  bar.style.height = '20px'; // Fixed height for the bar
+  bar.style.backgroundColor = '#007bff'; // Use a color that stands out, like bootstrap's blue
+
+  barContainer.appendChild(bar);
+
+  return barContainer;
+}
+
 async function compareAttributes() {
     const userInputValue = document.getElementById('userInput').value;
     if (!userInputValue) {
@@ -399,6 +417,10 @@ async function compareAttributes() {
                 const statsParagraph = document.createElement('p');
                 statsParagraph.textContent = statsText;
                 attributeContainer.appendChild(statsParagraph);
+
+                // Create and append the bar graph here
+                const barChart = createBar(stats.stdDev, 10); // Assuming stats.stdDev is the value for the bar
+                attributeContainer.appendChild(barChart);
 
                 // Optionally, create and append a bar graph here
 
