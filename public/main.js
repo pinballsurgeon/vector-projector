@@ -380,8 +380,17 @@ async function compareAttributes() {
                 attributeTitle.textContent = `Attribute: ${attribute}`;
                 attributeContainer.appendChild(attributeTitle);
 
-                const statsText = `Max: ${stats.max.toFixed(2)}, Min: ${stats.min.toFixed(2)}, Avg: ${stats.avg.toFixed(2)}, Std Dev: ${stats.stdDev.toFixed(2)}`;
+                // Check if stats are defined and numeric before calling toFixed
+                const max = stats.max !== undefined ? stats.max.toFixed(2) : 'N/A';
+                const min = stats.min !== undefined ? stats.min.toFixed(2) : 'N/A';
+                const avg = stats.avg !== undefined ? stats.avg.toFixed(2) : 'N/A';
+                const stdDev = stats.stdDev !== undefined ? stats.stdDev.toFixed(2) : 'N/A';
+
+                const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
                 const statsParagraph = document.createElement('p');
+                statsParagraph.textContent = statsText;
+                modelDiv.appendChild(statsParagraph);
+
                 statsParagraph.textContent = statsText;
                 attributeContainer.appendChild(statsParagraph);
 
