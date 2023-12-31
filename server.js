@@ -478,14 +478,13 @@ app.get('/compare_vectors', async (req, res) => {
 
 
 function calculateAttributeMetrics(modelData) {
-    // Object to store the aggregated results
     let attributesAggregated = {};
 
     // Iterate over each item in the model data
     Object.values(modelData).forEach(item => {
         const attributes = item.originalRatings;
 
-        // Iterate over each attribute in the item
+        // Aggregate attribute values
         for (let [key, value] of Object.entries(attributes)) {
             if (!attributesAggregated[key]) {
                 attributesAggregated[key] = [];
@@ -494,7 +493,6 @@ function calculateAttributeMetrics(modelData) {
         }
     });
 
-    // Calculate aggregated metrics for each attribute
     let attributeMetrics = {};
     for (let [key, values] of Object.entries(attributesAggregated)) {
         const max = Math.max(...values);
@@ -502,11 +500,23 @@ function calculateAttributeMetrics(modelData) {
         const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
         const stdDev = Math.sqrt(values.map(val => Math.pow(val - avg, 2)).reduce((sum, val) => sum + val, 0) / values.length);
 
-        attributeMetrics[key] = { max, min, avg, stdDev };
+        // Calculate histogram data
+        // Assuming 10 bins for simplicity, each bin representing an interval [0-1, 1-2, ..., 9-10]
+        const bins = Array(10).fill(0);
+        values.forEach(value => {
+            const binIndex = Math.floor(value); // Assuming value is from 0 to 10
+            if (binIndex >= 0 && binIndex < bins.length) {
+                bins[binIndex]++;
+            }
+        });
+
+        attributeMetrics[key] = { max, min, avg, stdDev, histogram: bins };
     }
 
     return attributeMetrics;
 }
+
+
 app.get('/get_model_data', async (req, res) => {
     const userInputValue = req.query.query;
     console.info("COMPARE ATTRIBUTES:", userInputValue);

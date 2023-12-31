@@ -345,20 +345,26 @@ function normalizePoints(points, width, height) {
 
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
-function createBar(value, max) {
+// Function to create a histogram bar
+function createHistogramBar(count, maxCount) {
   const barContainer = document.createElement('div');
   barContainer.style.width = '100%'; // Full width of the container
   barContainer.style.backgroundColor = '#f0f0f0'; // Light grey background
   barContainer.style.border = '1px solid #ccc'; // Border for the bar container
   barContainer.style.borderRadius = '5px'; // Rounded corners for aesthetics
   barContainer.style.overflow = 'hidden'; // Ensures the inner bar doesn't overflow
+  barContainer.style.display = 'flex';
 
-  const bar = document.createElement('div');
-  bar.style.width = `${(value / max) * 100}%`; // Calculate bar width based on value
-  bar.style.height = '20px'; // Fixed height for the bar
-  bar.style.backgroundColor = '#007bff'; // Use a color that stands out, like bootstrap's blue
+  // Create bars for each bin
+  count.forEach(binCount => {
+    const bar = document.createElement('div');
+    bar.style.width = `${(binCount / maxCount) * 100}%`; // Calculate bar width based on count
+    bar.style.height = '20px'; // Fixed height for the bar
+    bar.style.backgroundColor = '#007bff'; // Use a color that stands out
+    bar.style.marginRight = '2px'; // Space between bars
 
-  barContainer.appendChild(bar);
+    barContainer.appendChild(bar);
+  });
 
   return barContainer;
 }
@@ -419,8 +425,8 @@ async function compareAttributes() {
                 attributeContainer.appendChild(statsParagraph);
 
                 // Create and append the bar graph here
-                const barChart = createBar(stats.stdDev, 10); // Assuming stats.stdDev is the value for the bar
-                attributeContainer.appendChild(barChart);
+                const histogramBar = createHistogramBar(stats.histogram, Math.max(...stats.histogram));
+                attributeContainer.appendChild(histogramBar);
 
                 // Optionally, create and append a bar graph here
 
