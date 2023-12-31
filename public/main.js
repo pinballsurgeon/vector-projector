@@ -346,7 +346,7 @@ function normalizePoints(points, width, height) {
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
 // Function to create a histogram bar
-function createHistogramBar(count, maxCount) {
+function createHistogramBar(counts, maxCount) {
   const barContainer = document.createElement('div');
   barContainer.style.width = '100%'; // Full width of the container
   barContainer.style.backgroundColor = '#f0f0f0'; // Light grey background
@@ -354,20 +354,43 @@ function createHistogramBar(count, maxCount) {
   barContainer.style.borderRadius = '5px'; // Rounded corners for aesthetics
   barContainer.style.overflow = 'hidden'; // Ensures the inner bar doesn't overflow
   barContainer.style.display = 'flex';
+  barContainer.style.position = 'relative'; // Needed to position values
+  barContainer.style.paddingTop = '20px'; // Room for the values
 
-  // Create bars for each bin
-  count.forEach(binCount => {
+  // Function to determine the bar color based on value
+  const getBarColor = value => {
+    if (value <= 2) return '#5DADE2'; // Blue
+    if (value <= 5) return '#58D68D'; // Green
+    if (value <= 8) return '#F4D03F'; // Yellow
+    return '#EC7063'; // Red
+  };
+
+  counts.forEach((binCount, index) => {
     const bar = document.createElement('div');
-    bar.style.width = `${(binCount / maxCount) * 100}%`; // Calculate bar width based on count
+    const barWidth = (binCount / maxCount) * 100;
+    bar.style.width = `${barWidth}%`; // Calculate bar width based on count
     bar.style.height = '20px'; // Fixed height for the bar
-    bar.style.backgroundColor = '#007bff'; // Use a color that stands out
+    bar.style.backgroundColor = getBarColor(binCount); // Dynamic color based on value
     bar.style.marginRight = '2px'; // Space between bars
 
+    // Create a span for the value
+    const valueText = document.createElement('span');
+    valueText.textContent = binCount;
+    valueText.style.position = 'absolute'; // Position absolutely within the container
+    valueText.style.left = `${index * (100 / counts.length)}%`; // Position at the start of the bar
+    valueText.style.top = '0'; // Position above the bar
+    valueText.style.fontSize = '0.75rem'; // Smaller font size for the value
+    valueText.style.width = `${100 / counts.length}%`; // Span width of one bin
+    valueText.style.textAlign = 'center'; // Center text in the span
+
+    // Append elements
     barContainer.appendChild(bar);
+    barContainer.appendChild(valueText);
   });
 
   return barContainer;
 }
+
 
 async function compareAttributes() {
     const userInputValue = document.getElementById('userInput').value;
