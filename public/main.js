@@ -375,7 +375,7 @@ function createHistogramBar(counts, maxCount) {
 
     // Create a span for the value
     const valueText = document.createElement('span');
-    valueText.textContent = binCount;
+    valueText.textContent = index;
     valueText.style.position = 'absolute'; // Position absolutely within the container
     valueText.style.left = `${index * (100 / counts.length)}%`; // Position at the start of the bar
     valueText.style.top = '0'; // Position above the bar
