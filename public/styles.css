@@ -191,6 +191,3 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
 }
-.attribute-container:last-child {
-    margin-bottom: 0;
-}
