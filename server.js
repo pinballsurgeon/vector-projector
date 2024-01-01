@@ -495,6 +495,10 @@ function calculateAttributeMetrics(modelData) {
 
     let attributeMetrics = {};
     for (let [key, { values, items }] of Object.entries(attributesAggregated)) {
+        if (!Array.isArray(values)) {
+            console.error(`Expected an array for values, got:`, values);
+            continue; // Skip this iteration
+        }
         const max = Math.max(...values);
         const min = Math.min(...values);
         const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
