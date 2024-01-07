@@ -5,18 +5,25 @@ export let selectedNumSequences;            // Save selected num_return_sequence
 
 // Initialize Model Parameters
 export function getModelAndParams() {
-    selectedTemperature = document.getElementById('temperature').value;
-    selectedTopP = document.getElementById('top_p').value;
-    selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
+    // selectedTemperature = document.getElementById('temperature').value;
+    // selectedTopP = document.getElementById('top_p').value;
+    // selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
     
-    const selectedModelTab = document.querySelector('.tablinks.active');
-    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+    // const selectedModelTab = document.querySelector('.tablinks.active');
+    // const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+
+    // return { 
+    //     model: model, 
+    //     temperature: selectedTemperature, 
+    //     top_p: selectedTopP, 
+    //     num_return_sequences: selectedNumSequences 
+    // }; 
 
     return { 
-        model: model, 
-        temperature: selectedTemperature, 
-        top_p: selectedTopP, 
-        num_return_sequences: selectedNumSequences 
+        model: 'gpt-2', 
+        temperature: 0, 
+        top_p: 1, 
+        num_return_sequences: 20 
     }; 
 }
 
