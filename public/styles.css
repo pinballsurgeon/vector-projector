@@ -26,16 +26,14 @@ body {
 
 #main-content {
     display: flex;
-    flex-direction: row; /* Align children (canvas and sidebar) in a row */
-    margin-top: 20px; /* Add some space at the top, adjust as needed */
+    flex-direction: row; /* Align children (tabs and sidebar) in a row */
+    align-items: stretch; /* Make sure children stretch to fill the container height */
 }
 
 /* Style the main content area where canvas will be */
 #canvas-container {
-    flex-grow: 2;
-    flex: 1;
-    position: relative; /* For absolute positioning of the canvas */
-    overflow: hidden; /* Hide the overflow */
+    position: relative;
+    overflow: hidden;
 }
 
 /* Make input fields and buttons large and easily clickable */
@@ -65,6 +63,12 @@ body {
 #dynamic-content > div {
     width: 100%;
     display: none; /* Hide them by default, they will be shown dynamically */
+}
+
+#tab-content {
+    flex-grow: 2; /* Allow tab content to fill the available space */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
 }
 
 /* Style the sidebar for mobile devices */
@@ -152,6 +156,7 @@ body {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
+    z-index: 1; 
   }
   
   /* Style the buttons inside the tab */
