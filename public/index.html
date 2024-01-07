@@ -27,39 +27,29 @@
     <button id="askButton">Ask</button>
 
     <!-- Main content area -->
-    <div id="main-content">
+    <div id="main-content" style="display: flex;">
 
-        <!-- Tab links -->
-        <div class="tab">
-            <button class="tablinks" id="tab-text-davinci-003">text-davinci-003</button>
-            <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
-            <button class="tablinks" id="tab-gpt-4">gpt-4</button>
-            <button class="tablinks" id="tab-gpt-4-1106-preview">gpt-4-1106-preview</button>
-            <button class="tablinks" id="compareTab">Entropy</button>
-            <button class="tablinks" id="attributesTab">Attributes</button>
-            <!-- Add other model tabs here -->
-        </div>
+        <!-- Tab container -->
+        <div style="width: 70%;">
+
+            <!-- Tab links -->
+            <div class="tab">
+                <button class="tablinks" id="tab-text-davinci-003">text-davinci-003</button>
+                <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
+                <button class="tablinks" id="tab-gpt-4">gpt-4</button>
+                <button class="tablinks" id="tab-gpt-4-1106-preview">gpt-4-1106-preview</button>
+                <button class="tablinks" id="compareTab">Entropy</button>
+                <button class="tablinks" id="attributesTab">Attributes</button>
+                <!-- Add other model tabs here -->
+            </div>
         
-        <!-- Tab content -->
-        <div id="tab-content">
-            <!-- D3 Canvas container, assuming 'text-davinci-003' tab should show this by default -->
-            <div id="canvas-container" class="tabcontent" style="display: block;">
-                <div id="my_dataviz"></div>
-                <!-- Other content related to 'text-davinci-003' tab -->
+            <!-- Tab content -->
+            <div id="tab-content">
+                <!-- D3 Canvas container, assuming 'text-davinci-003' tab should show this by default -->
+                <div id="canvas-container" class="tabcontent" style="display: block;">
+                    <div id="my_dataviz"></div>
+                </div>
             </div>
-
-            <!-- Content for gpt-3.5-turbo tab -->
-            <div id="gpt-3-5-turbo-content" class="tabcontent">
-                <!-- Content specific to 'gpt-3.5-turbo' -->
-            </div>
-
-            <!-- Content for gpt-4 tab -->
-            <div id="gpt-4-content" class="tabcontent">
-                <!-- Content specific to 'gpt-4' -->
-            </div>
-
-            <!-- Add other tabcontent divs for each tab -->
-        </div>
 
         <!-- New sidebar container -->
         <div id="new-sidebar-container" style="width: 30%;">

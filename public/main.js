@@ -6,8 +6,10 @@ import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './c
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
-  const dynamicContentDiv = document.getElementById("dynamic-content");
-
+  const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
+  if (defaultTab) {
+      defaultTab.click(); // Simulate a click on the default tab
+  }
   newSidebarSelector.addEventListener("change", function() {
       updateSidebarContent(this.value);
   });
@@ -141,6 +143,10 @@ async function openModelTab(evt, modelName) {
             break;
         // Add cases for other models
     }
+
+    // Show the current tab content
+    document.getElementById(modelName + "-content").style.display = "block"; // Add '-content' to match the id of content div
+    evt.currentTarget.className += " active";
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     // appendLog(`Fetch history payload: ${queryParams}`);
