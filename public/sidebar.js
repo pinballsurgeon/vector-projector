@@ -36,9 +36,10 @@ export function initializeModels() {
 
 // Initialize Model Parameters
 export function initializeModelParams() {
-    document.getElementById('temperature').value = 0.5;
-    document.getElementById('top_p').value = 0.5;
-    document.getElementById('one').checked = true; 
+    const modelSelectionContent = document.getElementById('modelSelectionContent');
+    // document.getElementById('temperature').value = 0.5;
+    // document.getElementById('top_p').value = 0.5;
+    // document.getElementById('one').checked = true; 
 }
 
 // Update Sidebar Content
