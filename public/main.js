@@ -65,29 +65,29 @@ window.addEventListener('resize', resize);
 resize();
 
 // Event listener for the sliders
-document.getElementById('sphereThreshold').addEventListener('input', function() {
-  const thresholdValue = parseFloat(this.value);
-  const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
-  const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
+// document.getElementById('sphereThreshold').addEventListener('input', function() {
+//   const thresholdValue = parseFloat(this.value);
+//   const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
+//   const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
   
-  updateSpheres(thresholdValue, minCubesValue, overlapValue);
-});
+//   updateSpheres(thresholdValue, minCubesValue, overlapValue);
+// });
 
-document.getElementById('minCubesSlider').addEventListener('input', function() {
-  const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
-  const minCubesValue = parseInt(this.value);
-  const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
+// document.getElementById('minCubesSlider').addEventListener('input', function() {
+//   const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
+//   const minCubesValue = parseInt(this.value);
+//   const overlapValue = parseFloat(document.getElementById('overlapSlider').value);
   
-  updateSpheres(thresholdValue, minCubesValue, overlapValue);
-});
+//   updateSpheres(thresholdValue, minCubesValue, overlapValue);
+// });
 
-document.getElementById('overlapSlider').addEventListener('input', function() {
-  const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
-  const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
-  const overlapValue = parseFloat(this.value);
+// document.getElementById('overlapSlider').addEventListener('input', function() {
+//   const thresholdValue = parseFloat(document.getElementById('sphereThreshold').value);
+//   const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
+//   const overlapValue = parseFloat(this.value);
   
-  updateSpheres(thresholdValue, minCubesValue, overlapValue);
-});
+//   updateSpheres(thresholdValue, minCubesValue, overlapValue);
+// });
 
 
 async function openModelTab(evt, modelName) {
