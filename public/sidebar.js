@@ -30,7 +30,7 @@ export function getModelAndParams() {
 // Initialize Model
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
-    modelSelectionContent.innerHTML = '';
+    // modelSelectionContent.innerHTML = '';
     // appendModelSelection();
 }
 
