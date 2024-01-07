@@ -464,3 +464,4 @@ async function compareAttributes() {
         console.error(`Error during attributes comparison: ${error}`);
     }
 }
+

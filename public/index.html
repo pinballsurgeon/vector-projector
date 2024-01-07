@@ -26,70 +26,46 @@
     <input type="text" id="userInput" placeholder="What topic...">
     <button id="askButton">Ask</button>
 
-    <div class="tab">
-        <button class="tablinks" id="tab-text-davinci-003">text-davinci-003</button>
-        <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
-        <button class="tablinks" id="tab-gpt-4">gpt-4</button>
-        <button class="tablinks" id="tab-gpt-4-1106-preview">gpt-4-1106-preview</button>
-        <button class="tablinks" id="compareTab">Entropy</button>
-        <button class="tablinks" id="attributesTab">Attributes</button>
+    <!-- Main content area -->
+    <div id="main-content">
 
-        <!-- Add other model tabs here -->
-    </div>
-    
-    <div id="canvas-container">
-        <div id="my_dataviz"></div>
-    </div>
+        <div class="tab">
+            <button class="tablinks" id="tab-text-davinci-003">text-davinci-003</button>
+            <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
+            <button class="tablinks" id="tab-gpt-4">gpt-4</button>
+            <button class="tablinks" id="tab-gpt-4-1106-preview">gpt-4-1106-preview</button>
+            <button class="tablinks" id="compareTab">Entropy</button>
+            <button class="tablinks" id="attributesTab">Attributes</button>
 
-    <!-- The rest of your HTML -->
-    <div id="compare-container" style="display: none;"></div>
-
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <h2 id="sidebarTitle">Logs</h2>
+            <!-- Add other model tabs here -->
         </div>
-        <div class="sidebar-content">
-            <div id="promptEditors" style="display: none;"></div>
-            <div id="logsContent"></div>
-            <div id="modelSelectionContent" style="display: none;"></div> 
-            <div id="modelParametersContent" style="display: none;"> 
-                <label for="temperature">Temperature:</label>
-                <input type="range" id="temperature" name="temperature" min="0" max="1" step="0.01" value="0.5">
-                <label for="top_p">Top P:</label>
-                <input type="range" id="top_p" name="top_p" min="0" max="1" step="0.01" value="0.5">
-                <p>Num return sequences:</p>
-                <input type="radio" id="one" name="num_return_sequences" value="1" checked>
-                <label for="one">1</label>
-                <input type="radio" id="two" name="num_return_sequences" value="2">
-                <label for="two">2</label>
-                <input type="radio" id="three" name="num_return_sequences" value="3">
-                <label for="three">3</label>
-            </div>
-
-            <div id="cubeContent" style="display: none;">
-                <div id="cubeName"></div>
-                <img id="sidebarCubeImage" src="" alt="Cube Image" width="100%" height="auto">
-                <canvas id="ratingsBarChart" width="600" height="500"></canvas>
-            </div>
-
-            <div id="groupsContent" style="display: none;">
-                <p>Groups sidebar:</p>
-                <label for="sphereThreshold">Sphere Threshold (0-10):</label>
-                <input type="range" id="sphereThreshold" name="sphereThreshold" min="0" max="10" step="0.1" value="0.1">
-                <span id="thresholdValue">0.1</span>
-                <label for="minCubesSlider">Min Cubes per Sphere:</label>
-                <input type="range" id="minCubesSlider" min="0" max="10" value="0">
-                <label for="overlapSlider">Max Sphere Overlap (%):</label>
-                <input type="range" id="overlapSlider" min="0" max="100" value="100">
-                <canvas id="groupsContentChart" width="600" height="500"></canvas>
-                <div id="groupsImagesContainer"></div>
-            </div>
-
-            <div id="vectorMetricsContent" style="display: none;">
-                <p>Vector Metrics:</p>  
-            </div>          
+        
+        <div id="canvas-container">
+            <div id="my_dataviz"></div>
         </div>
-    </div>    
+
+        <!-- The rest of your HTML -->
+        <div id="compare-container" style="display: none;"></div>
+
+        <!-- New sidebar container -->
+        <div id="new-sidebar-container" style="width: 30%;">
+            <!-- Combo box for sidebar selections -->
+            <select id="newSidebarSelector">
+        <option value="logs">Logs</option>
+        <option value="modelSelection">Model Selection</option>
+        <option value="prompts">Prompts</option>
+        <option value="cubeContent">Cube Analytics</option>
+        <option value="groups">Groups and Clustering</option>
+        <option value="vectorMetrics">Vector Metrics</option>
+            </select>
+
+            <!-- Container for dynamic content -->
+            <div id="dynamic-content">
+                <!-- Dynamic content will be loaded here based on selection -->
+            </div>
+        </div>
+    </div>
+
 
     <script type="module" src="main.js"></script>
     <script type="module" src="sidebar.js"></script>

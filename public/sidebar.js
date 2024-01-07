@@ -3,41 +3,9 @@ export let selectedTemperature;             // Save selected temperature
 export let selectedTopP;                    // Save selected top_p
 export let selectedNumSequences;            // Save selected num_return_sequences
 
-// Initialize Model Parameters
-export function getModelAndParams() {
-    selectedTemperature = document.getElementById('temperature').value;
-    selectedTopP = document.getElementById('top_p').value;
-    selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
-    
-    const selectedModelTab = document.querySelector('.tablinks.active');
-    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
-
-    return { 
-        model: model, 
-        temperature: selectedTemperature, 
-        top_p: selectedTopP, 
-        num_return_sequences: selectedNumSequences 
-    }; 
-}
-
-// Initialize Model
-export function initializeModels() {
-    const modelSelectionContent = document.getElementById('modelSelectionContent');
-    modelSelectionContent.innerHTML = '';
-    // appendModelSelection();
-}
-
-// Initialize Model Parameters
-export function initializeModelParams() {
-    document.getElementById('temperature').value = 0.5;
-    document.getElementById('top_p').value = 0.5;
-    document.getElementById('one').checked = true; 
-}
-
-// Initialize Update Sidebar
-export function updateSidebar() {
-    const sidebarSelector = document.getElementById("sidebarSelector");
-    const sidebarTitle = document.getElementById("sidebarTitle");
+// Update Sidebar Content
+export function updateSidebarContent(selectedValue) {
+    const dynamicContentDiv = document.getElementById('dynamic-content');
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
@@ -46,52 +14,35 @@ export function updateSidebar() {
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     const promptEditors = document.getElementById('promptEditors');
 
-    // Start by hiding all contents
-    logsContent.style.display = 'none';
-    modelSelectionContent.style.display = 'none';
-    modelParametersContent.style.display = 'none';
-    promptEditors.style.display = 'none';
-    cubeContent.style.display = 'none';
-    groupsContent.style.display = 'none';
-    vectorMetricsContent.style.display = 'none'; // Hide the new content by default
+    // Clear dynamic content
+    dynamicContentDiv.innerHTML = '';
 
-
-    if(sidebarSelector.value === 'prompts') {
-        sidebarTitle.textContent = 'Prompts';
-        promptEditors.style.display = 'block'; // Show promptEditors
-        
-    } else if(sidebarSelector.value === 'logs') {
-        sidebarTitle.textContent = 'Logs';
-        logsContent.style.display = 'block'; // Show logsContent
-
-    } else if(sidebarSelector.value === 'cubeContent') {
-        sidebarTitle.textContent = 'Cube Analytics';
-        
-        // Make sure the 'cubeContent' div is visible
-        document.getElementById('cubeContent').style.display = 'block';
-        cubeContent.style.display = 'block';
-        
-    } else if(sidebarSelector.value === 'modelSelection') {
-        sidebarTitle.textContent = 'Model Selection';
-        modelSelectionContent.style.display = 'block';
-        modelParametersContent.style.display = 'block';
-
-    } else if(sidebarSelector.value === 'groups') {
-        sidebarTitle.textContent = 'Grouping';
-        groupsContent.style.display = 'block';
-
-    } else if(sidebarSelector.value === 'vectorMetrics') {
-        sidebarTitle.textContent = 'Vector Metrics';
-        vectorMetricsContent.style.display = 'block';
-
-    } else {
-        sidebarTitle.textContent = 'Model Selection';
-        modelSelectionContent.style.display = 'block';
-        modelParametersContent.style.display = 'block';
-
+    // Append selected content to dynamicContentDiv based on selectedValue
+    switch (selectedValue) {
+        case 'prompts':
+            dynamicContentDiv.appendChild(promptEditors);
+            break;
+        case 'logs':
+            dynamicContentDiv.appendChild(logsContent);
+            break;
+        case 'cubeContent':
+            dynamicContentDiv.appendChild(cubeContent);
+            break;
+        case 'modelSelection':
+            dynamicContentDiv.appendChild(modelSelectionContent);
+            dynamicContentDiv.appendChild(modelParametersContent);
+            break;
+        case 'groups':
+            dynamicContentDiv.appendChild(groupsContent);
+            break;
+        case 'vectorMetrics':
+            dynamicContentDiv.appendChild(vectorMetricsContent);
+            break;
+        default:
+            // Default case can be used to handle any initial setup or errors
+            dynamicContentDiv.textContent = 'Please select an option.';
+            break;
     }
-    
-    
 }
 
 // Write to log
@@ -102,6 +53,7 @@ export function appendLog(message) {
     logElement.textContent = `${formattedDate} - ${message}`;
     document.getElementById('logsContent').appendChild(logElement); // Append to 'logsContent' div
 }
+
 
 // Initialize Model
 export function appendModelSelection() {
