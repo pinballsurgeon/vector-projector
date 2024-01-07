@@ -1,5 +1,5 @@
 // import * as THREE from 'three';
-import { appendLog, updateSidebar} from './sidebar.js';
+import { appendLog, updateSidebarContent} from './sidebar.js';
 import { cubes, scene, raycaster, mouse, camera, renderer } from './cubeManager.js';
 
 // Global array to track spheres
@@ -329,8 +329,11 @@ function onSphereClick(intersectedSphere) {
         imagesContainer.appendChild(cubeContainer);
     });
     
-    
-    // Update the sidebar selector
-    document.getElementById('sidebarSelector').value = 'groups';
-    updateSidebar(); // Reflect the change
+
+    // Update the new sidebar selector
+    const newSidebarSelector = document.getElementById('newSidebarSelector');
+    newSidebarSelector.value = 'groups';
+
+    // Call the updateSidebarContent function to reflect the change
+    updateSidebarContent('groups');
 }

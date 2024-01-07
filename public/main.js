@@ -1,26 +1,22 @@
-import { getModelAndParams, updateSidebar, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
+import { getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
 // import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
 
-// SIDE BAR HANDLER
-document.addEventListener("DOMContentLoaded", function(){
-  const sidebarSelector = document.getElementById("sidebarSelector");
-  const toggleSidebarButton = document.getElementById("toggleSidebarButton");
-  const sidebar = document.getElementById("sidebar");
+document.addEventListener("DOMContentLoaded", function() {
+  const newSidebarSelector = document.getElementById("newSidebarSelector");
+  const dynamicContentDiv = document.getElementById("dynamic-content");
 
-  sidebarSelector.addEventListener("change", updateSidebar);
-
-  toggleSidebarButton.addEventListener("click", function() {
-    sidebar.classList.toggle("open");
+  newSidebarSelector.addEventListener("change", function() {
+      updateSidebarContent(this.value);
   });
 
-  updateSidebar();                    // Update sidebar on page load
+  // Initialize default content for the sidebar
+  updateSidebarContent(newSidebarSelector.value);
   initializeModels();                 // Fetch models on page load
   initializeModelParams();            // Fetch model parameters on page load
   initializePrompts();                // Fetch prompts on page load
-
 });
 
 

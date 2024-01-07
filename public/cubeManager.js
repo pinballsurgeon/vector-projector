@@ -1,4 +1,4 @@
-import { appendLog, getModelAndParams, updateSidebar, setCubeImageInSidebar } from './sidebar.js';
+import { appendLog, getModelAndParams, updateSidebarContent, setCubeImageInSidebar } from './sidebar.js';
 import { checkForSphereClick } from './sphereManager.js';
 
 // Create scene, camera, and renderer
@@ -124,13 +124,13 @@ function onCubeClick(intersectedCube) {
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
     
-    // Update the sidebar selector to 'Cube Analytics' (which is represented by 'cubeContent' value)
-    document.getElementById('sidebarSelector').value = 'cubeContent';
+    // Update the new sidebar selector to 'Cube Analytics'
+    const newSidebarSelector = document.getElementById('newSidebarSelector');
+    newSidebarSelector.value = 'cubeContent';
     document.getElementById('cubeName').textContent = itemName;
 
-    
-    // Call the updateSidebar function to reflect this change
-    updateSidebar();
+    // Call the updateSidebarContent function with the new value
+    updateSidebarContent('cubeContent');
 }
 
 
@@ -374,6 +374,8 @@ export function updateVectorMetricsContent() {
     });
 
 }
+
+
 
 export function clearCanvas() {
 
