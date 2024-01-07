@@ -24,8 +24,15 @@ body {
     text-align: center;
 }
 
+#main-content {
+    display: flex;
+    flex-direction: row; /* Align children (canvas and sidebar) in a row */
+    margin-top: 20px; /* Add some space at the top, adjust as needed */
+}
+
 /* Style the main content area where canvas will be */
 #canvas-container {
+    flex-grow: 2;
     flex: 1;
     position: relative; /* For absolute positioning of the canvas */
     overflow: hidden; /* Hide the overflow */
@@ -37,6 +44,27 @@ body {
     margin: 10px;
     padding: 15px;
     font-size: 1.5em; /* Larger text size */
+}
+
+/* Style for the new sidebar container */
+#new-sidebar-container {
+    flex-grow: 1; /* Allows the sidebar to take 30% of the available space */
+    padding: 10px; /* Add some padding */
+    border-left: 1px solid #ccc; /* Optional: adds a border line between canvas and sidebar */
+    background-color: #f1f1f1; /* Optional: background color for the sidebar */
+    overflow-y: auto; /* Scroll if the content is too long */
+}
+
+/* Style adjustments for the combo box and dynamic content */
+#newSidebarSelector, #dynamic-content {
+    width: 100%; /* Full width of the sidebar container */
+    margin-bottom: 10px; /* Space after the selector */
+}
+
+/* Ensure the dynamic content sections fill the container */
+#dynamic-content > div {
+    width: 100%;
+    display: none; /* Hide them by default, they will be shown dynamically */
 }
 
 /* Style the sidebar for mobile devices */
