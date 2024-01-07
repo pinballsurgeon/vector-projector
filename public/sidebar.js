@@ -3,6 +3,37 @@ export let selectedTemperature;             // Save selected temperature
 export let selectedTopP;                    // Save selected top_p
 export let selectedNumSequences;            // Save selected num_return_sequences
 
+// Initialize Model Parameters
+export function getModelAndParams() {
+    selectedTemperature = document.getElementById('temperature').value;
+    selectedTopP = document.getElementById('top_p').value;
+    selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
+    
+    const selectedModelTab = document.querySelector('.tablinks.active');
+    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+
+    return { 
+        model: model, 
+        temperature: selectedTemperature, 
+        top_p: selectedTopP, 
+        num_return_sequences: selectedNumSequences 
+    }; 
+}
+
+// Initialize Model
+export function initializeModels() {
+    const modelSelectionContent = document.getElementById('modelSelectionContent');
+    modelSelectionContent.innerHTML = '';
+    // appendModelSelection();
+}
+
+// Initialize Model Parameters
+export function initializeModelParams() {
+    document.getElementById('temperature').value = 0.5;
+    document.getElementById('top_p').value = 0.5;
+    document.getElementById('one').checked = true; 
+}
+
 // Update Sidebar Content
 export function updateSidebarContent(selectedValue) {
     const dynamicContentDiv = document.getElementById('dynamic-content');
