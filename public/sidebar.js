@@ -9,8 +9,8 @@ export function getModelAndParams() {
     // selectedTopP = document.getElementById('top_p').value;
     // selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
     
-    // const selectedModelTab = document.querySelector('.tablinks.active');
-    // const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+    const selectedModelTab = document.querySelector('.tablinks.active');
+    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
 
     // return { 
     //     model: model, 
@@ -20,7 +20,7 @@ export function getModelAndParams() {
     // }; 
 
     return { 
-        model: 'gpt-2', 
+        model: model, 
         temperature: 0, 
         top_p: 1, 
         num_return_sequences: 20 
