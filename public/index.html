@@ -29,6 +29,7 @@
     <!-- Main content area -->
     <div id="main-content">
 
+        <!-- Tab links -->
         <div class="tab">
             <button class="tablinks" id="tab-text-davinci-003">text-davinci-003</button>
             <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
@@ -36,40 +37,55 @@
             <button class="tablinks" id="tab-gpt-4-1106-preview">gpt-4-1106-preview</button>
             <button class="tablinks" id="compareTab">Entropy</button>
             <button class="tablinks" id="attributesTab">Attributes</button>
-
             <!-- Add other model tabs here -->
         </div>
         
-        <div id="canvas-container">
-            <div id="my_dataviz"></div>
-        </div>
+        <!-- Tab content -->
+        <div id="tab-content">
+            <!-- D3 Canvas container, assuming 'text-davinci-003' tab should show this by default -->
+            <div id="canvas-container" class="tabcontent" style="display: block;">
+                <div id="my_dataviz"></div>
+                <!-- Other content related to 'text-davinci-003' tab -->
+            </div>
 
-        <!-- The rest of your HTML -->
-        <div id="compare-container" style="display: none;"></div>
+            <!-- Content for gpt-3.5-turbo tab -->
+            <div id="gpt-3-5-turbo-content" class="tabcontent">
+                <!-- Content specific to 'gpt-3.5-turbo' -->
+            </div>
+
+            <!-- Content for gpt-4 tab -->
+            <div id="gpt-4-content" class="tabcontent">
+                <!-- Content specific to 'gpt-4' -->
+            </div>
+
+            <!-- Add other tabcontent divs for each tab -->
+        </div>
 
         <!-- New sidebar container -->
         <div id="new-sidebar-container" style="width: 30%;">
             <!-- Combo box for sidebar selections -->
             <select id="newSidebarSelector">
-        <option value="logs">Logs</option>
-        <option value="modelSelection">Model Selection</option>
-        <option value="prompts">Prompts</option>
-        <option value="cubeContent">Cube Analytics</option>
-        <option value="groups">Groups and Clustering</option>
-        <option value="vectorMetrics">Vector Metrics</option>
+                <option value="logs">Logs</option>
+                <option value="modelSelection">Model Selection</option>
+                <option value="prompts">Prompts</option>
+                <option value="cubeContent">Cube Analytics</option>
+                <option value="groups">Groups and Clustering</option>
+                <option value="vectorMetrics">Vector Metrics</option>
             </select>
 
             <!-- Container for dynamic content -->
             <div id="dynamic-content">
-                <div id="promptEditors" style="display: none;"></div>
-                <div id="logsContent" style="display: none;"></div>
-                <div id="modelSelectionContent" style="display: none;"></div>
-                <div id="modelParametersContent" style="display: none;"></div>
-                <div id="cubeContent" style="display: none;"></div>
-                <div id="groupsContent" style="display: none;"></div>
-                <div id="vectorMetricsContent" style="display: none;"></div>
-            </div>
+                    <div id="promptEditors" style="display: none;"></div>
+                    <div id="logsContent" style="display: none;"></div>
+                    <div id="modelSelectionContent" style="display: none;"></div>
+                    <div id="modelParametersContent" style="display: none;"></div>
+                    <div id="cubeContent" style="display: none;"></div>
+                    <div id="groupsContent" style="display: none;"></div>
+                    <div id="vectorMetricsContent" style="display: none;"></div>
+                </div>
+
         </div>
+
     </div>
 
 
