@@ -167,7 +167,7 @@ async function openModelTab(evt, modelName) {
         if (data.exists) {
             // Query exists, use saved PCA results
             await createOrUpdateCube(data.pcaResult);
-            updateVectorMetricsContent();
+            // updateVectorMetricsContent();
         } else {
             const rootList = await listPerpetuator();
         }
