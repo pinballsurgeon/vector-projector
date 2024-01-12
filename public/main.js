@@ -7,9 +7,9 @@ import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './c
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
   const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
-  if (defaultTab) {
-      defaultTab.click(); // Simulate a click on the default tab
-  }
+  // if (defaultTab) {
+  //     defaultTab.click(); // Simulate a click on the default tab
+  // }
   newSidebarSelector.addEventListener("change", function() {
       updateSidebarContent(this.value);
   });
