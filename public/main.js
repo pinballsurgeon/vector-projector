@@ -4,6 +4,14 @@ import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
 // import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
 
+// Visually select the 'gpt-3.5-turbo' tab when the page loads
+// document.addEventListener("DOMContentLoaded", () => {
+//   const gpt35TurboTab = document.getElementById("tab-gpt-3.5-turbo");
+//   if (gpt35TurboTab) {
+//     gpt35TurboTab.className += " active";
+//   }
+// });
+
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
   const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
@@ -167,14 +175,6 @@ async function openModelTab(evt, modelName) {
         appendLog(`Error: ${error}`);
     }
 }
-
-// Visually select the 'gpt-3.5-turbo' tab when the page loads
-document.addEventListener("DOMContentLoaded", () => {
-  const gpt35TurboTab = document.getElementById("tab-gpt-3.5-turbo");
-  if (gpt35TurboTab) {
-    gpt35TurboTab.className += " active";
-  }
-});
 
 document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
 document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
