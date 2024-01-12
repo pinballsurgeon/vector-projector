@@ -153,8 +153,8 @@ async function openModelTab(evt, modelName) {
     }
 
     // Show the current tab content
-    // document.getElementById(modelName + "-content").style.display = "block"; // Add '-content' to match the id of content div
-    // evt.currentTarget.className += " active";
+    document.getElementById(modelName + "-content").style.display = "block"; // Add '-content' to match the id of content div
+    evt.currentTarget.className += " active";
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     // appendLog(`Fetch history payload: ${queryParams}`);
@@ -167,7 +167,7 @@ async function openModelTab(evt, modelName) {
         if (data.exists) {
             // Query exists, use saved PCA results
             await createOrUpdateCube(data.pcaResult);
-            // updateVectorMetricsContent();
+            updateVectorMetricsContent();
         } else {
             const rootList = await listPerpetuator();
         }
