@@ -46,7 +46,7 @@ document.getElementById('askButton').addEventListener('click', async () => {
   if (data.exists) {
       // Query exists, use saved PCA results
       await createOrUpdateCube(data.pcaResult);
-      updateVectorMetricsContent();
+      // updateVectorMetricsContent();
   } else {
       // Query does not exist, proceed with generating new results
       const rootList = await listPerpetuator();
