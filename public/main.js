@@ -15,9 +15,9 @@ import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './c
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
   const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
-  // if (defaultTab) {
-  //     defaultTab.click(); // Simulate a click on the default tab
-  // }
+  if (defaultTab) {
+    defaultTab.className += " active";
+     }
   newSidebarSelector.addEventListener("change", function() {
       updateSidebarContent(this.value);
   });
@@ -102,7 +102,7 @@ resize();
 
 async function openModelTab(evt, modelName) {
 
-    appendLog(`Open Model Tab - Started`);
+    // appendLog(`Open Model Tab - Started`);
 
     // Hide the compare container and show the canvas container
     document.getElementById('compare-container').style.display = 'none';
