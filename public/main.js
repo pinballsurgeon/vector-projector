@@ -153,7 +153,7 @@ async function openModelTab(evt, modelName) {
     }
 
     // Show the current tab content
-    document.getElementById(modelName + "-content").style.display = "block"; // Add '-content' to match the id of content div
+    document.getElementById("tab-content").style.display = "block"; // Add '-content' to match the id of content div
     evt.currentTarget.className += " active";
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
