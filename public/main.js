@@ -105,8 +105,8 @@ async function openModelTab(evt, modelName) {
     // appendLog(`Open Model Tab - Started`);
 
     // Hide the compare container and show the canvas container
-    // document.getElementById('compare-container').style.display = 'none';
-    // document.getElementById('canvas-container').style.display = 'block';
+    document.getElementById('compare-container').style.display = 'none';
+    document.getElementById('canvas-container').style.display = 'block';
 
 
     // Declare all variables
