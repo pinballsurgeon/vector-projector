@@ -224,3 +224,15 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
 }
+
+#logsContent {
+    padding: 10px; /* Add padding for visual spacing */
+    overflow-y: auto; /* Allow scrolling if content is too long */
+    max-height: 80vh; /* Limit the height and allow scrolling */
+    /* Additional styles if needed */
+}
+
+#logsContent p {
+    margin-bottom: 5px; /* Space out log messages */
+    /* Additional styles if needed */
+}

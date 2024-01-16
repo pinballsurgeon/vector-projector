@@ -56,33 +56,33 @@ export function updateSidebarContent(selectedValue) {
     // Clear dynamic content
     dynamicContentDiv.innerHTML = '';
 
-    // Append selected content to dynamicContentDiv based on selectedValue
-    switch (selectedValue) {
-        case 'prompts':
-            dynamicContentDiv.appendChild(promptEditors);
-            break;
-        case 'logs':
-            dynamicContentDiv.appendChild(logsContent);
-            break;
-        case 'cubeContent':
-            dynamicContentDiv.appendChild(cubeContent);
-            break;
-        case 'modelSelection':
-            dynamicContentDiv.appendChild(modelSelectionContent);
-            dynamicContentDiv.appendChild(modelParametersContent);
-            break;
-        case 'groups':
-            dynamicContentDiv.appendChild(groupsContent);
-            break;
-        case 'vectorMetrics':
-            dynamicContentDiv.appendChild(vectorMetricsContent);
-            break;
-        default:
-            // Default case can be used to handle any initial setup or errors
-            dynamicContentDiv.textContent = 'Please select an option.';
-            break;
-    }
-}
+//     // Append selected content to dynamicContentDiv based on selectedValue
+//     switch (selectedValue) {
+//         case 'prompts':
+//             dynamicContentDiv.appendChild(promptEditors);
+//             break;
+//         case 'logs':
+//             dynamicContentDiv.appendChild(logsContent);
+//             break;
+//         case 'cubeContent':
+//             dynamicContentDiv.appendChild(cubeContent);
+//             break;
+//         case 'modelSelection':
+//             dynamicContentDiv.appendChild(modelSelectionContent);
+//             dynamicContentDiv.appendChild(modelParametersContent);
+//             break;
+//         case 'groups':
+//             dynamicContentDiv.appendChild(groupsContent);
+//             break;
+//         case 'vectorMetrics':
+//             dynamicContentDiv.appendChild(vectorMetricsContent);
+//             break;
+//         default:
+//             // Default case can be used to handle any initial setup or errors
+//             dynamicContentDiv.textContent = 'Please select an option.';
+//             break;
+//     }
+// }
 
 // Write to log
 export function appendLog(message) {
