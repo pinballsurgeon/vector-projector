@@ -83,7 +83,7 @@ export function updateSidebarContent(selectedValue) {
 //             break;
 //     }
 // }
-
+}
 // Write to log
 export function appendLog(message) {
     const logElement = document.createElement('p');
