@@ -195,7 +195,7 @@ async function compareModels() {
     canvasContainer.style.display = 'none';
     clearCanvas(); // Make sure this function is imported or accessible
 
-    try {
+    // try {
         const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
         const compareData = await response.json();
         
@@ -252,9 +252,9 @@ async function compareModels() {
             // Append the model container to the compare container
             compareContainer.appendChild(modelDiv);
         });
-    } catch (error) {
-        console.error(`Error during comparison: ${error}`);
-    }
+    // } catch (error) {
+    //     console.error(`Error during comparison: ${error}`);
+    // }
 }
 
  function appendHistogramCanvas(modelDiv, histogramData, chartLabel) {
