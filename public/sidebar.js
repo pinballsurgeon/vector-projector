@@ -90,7 +90,16 @@ export function appendLog(message) {
     const date = new Date();
     const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     logElement.textContent = `${formattedDate} - ${message}`;
-    document.getElementById('logsContent').appendChild(logElement); // Append to 'logsContent' div
+    const logsContent = document.getElementById('logsContent');
+
+    logsContent.appendChild(logElement);
+    
+    // If the logsContent is not currently displayed, switch to it
+    const newSidebarSelector = document.getElementById('newSidebarSelector');
+    if (newSidebarSelector.value !== 'logs') {
+        newSidebarSelector.value = 'logs';
+        updateSidebarContent('logs'); // Update the content to show logs
+    }
 }
 
 
