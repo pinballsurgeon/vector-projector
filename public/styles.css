@@ -44,13 +44,6 @@ body {
     font-size: 1.5em; /* Larger text size */
 }
 
-
-/* Style adjustments for the combo box and dynamic content */
-#newSidebarSelector, #dynamic-content {
-    width: 100%; /* Full width of the sidebar container */
-    margin-bottom: 10px; /* Space after the selector */
-}
-
 /* Ensure the dynamic content sections fill the container */
 #dynamic-content > div {
     width: 100%;
@@ -241,8 +234,14 @@ body {
     /* Add any additional styling needed for this container */
 }
 
+/* Style adjustments for the combo box and dynamic content */
+#newSidebarSelector, #dynamic-content > div:first-child{
+    width: 100%; /* Full width of the sidebar container */
+    margin-bottom: 10px; /* Space after the selector */
+}
 /* Style the new sidebar container */
 #new-sidebar-container > div:first-child {
     flex: 0 0 30%; /* Flex-grow | Flex-shrink | Basis */
     /* Your existing styles can remain here */
 }
+
