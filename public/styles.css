@@ -236,3 +236,21 @@ body {
     margin-bottom: 5px; /* Space out log messages */
     /* Additional styles if needed */
 }
+
+/* Style the main content area */
+#main-content {
+    display: flex; /* Use flexbox to lay out children */
+    flex-direction: row; /* Arrange children in a row */
+}
+
+/* Style the tab container */
+#main-content > div:first-child { /* Assuming the first child is the tab container */
+    flex: 0 0 70%; /* Flex-grow | Flex-shrink | Basis */
+    /* Add any additional styling needed for this container */
+}
+
+/* Style the new sidebar container */
+#new-sidebar-container {
+    flex: 0 0 30%; /* Flex-grow | Flex-shrink | Basis */
+    /* Your existing styles can remain here */
+}
