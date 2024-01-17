@@ -244,12 +244,3 @@ body {
     flex: 1 0 30%; /* grow | shrink | basis */
     /* Your existing styles */
 }
-
-@media (max-width: 768px) {
-    #main-content {
-        flex-direction: column; /* Stack the elements vertically on smaller screens */
-    }
-    #main-content > div:first-child, #new-sidebar-container {
-        flex-basis: 100%; /* Each takes full width on smaller screens */
-    }
-}
