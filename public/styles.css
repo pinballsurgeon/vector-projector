@@ -236,11 +236,13 @@ body {
 }
 
 /* Style the tab container */
-#main-content > div:first-child {
-    flex: 1 0 70%; /* grow | shrink | basis */
+#main-content > div:first-child { /* Assuming the first child is the tab container */
+    flex: 0 0 70%; /* Flex-grow | Flex-shrink | Basis */
+    /* Add any additional styling needed for this container */
 }
 
-#new-sidebar-container {
-    flex: 0 0 30%; /* grow | shrink | basis */
-    /* Your existing styles */
+/* Style the new sidebar container */
+#new-sidebar-container > div:first-child {
+    flex: 0 0 30%; /* Flex-grow | Flex-shrink | Basis */
+    /* Your existing styles can remain here */
 }
