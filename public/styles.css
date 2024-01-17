@@ -44,21 +44,6 @@ body {
     font-size: 1.5em; /* Larger text size */
 }
 
-/* Style for the new sidebar container */
-#new-sidebar-container {
-    flex-grow: 1; /* Allows the sidebar to take 30% of the available space */
-    padding: 10px; /* Add some padding */
-    border-left: 1px solid #ccc; /* Optional: adds a border line between canvas and sidebar */
-    background-color: #f1f1f1; /* Optional: background color for the sidebar */
-    overflow-y: auto; /* Scroll if the content is too long */
-}
-
-/* Style adjustments for the combo box and dynamic content */
-#newSidebarSelector, #dynamic-content {
-    width: 100%; /* Full width of the sidebar container */
-    margin-bottom: 10px; /* Space after the selector */
-}
-
 /* Ensure the dynamic content sections fill the container */
 #dynamic-content > div {
     width: 100%;
