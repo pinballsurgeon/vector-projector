@@ -241,6 +241,6 @@ body {
 }
 
 #new-sidebar-container {
-    flex: 1 0 30%; /* grow | shrink | basis */
+    flex: 0 0 30%; /* grow | shrink | basis */
     /* Your existing styles */
 }
