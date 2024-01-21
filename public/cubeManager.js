@@ -127,7 +127,7 @@ function onCubeClick(intersectedCube) {
     // Update the new sidebar selector to 'Cube Analytics'
     const newSidebarSelector = document.getElementById('newSidebarSelector');
     newSidebarSelector.value = 'cubeContent';
-    document.getElementById('cubeName').textContent = itemName;
+    // document.getElementById('cubeName').textContent = itemName;
 
     // Call the updateSidebarContent function with the new value
     updateSidebarContent('cubeContent');
