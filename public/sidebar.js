@@ -52,6 +52,41 @@ export function updateSidebarContent(selectedValue) {
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     const promptEditors = document.getElementById('promptEditors');
 
+    logsContent.style.display = 'none';
+    modelSelectionContent.style.display = 'none';
+    modelParametersContent.style.display = 'none';
+    promptEditors.style.display = 'none';
+    cubeContent.style.display = 'none';
+    groupsContent.style.display = 'none';
+    vectorMetricsContent.style.display = 'none';
+
+
+    const newSidebarSelector = document.getElementById('newSidebarSelector');
+    if (newSidebarSelector.value == 'logs')
+    {
+        logsContent.style.display = 'block';
+         };
+    if (newSidebarSelector.value == 'cubeContent')
+         {
+            cubeContent.style.display = 'block';
+              }
+    if (newSidebarSelector.value == 'groups')
+        {
+            groupsContent.style.display = 'block';
+            }
+
+    if (newSidebarSelector.value == 'vectorMetrics')
+        {
+            vectorMetricsContent.style.display = 'block';
+            }
+    // <option value="logs">Logs</option>
+    // <option value="modelSelection">Model Selection</option>
+    // <option value="prompts">Prompts</option>
+    // <option value="cubeContent">Cube Analytics</option>
+    // <option value="groups">Groups and Clustering</option>
+    // <option value="vectorMetrics">Vector Metrics</option>
+
+
 }
 
 // Write to log
