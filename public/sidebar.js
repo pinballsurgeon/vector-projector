@@ -44,7 +44,6 @@ export function initializeModelParams() {
 
 // Update Sidebar Content
 export function updateSidebarContent(selectedValue) {
-    const dynamicContentDiv = document.getElementById('dynamic-content');
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
@@ -53,8 +52,6 @@ export function updateSidebarContent(selectedValue) {
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     const promptEditors = document.getElementById('promptEditors');
 
-    // Clear dynamic content
-    dynamicContentDiv.innerHTML = '';
 }
 
 // Write to log
