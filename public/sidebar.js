@@ -55,35 +55,8 @@ export function updateSidebarContent(selectedValue) {
 
     // Clear dynamic content
     dynamicContentDiv.innerHTML = '';
-
-//     // Append selected content to dynamicContentDiv based on selectedValue
-//     switch (selectedValue) {
-//         case 'prompts':
-//             dynamicContentDiv.appendChild(promptEditors);
-//             break;
-//         case 'logs':
-//             dynamicContentDiv.appendChild(logsContent);
-//             break;
-//         case 'cubeContent':
-//             dynamicContentDiv.appendChild(cubeContent);
-//             break;
-//         case 'modelSelection':
-//             dynamicContentDiv.appendChild(modelSelectionContent);
-//             dynamicContentDiv.appendChild(modelParametersContent);
-//             break;
-//         case 'groups':
-//             dynamicContentDiv.appendChild(groupsContent);
-//             break;
-//         case 'vectorMetrics':
-//             dynamicContentDiv.appendChild(vectorMetricsContent);
-//             break;
-//         default:
-//             // Default case can be used to handle any initial setup or errors
-//             dynamicContentDiv.textContent = 'Please select an option.';
-//             break;
-//     }
-// }
 }
+
 // Write to log
 export function appendLog(message) {
     const logElement = document.createElement('p');
@@ -106,47 +79,6 @@ export function appendLog(message) {
         newSidebarSelector.value = 'logs';
         updateSidebarContent('logs'); // Update the content to show logs
     }
-}
-
-
-// Initialize Model
-export function appendModelSelection() {
-    fetch('/models')
-    .then(response => {
-        appendLog('Fetching models...');
-        return response.json();
-    })
-    .then(models => {
-        const modelSelectionContent = document.getElementById('modelSelectionContent'); // Append to 'modelSelectionContent' div
-        models.forEach((model, index) => {
-            const label = document.createElement('label');
-            label.textContent = model;
-            const input = document.createElement('input');
-            input.type = 'radio';
-            input.name = 'model';
-            input.value = model;
-            if (index === 0) {
-                input.checked = true;
-                selectedModel = model; // Save first model as default
-            }
-            // Add event listener to save selected model
-            input.addEventListener('change', () => {
-                if(input.checked) {
-                    selectedModel = model;
-                }
-            });
-            label.appendChild(input);
-            modelSelectionContent.appendChild(label);
-        });
-        appendLog('Models fetched successfully');
-        // appendLog(`Content objects ${sidebar}`);
-
-        // Initialize model parameters after models are fetched and appended to DOM
-        initializeModelParams();
-    })
-    .catch(error => {
-        appendLog(`Error fetching models: ${error}`);
-    });
 }
 
 // Build prompt sidebar

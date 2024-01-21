@@ -72,7 +72,9 @@
                     <div id="logsContent" style="display: block;"></div>
                     <div id="modelSelectionContent" style="display: none;"></div>
                     <div id="modelParametersContent" style="display: none;"></div>
-                    <div id="cubeContent" style="display: none;"></div>
+                    <div id="cubeContent" style="display: none;">
+                        <img id="sidebarCubeImage" src="" alt="Cube Image" style="width: 100%; height: auto;">
+                    </div>
                     <div id="groupsContent" style="display: none;"></div>
                     <div id="vectorMetricsContent" style="display: none;"></div>
             <!-- </div> -->
@@ -87,15 +89,5 @@
     <script type="module" src="cubeManager.js"></script>
     <script type="module" src="vectorMetrics.js"></script>
     
-    <!-- <script type="module">
-        document.addEventListener("DOMContentLoaded", () => {
-          // Visually activate the tab
-          const gpt35TurboTab = document.getElementById("tab-gpt-3.5-turbo");
-          if (gpt35TurboTab) {
-            gpt35TurboTab.className += " active";
-          }
-        });
-      </script> -->
-      
     </body>
     </html>
