@@ -106,11 +106,11 @@ export function appendLog(message) {
     }
     
     // If the logsContent is not currently displayed, switch to it
-    const newSidebarSelector = document.getElementById('newSidebarSelector');
-    if (newSidebarSelector.value !== 'logs') {
-        newSidebarSelector.value = 'logs';
-        updateSidebarContent('logs'); // Update the content to show logs
-    }
+    // const newSidebarSelector = document.getElementById('newSidebarSelector');
+    // if (newSidebarSelector.value !== 'logs') {
+    //     newSidebarSelector.value = 'logs';
+    //     updateSidebarContent('logs'); // Update the content to show logs
+    // }
 }
 
 // Build prompt sidebar
