@@ -125,8 +125,8 @@ async function openModelTab(evt, modelName) {
     // }
 
     // // Show the current tab, and add an "active" class to the button that opened the tab
-    // document.getElementById(modelName).style.display = "block";
-    // evt.currentTarget.className += " active";
+    document.getElementById(modelName).style.display = "block";
+    evt.currentTarget.className += " active";
 
     const userInputValue = document.getElementById('userInput').value;
     if (!userInputValue.trim()) {
