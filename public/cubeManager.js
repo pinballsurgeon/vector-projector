@@ -1,4 +1,5 @@
 import { appendLog, getModelAndParams, updateSidebarContent, setCubeImageInSidebar } from './sidebar.js';
+import { updateSpheres, clearSpheres } from './sphereManager.js';
 import { checkForSphereClick } from './sphereManager.js';
 
 // Create scene, camera, and renderer
