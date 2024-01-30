@@ -7,7 +7,7 @@ let spheres = [];
 let myChart = null;
 
 // Function to clear all spheres from the scene
-const clearSpheres = () => {
+export const clearSpheres = () => {
     spheres.forEach(sphere => {
         scene.remove(sphere); // Remove the sphere from the scene
         if (sphere.geometry) sphere.geometry.dispose(); // Dispose geometry
@@ -153,7 +153,6 @@ export const encaseCubesInSpheres = (cubes, scene, threshold = 0.5, minCubesPerS
 
 // Update spheres based on the slider values
 export const updateSpheres = (threshold, minCubesPerSphere, maxOverlapPercentage) => {
-    clearSpheres(); // Clear existing spheres
     encaseCubesInSpheres(cubes, scene, threshold, minCubesPerSphere, maxOverlapPercentage);
 };
 

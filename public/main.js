@@ -1,5 +1,5 @@
 import { getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
-import { updateSpheres } from './sphereManager.js';
+import { updateSpheres, clearSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
 // import { updateVectorMetricsContent } from './ratingGenerator.js'; // Import the function
@@ -149,15 +149,16 @@ async function openModelTab(evt, modelName) {
         case "tab-gpt-4-1106-preview":
             model = "gpt-4-1106-preview";
             break;
-        // Add cases for other models
+        case "tab-gpt-4-turbo-preview":
+            model = "gpt-4-1106-preview";
+            break;
+    // Add cases for other models
     }
 
-    // Show the current tab content
-    // document.getElementById("tab-content").style.display = "block"; // Add '-content' to match the id of content div
-    // evt.currentTarget.className += " active";
-
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
-    // appendLog(`Fetch history payload: ${queryParams}`);
+    
+    updateSidebarContent();
+
 
     try {
         const response = await fetch(`/check_query?${queryParams}`);
@@ -180,6 +181,7 @@ document.getElementById('tab-text-davinci-003').addEventListener('click', (event
 document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
+document.getElementById('tab-gpt-4-turbo-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-turbo-preview'));
 
 document.getElementById('compareTab').addEventListener('click', compareModels);
 

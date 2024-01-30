@@ -30,6 +30,7 @@ export let cubes = [];
 export const createOrUpdateCube = (data) => {
 
     clearCanvas();
+    clearSpheres();
 
     const textureLoader = new THREE.TextureLoader();
     let cubeCreationPromises = [];
@@ -100,9 +101,6 @@ export const animate = function () {
 };
 
 animate(); 
-
-
-// encaseCubesInSpheres(cubes, scene);
 
 // CLICK INTERACTION
 renderer.domElement.addEventListener('click', onMouseClick, false);
