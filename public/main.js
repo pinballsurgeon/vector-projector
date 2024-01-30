@@ -150,7 +150,7 @@ async function openModelTab(evt, modelName) {
             model = "gpt-4-1106-preview";
             break;
         case "tab-gpt-4-turbo-preview":
-            model = "gpt-4-1106-preview";
+            model = "gpt-4-turbo-preview";
             break;
     // Add cases for other models
     }
