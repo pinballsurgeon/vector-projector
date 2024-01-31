@@ -37,6 +37,8 @@ const openai = new OpenAIApi(configuration);
 const app = express();
 const inference = new HfInference(hf_key);
 
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -190,7 +192,7 @@ const DEFAULT_IMAGE_URL = "https://cdn.iconscout.com/icon/premium/png-256-thumb/
 
 async function searchImage(query) {
     try {
-        const images = await client.search(query);
+        const images = await client.search(query, {size: 'small'});
 
         for (let image of images) {
             const imageUrl = image.url;
@@ -246,8 +248,7 @@ app.listen(port, () => {
 
 
 // app.use(bodyParser.json());  // This middleware parses incoming requests with JSON payloads
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
 
 
 app.post('/vector_db', async (req, res) => {
