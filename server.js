@@ -124,33 +124,30 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     });
 });
 
-// Function to initialize Gemini Pro model
-async function initializeGeminiPro() {
-    const vertex_ai = new VertexAI({
-        project: 'your-project-id',
-        location: 'us-central1',
-    });
-    const model = 'gemini-pro';
+const vertex_ai = new VertexAI({
+    project: process.env.GCP_PROJECT_ID,
+    location: 'us-central1'
+  });
+  
+  const model = 'gemini-pro';
+  
+  async function generateContentFromGeminiPro(userInput) {
     const generativeModel = vertex_ai.preview.getGenerativeModel({
-        model: model,
-        generation_config: {
-            "max_output_tokens": 2048,
-            "temperature": 0.9,
-            "top_p": 1
-        },
-        safety_settings: [],
+      model: model,
+      generation_config: {
+        "max_output_tokens": 2048,
+        "temperature": 0.9,
+        "top_p": 1
+      },
+      safety_settings: [],
     });
-    return generativeModel;
-}
-
-// Function to generate content with Gemini Pro
-async function generateContentWithGeminiPro(generativeModel, userInput) {
+  
     const chat = generativeModel.startChat({});
-    const userMessage = [{ text: userInput }];
-    const streamResult = await chat.sendMessageStream(userMessage);
-    return (await streamResult.response).candidates[0].content;
-}
-
+    const userMessage0 = [{text: userInput}];
+    const streamResult0 = await chat.sendMessageStream(userMessage0);
+    return (await streamResult0.response).candidates[0].content;
+  }
+  
 
 app.post('/ask', async (req, res, next) => {
     try {
