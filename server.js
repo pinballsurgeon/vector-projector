@@ -10,13 +10,14 @@ import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 import bodyParser from 'body-parser';
 import pg from 'pg';
-const { VertexAI } = require('@google-cloud/vertexai');
-require('dotenv').config();
+
 const { Client } = pg;
 
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
+
+
 
 const { Configuration, OpenAIApi } = require("openai");
 let imageCache = {};  // Create an in-memory image cache
