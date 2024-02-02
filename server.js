@@ -10,6 +10,8 @@ import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 import bodyParser from 'body-parser';
 import pg from 'pg';
+const { VertexAI } = require('@google-cloud/vertexai');
+require('dotenv').config();
 const { Client } = pg;
 
 
@@ -121,6 +123,32 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     });
 });
 
+// Function to initialize Gemini Pro model
+async function initializeGeminiPro() {
+    const vertex_ai = new VertexAI({
+        project: 'your-project-id',
+        location: 'us-central1',
+    });
+    const model = 'gemini-pro';
+    const generativeModel = vertex_ai.preview.getGenerativeModel({
+        model: model,
+        generation_config: {
+            "max_output_tokens": 2048,
+            "temperature": 0.9,
+            "top_p": 1
+        },
+        safety_settings: [],
+    });
+    return generativeModel;
+}
+
+// Function to generate content with Gemini Pro
+async function generateContentWithGeminiPro(generativeModel, userInput) {
+    const chat = generativeModel.startChat({});
+    const userMessage = [{ text: userInput }];
+    const streamResult = await chat.sendMessageStream(userMessage);
+    return (await streamResult.response).candidates[0].content;
+}
 
 
 app.post('/ask', async (req, res, next) => {
