@@ -137,8 +137,8 @@ async function openModelTab(evt, modelName) {
     // Extract the model name from the button ID if necessary
     let model = "";
     switch (modelName) {
-        case "tab-text-davinci-003":
-            model = "text-davinci-003";
+        case "tab-gemini-pro":
+            model = "gemini-pro";
             break;
         case "tab-gpt-3.5-turbo":
             model = "gpt-3.5-turbo";
@@ -182,6 +182,7 @@ document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) =
 document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
 document.getElementById('tab-gpt-4-turbo-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-turbo-preview'));
+document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
 
 document.getElementById('compareTab').addEventListener('click', compareModels);
 

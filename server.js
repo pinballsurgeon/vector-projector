@@ -128,9 +128,8 @@ const vertex_ai = new VertexAI({
     location: 'us-central1'
   });
   
-  const model = 'gemini-pro';
   
-  async function generateContentFromGeminiPro(userInput) {
+  async function generateContentFromGeminiPro(userInput, model) {
     const generativeModel = vertex_ai.preview.getGenerativeModel({
       model: model,
       generation_config: {
@@ -172,6 +171,11 @@ app.post('/ask', async (req, res, next) => {
 
             res.json({ response: gptResponse.data.choices[0].message.content });
       
+        } else if (['gemini-pro'].includes(model)) {
+
+            res.json({ response: generateContentFromGeminiPro(userInput, model) });
+            
+
         // HuggingFace - Transformers
         } else {
             const max_length = req.body.max_length || 1000;
