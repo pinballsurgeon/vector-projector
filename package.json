@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall" : "node gcpSetup.js",
+    "preinstall" : "node init.js",
     "start": "node server.js"
   },
   "keywords": [],
