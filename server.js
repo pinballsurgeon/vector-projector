@@ -180,7 +180,10 @@ app.post('/ask', async (req, res, next) => {
       
         } else if (['gemini-pro'].includes(model)) {
 
-            res.json({ response: generateContentFromGeminiPro(userInput, model) });
+            console.log(`Gemini-Pro request!`);
+            const gm_response = generateContentFromGeminiPro(userInput, model)
+            console.log(`Gemini-Pro response`, gm_response);
+            res.json({ response: gm_response });
             
 
         // HuggingFace - Transformers
