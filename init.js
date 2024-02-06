@@ -1,2 +1,7 @@
-var fs=require('fs');
+// Before
+var fs = require('fs');
+
+// After
+import fs from 'fs';
+
 fs.writeFile(process.env.GCP_KEY_FILE, process.env.GCP_CRED, (err) => {});
