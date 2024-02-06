@@ -11,6 +11,13 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 
+import {GoogleAuth} from 'google-auth-library';
+
+const auth = new GoogleAuth({
+  credentials: JSON.parse(process.env.GCP_CRED)
+});
+
+
 const { Client } = pg;
 
 const require = createRequire(import.meta.url); // construct the require method
