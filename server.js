@@ -152,7 +152,7 @@ const vertex_ai = new VertexAI({
     const streamResult0 = await chat.sendMessageStream(userMessage0);
     return (await streamResult0.response).candidates[0].content;
   }
-  
+   
 
 app.post('/ask', async (req, res, next) => {
     try {
