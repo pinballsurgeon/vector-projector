@@ -149,7 +149,7 @@ const vertex_ai = new VertexAI({
       model: model,
       generation_config: {
         "max_output_tokens": 4048,
-        "temperature": 0.8,
+        "temperature": 0.7,
         "top_p": 1
       },
       safety_settings: [],
