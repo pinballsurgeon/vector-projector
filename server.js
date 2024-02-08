@@ -156,10 +156,10 @@ const vertex_ai = new VertexAI({
     });
   
     // const chat = generativeModel.startChat({});
-    const chatInput1 = userInput;
+    // const chatInput1 = userInput;
   
-    console.log(`Gemini Pro User: ${chatInput1}`);
-    const result = await model.generateContent(prompt);
+    console.log(`Gemini Pro User: ${userInput}`);
+    const result = await model.generateContent(userInput);
     const result_test = result.response.text();
     console.log('Gemini Pro response: ', result_test);
 
