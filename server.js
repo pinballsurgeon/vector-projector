@@ -149,16 +149,10 @@ const vertex_ai = new VertexAI({
       model: model,
       generation_config: {
         "max_output_tokens": 2048,
-        "temperature": 0.9,
-        "top_p": 1
       },
       safety_settings: [],
     });
   
-    // const chat = generativeModel.startChat({});
-    // const userMessage0 = [{text: userInput}];
-    // const streamResult0 = await chat.sendMessageStream(userMessage0);
-    // return (await streamResult0.response).candidates[0].content;
 
     const chat = generativeModel.startChat({});
     const chatInput1 = userInput;
@@ -172,16 +166,6 @@ const vertex_ai = new VertexAI({
 
     return response1;
   
-    // const chat = generativeModel.startChat({});
-
-    // const chatInput1 = 'Hello';
-    // console.log(`User: ${chatInput1}`);
-  
-    // const result1 = await chat.sendMessage(chatInput1);
-    // const response1 = result1.response.candidates[0].content.parts[0].text;
-    // console.log('Chat bot: ', response1);
-
-
   }
    
 
