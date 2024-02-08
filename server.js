@@ -145,7 +145,7 @@ const vertex_ai = new VertexAI({
   
   
   async function generateContentFromGeminiPro(userInput, model) {
-    const generativeModel = vertex_ai.preview.getGenerativeModel({
+    const generativeModel = vertex_ai.getGenerativeModel({
       model: model,
       generation_config: {
         "max_output_tokens": 2048,
@@ -156,21 +156,21 @@ const vertex_ai = new VertexAI({
     });
   
     // const chat = generativeModel.startChat({});
-    // const userMessage0 = [{text: userInput}];
-    // const streamResult0 = await chat.sendMessageStream(userMessage0);
-    // return (await streamResult0.response).candidates[0].content;
-
-    const chat = generativeModel.startChat({});
     const chatInput1 = userInput;
   
     console.log(`Gemini Pro User: ${chatInput1}`);
-  
-    const result1 = await chat.sendMessage(chatInput1);
-    let res = "";
-    const response1 = result1.response.candidates[0].content.parts[0].text;
-    console.log('Gemini Pro response: ', response1);
+    const result = await model.generateContent(prompt);
+    const result_test = result.response.text();
+    console.log('Gemini Pro response: ', result_test);
 
-    return response1;
+    return result_test;
+    
+    // const result1 = await chat.sendMessage(chatInput1);
+    // let res = "";
+    // const response1 = result1.response.candidates[0].content.parts[0].text;
+    // console.log('Gemini Pro response: ', response1);
+
+    // return response1;
   
     // const chat = generativeModel.startChat({});
 
