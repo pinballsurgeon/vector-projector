@@ -160,7 +160,8 @@ const vertex_ai = new VertexAI({
   
     console.log(`Gemini Pro User: ${userInput}`);
     const result = await generativeModel.generateContent(userInput);
-    const result_test = result.response.text();
+    // const result_test = result.response.text();
+    const result_test = result.response.candidates[0].content.parts[0].text;
     console.log('Gemini Pro response: ', result_test);
 
     return result_test;
