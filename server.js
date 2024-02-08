@@ -206,7 +206,7 @@ app.post('/ask', async (req, res, next) => {
         } else if (['gemini-pro'].includes(model)) {
 
             console.log(`Gemini-Pro request!`);
-            const gm_response = generateContentFromGeminiPro(userInput, model)
+            const gm_response = await generateContentFromGeminiPro(userInput, model)
             console.log(`Gemini-Pro response`, gm_response);
             res.json({ response: gm_response });
             
