@@ -12,6 +12,8 @@ async function fetchRatingsAndImageForItem(item, attributes_str) {
         let replacements = { item, attributes_str };
         const ratingResponse = await fetchJSONFromLLM(promptKey, '', replacements);
 
+        appendLog(`Rating response: ${ratingResponse}`);
+
         let validJsonString = ratingResponse.replace(/'/g, '"').replace('.', '');
         let jsonObject = JSON.parse(validJsonString);
         
