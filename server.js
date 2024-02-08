@@ -148,8 +148,8 @@ const vertex_ai = new VertexAI({
     const generativeModel = vertex_ai.preview.getGenerativeModel({
       model: model,
       generation_config: {
-        "max_output_tokens": 2048,
-        "temperature": 0.9,
+        "max_output_tokens": 4048,
+        "temperature": 0.5,
         "top_p": 1
       },
       safety_settings: [],
