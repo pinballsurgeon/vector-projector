@@ -160,26 +160,26 @@ const vertex_ai = new VertexAI({
     // const streamResult0 = await chat.sendMessageStream(userMessage0);
     // return (await streamResult0.response).candidates[0].content;
 
+    const chat = generativeModel.startChat({});
+    const chatInput1 = userInput;
+  
+    console.log(`Gemini Pro User: ${chatInput1}`);
+  
+    const result1 = await chat.sendMessage(chatInput1);
+    let res = "";
+    const response1 = result1.response.candidates[0].content.parts[0].text;
+    console.log('Gemini Pro response: ', response1);
+
+    return response1;
+  
     // const chat = generativeModel.startChat({});
-    // const chatInput1 = userInput;
-  
-    // console.log(`Gemini Pro User: ${chatInput1}`);
-  
-    // const result1 = await chat.sendMessageStream(chatInput1);
-    // let res = "";
-    // for await (const item of result1.stream) {
-    //     res = item.candidates[0].content.parts[0].text;
-    //     console.log(res);
-    // }
 
-    // return res;
-
-    const result = await generativeModel.generateContent(userInput);
-    const response = await result.response;
-    const text = response.text();
-    console.log(text);
-    return response;
+    // const chatInput1 = 'Hello';
+    // console.log(`User: ${chatInput1}`);
   
+    // const result1 = await chat.sendMessage(chatInput1);
+    // const response1 = result1.response.candidates[0].content.parts[0].text;
+    // console.log('Chat bot: ', response1);
 
 
   }
