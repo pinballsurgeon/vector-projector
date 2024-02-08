@@ -155,10 +155,27 @@ const vertex_ai = new VertexAI({
       safety_settings: [],
     });
   
+    // const chat = generativeModel.startChat({});
+    // const userMessage0 = [{text: userInput}];
+    // const streamResult0 = await chat.sendMessageStream(userMessage0);
+    // return (await streamResult0.response).candidates[0].content;
+
     const chat = generativeModel.startChat({});
-    const userMessage0 = [{text: userInput}];
-    const streamResult0 = await chat.sendMessageStream(userMessage0);
-    return (await streamResult0.response).candidates[0].content;
+    const chatInput1 = userInput;
+  
+    console.log(`Gemini Pro User: ${chatInput1}`);
+  
+    const result1 = await chat.sendMessageStream(chatInput1);
+    let res = "";
+    for await (const item of result1.stream) {
+        res = item.candidates[0].content.parts[0].text;
+        console.log(res);
+    }
+
+    return res;
+  
+
+
   }
    
 
