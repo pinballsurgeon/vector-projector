@@ -145,7 +145,7 @@ const vertex_ai = new VertexAI({
   
   
   async function generateContentFromGeminiPro(userInput, model) {
-    const generativeModel = vertex_ai.getGenerativeModel({
+    const generativeModel = vertex_ai.preview.getGenerativeModel({
       model: model,
       generation_config: {
         "max_output_tokens": 2048,
