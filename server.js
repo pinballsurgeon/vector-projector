@@ -130,9 +130,17 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     });
 });
 
+const authOptions = {
+    credentials: {
+      client_email: 'dehls-tst@dehls-deluxo-engine.iam.gserviceaccount.com',
+      private_key: 'nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCcLqlhastQtmc\nYvLTPLsam4cIwVHyyZp0mcklhWIR8IGxK/RRiN9+NBZMJfq7y32GcUJXjfsT2ZqC\nM9QYBBr5wAYdZ2h/CTGBthBb4w+RUFC4LUHkL86/lkhaTAzwEk5iPM7168FW+HLJ\npWmMXmXdsyQnuKBOQF9vK1lFd9z811lw3g4m46sanD+foD3V9E7Hl9Wcs5koALSg\nNpMtWEh8btKI/QX3o/QRiEtn6dWoko1wVC3kin92I32cIJDZrZ/Zu/2+ZxYmAJa4\nWWyj0vCGwCf94PiM5kDCX2tRBBvIkWw9SAPNRlO0FRH+ZPZZ4kW1ClOa42cWwEXn\nNkFOdn7LAgMBAAECggEABpBwtKrVExOZLh7nDLuVo3nRrrl8D0LAHKSedk5Q98MT\nVcxilKgWx3dxs0Nq+hEOHU5Qi40nB04G2dNvGxp0YK8bZb26eONyEOt5FOkO+vxn\npTgd69qzU6N6sNW1cBtmGwnrgMDjR5DeqzES5aLANKJaG58vhkTFFAc2HdLEmqKJ\nW9avqgMC6jOSWhgoSWlXFDfy8mMJbmVDWZcy/LV4idIFWahruxhFzL1DOSdS4EeT\nNNvx5VyXMhYJcodXizWP4vYr1AAf8qy59z8nTKoUFuSAJFVReSlqKN0K2aSGpNVe\nznZtOHKRKLXcMabUbCvkD6GWvC5AIycqeigpS0bhPQKBgQD8j2sFzBCLRIjQdF1U\nSrPmXXntZa4Fhrai0LULqss0c4VfUHOm1lFSzks7wcyB3mkrGzrDgTQMTrhHrEO8\nPlxgJxGGgikLc5+CfPGcKTAoXB/37Xbq6xFISoQlozCNkmNO/vKZcF6kMI0NxgA6\nkO0T5RER9zFkl1utElaJ1j81zwKBgQDFFqtD+nqeGt1kralEp5W+B8Nn252ivM4P\n3Ekr4ZvNXMrEqEcG5wGl1OfKPB9KdqCe+FfeDwwaGPyIqMkYHYhQW1veItmsMCG2\nr8rLssR7HAlNh9Pjk0QRt8LGjefi+5LDL38MbIzJOfCgP64j+nGcFgQ0w840jT4c\nEBl1sqCiRQKBgQDNioq29RShwuz1eT5bU1CFsp2ALrgplzEb4G73R9CIp1tr7rWw\nmcslcO6Ze2dMag19H3P7mDMbsRUYf4HAuZ/EQQdqSJPO1hKCx9x6Eqs2rYL26zNU\njGpMQxi46M6i6PgZWjNl3KWpSjoBc5rMDxZikpIJ5Ps1uljJyZrUIqDe0QKBgC6L\n+grl/0uT4LHEafOy+KSWxMmkjog+uxP33LgmYluQDLuBWrUAnd0CeXPD20gE2E5z\nLJ1fRGZtfEbyRfwSDX2c9gdyh6IpA+1Xeze8krbYmkHbUGmxACSHF9M49IkhDTpX\n31OZ12425uOR5pjMr0RD1t53WB4FNaP/EWRAubtZAoGBALDtIg0RxP64pn7BZ/v0\nlH7vk0HlDYvzKIWIU1Pg4uoXViybkG1qNQlshW9YjCv43TnV5W+YyAoypYMZnfU0\nRzylsfVBWEAu3Gh4M8rMmiuauEsL7hQWwg5vJysZOuKQ9103POiFERHuKyw4Srg1\nWxBbQF/X8LV/TpLr4KUk5X/8',
+    }
+  }
+
 const vertex_ai = new VertexAI({
     project: process.env.GCP_PROJECT_ID,
-    location: 'us-central1'
+    location: 'us-central1',
+    googleAuthOptions: authOptions
   });
   
   
