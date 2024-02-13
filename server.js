@@ -58,11 +58,36 @@ function covarianceMatrix(data) {
             math.mean(data.map(row => (row[i] - means[i]) * (row[j] - means[j])))));
 }
 
+function isValidItem(item, validKeys) {
+    const itemKeys = Object.keys(item);
+    // Check if item has the same keys as the valid keys
+    if (itemKeys.length !== validKeys.length || !itemKeys.every(key => validKeys.includes(key))) {
+        return false;
+    }
+    // Check if all values are numeric
+    return Object.values(item).every(value => typeof value === 'number');
+}
+
+function preprocessData(data) {
+    if (data.length === 0) return [];
+    // Assuming all items should have the same keys as the first item
+    const validKeys = Object.keys(data[0]);
+    return data.filter(item => isValidItem(item, validKeys));
+}
 
 function performPCA(data) {
 
-    const keys = Object.keys(data);
-    const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
+    const preprocessedData = preprocessData(data);
+    if (preprocessedData.length === 0) {
+        throw new Error('No valid data items for PCA');
+    }
+
+    // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
+    const keys = Object.keys(preprocessedData);
+    const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
+
+    // const keys = Object.keys(data);
+    // const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
     // Center the data
     const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
@@ -380,6 +405,39 @@ app.get('/check_query', async (req, res) => {
         client.end(); // Ensure the client connection is closed
     }
 });
+
+app.get('/get_all_queries', async (req, res) => {
+    const client = new Client({
+        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+    try {
+        await client.connect();
+        const { userInputValue, model } = req.query;
+
+        const queryResult = await client.query(`
+            SELECT cube_data FROM cache WHERE query = $1 AND model = $2
+        `, [userInputValue, model]);
+
+        if (queryResult.rows.length > 0) {
+            const cubeData = queryResult.rows[0].cube_data;
+            res.json({
+                exists: true,
+                pcaResult: (typeof cubeData === 'object') ? cubeData : JSON.parse(cubeData)
+            });
+        } else {
+            res.json({ exists: false, message: "No data found for this query" });
+        }
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        client.end(); // Ensure the client connection is closed
+    }
+});
+
 
 function calculateShannonEntropy(densities) {
     let totalPoints = densities.reduce((sum, val) => sum + val, 0);
