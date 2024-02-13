@@ -77,17 +77,17 @@ function preprocessData(data) {
 
 function performPCA(data) {
 
-    const preprocessedData = preprocessData(data);
-    if (preprocessedData.length === 0) {
-        throw new Error('No valid data items for PCA');
-    }
+    // const preprocessedData = preprocessData(data);
+    // if (preprocessedData.length === 0) {
+    //     throw new Error('No valid data items for PCA');
+    // }
 
-    // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
-    const keys = Object.keys(preprocessedData);
-    const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
+    // // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
+    // const keys = Object.keys(preprocessedData);
+    // const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
 
-    // const keys = Object.keys(data);
-    // const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
+    const keys = Object.keys(data);
+    const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
     // Center the data
     const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
