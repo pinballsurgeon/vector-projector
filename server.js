@@ -86,6 +86,8 @@ function performPCA(data) {
     // const keys = Object.keys(preprocessedData);
     // const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
 
+    console.log(`PCA DATA: ${data}`);
+
     const keys = Object.keys(data);
     const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
