@@ -93,14 +93,13 @@ function performPCA(data) {
 
     // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
     const keys = Object.keys(preprocessedData);
-    const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
+    console.log(`PCA keys: ${keys}`);
+    //const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
+    const values = preprocessedData.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
    
     // const keys = Object.keys(data);
 
-    console.log(`PCA keys: ${keys}`);
-
-    // const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
     // Center the data
     const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
