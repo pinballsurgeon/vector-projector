@@ -98,7 +98,7 @@ function performPCA(data) {
 
         // Assume we're working with the first item to demonstrate getting keys
         // You might need to adjust based on your actual requirements
-        const keys = Object.keys(preprocessedData[0]);
+        const keys = Object.keys(preprocessedData);
         console.log(`PCA keys: ${keys}`);
 
         // Correctly convert objects to arrays of values
