@@ -69,21 +69,25 @@ function isValidItem(item, validKeys) {
 }
 
 function preprocessData(data) {
-    try {
-        const items = Object.values(data); // Convert data object into an array of its values
-        if (items.length === 0) return [];
-        const firstItem = items[0]; // This assumes that the first item represents the structure you're after
-        const validKeys = Object.keys(firstItem);
-        console.log(`validKeys: ${validKeys}`);
+    // Step 1: Determine the set of valid nested keys from the first item
+    const sampleItem = data[Object.keys(data)[0]];
+    const validNestedKeys = Object.keys(sampleItem);
+    
+    // Step 2 & 3: Validate each item and ensure all nested keys match and values are numeric
+    const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
+        const itemKeys = Object.keys(value);
+        // Ensure item has the same keys as the valid nested keys and all values are numeric
+        const isValidItem = itemKeys.length === validNestedKeys.length && 
+                            itemKeys.every(k => validNestedKeys.includes(k) && typeof value[k] === 'number');
         
-        // Filter items based on valid keys and check if their values are numeric
-        return items.filter(item => isValidItem(item, validKeys));
-    } catch (error) {
-        console.error("PCA Validator Error:", error);
-        throw error; // Propagate the error for further handling
-    }
-}
+        if (isValidItem) {
+            acc[key] = value; // Keep item if it's valid
+        }
+        return acc;
+    }, {});
 
+    return filteredData;
+}
 
 function performPCA(data) {
     try {
