@@ -102,7 +102,8 @@ function performPCA(data) {
         console.log(`PCA keys: ${keys}`);
 
         // Correctly convert objects to arrays of values
-        const values = preprocessedData.map(obj => Object.values(obj));
+        // const values = preprocessedData.map(obj => Object.values(obj));
+        const values = Object.values(preprocessedData).map(obj => Object.values(obj)); // Convert objects to arrays
 
         // const keys = Object.keys(data);
 
