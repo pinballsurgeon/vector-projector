@@ -70,15 +70,20 @@ function isValidItem(item, validKeys) {
 
 function preprocessData(data) {
     try {
-        if (data.length === 0) return [];
-        const validKeys = Object.keys(data[0]);
-        console.log(`validKeys: ${validKeys}`); // Corrected logging statement
-        return data.filter(item => isValidItem(item, validKeys));
+        const items = Object.values(data); // Convert data object into an array of its values
+        if (items.length === 0) return [];
+        const firstItem = items[0]; // This assumes that the first item represents the structure you're after
+        const validKeys = Object.keys(firstItem);
+        console.log(`validKeys: ${validKeys}`);
+        
+        // Filter items based on valid keys and check if their values are numeric
+        return items.filter(item => isValidItem(item, validKeys));
     } catch (error) {
         console.error("PCA Validator Error:", error);
-        throw error; // Ensure the error is thrown after logging
+        throw error; // Propagate the error for further handling
     }
 }
+
 
 function performPCA(data) {
     try {
