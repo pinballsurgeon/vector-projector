@@ -69,80 +69,76 @@ function isValidItem(item, validKeys) {
 }
 
 function preprocessData(data) {
-
-    try{
+    try {
         if (data.length === 0) return [];
-        // Assuming all items should have the same keys as the first item
         const validKeys = Object.keys(data[0]);
-        console.log(`validKeys: ${keys}`);
+        console.log(`validKeys: ${validKeys}`); // Corrected logging statement
         return data.filter(item => isValidItem(item, validKeys));
     } catch (error) {
         console.error("PCA Validator Error:", error);
-        res.status(500).send("Internal server error");
+        throw error; // Ensure the error is thrown after logging
     }
 }
 
 function performPCA(data) {
+    try {
+        const preprocessedData = preprocessData(data);
+        if (preprocessedData.length === 0) {
+            throw new Error('No valid data items for PCA');
+        }
 
-    try{
+        // Assume we're working with the first item to demonstrate getting keys
+        // You might need to adjust based on your actual requirements
+        const keys = Object.keys(preprocessedData[0]);
+        console.log(`PCA keys: ${keys}`);
 
-    const preprocessedData = preprocessData(data);
-    if (preprocessedData.length === 0) {
-        throw new Error('No valid data items for PCA');
-    }
+        // Correctly convert objects to arrays of values
+        const values = preprocessedData.map(obj => Object.values(obj));
 
-    // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
-    const keys = Object.keys(preprocessedData);
-    console.log(`PCA keys: ${keys}`);
-    //const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
-    const values = preprocessedData.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
-
-   
-    // const keys = Object.keys(data);
+        // const keys = Object.keys(data);
 
 
-    // Center the data
-    const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
-    const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
+        // Center the data
+        const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
+        const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
 
-    // Calculate covariance matrix
-    const covMatrix = covarianceMatrix(centeredData);
+        // Calculate covariance matrix
+        const covMatrix = covarianceMatrix(centeredData);
 
-    // Create a new ml-matrix instance from the covariance matrix
-    const M = new mlMatrix.Matrix(covMatrix);
+        // Create a new ml-matrix instance from the covariance matrix
+        const M = new mlMatrix.Matrix(covMatrix);
 
-    // Compute the eigenvectors and eigenvalues of the covariance matrix
-    const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
-    const eigenvalues = eigendecomposition.realEigenvalues;
-    const eigenvectors = eigendecomposition.eigenvectorMatrix;
+        // Compute the eigenvectors and eigenvalues of the covariance matrix
+        const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
+        const eigenvalues = eigendecomposition.realEigenvalues;
+        const eigenvectors = eigendecomposition.eigenvectorMatrix;
 
-    // Sort the eigenvectors based on the eigenvalues
-    const sortedEigenvaluesIndices = eigenvalues
-        .map((val, idx) => [val, idx]) // attach the original index positions [eigenvalue, index]
-        .sort(([a], [b]) => b - a) // sort based on the eigenvalue in decreasing order
-        .map(([, idx]) => idx); // discard the sorted eigenvalues, we just want the indices
-    const sortedEigenvectors = sortedEigenvaluesIndices.map(i => eigenvectors.getColumn(i));
+        // Sort the eigenvectors based on the eigenvalues
+        const sortedEigenvaluesIndices = eigenvalues
+            .map((val, idx) => [val, idx]) // attach the original index positions [eigenvalue, index]
+            .sort(([a], [b]) => b - a) // sort based on the eigenvalue in decreasing order
+            .map(([, idx]) => idx); // discard the sorted eigenvalues, we just want the indices
+        const sortedEigenvectors = sortedEigenvaluesIndices.map(i => eigenvectors.getColumn(i));
 
-    // Select the first three eigenvectors
-    const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
+        // Select the first three eigenvectors
+        const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
 
-    // Transform the data into the new space
-    const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => math.dot(row, eigenvector)));
- 
-    // Construct the result object
-    const result = {};
-    keys.forEach((key, i) => {
-    result[key] = {
-        x: transformedData[i][0],
-        y: transformedData[i][1],
-        z: transformedData[i][2]
-    };
-    });
+        // Transform the data into the new space
+        const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => math.dot(row, eigenvector)));
+    
+        // Construct the result object
+        const result = {};
+        keys.forEach((key, i) => {
+        result[key] = {
+            x: transformedData[i][0],
+            y: transformedData[i][1],
+            z: transformedData[i][2]
+        };
+        });
 
-    return result;
+        return result;
     } catch (error) {
         console.error("PCA Error:", error);
-        res.status(500).send("Internal server error");
     }
 }
 
