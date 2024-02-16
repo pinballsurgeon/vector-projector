@@ -69,30 +69,38 @@ function isValidItem(item, validKeys) {
 }
 
 function preprocessData(data) {
-    if (data.length === 0) return [];
-    // Assuming all items should have the same keys as the first item
-    const validKeys = Object.keys(data[0]);
-    return data.filter(item => isValidItem(item, validKeys));
+
+    try{
+        if (data.length === 0) return [];
+        // Assuming all items should have the same keys as the first item
+        const validKeys = Object.keys(data[0]);
+        console.log(`validKeys: ${keys}`);
+        return data.filter(item => isValidItem(item, validKeys));
+    } catch (error) {
+        console.error("PCA Validator Error:", error);
+        res.status(500).send("Internal server error");
+    }
 }
 
 function performPCA(data) {
 
-    // const preprocessedData = preprocessData(data);
-    // if (preprocessedData.length === 0) {
-    //     throw new Error('No valid data items for PCA');
-    // }
+    try{
 
-    // // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
-    // const keys = Object.keys(preprocessedData);
-    // const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
+    const preprocessedData = preprocessData(data);
+    if (preprocessedData.length === 0) {
+        throw new Error('No valid data items for PCA');
+    }
+
+    // Continue with your PCA implementation here, but use `preprocessedData` instead of `data`
+    const keys = Object.keys(preprocessedData);
+    const values = preprocessedData.map(obj => Object.values(obj)); // Convert objects to arrays
 
    
-
-    const keys = Object.keys(data);
+    // const keys = Object.keys(data);
 
     console.log(`PCA keys: ${keys}`);
 
-    const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
+    // const values = Object.values(data).map(obj => Object.values(obj)); // Convert objects to arrays
 
     // Center the data
     const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
@@ -133,6 +141,10 @@ function performPCA(data) {
     });
 
     return result;
+    } catch (error) {
+        console.error("PCA Error:", error);
+        res.status(500).send("Internal server error");
+    }
 }
 
 app.post('/performPCA', (req, res, next) => {
