@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { HfInference } from '@huggingface/inference';
-// import { Configuration, OpenAIApi } from 'openai';
+import MistralClient from '@mistralai/mistralai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import numeric from 'numeric';
@@ -31,15 +31,15 @@ let imageCache = {};  // Create an in-memory image cache
 // import the Google Images client at the top of your file
 const GoogleImages = require('google-images');
 // create an instance of the Google Images client
-const client = new GoogleImages('17c526ffb4fb140f8', 'AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8');
+const client = new GoogleImages(process.env.GOOG_IMG_1, process.env.GOOG_IMG_2);
 
-const hf_key = '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';
+const hf_key = process.env.hf_key_1;
 
 // AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8
 // 17c526ffb4fb140f8
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: process.env.openai-wow-wow,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -179,8 +179,8 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 
 const authOptions = {
     credentials: {
-      client_email: 'dehls-tst@dehls-deluxo-engine.iam.gserviceaccount.com',
-      private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCcLqlhastQtmc\nYvLTPLsam4cIwVHyyZp0mcklhWIR8IGxK/RRiN9+NBZMJfq7y32GcUJXjfsT2ZqC\nM9QYBBr5wAYdZ2h/CTGBthBb4w+RUFC4LUHkL86/lkhaTAzwEk5iPM7168FW+HLJ\npWmMXmXdsyQnuKBOQF9vK1lFd9z811lw3g4m46sanD+foD3V9E7Hl9Wcs5koALSg\nNpMtWEh8btKI/QX3o/QRiEtn6dWoko1wVC3kin92I32cIJDZrZ/Zu/2+ZxYmAJa4\nWWyj0vCGwCf94PiM5kDCX2tRBBvIkWw9SAPNRlO0FRH+ZPZZ4kW1ClOa42cWwEXn\nNkFOdn7LAgMBAAECggEABpBwtKrVExOZLh7nDLuVo3nRrrl8D0LAHKSedk5Q98MT\nVcxilKgWx3dxs0Nq+hEOHU5Qi40nB04G2dNvGxp0YK8bZb26eONyEOt5FOkO+vxn\npTgd69qzU6N6sNW1cBtmGwnrgMDjR5DeqzES5aLANKJaG58vhkTFFAc2HdLEmqKJ\nW9avqgMC6jOSWhgoSWlXFDfy8mMJbmVDWZcy/LV4idIFWahruxhFzL1DOSdS4EeT\nNNvx5VyXMhYJcodXizWP4vYr1AAf8qy59z8nTKoUFuSAJFVReSlqKN0K2aSGpNVe\nznZtOHKRKLXcMabUbCvkD6GWvC5AIycqeigpS0bhPQKBgQD8j2sFzBCLRIjQdF1U\nSrPmXXntZa4Fhrai0LULqss0c4VfUHOm1lFSzks7wcyB3mkrGzrDgTQMTrhHrEO8\nPlxgJxGGgikLc5+CfPGcKTAoXB/37Xbq6xFISoQlozCNkmNO/vKZcF6kMI0NxgA6\nkO0T5RER9zFkl1utElaJ1j81zwKBgQDFFqtD+nqeGt1kralEp5W+B8Nn252ivM4P\n3Ekr4ZvNXMrEqEcG5wGl1OfKPB9KdqCe+FfeDwwaGPyIqMkYHYhQW1veItmsMCG2\nr8rLssR7HAlNh9Pjk0QRt8LGjefi+5LDL38MbIzJOfCgP64j+nGcFgQ0w840jT4c\nEBl1sqCiRQKBgQDNioq29RShwuz1eT5bU1CFsp2ALrgplzEb4G73R9CIp1tr7rWw\nmcslcO6Ze2dMag19H3P7mDMbsRUYf4HAuZ/EQQdqSJPO1hKCx9x6Eqs2rYL26zNU\njGpMQxi46M6i6PgZWjNl3KWpSjoBc5rMDxZikpIJ5Ps1uljJyZrUIqDe0QKBgC6L\n+grl/0uT4LHEafOy+KSWxMmkjog+uxP33LgmYluQDLuBWrUAnd0CeXPD20gE2E5z\nLJ1fRGZtfEbyRfwSDX2c9gdyh6IpA+1Xeze8krbYmkHbUGmxACSHF9M49IkhDTpX\n31OZ12425uOR5pjMr0RD1t53WB4FNaP/EWRAubtZAoGBALDtIg0RxP64pn7BZ/v0\nlH7vk0HlDYvzKIWIU1Pg4uoXViybkG1qNQlshW9YjCv43TnV5W+YyAoypYMZnfU0\nRzylsfVBWEAu3Gh4M8rMmiuauEsL7hQWwg5vJysZOuKQ9103POiFERHuKyw4Srg1\nWxBbQF/X8LV/TpLr4KUk5X/8\n-----END PRIVATE KEY-----\n'
+      client_email: process.env.gcp-client-email,
+      private_key: process.env.gcp-client-key
     }
   }
 
@@ -263,7 +263,21 @@ app.post('/ask', async (req, res, next) => {
             const gm_response = await generateContentFromGeminiPro(userInput, model)
             console.log(`Gemini-Pro response`, gm_response);
             res.json({ response: gm_response });
+
+        } else if (['mistral-medium'].includes(model)) {
+
+            console.log(`mistral-medium request!`);
+
+            const apiKey = process.env.MISTRAL_API_KEY;
+            const client = new MistralClient(apiKey);
             
+            const chatResponse = await client.chat({
+              model: 'mistral-medium',
+              messages: [{role: 'user', content: userInput}],
+            });
+            
+            console.log(`mistral-mediumresponse`, gm_response);
+            res.json({ response: chatResponse.choices[0].message.content });
 
         // HuggingFace - Transformers
         } else {

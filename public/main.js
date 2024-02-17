@@ -137,8 +137,8 @@ async function openModelTab(evt, modelName) {
         case "tab-gpt-4":
             model = "gpt-4";
             break;
-        case "tab-gpt-4-1106-preview":
-            model = "gpt-4-1106-preview";
+        case "tab-mistral-medium":
+            model = "mistral-medium";
             break;
         case "tab-gpt-4-0125-preview":
             model = "gpt-4-0125-preview";
@@ -175,7 +175,7 @@ async function openModelTab(evt, modelName) {
 document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 // document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-0125-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-0125-preview'));
-document.getElementById('tab-gpt-4-1106-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-1106-preview'));
+document.getElementById('tab-mistral-medium').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-medium'));
 document.getElementById('tab-gpt-4-turbo-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-turbo-preview'));
 document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
 
