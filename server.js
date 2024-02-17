@@ -276,7 +276,6 @@ app.post('/ask', async (req, res, next) => {
               messages: [{role: 'user', content: userInput}],
             });
             
-            console.log(`mistral-mediumresponse`, gm_response);
             res.json({ response: chatResponse.choices[0].message.content });
 
         // HuggingFace - Transformers
