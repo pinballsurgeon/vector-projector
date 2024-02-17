@@ -266,7 +266,7 @@ app.post('/ask', async (req, res, next) => {
 
         } else if (['mistral-medium'].includes(model)) {
 
-            console.log(`mistral-medium request!`);
+            console.log(`mistral-medium request!`, process.env.MISTRAL_API_KEY);
 
             const apiKey = process.env.MISTRAL_API_KEY;
             const client = new MistralClient(apiKey);
