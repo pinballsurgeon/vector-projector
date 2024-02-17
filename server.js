@@ -39,7 +39,7 @@ const hf_key = process.env.hf_key_1;
 // 17c526ffb4fb140f8
 // Initialize OpenAI with API Key
 const configuration = new Configuration({
-  apiKey: process.env.openai-wow-wow,
+  apiKey: process.env.openai_wow_wow,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -179,8 +179,8 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 
 const authOptions = {
     credentials: {
-      client_email: process.env.gcp-client-email,
-      private_key: process.env.gcp-client-key
+      client_email: process.env.gcp_client_email,
+      private_key: process.env.gcp_client_key
     }
   }
 
