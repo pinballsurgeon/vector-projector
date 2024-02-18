@@ -222,7 +222,12 @@ const authOptions = {
     // const chatInput1 = userInput;
   
     console.log(`Gemini Pro User: ${userInput}`);
-    const result = await generativeModel.generateContent(userInput);
+
+    const request = {
+        contents: [{ role: 'user', parts: [{ text: userInput }] }],
+      };
+
+    const result = await generativeModel.generateContent(request);
     // const result_test = result.response.text();
     const result_test = result.response.candidates[0].content.parts[0].text;
     console.log('Gemini Pro response: ', result_test);
