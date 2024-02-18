@@ -13,9 +13,9 @@ import pg from 'pg';
 
 import {GoogleAuth} from 'google-auth-library';
 
-const auth = new GoogleAuth({
-  credentials: JSON.parse(process.env.GCP_CRED)
-});
+// const auth = new GoogleAuth({
+//   credentials: JSON.parse(process.env.GCP_CRED)
+// });
 
 
 const { Client } = pg;
