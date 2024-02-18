@@ -213,23 +213,6 @@ const vertex_ai = new VertexAI({
 
     return result_test;
     
-    // const result1 = await chat.sendMessage(chatInput1);
-    // let res = "";
-    // const response1 = result1.response.candidates[0].content.parts[0].text;
-    // console.log('Gemini Pro response: ', response1);
-
-    // return response1;
-  
-    // const chat = generativeModel.startChat({});
-
-    // const chatInput1 = 'Hello';
-    // console.log(`User: ${chatInput1}`);
-  
-    // const result1 = await chat.sendMessage(chatInput1);
-    // const response1 = result1.response.candidates[0].content.parts[0].text;
-    // console.log('Chat bot: ', response1);
-
-
   }
    
 

@@ -12,13 +12,6 @@ export function getModelAndParams() {
     const selectedModelTab = document.querySelector('.tablinks.active');
     const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
 
-    // return { 
-    //     model: model, 
-    //     temperature: selectedTemperature, 
-    //     top_p: selectedTopP, 
-    //     num_return_sequences: selectedNumSequences 
-    // }; 
-
     return { 
         model: model, 
         temperature: 0, 
