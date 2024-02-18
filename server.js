@@ -179,8 +179,8 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 
 const authOptions = {
     credentials: {
-      client_email: process.env.gcp_client_email,
-      private_key: process.env.gcp_client_key
+      client_email: process.env.GCP_CLIENT_EMAIL,
+      private_key: process.env.GCP_CLIENT_KEY
     }
   }
 
