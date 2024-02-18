@@ -181,6 +181,11 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 //     }
 //   }
 
+const vertex_ai = new VertexAI({
+    project: 'dehls-deluxo-engine',
+    location: 'us-central1'
+  });
+
 // const vertex_ai = new VertexAI({
 //     project: 'dehls-deluxo-engine',
 //     location: 'us-central1',
