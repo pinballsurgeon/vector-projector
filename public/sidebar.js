@@ -79,13 +79,6 @@ export function updateSidebarContent(selectedValue) {
         {
             vectorMetricsContent.style.display = 'block';
             }
-    // <option value="logs">Logs</option>
-    // <option value="modelSelection">Model Selection</option>
-    // <option value="prompts">Prompts</option>
-    // <option value="cubeContent">Cube Analytics</option>
-    // <option value="groups">Groups and Clustering</option>
-    // <option value="vectorMetrics">Vector Metrics</option>
-
 
 }
 
