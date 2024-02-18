@@ -208,7 +208,7 @@ const authOptions = {
 
   // dehls here
   async function generateContentFromGeminiPro(userInput, model) {
-    const generativeModel = vertex_ai.preview.getGenerativeModel({
+    const generativeModel = vertex_ai.getGenerativeModel({
       model: model,
       generation_config: {
         "max_output_tokens": 4048,
