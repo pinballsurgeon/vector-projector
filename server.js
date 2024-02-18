@@ -174,23 +174,24 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     });
 });
 
-// const authOptions = {
-//     credentials: {
-//       client_email: process.env.GCP_CLIENT_EMAIL,
-//       private_key: process.env.GCP_CLIENT_KEY
-//     }
-//   }
-
-const vertex_ai = new VertexAI({
-    project: 'dehls-deluxo-engine',
-    location: 'us-central1'
-  });
+const authOptions = {
+    credentials: {
+      client_email: process.env.GCP_CLIENT_EMAIL,
+      private_key: process.env.GCP_CLIENT_KEY
+    }
+  }
 
 // const vertex_ai = new VertexAI({
 //     project: 'dehls-deluxo-engine',
-//     location: 'us-central1',
-//     googleAuthOptions: authOptions
+//     location: 'us-central1'
 //   });
+
+
+const vertex_ai = new VertexAI({
+    project: 'dehls-deluxo-engine',
+    location: 'us-central1',
+    googleAuthOptions: authOptions
+  });
   
   // dehls here
   async function generateContentFromGeminiPro(userInput, model) {
