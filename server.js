@@ -190,7 +190,7 @@ const vertex_ai = new VertexAI({
     googleAuthOptions: authOptions
   });
   
-  
+  // dehls here
   async function generateContentFromGeminiPro(userInput, model) {
     const generativeModel = vertex_ai.preview.getGenerativeModel({
       model: model,
