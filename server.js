@@ -35,9 +35,6 @@ const client = new GoogleImages(process.env.GOOG_IMG_1, process.env.GOOG_IMG_2);
 
 const hf_key = process.env.hf_key_1;
 
-// AIzaSyAKyI2qTZ-5bfy5HckFSd1lmTD5V4ZphU8
-// 17c526ffb4fb140f8
-// Initialize OpenAI with API Key
 const configuration = new Configuration({
   apiKey: process.env.openai_wow_wow,
 });
@@ -96,7 +93,7 @@ function performPCA(data) {
             throw new Error('No valid data items for PCA');
         }
 
-        // Assume we're working with the first item to demonstrate getting keys
+        // Assume we're working with the first item to demonstrate getting keys TESTING
         // You might need to adjust based on your actual requirements
         const keys = Object.keys(preprocessedData);
         console.log(`PCA keys: ${keys}`);
