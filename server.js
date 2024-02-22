@@ -10,7 +10,7 @@ import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 import bodyParser from 'body-parser';
 import pg from 'pg';
-
+import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
 import {GoogleAuth} from 'google-auth-library';
 
 // const auth = new GoogleAuth({
@@ -231,6 +231,44 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     
 }
 
+export const invokeTitanTextExpressV1 = async (prompt) => {
+    const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
+
+    const modelId = 'amazon.titan-text-express-v1';
+
+    const textGenerationConfig = {
+        maxTokenCount: 4096,
+        stopSequences: [],
+        temperature: 0,
+        topP: 1,
+    };
+
+    const payload = {
+        inputText: prompt,
+        textGenerationConfig,
+    };
+
+    const command = new InvokeModelCommand({
+        body: JSON.stringify(payload),
+        contentType: 'application/json',
+        accept: 'application/json',
+        modelId,
+    });
+
+    try {
+        const response = await client.send(command);
+        const decodedResponseBody = new TextDecoder().decode(response.body);
+
+        /** @type {ResponseBody} */
+        const responseBody = JSON.parse(decodedResponseBody);
+        return responseBody.results
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
@@ -258,9 +296,10 @@ app.post('/ask', async (req, res, next) => {
         } else if (['gemini-pro'].includes(model)) {
 
             console.log(`Gemini-Pro request!`);
-            const gm_response = await generateContentFromGeminiPro(userInput, model);
-            console.log(`Gemini-Pro response`, gm_response);
-            res.json({ response: gm_response });
+            // const gm_response = await generateContentFromGeminiPro(userInput, model);
+            const results = await invokeTitanTextExpressV1(userInput);
+            console.log(`Gemini-Pro response`, results);
+            res.json({ response: results });
 
         } else if (['mistral-medium'].includes(model)) {
 
