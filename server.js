@@ -238,7 +238,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     const modelId = 'meta.llama2-70b-chat-v1';
 
     const textGenerationConfig = {
-        maxTokenCount: 4096,
+        maxTokenCount: 2096,
         stopSequences: [],
         temperature: 0,
         topP: 1,
@@ -261,10 +261,11 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
     try {
         const response = await client.send(command);
+        console.log(`Llama2 response!`, response);
         const decodedResponseBody = new TextDecoder().decode(response.body);
 
         const responseBody = JSON.parse(decodedResponseBody);
-        return responseBody.results
+        return responseBody.generation;
 
     } catch (err) {
         console.error(err);
