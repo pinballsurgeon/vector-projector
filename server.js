@@ -238,7 +238,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     const modelId = 'meta.llama2-70b-chat-v1';
 
     const textGenerationConfig = {
-        maxTokenCount: 2096,
+        maxTokenCount: 512,
         stopSequences: [],
         temperature: 0,
         topP: 1,
@@ -247,7 +247,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     const payload = {
         //inputText: prompt,
         prompt: prompt,
-        max_gen_len: 2048,
+        max_gen_len: 59,
         temperature: 0.5
         //textGenerationConfig,
     };
