@@ -236,7 +236,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
     //const modelId = 'amazon.titan-text-express-v1';
     //const modelId = 'meta.llama2-70b-chat-v1';
-    const modelId = 'meta.llama2-70b';
+    const modelId = 'meta.llama2-70b-v1';
 
     const textGenerationConfig = {
         maxTokenCount: 512,
