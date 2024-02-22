@@ -235,7 +235,8 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
     //const modelId = 'amazon.titan-text-express-v1';
-    const modelId = 'meta.llama2-70b-chat-v1';
+    //const modelId = 'meta.llama2-70b-chat-v1';
+    const modelId = 'meta.llama2-70b';
 
     const textGenerationConfig = {
         maxTokenCount: 512,
