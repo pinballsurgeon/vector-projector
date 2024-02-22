@@ -245,7 +245,8 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     };
 
     const payload = {
-        inputText: prompt,
+        //inputText: prompt,
+        prompt: prompt,
         textGenerationConfig,
     };
 
