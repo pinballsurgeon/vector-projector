@@ -298,7 +298,8 @@ app.post('/ask', async (req, res, next) => {
 
             console.log(`Gemini-Pro request!`);
             // const gm_response = await generateContentFromGeminiPro(userInput, model);
-            const results = await invokeTitanTextExpressV1(userInput);
+            const prompt = userInput;
+            const results = await invokeTitanTextExpressV1(prompt);
             console.log(`Gemini-Pro response`, results);
             res.json({ response: results });
 
