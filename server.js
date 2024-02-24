@@ -316,9 +316,9 @@ async function gemini_generateContent(prompt) {
     const generativeModel = genAI.getGenerativeModel({
       model: model,
       generation_config: {
-        max_output_tokens: 8192,
-        temperature: 0.5,
-        top_p: 0.8,
+        max_output_tokens: 2048,
+        temperature: 0.6,
+        top_p: 0.9,
         top_k: 1,
       },
     });
@@ -327,7 +327,7 @@ async function gemini_generateContent(prompt) {
     // console.log(response);
 
     const result = await generativeModel.generateContent(prompt);
-    const response = await result.response;
+    const response = result.response;
     const text = response.text();
     // console.log(text);
   
