@@ -126,17 +126,12 @@ function performPCA(data) {
             throw new Error('No valid data items for PCA');
         }
 
-        // Assume we're working with the first item to demonstrate getting keys TESTING
-        // You might need to adjust based on your actual requirements
+        // PCA KEYS
         const keys = Object.keys(preprocessedData);
         console.log(`PCA keys: ${keys}`);
 
-        // Correctly convert objects to arrays of values
-        // const values = preprocessedData.map(obj => Object.values(obj));
+        // Convert objects to arrays of values
         const values = Object.values(preprocessedData).map(obj => Object.values(obj)); // Convert objects to arrays
-
-        // const keys = Object.keys(data);
-
 
         // Center the data
         const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
@@ -321,6 +316,24 @@ async function gemini_generateContent(prompt) {
         top_p: 0.9,
         top_k: 1,
       },
+      safety_settings: [
+              {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "threshold": "BLOCK_NONE"
+              },
+              {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "threshold": "BLOCK_NONE"
+              },
+              {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "threshold": "BLOCK_NONE"
+              },
+              {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "threshold": "BLOCK_NONE"
+              }
+          ]
     });
 
     // const response = await generativeModel.generateContent(prompt);
