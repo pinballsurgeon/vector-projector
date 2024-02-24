@@ -312,9 +312,8 @@ async function gemini_generateContent(prompt) {
       model: model,
       generation_config: {
         max_output_tokens: 2048,
-        temperature: 0.6,
-        top_p: 0.9,
-        top_k: 1,
+        temperature: 0.9,
+        top_p: 1
       },
       safety_settings: [
               {
