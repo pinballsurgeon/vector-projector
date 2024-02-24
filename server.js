@@ -329,7 +329,7 @@ async function gemini_generateContent(prompt) {
   
     //const userMessage0 = [{text: prompt}];
     //const streamResult0 = await chat.sendMessageStream(userMessage0);
-    const response_parse = JSON.stringify(response.candidates[0].content);
+    const response_parse = JSON.stringify(response.candidates[0]);
     console.log(response_parse);
     return response_parse;
 
