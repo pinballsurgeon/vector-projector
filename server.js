@@ -249,7 +249,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         //inputText: prompt,
         prompt: prompt,
         max_gen_len: 1000,
-        stopSequences: ["\n"],
+        stop_sequences: ["\n"],
         temperature: 0.5,
         top_p: 0.7
         //textGenerationConfig,
