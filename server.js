@@ -240,8 +240,8 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
     const textGenerationConfig = {
         maxTokenCount: 512,
-        stopSequences: [],
-        temperature: 0,
+        stopSequences: ["\n"],
+        temperature: 0.5,
         topP: 1,
     };
 
@@ -249,7 +249,9 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         //inputText: prompt,
         prompt: prompt,
         max_gen_len: 1000,
-        temperature: 0.3
+        stopSequences: ["\n"],
+        temperature: 0.5,
+        top_p: 0.7
         //textGenerationConfig,
     };
 
