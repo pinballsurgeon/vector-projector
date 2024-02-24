@@ -39,6 +39,12 @@ export const createOrUpdateCube = (data) => {
     for (let itemName in data) {
         const item = data[itemName];
 
+        // Check if coordinates or image data are missing, skip to the next item if so
+        if (!item.coordinates || !item.image || typeof item.coordinates.x === 'undefined' || typeof item.coordinates.y === 'undefined' || typeof item.coordinates.z === 'undefined') {
+            appendLog(`Skipping ${itemName} due to missing data.`);
+            continue; // Skip this iteration and move to the next item
+        }
+
         // Create a new promise for each cube
         let cubePromise = new Promise((resolve) => {  // Note: Only using resolve here
             const xPos = parseFloat(item.coordinates.x);
@@ -62,7 +68,7 @@ export const createOrUpdateCube = (data) => {
                 undefined, 
                 (error) => {
                     appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
-                    resolve('error'); // Resolve the promise on error with an 'error' flag or message
+                    resolve(); // Still resolve the promise on error but without an 'error' flag to allow iteration to continue
                 }
             );
         });
