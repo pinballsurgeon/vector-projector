@@ -11,6 +11,17 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
+
+
+// const auth = new GoogleAuth({
+//   credentials: JSON.parse(process.env.GCP_CRED)
+// });
+
+const { Client } = pg;
+
+const require = createRequire(import.meta.url); // construct the require method
+const axios = require('axios'); // Axios for making requests
+
 const {VertexAI} = require('@google-cloud/vertexai');
 
 // Initialize Vertex with your Cloud project and location
@@ -44,19 +55,6 @@ const generativeModel = vertex_ai.preview.getGenerativeModel({
       }
   ],
   });
-
-
-// const auth = new GoogleAuth({
-//   credentials: JSON.parse(process.env.GCP_CRED)
-// });
-
-
-const { Client } = pg;
-
-const require = createRequire(import.meta.url); // construct the require method
-const axios = require('axios'); // Axios for making requests
-
-// const {VertexAI} = require('@google-cloud/vertexai');
 
 const { Configuration, OpenAIApi } = require("openai");
 let imageCache = {};  // Create an in-memory image cache
