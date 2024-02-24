@@ -11,7 +11,40 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
-import {GoogleAuth} from 'google-auth-library';
+const {VertexAI} = require('@google-cloud/vertexai');
+
+// Initialize Vertex with your Cloud project and location
+const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
+const gcp_model = 'gemini-1.0-pro-001';
+
+// Instantiate the models
+const generativeModel = vertex_ai.preview.getGenerativeModel({
+    model: gcp_model,
+    generation_config: {
+      "max_output_tokens": 2048,
+      "temperature": 0.9,
+      "top_p": 1
+  },
+    safety_settings: [
+      {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+      },
+      {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+      },
+      {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+      },
+      {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+      }
+  ],
+  });
+
 
 // const auth = new GoogleAuth({
 //   credentials: JSON.parse(process.env.GCP_CRED)
@@ -275,6 +308,18 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 };
 
 
+async function gemini_generateContent(prompt) {
+    const chat = generativeModel.startChat({});
+  
+    const userMessage0 = [{text: prompt}];
+    const streamResult0 = await chat.sendMessageStream(userMessage0);
+    const response = JSON.stringify((await streamResult0.response).candidates[0].content);
+    
+    return response;
+
+  };
+
+
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
@@ -304,7 +349,8 @@ app.post('/ask', async (req, res, next) => {
             console.log(`Gemini-Pro request!`);
             // const gm_response = await generateContentFromGeminiPro(userInput, model);
             const prompt = userInput;
-            const results = await invokeTitanTextExpressV1(prompt);
+            // const results = await invokeTitanTextExpressV1(prompt);
+            const results = await generateContent(prompt);
             console.log(`Gemini-Pro response`, results);
             res.json({ response: results });
 
