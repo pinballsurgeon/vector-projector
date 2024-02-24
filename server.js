@@ -11,50 +11,52 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-import { GoogleAuth } from "google-auth-library";
-const auth = new GoogleAuth({
-  credentials: JSON.parse(process.env.GCP_CRED)
-});
+
+// import { GoogleAuth } from "google-auth-library";
+// const auth = new GoogleAuth({
+//   credentials: JSON.parse(process.env.GCP_CRED)
+// });
 
 const { Client } = pg;
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
 
-const {VertexAI} = require('@google-cloud/vertexai');
+// const {VertexAI} = require('@google-cloud/vertexai');
 
-// Initialize Vertex with your Cloud project and location
-const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
-const gcp_model = 'gemini-1.0-pro-001';
+// // Initialize Vertex with your Cloud project and location
+// const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
+// const gcp_model = 'gemini-1.0-pro-001';
 
-// Instantiate the models
-const generativeModel = vertex_ai.preview.getGenerativeModel({
-    model: gcp_model,
-    generation_config: {
-      "max_output_tokens": 2048,
-      "temperature": 0.9,
-      "top_p": 1
-  },
-    safety_settings: [
-      {
-          "category": "HARM_CATEGORY_HATE_SPEECH",
-          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-          "category": "HARM_CATEGORY_HARASSMENT",
-          "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      }
-  ],
-  });
+// // Instantiate the models
+// const generativeModel = vertex_ai.preview.getGenerativeModel({
+//     model: gcp_model,
+//     generation_config: {
+//       "max_output_tokens": 2048,
+//       "temperature": 0.9,
+//       "top_p": 1
+//   },
+//     safety_settings: [
+//       {
+//           "category": "HARM_CATEGORY_HATE_SPEECH",
+//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+//       },
+//       {
+//           "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+//       },
+//       {
+//           "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+//       },
+//       {
+//           "category": "HARM_CATEGORY_HARASSMENT",
+//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+//       }
+//   ],
+//   });
 
 const { Configuration, OpenAIApi } = require("openai");
 let imageCache = {};  // Create an in-memory image cache
@@ -307,6 +309,20 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
 
 async function gemini_generateContent(prompt) {
+
+    const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
+
+    const model = "gemini-pro";
+    const generativeModel = genAI.getGenerativeModel({
+      model: model,
+      generation_config: {
+        max_output_tokens: 8192,
+        temperature: 0.8,
+        top_p: 0.8,
+        top_k: 5,
+      },
+    });
+
     const chat = generativeModel.startChat({});
   
     const userMessage0 = [{text: prompt}];
