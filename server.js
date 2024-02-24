@@ -599,12 +599,18 @@ function calculateShannonEntropy(densities) {
 }
 
 function calculateModelMetrics(cubeData) {
-    // Extract coordinates for pairwise distance calculation
-    const coordinates = Object.values(cubeData).map(item => item.coordinates);
-    const numOfCubes = coordinates.length;
-    const pairwiseDistances = calculateAllPairwiseDistances(coordinates);
+    // Filter out items without valid coordinates
+    const validCoordinates = Object.values(cubeData).filter(item => 
+        item.coordinates && // Ensure coordinates exist
+        !isNaN(item.coordinates.x) && // Ensure x is a number
+        !isNaN(item.coordinates.y) && // Ensure y is a number
+        !isNaN(item.coordinates.z)    // Ensure z is a number
+    ).map(item => item.coordinates);
+
+    const numOfCubes = validCoordinates.length;
+    const pairwiseDistances = calculateAllPairwiseDistances(validCoordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
-    const densities = estimateDensity(coordinates, averagePairwiseDistance);
+    const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
     const shannonEntropy = calculateShannonEntropy(densities);
 
@@ -614,14 +620,17 @@ function calculateModelMetrics(cubeData) {
     // Calculate the histogram for densities
     const densityHistogramData = calculateHistogramBins(densities, 5); // 5 bins for density histogram
 
+    // Calculate bounding volume area only if there are valid coordinates
+    const boundingBoxVolume = validCoordinates.length > 0 ? calculateBoundingVolumeArea(validCoordinates) : 0;
+
     // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
-        boundingBoxVolume: calculateBoundingVolumeArea(coordinates),
+        boundingBoxVolume,
         pairwiseHistogramData,
         densityHistogramData,
-        vectorPoints: coordinates,
+        vectorPoints: validCoordinates,
         averageDensities,
         shannonEntropy
     };
