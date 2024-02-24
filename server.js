@@ -323,13 +323,15 @@ async function gemini_generateContent(prompt) {
       },
     });
 
-    const chat = generativeModel.startChat({});
+    const response = await generativeModel.generateContent(content);
+    console.log(response);
+    //const chat = generativeModel.startChat({});
   
-    const userMessage0 = [{text: prompt}];
-    const streamResult0 = await chat.sendMessageStream(userMessage0);
-    const response = JSON.stringify((await streamResult0.response).candidates[0].content);
-    
-    return response;
+    //const userMessage0 = [{text: prompt}];
+    //const streamResult0 = await chat.sendMessageStream(userMessage0);
+    const response_parse = JSON.stringify(response.candidates[0].content);
+    console.log(response_parse);
+    return response_parse;
 
   };
 
