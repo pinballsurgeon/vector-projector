@@ -319,31 +319,26 @@ async function gemini_generateContent(prompt) {
       safety_settings: [
               {
                   "category": "HARM_CATEGORY_HATE_SPEECH",
-                  "threshold": "BLOCK_ONLY_HIGH"
+                  "threshold": "BLOCK_NONE"
               },
               {
                   "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                  "threshold": "BLOCK_ONLY_HIGH"
+                  "threshold": "BLOCK_NONE"
               },
               {
                   "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                  "threshold": "BLOCK_ONLY_HIGH"
+                  "threshold": "BLOCK_NONE"
               },
               {
                   "category": "HARM_CATEGORY_HARASSMENT",
-                  "threshold": "BLOCK_ONLY_HIGH"
+                  "threshold": "BLOCK_NONE"
               }
           ]
     });
 
-    // const response = await generativeModel.generateContent(prompt);
-    // console.log(response);
-
     const result = await generativeModel.generateContent(prompt);
     const response = result.response;
     const text = response.text();
-    // console.log(text);
-  
 
     return text;
 
