@@ -12,10 +12,10 @@ import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
 
-
-// const auth = new GoogleAuth({
-//   credentials: JSON.parse(process.env.GCP_CRED)
-// });
+import { GoogleAuth } from "google-auth-library";
+const auth = new GoogleAuth({
+  credentials: JSON.parse(process.env.GCP_CRED)
+});
 
 const { Client } = pg;
 
@@ -358,7 +358,7 @@ app.post('/ask', async (req, res, next) => {
 
             const apiKey = process.env.MISTRAL_API_KEY;
             const client = new MistralClient(apiKey);
-             
+            
             const chatResponse = await client.chat({
               model: 'mistral-medium',
               messages: [{role: 'user', content: userInput}],
