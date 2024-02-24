@@ -323,7 +323,7 @@ async function gemini_generateContent(prompt) {
       },
     });
 
-    const response = await generativeModel.generateContent(content);
+    const response = await generativeModel.generateContent(prompt);
     console.log(response);
     //const chat = generativeModel.startChat({});
   
