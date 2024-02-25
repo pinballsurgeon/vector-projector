@@ -207,7 +207,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
     try {
         const response = await client.send(command);
-        console.log(`Llama2 response!`, response);
+        // console.log(`Llama2 response!`, response);
         const decodedResponseBody = new TextDecoder().decode(response.body);
 
         const responseBody = JSON.parse(decodedResponseBody);
@@ -301,7 +301,7 @@ app.post('/ask', async (req, res, next) => {
             const prompt = userInput;
             const results = await invokeTitanTextExpressV1(prompt);
             // const results = await gemini_generateContent(prompt);
-            console.log(`Claude response`, results);
+            // console.log(`Claude response`, results);
             res.json({ response: results });            
 
         } else if (['mistral-medium'].includes(model)) {
