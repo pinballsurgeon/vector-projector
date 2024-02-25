@@ -48,7 +48,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
-        if (!['text-davinci-003', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview', 'gpt-4-0125-preview', 'gpt-4-turbo-preview', 'gemini-pro', 'mistral-medium'].includes(model)) {
+        if (!['text-davinci-003', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview', 'gpt-4-0125-preview', 'gpt-4-turbo-preview', 'gemini-pro', 'mistral-medium', 'claude-v2'].includes(model)) {
             for (let i = 0; i < items.length; i++) {
 
                 let item = items[i];

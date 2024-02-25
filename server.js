@@ -14,49 +14,11 @@ import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
-// import { GoogleAuth } from "google-auth-library";
-// const auth = new GoogleAuth({
-//   credentials: JSON.parse(process.env.GCP_CRED)
-// });
-
 const { Client } = pg;
 
 const require = createRequire(import.meta.url); // construct the require method
 const axios = require('axios'); // Axios for making requests
 
-// const {VertexAI} = require('@google-cloud/vertexai');
-
-// // Initialize Vertex with your Cloud project and location
-// const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
-// const gcp_model = 'gemini-1.0-pro-001';
-
-// // Instantiate the models
-// const generativeModel = vertex_ai.preview.getGenerativeModel({
-//     model: gcp_model,
-//     generation_config: {
-//       "max_output_tokens": 2048,
-//       "temperature": 0.9,
-//       "top_p": 1
-//   },
-//     safety_settings: [
-//       {
-//           "category": "HARM_CATEGORY_HATE_SPEECH",
-//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-//       },
-//       {
-//           "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-//       },
-//       {
-//           "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-//       },
-//       {
-//           "category": "HARM_CATEGORY_HARASSMENT",
-//           "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-//       }
-//   ],
-//   });
 
 const { Configuration, OpenAIApi } = require("openai");
 let imageCache = {};  // Create an in-memory image cache
@@ -202,69 +164,14 @@ app.get('/prompt/:promptKey', (req, res, next) => {
     });
 });
 
-// const authOptions = {
-//     credentials: {
-//       client_email: process.env.GCP_CLIENT_EMAIL,
-//       private_key: process.env.GCP_CLIENT_KEY
-//     }
-//   }
-
-// // const vertex_ai = new VertexAI({
-// //     project: 'dehls-deluxo-engine',
-// //     location: 'us-central1'
-// //   });
-
-
-// const vertex_ai = new VertexAI({
-//     project: 'dehls-deluxo-engine',
-//     location: 'us-central1',
-//     googleAuthOptions: authOptions
-//   });
-
-// const authOptions = {
-//     credentials: {
-//       client_email: 'dehls-tst@dehls-deluxo-engine.iam.gserviceaccount.com',
-//       private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCcLqlhastQtmc\nYvLTPLsam4cIwVHyyZp0mcklhWIR8IGxK/RRiN9+NBZMJfq7y32GcUJXjfsT2ZqC\nM9QYBBr5wAYdZ2h/CTGBthBb4w+RUFC4LUHkL86/lkhaTAzwEk5iPM7168FW+HLJ\npWmMXmXdsyQnuKBOQF9vK1lFd9z811lw3g4m46sanD+foD3V9E7Hl9Wcs5koALSg\nNpMtWEh8btKI/QX3o/QRiEtn6dWoko1wVC3kin92I32cIJDZrZ/Zu/2+ZxYmAJa4\nWWyj0vCGwCf94PiM5kDCX2tRBBvIkWw9SAPNRlO0FRH+ZPZZ4kW1ClOa42cWwEXn\nNkFOdn7LAgMBAAECggEABpBwtKrVExOZLh7nDLuVo3nRrrl8D0LAHKSedk5Q98MT\nVcxilKgWx3dxs0Nq+hEOHU5Qi40nB04G2dNvGxp0YK8bZb26eONyEOt5FOkO+vxn\npTgd69qzU6N6sNW1cBtmGwnrgMDjR5DeqzES5aLANKJaG58vhkTFFAc2HdLEmqKJ\nW9avqgMC6jOSWhgoSWlXFDfy8mMJbmVDWZcy/LV4idIFWahruxhFzL1DOSdS4EeT\nNNvx5VyXMhYJcodXizWP4vYr1AAf8qy59z8nTKoUFuSAJFVReSlqKN0K2aSGpNVe\nznZtOHKRKLXcMabUbCvkD6GWvC5AIycqeigpS0bhPQKBgQD8j2sFzBCLRIjQdF1U\nSrPmXXntZa4Fhrai0LULqss0c4VfUHOm1lFSzks7wcyB3mkrGzrDgTQMTrhHrEO8\nPlxgJxGGgikLc5+CfPGcKTAoXB/37Xbq6xFISoQlozCNkmNO/vKZcF6kMI0NxgA6\nkO0T5RER9zFkl1utElaJ1j81zwKBgQDFFqtD+nqeGt1kralEp5W+B8Nn252ivM4P\n3Ekr4ZvNXMrEqEcG5wGl1OfKPB9KdqCe+FfeDwwaGPyIqMkYHYhQW1veItmsMCG2\nr8rLssR7HAlNh9Pjk0QRt8LGjefi+5LDL38MbIzJOfCgP64j+nGcFgQ0w840jT4c\nEBl1sqCiRQKBgQDNioq29RShwuz1eT5bU1CFsp2ALrgplzEb4G73R9CIp1tr7rWw\nmcslcO6Ze2dMag19H3P7mDMbsRUYf4HAuZ/EQQdqSJPO1hKCx9x6Eqs2rYL26zNU\njGpMQxi46M6i6PgZWjNl3KWpSjoBc5rMDxZikpIJ5Ps1uljJyZrUIqDe0QKBgC6L\n+grl/0uT4LHEafOy+KSWxMmkjog+uxP33LgmYluQDLuBWrUAnd0CeXPD20gE2E5z\nLJ1fRGZtfEbyRfwSDX2c9gdyh6IpA+1Xeze8krbYmkHbUGmxACSHF9M49IkhDTpX\n31OZ12425uOR5pjMr0RD1t53WB4FNaP/EWRAubtZAoGBALDtIg0RxP64pn7BZ/v0\nlH7vk0HlDYvzKIWIU1Pg4uoXViybkG1qNQlshW9YjCv43TnV5W+YyAoypYMZnfU0\nRzylsfVBWEAu3Gh4M8rMmiuauEsL7hQWwg5vJysZOuKQ9103POiFERHuKyw4Srg1\nWxBbQF/X8LV/TpLr4KUk5X/8\n-----END PRIVATE KEY-----\n'
-//     }
-//   };
-
-//   const vertex_ai = new VertexAI({
-//     project: 'dehls-deluxo-engine',
-//     location: 'us-central1',
-//     googleAuthOptions: authOptions
-//   });
-
-
-  async function generateContentFromGeminiPro(userInput, model) {
-    const generativeModel = vertex_ai.preview.getGenerativeModel({
-      model: model,
-      generation_config: {
-        "max_output_tokens": 4048,
-        "temperature": 0.6,
-        "top_p": 1
-      },
-      safety_settings: [],
-    });
-  
-    // const chat = generativeModel.startChat({});
-    // const chatInput1 = userInput;
-  
-    console.log(`Gemini Pro User: ${userInput}`);
-    const result = await generativeModel.generateContent(userInput);
-    // const result_test = result.response.text();
-    const result_test = result.response.candidates[0].content.parts[0].text;
-    console.log('Gemini Pro response: ', result_test);
-
-    return result_test;
-    
-}
 
 export const invokeTitanTextExpressV1 = async (prompt) => {
     const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
     //const modelId = 'amazon.titan-text-express-v1';
-    const modelId = 'meta.llama2-70b-chat-v1';
+    //const modelId = 'meta.llama2-70b-chat-v1';
     //const modelId = 'meta.llama2-70b-v1';
+    const modelId = 'anthropic.claude-v2';
 
     const textGenerationConfig = {
         maxTokenCount: 512,
@@ -273,12 +180,21 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         topP: 1,
     };
 
+    // const payload = {
+    //     //inputText: prompt,
+    //     prompt: prompt,
+    //     max_gen_len: 1000,
+    //     temperature: 0.5,
+    //     top_p: 0.7
+    //     //textGenerationConfig,
+    // };
+
     const payload = {
-        //inputText: prompt,
         prompt: prompt,
-        max_gen_len: 1000,
+        max_tokens_to_sample: 1000,
         temperature: 0.5,
-        top_p: 0.7
+        top_p: 0.7,
+        stop_sequences: ["\n"]
         //textGenerationConfig,
     };
 
@@ -375,8 +291,17 @@ app.post('/ask', async (req, res, next) => {
             const prompt = userInput;
             // const results = await invokeTitanTextExpressV1(prompt);
             const results = await gemini_generateContent(prompt);
-            console.log(`Gemini-Pro response`, results);
             res.json({ response: results });
+
+        } else if (['claude-v2'].includes(model)) {
+
+            console.log(`Claude request!`);
+            // const gm_response = await generateContentFromGeminiPro(userInput, model);
+            const prompt = userInput;
+            const results = await invokeTitanTextExpressV1(prompt);
+            // const results = await gemini_generateContent(prompt);
+            console.log(`Claude response`, results);
+            res.json({ response: results });            
 
         } else if (['mistral-medium'].includes(model)) {
 

@@ -5,7 +5,7 @@ import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './c
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
-  const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
+  const defaultTab = document.getElementById("tab-claude-v2");
   if (defaultTab) {
     defaultTab.className += " active";
      }
@@ -131,8 +131,8 @@ async function openModelTab(evt, modelName) {
         case "tab-gemini-pro":
             model = "gemini-pro";
             break;
-        case "tab-gpt-3.5-turbo":
-            model = "gpt-3.5-turbo";
+        case "tab-claude-v2":
+            model = "claude-v2";
             break;
         case "tab-gpt-4":
             model = "gpt-4";
@@ -172,7 +172,7 @@ async function openModelTab(evt, modelName) {
 }
 
 // document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
-document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
+document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
 // document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
 document.getElementById('tab-gpt-4-0125-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-0125-preview'));
 document.getElementById('tab-mistral-medium').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-medium'));
