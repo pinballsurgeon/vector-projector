@@ -255,7 +255,8 @@ async function gemini_generateContent(prompt) {
       generation_config: {
         max_output_tokens: 2048,
         temperature: 0.9,
-        top_p: 1
+        top_p: 1,
+        top_k: 100
       },
       safety_settings: [
               {
