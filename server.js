@@ -211,7 +211,8 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         const decodedResponseBody = new TextDecoder().decode(response.body);
 
         const responseBody = JSON.parse(decodedResponseBody);
-        return responseBody.generation;
+        return responseBody.completion;
+        // return responseBody.generation;
 
     } catch (err) {
         console.error(err);
