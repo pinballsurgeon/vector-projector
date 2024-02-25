@@ -686,6 +686,7 @@ app.get('/compare_vectors', async (req, res) => {
             SELECT model, cube_data
             FROM cache
             WHERE query = $1
+            ORDER BY LENGTH(cube_data #>> '{}') desc
         `, [userInputValue]);
 
         // Close the database connection
