@@ -10,7 +10,7 @@ import mlMatrix from 'ml-matrix';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 import bodyParser from 'body-parser';
 import pg from 'pg';
-import {BedrockRuntimeClient, InvokeModelCommand} from "@aws-sdk/client-bedrock-runtime";
+import {BedrockRuntimeClient, InvokeModelCommand, InvokeModelWithResponseStreamCommand } from "@aws-sdk/client-bedrock-runtime";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
@@ -200,7 +200,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         //textGenerationConfig,
     };
 
-    const command = new InvokeModelCommand({
+    const command = new InvokeModelWithResponseStreamCommand ({
         body: JSON.stringify(payload),
         contentType: 'application/json',
         accept: 'application/json',
