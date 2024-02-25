@@ -21,7 +21,7 @@ const axios = require('axios'); // Axios for making requests
 
 
 const { Configuration, OpenAIApi } = require("openai");
-let imageCache = {};  // Create an in-memory image cache
+let imageCache = {};  // Create an in-memory image cache 
 
 // import the Google Images client at the top of your file
 const GoogleImages = require('google-images');
