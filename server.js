@@ -190,7 +190,8 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     // };
 
     const payload = {
-        prompt: "Human:" + prompt + "Assistant: ",
+        // prompt: "Human:" + prompt + "Assistant: ",
+        prompt: prompt,
         max_tokens_to_sample: 1000,
         temperature: 0.9,
         top_p: 0.999,
