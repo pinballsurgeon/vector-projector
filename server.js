@@ -191,7 +191,7 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
 
     const payload = {
         prompt: "Human:" + prompt + "Assistant: ",
-        max_tokens_to_sample: 500
+        max_tokens_to_sample: 100
         //max_tokens_to_sample: 1000,
         //temperature: 0.7,
         //top_p: 0.9,
@@ -212,7 +212,9 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
         const decodedResponseBody = new TextDecoder().decode(response.body);
 
         const responseBody = JSON.parse(decodedResponseBody);
-        return responseBody.completion;
+        const res_complete = responseBody.completion;
+        console.log(res_complete);
+        return res_complete;
         // return responseBody.generation;
 
     } catch (err) {
