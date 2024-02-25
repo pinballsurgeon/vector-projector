@@ -99,7 +99,7 @@ function performPCA(data) {
         const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
         const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
 
-        // Calculate covariance matrix
+        // Calculate covariance matrix SOMETHING NEW
         const covMatrix = covarianceMatrix(centeredData);
 
         // Create a new ml-matrix instance from the covariance matrix
