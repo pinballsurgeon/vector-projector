@@ -198,12 +198,15 @@ span#thresholdValue {
   }
   
   /* Style the compare container to display as a grid */
-.compare-results-grid {
+  .compare-results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* adaptive to the number of items */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* create as many columns as will fit */
+    grid-auto-rows: minmax(100px, auto); /* minimum row height */
     gap: 10px; /* space between cards */
     padding: 10px; /* padding around the grid */
+    overflow-x: auto; /* allows for horizontal scrolling if needed */
 }
+
 
 /* Style each model's card */
 .model-card {
