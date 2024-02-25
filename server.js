@@ -168,10 +168,11 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 export const invokeTitanTextExpressV1 = async (prompt) => {
     const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
-    //const modelId = 'amazon.titan-text-express-v1';
-    //const modelId = 'meta.llama2-70b-chat-v1';
-    //const modelId = 'meta.llama2-70b-v1';
-    const modelId = 'anthropic.claude-instant-v1';
+    // const modelId = 'amazon.titan-text-express-v1';
+    // const modelId = 'meta.llama2-70b-chat-v1';
+    // const modelId = 'meta.llama2-70b-v1';
+    // const modelId = 'anthropic.claude-instant-v1';
+    const modelId = 'anthropic.claude-v2:1';
 
     const textGenerationConfig = {
         maxTokenCount: 512,
@@ -210,10 +211,30 @@ export const invokeTitanTextExpressV1 = async (prompt) => {
     try {
         const response = await client.send(command);
         // console.log(`Llama2 response!`, response);
-        const decodedResponseBody = new TextDecoder().decode(response.body);
+        
+        // const decodedResponseBody = new TextDecoder().decode(response.body);
 
-        const responseBody = JSON.parse(decodedResponseBody);
-        const res_complete = responseBody.completion;
+        const chunks = [];
+
+        for await (const event of response.body) {
+            if (event.chunk && event.chunk.bytes) {
+                const chunk = JSON.parse(Buffer.from(event.chunk.bytes).toString("utf-8"));
+                chunks.push(chunk.completion); // change this line
+            } else if (
+                event.internalServerException ||
+                event.modelStreamErrorException ||
+                event.throttlingException ||
+                event.validationException
+            ) {
+                console.error(event);
+                break;
+            }
+        };
+
+
+        //const responseBody = JSON.parse(decodedResponseBody);
+        //const res_complete = responseBody.completion;
+        const res_complete = chunks.join('');
         console.log(res_complete);
         return res_complete;
         // return responseBody.generation;
