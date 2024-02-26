@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta name="google-signin-client_id" content="214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com">
 
 
@@ -17,7 +17,20 @@
 <body>
     <h1>Vector-Projector</h1>
 
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div id="g_id_onload"
+        data-client_id= process.env.GOOGLE_CLIENT_ID
+        data-login_uri="https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/"
+        data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+
 
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
