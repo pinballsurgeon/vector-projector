@@ -346,7 +346,17 @@ app.post('/ask', async (req, res, next) => {
 
         } else if (['mistral-medium'].includes(model)) {
 
-            console.log(`mistral-medium request!`, process.env.MISTRAL_API_KEY);
+            const apiKey = process.env.MISTRAL_API_KEY;
+            const client = new MistralClient(apiKey);
+            
+            const chatResponse = await client.chat({
+              model: 'mistral-medium',
+              messages: [{role: 'user', content: userInput}],
+            });
+
+            res.json({ response: chatResponse.choices[0].message.content });
+
+        } else if (['mistral-large'].includes(model)) {
 
             const apiKey = process.env.MISTRAL_API_KEY;
             const client = new MistralClient(apiKey);
@@ -356,7 +366,6 @@ app.post('/ask', async (req, res, next) => {
               messages: [{role: 'user', content: userInput}],
             });
 
-            console.log(`mistral-medium response`, chatResponse.choices[0].message.content );
             res.json({ response: chatResponse.choices[0].message.content });
 
         // HuggingFace - Transformers
