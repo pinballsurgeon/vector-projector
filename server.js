@@ -817,7 +817,7 @@ app.get('/get_model_data', async (req, res) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/auth/google/callback/"
+    callbackURL: "https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/auth/google/callback"
   },
   (accessToken, refreshToken, profile, done) => {
     // For now, just pass the profile as you might not have a user model yet
