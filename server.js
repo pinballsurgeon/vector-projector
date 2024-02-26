@@ -813,66 +813,23 @@ app.get('/get_model_data', async (req, res) => {
     }
 });
 
-
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/auth/google/callback"
-  },
-  (accessToken, refreshToken, profile, done) => {
-    // For now, just pass the profile as you might not have a user model yet
-    done(null, profile);
-  }
-));
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
-
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id); // Just use the Google profile ID
-});
-
-passport.deserializeUser((id, done) => {
-  done(null, { id }); // For now, just pass the ID as the user object
-});
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-async function verify(token) {
-    const ticket = await auth_client.verifyIdToken({
-        idToken: token,
-        audience: process.env.GOOGLE_CLIENT_ID,  
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    console.log("User Id - ", userid)
-    // If request specified a G Suite domain:
-    //const domain = payload['hd'];
-  }
-  
-  app.post('/your-backend-route', async (req, res) => {
+app.post('/tokenSignIn', async (req, res) => {
     try {
-      const { token } = req.body;
-      await verify(token);
-      // Upon successful verification, you can create a user session or return a success response
-      res.status(200).json({ message: 'Authentication successful' });
+        const { id_token } = req.body;
+        const ticket = await client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+
+
+        console.log("token sign in", payload);
+        // Here, you might look up or register the user in your database
+        // and establish a session
+
+        res.status(200).json({ message: 'Authentication successful', user: payload });
     } catch (error) {
-      res.status(401).json({ message: 'Authentication failed', error: error.toString() });
+        console.error(error);
+        res.status(401).json({ message: 'Authentication failed', error: error.toString() });
     }
-  });
+});

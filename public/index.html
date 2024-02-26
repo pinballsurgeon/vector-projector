@@ -19,7 +19,7 @@
 
     <div id="g_id_onload"
         data-client_id= "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com"
-        data-login_uri="https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/auth/google/callback"
+        data-callback="onSignIn"
         data-auto_prompt="false">
     </div>
     <div class="g_id_signin"
@@ -117,23 +117,27 @@
     <script type="module" src="cubeManager.js"></script>
     <script type="module" src="vectorMetrics.js"></script>
     <script>
-        function onSignIn(googleUser) {
-          // Get the user's profile information
-          var profile = googleUser.getBasicProfile();
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Full Name: ' + profile.getName());
-          console.log('Given Name: ' + profile.getGivenName());
-          console.log('Family Name: ' + profile.getFamilyName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail());
-      
-          // The ID token you need to pass to your backend:
-          var id_token = googleUser.getAuthResponse().id_token;
-          console.log("ID Token: " + id_token);
-          
-          // TODO: Send the ID token to your server with an AJAX request
+        function onSignIn(response) {
+            var id_token = response.credential;
+        
+            fetch('/tokenSignIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id_token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
-      </script>
+        </script>
+        
       
     
     </body>

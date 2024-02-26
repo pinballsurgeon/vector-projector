@@ -465,25 +465,3 @@ async function compareAttributes() {
     }
 }
 
-
-function onSignIn(googleUser) {
-    var id_token = googleUser.getAuthResponse().id_token;
-  
-    fetch('/your-backend-route', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ token: id_token })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      // Handle success response
-      // You might want to redirect the user or update the UI to show they're logged in
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  }
-  
