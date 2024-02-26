@@ -429,9 +429,14 @@ async function compareAttributes() {
             Object.entries(attributes)
               .sort((a, b) => b[1].stdDev - a[1].stdDev) // Sort by stdDev descending
               .forEach(([attribute, stats]) => {
-                // Check if any stat is undefined and skip this attribute if so
-                if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
-                    return; // Skip this attribute
+
+                try {
+                    // Check if any stat is undefined and skip this attribute if so
+                    if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
+                        return; // Skip this attribute
+                    }
+                } catch {
+                    return;
                 }
 
                 const attributeContainer = document.createElement('div');
