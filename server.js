@@ -14,6 +14,8 @@ import {BedrockRuntimeClient, InvokeModelCommand, InvokeModelWithResponseStreamC
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
+
+
 const { Client } = pg;
 
 const require = createRequire(import.meta.url); // construct the require method
@@ -37,11 +39,17 @@ const openai = new OpenAIApi(configuration);
 
 const app = express();
 const inference = new HfInference(hf_key);
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(express.static('public'));
+
+const { OAuth2Client } = require('google-auth-library');
+const auth_client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 function covarianceMatrix(data) {
     const means = data[0].map((col, i) => math.mean(data.map(row => row[i])));
@@ -806,3 +814,67 @@ app.get('/get_model_data', async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
+
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "https://glacial-woodland-88547-8e7f68b57f88.herokuapp.com/"
+  },
+  (accessToken, refreshToken, profile, done) => {
+    // For now, just pass the profile as you might not have a user model yet
+    done(null, profile);
+  }
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
+
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id); // Just use the Google profile ID
+});
+
+passport.deserializeUser((id, done) => {
+  done(null, { id }); // For now, just pass the ID as the user object
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+async function verify(token) {
+    const ticket = await auth_client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,  
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    console.log("User Id - ", userid)
+    // If request specified a G Suite domain:
+    //const domain = payload['hd'];
+  }
+  
+  app.post('/your-backend-route', async (req, res) => {
+    try {
+      const { token } = req.body;
+      await verify(token);
+      // Upon successful verification, you can create a user session or return a success response
+      res.status(200).json({ message: 'Authentication successful' });
+    } catch (error) {
+      res.status(401).json({ message: 'Authentication failed', error: error.toString() });
+    }
+  });

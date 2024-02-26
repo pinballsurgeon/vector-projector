@@ -9,19 +9,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
 
 </head>
 <body>
     <h1>Vector-Projector</h1>
-    <!-- <button id="toggleSidebarButton">Toggle Sidebar</button>
-    <select id="sidebarSelector">
-        <option value="logs">Logs</option>
-        <option value="modelSelection">Model Selection</option>
-        <option value="prompts">Prompts</option>
-        <option value="cubeContent">Cube Analytics</option>
-        <option value="groups">Groups and Clustering</option>
-        <option value="vectorMetrics">Vector Metrics</option>
-    </select>     -->
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
     <button id="askButton">Ask</button>
@@ -106,6 +102,25 @@
     <script type="module" src="ratingGenerator.js"></script>
     <script type="module" src="cubeManager.js"></script>
     <script type="module" src="vectorMetrics.js"></script>
+    <script>
+        function onSignIn(googleUser) {
+          // Get the user's profile information
+          var profile = googleUser.getBasicProfile();
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Full Name: ' + profile.getName());
+          console.log('Given Name: ' + profile.getGivenName());
+          console.log('Family Name: ' + profile.getFamilyName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail());
+      
+          // The ID token you need to pass to your backend:
+          var id_token = googleUser.getAuthResponse().id_token;
+          console.log("ID Token: " + id_token);
+          
+          // TODO: Send the ID token to your server with an AJAX request
+        }
+      </script>
+      
     
     </body>
     </html>
