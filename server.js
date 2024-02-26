@@ -313,7 +313,8 @@ app.post('/ask', async (req, res, next) => {
                 prompt: userInput,
                 max_tokens: 200
             });
-            res.json({ response: gptResponse.data.choices[0].text.trim() });
+            const clean_resp = gptResponse.data.choices[0].text.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: clean_resp });
 
         // OpenAI - Create Chat Completion 
         } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-0125-preview', 'gpt-4-1106-preview', 'gpt-4-turbo-preview'].includes(model)) {
@@ -323,7 +324,8 @@ app.post('/ask', async (req, res, next) => {
                 messages: [{ role: "user", content: userInput }],
               });
 
-            res.json({ response: gptResponse.data.choices[0].message.content });
+            const clean_resp = gptResponse.data.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: clean_resp });
       
         } else if (['gemini-pro'].includes(model)) {
 
@@ -332,7 +334,9 @@ app.post('/ask', async (req, res, next) => {
             const prompt = userInput;
             // const results = await invokeTitanTextExpressV1(prompt);
             const results = await gemini_generateContent(prompt);
-            res.json({ response: results });
+
+            const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: clean_resp });
 
         } else if (['claude-v2'].includes(model)) {
 
@@ -340,8 +344,8 @@ app.post('/ask', async (req, res, next) => {
             // const gm_response = await generateContentFromGeminiPro(userInput, model);
             const prompt = userInput;
             const results = await invokeTitanTextExpressV1(prompt);
-            // const results = await gemini_generateContent(prompt);
-            // console.log(`Claude response`, results);
+
+            const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: results });            
 
         } else if (['mistral-medium'].includes(model)) {
@@ -354,7 +358,8 @@ app.post('/ask', async (req, res, next) => {
               messages: [{role: 'user', content: userInput}],
             });
 
-            res.json({ response: chatResponse.choices[0].message.content });
+            const clean_resp = chatResponse.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: clean_resp });
 
         } else if (['mistral-large'].includes(model)) {
 
@@ -366,7 +371,8 @@ app.post('/ask', async (req, res, next) => {
               messages: [{role: 'user', content: userInput}],
             });
 
-            res.json({ response: chatResponse.choices[0].message.content });
+            const clean_resp = chatResponse.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: clean_resp });
 
         // HuggingFace - Transformers
         } else {
