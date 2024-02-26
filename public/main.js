@@ -142,7 +142,7 @@ async function openModelTab(evt, modelName) {
             break;
         case "tab-mistral-large":
             model = "mistral-large";
-                reak;
+            break;
         case "tab-gpt-4-0125-preview":
             model = "gpt-4-0125-preview";
             break;
@@ -371,24 +371,23 @@ function createHistogramBar(counts, maxCount) {
   counts.forEach((binCount, index) => {
     const bar = document.createElement('div');
     const barWidth = (binCount / maxCount) * 100;
-    bar.style.width = `${barWidth}%`; // Calculate bar width based on count
-    bar.style.height = '20px'; // Fixed height for the bar
-    bar.style.backgroundColor = getBarColor(index); // Dynamic color based on value
-    bar.style.marginRight = '2px'; // Space between bars
-    bar.style.position = 'relative'; // To position the index value inside
+    bar.style.width = `${barWidth}%`;
+    bar.style.height = '20px'; 
+    bar.style.backgroundColor = getBarColor(index); 
+    bar.style.marginRight = '2px'; 
+    bar.style.position = 'relative'; 
 
-    // Check if the bar is large enough for the index value
-    if (barWidth > 5) { // Set a threshold percentage for minimum width
+    if (barWidth > 5) { 
       const valueText = document.createElement('span');
-      valueText.textContent = index; // Set text as the index value
+      valueText.textContent = index; 
       valueText.style.position = 'absolute';
-      valueText.style.left = '50%'; // Center in the bar
-      valueText.style.top = '50%'; // Middle of the bar
-      valueText.style.transform = 'translate(-50%, -50%)'; // Adjust for centering
+      valueText.style.left = '50%'; 
+      valueText.style.top = '50%'; 
+      valueText.style.transform = 'translate(-50%, -50%)'; 
       valueText.style.fontSize = '0.75rem';
-      valueText.style.color = 'white'; // Ensure the text stands out
-      valueText.style.pointerEvents = 'none'; // Ignore pointer events
-      bar.appendChild(valueText); // Append the index value inside the bar
+      valueText.style.color = 'white'; 
+      valueText.style.pointerEvents = 'none'; 
+      bar.appendChild(valueText); 
     }
 
     barContainer.appendChild(bar);
