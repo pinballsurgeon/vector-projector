@@ -31,6 +31,7 @@
         data-logo_alignment="left">
     </div>
 
+    <button onclick="signOut();">Sign Out</button>
 
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
@@ -119,25 +120,34 @@
     <script>
         function onSignIn(response) {
             var id_token = response.credential;
-        
             fetch('/tokenSignIn', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_token })
             })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                // Handle success response
+                // Update frontend and storage with the current user's info
+                localStorage.setItem('userEmail', data.user.email);
+                // Update UI components to reflect the signed-in user
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         }
         </script>
-        
+        <script>
+            function signOut() {
+                google.accounts.id.disableAutoSelect();
+                google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                    console.log('User signed out.');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userIdToken');
+                    // Update UI or redirect as needed
+                });
+            }
+            </script>
       
     
     </body>
