@@ -435,37 +435,38 @@ async function compareAttributes() {
                     if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
                         return; // Skip this attribute
                     }
-                } catch {
-                    return;
-                }
 
-                const attributeContainer = document.createElement('div');
-                attributeContainer.classList.add('attribute-container');
 
-                const attributeTitle = document.createElement('p');
-                attributeTitle.textContent = `Attribute: ${attribute}`;
-                attributeContainer.appendChild(attributeTitle);
+                    const attributeContainer = document.createElement('div');
+                    attributeContainer.classList.add('attribute-container');
 
-                try {
+                    const attributeTitle = document.createElement('p');
+                    attributeTitle.textContent = `Attribute: ${attribute}`;
+                    attributeContainer.appendChild(attributeTitle);
+
+
                     const max = stats.max.toFixed(2);
                     const min = stats.min.toFixed(2);
                     const avg = stats.avg.toFixed(2);
                     const stdDev = stats.stdDev.toFixed(2);
+
+                    const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
+                    const statsParagraph = document.createElement('p');
+                    statsParagraph.textContent = statsText;
+                    attributeContainer.appendChild(statsParagraph);
+
+                    // Create and append the bar graph here
+                    const histogramBar = createHistogramBar(stats.histogram, Math.max(...stats.histogram));
+                    attributeContainer.appendChild(histogramBar);
+
+                    // Optionally, create and append a bar graph here
+
+                    modelDiv.appendChild(attributeContainer);
+
                 } catch {
                     return;
                 }
-                const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
-                const statsParagraph = document.createElement('p');
-                statsParagraph.textContent = statsText;
-                attributeContainer.appendChild(statsParagraph);
 
-                // Create and append the bar graph here
-                const histogramBar = createHistogramBar(stats.histogram, Math.max(...stats.histogram));
-                attributeContainer.appendChild(histogramBar);
-
-                // Optionally, create and append a bar graph here
-
-                modelDiv.appendChild(attributeContainer);
             });
 
             compareContainer.appendChild(modelDiv);
