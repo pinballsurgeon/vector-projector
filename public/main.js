@@ -446,12 +446,14 @@ async function compareAttributes() {
                 attributeTitle.textContent = `Attribute: ${attribute}`;
                 attributeContainer.appendChild(attributeTitle);
 
-                // Since we've checked, these values should now be defined
-                const max = stats.max.toFixed(2);
-                const min = stats.min.toFixed(2);
-                const avg = stats.avg.toFixed(2);
-                const stdDev = stats.stdDev.toFixed(2);
-
+                try {
+                    const max = stats.max.toFixed(2);
+                    const min = stats.min.toFixed(2);
+                    const avg = stats.avg.toFixed(2);
+                    const stdDev = stats.stdDev.toFixed(2);
+                } catch {
+                    return;
+                }
                 const statsText = `Max: ${max}, Min: ${min}, Avg: ${avg}, Std Dev: ${stdDev}`;
                 const statsParagraph = document.createElement('p');
                 statsParagraph.textContent = statsText;
