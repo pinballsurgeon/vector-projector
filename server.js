@@ -37,9 +37,9 @@ const openai = new OpenAIApi(configuration);
 
 const app = express();
 const inference = new HfInference(hf_key);
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const session = require('express-session');
+// const passport = require('passport');
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const session = require('express-session');
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
@@ -816,7 +816,7 @@ app.get('/get_model_data', async (req, res) => {
 app.post('/tokenSignIn', async (req, res) => {
     try {
         const { id_token } = req.body;
-        const ticket = await client.verifyIdToken({
+        const ticket = await auth_client.verifyIdToken({
             idToken: id_token,
             audience: process.env.GOOGLE_CLIENT_ID,
         });
