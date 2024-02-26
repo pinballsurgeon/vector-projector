@@ -344,7 +344,7 @@ app.post('/ask', async (req, res, next) => {
             const client = new MistralClient(apiKey);
             
             const chatResponse = await client.chat({
-              model: 'mistral-large',
+              model: 'mistral-large-latest',
               messages: [{role: 'user', content: userInput}],
             });
 
