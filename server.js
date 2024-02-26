@@ -49,6 +49,12 @@ app.use(express.static('public'));
 const { OAuth2Client } = require('google-auth-library');
 const auth_client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
 function covarianceMatrix(data) {
     const means = data[0].map((col, i) => math.mean(data.map(row => row[i])));
     return data[0].map((col, j) => 
@@ -297,6 +303,8 @@ app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
+
+        await sleep(200)
 
         // OpenAI - Create Completion 
         if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
