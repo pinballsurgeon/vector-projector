@@ -147,6 +147,15 @@
                     localStorage.removeItem('userEmail');
                     localStorage.removeItem('userIdToken');
                     localStorage.clear();
+                    
+
+                    google.accounts.id.prompt((notification) => {
+                                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                                    document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+                                    google.accounts.id.prompt()
+                                }
+                            });
+
                     // Optionally, refresh or redirect the page to ensure a clean state
                     // window.location.reload();
                     // Update UI or redirect as needed
