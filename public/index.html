@@ -140,11 +140,14 @@
         </script>
         <script>
             function signOut() {
-                google.accounts.id.disableAutoSelect();
+                //google.accounts.id.disableAutoSelect();
                 google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
                     console.log('User signed out.');
                     localStorage.removeItem('userEmail');
                     localStorage.removeItem('userIdToken');
+                    localStorage.clear();
+                    // Optionally, refresh or redirect the page to ensure a clean state
+                    window.location.reload();
                     // Update UI or redirect as needed
                 });
             }
