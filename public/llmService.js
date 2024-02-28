@@ -76,7 +76,7 @@ export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) 
 
         let completeResponse = "";
         let attempts = 0;  // Keep track of attempts to avoid infinite loops
-        const maxAttempts = 5;  // Set a maximum number of attempts
+        const maxAttempts = 2;  // Set a maximum number of attempts
 
         let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
