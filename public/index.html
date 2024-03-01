@@ -125,6 +125,7 @@
     <script>
         function onSignIn(response) {
             var id_token = response.credential;
+            console.log('sign in response', response);
             fetch('/tokenSignIn', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
