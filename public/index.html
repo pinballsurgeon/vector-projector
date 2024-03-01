@@ -128,14 +128,6 @@
     <script>
 
       function renderSignInButton() {
-
-        google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
-                    console.log('User signed out.');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userIdToken');
-                    localStorage.clear();                    
-                });
-
         google.accounts.id.initialize({
           client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
           callback: handleCredentialResponse
@@ -146,23 +138,6 @@
         );
         google.accounts.id.prompt(); // Display the One Tap dialog
       }
-
-
-      function renderSignInButton_Signout() {
-
-            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
-                        console.log('User signed out.');
-                        localStorage.removeItem('userEmail');
-                        localStorage.removeItem('userIdToken');
-                        localStorage.clear();                    
-                    });
-
-            google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
-            { theme: "outline", size: "large" }  // Customization options
-            );
-            //google.accounts.id.prompt(); // Display the One Tap dialog
-            }
 
       window.onload = function () {
         renderSignInButton();
@@ -179,9 +154,8 @@
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-
             // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
-            localStorage.setItem('userEmail', data.user.email); 
+            localStorage.setItem('userEmail', data.user.email); // Example
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -189,16 +163,23 @@
         }
 
 
+      function signOut() {
+        // Example sign-out logic here
+        console.log('User signed out.');
+        // Here, you can also call renderSignInButton() again to refresh the sign-in state
+        renderSignInButton();
+      }
+
 
         function initializeGoogleSignIn() {
-            // google.accounts.id.initialize({
-            //     client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
-            //     callback: handleCredentialResponse
-            // });
-            google.accounts.id.renderButton(
-                document.getElementById('buttonDiv'), // Ensure this div is in your HTML
-                { theme: "outline", size: "large" } // Customization attributes
-            );
+            google.accounts.id.initialize({
+                client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            // google.accounts.id.renderButton(
+            //     document.getElementById('buttonDiv'), // Ensure this div is in your HTML
+            //     { theme: "outline", size: "large" } // Customization attributes
+            // );
             // Optionally prompt the user again
             // google.accounts.id.prompt(); // Be cautious with automatically prompting users
         }
@@ -207,27 +188,28 @@
             initializeGoogleSignIn();
         };
 
-        // function onSignIn(response) {
-        //     var id_token = response.credential;
-        //     console.log('sign in response', response);
-        //     fetch('/tokenSignIn', {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({ id_token })
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log('Success:', data);
-        //         // Update frontend and storage with the current user's info
-        //         localStorage.clear();
-        //         localStorage.setItem('userEmail', data.user.email);
-        //         // Update UI components to reflect the signed-in user
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
-        // }
-
+        function onSignIn(response) {
+            var id_token = response.credential;
+            console.log('sign in response', response);
+            fetch('/tokenSignIn', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Update frontend and storage with the current user's info
+                localStorage.clear();
+                localStorage.setItem('userEmail', data.user.email);
+                // Update UI components to reflect the signed-in user
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        </script>
+        <script>
             function signOut() {
                 //google.accounts.id.disableAutoSelect();
                 google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
@@ -237,8 +219,6 @@
                     localStorage.clear();
                     
                 });
-
-                renderSignInButton_Signout();
             }
         </script>
       
