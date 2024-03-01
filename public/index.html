@@ -55,9 +55,14 @@
       };
 
       function signOut() {
-        // Example sign-out logic here
-        console.log('User signed out.');
-        // Here, you can also call renderSignInButton() again to refresh the sign-in state
+                //google.accounts.id.disableAutoSelect();
+                google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                    console.log('User signed out.');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userIdToken');
+                    localStorage.clear();
+                    
+                })
         renderSignInButton();
       }
     </script>
