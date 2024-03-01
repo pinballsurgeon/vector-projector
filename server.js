@@ -329,10 +329,7 @@ app.post('/ask', async (req, res, next) => {
       
         } else if (['gemini-pro'].includes(model)) {
 
-            console.log(`Gemini-Pro request!`);
-            // const gm_response = await generateContentFromGeminiPro(userInput, model);
             const prompt = userInput;
-            // const results = await invokeTitanTextExpressV1(prompt);
             const results = await gemini_generateContent(prompt);
 
             const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
@@ -340,8 +337,6 @@ app.post('/ask', async (req, res, next) => {
 
         } else if (['claude-v2'].includes(model)) {
 
-            console.log(`Claude request!`);
-            // const gm_response = await generateContentFromGeminiPro(userInput, model);
             const prompt = userInput;
             const results = await invokeTitanTextExpressV1(prompt);
 
@@ -845,8 +840,7 @@ app.post('/tokenSignIn', async (req, res) => {
         });
         const payload = ticket.getPayload();
 
-
-        console.log("token sign in", payload);
+        // console.log("token sign in", payload);
         // Here, you might look up or register the user in your database
         // and establish a session
 

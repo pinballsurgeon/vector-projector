@@ -128,6 +128,14 @@
     <script>
 
       function renderSignInButton() {
+
+        google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                    console.log('User signed out.');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userIdToken');
+                    localStorage.clear();                    
+                });
+
         google.accounts.id.initialize({
           client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
           callback: handleCredentialResponse
@@ -154,12 +162,7 @@
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
-                    console.log('User signed out.');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userIdToken');
-                    localStorage.clear();                    
-                });
+
             // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
             localStorage.setItem('userEmail', data.user.email); 
         })
@@ -168,13 +171,6 @@
         });
         }
 
-
-    //   function signOut() {
-    //     // Example sign-out logic here
-    //     console.log('User signed out.');
-    //     // Here, you can also call renderSignInButton() again to refresh the sign-in state
-    //     renderSignInButton();
-    //   }
 
 
         function initializeGoogleSignIn() {
