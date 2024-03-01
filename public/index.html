@@ -179,10 +179,10 @@
                 client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
                 callback: handleCredentialResponse
             });
-            // google.accounts.id.renderButton(
-            //     document.getElementById('buttonDiv'), // Ensure this div is in your HTML
-            //     { theme: "outline", size: "large" } // Customization attributes
-            // );
+            google.accounts.id.renderButton(
+                document.getElementById('buttonDiv'), // Ensure this div is in your HTML
+                { theme: "outline", size: "large" } // Customization attributes
+            );
             // Optionally prompt the user again
             // google.accounts.id.prompt(); // Be cautious with automatically prompting users
         }
