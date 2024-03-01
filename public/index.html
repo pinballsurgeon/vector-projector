@@ -144,8 +144,25 @@
           document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
           { theme: "outline", size: "large" }  // Customization options
         );
-        //google.accounts.id.prompt(); // Display the One Tap dialog
+        google.accounts.id.prompt(); // Display the One Tap dialog
       }
+
+
+      function renderSignInButton_Signout() {
+
+            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                        console.log('User signed out.');
+                        localStorage.removeItem('userEmail');
+                        localStorage.removeItem('userIdToken');
+                        localStorage.clear();                    
+                    });
+
+            google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
+            { theme: "outline", size: "large" }  // Customization options
+            );
+            google.accounts.id.prompt(); // Display the One Tap dialog
+            }
 
       window.onload = function () {
         renderSignInButton();
@@ -221,7 +238,7 @@
                     
                 });
 
-                renderSignInButton();
+                renderSignInButton_Signout();
             }
         </script>
       
