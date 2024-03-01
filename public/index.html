@@ -126,10 +126,6 @@
     <script type="module" src="vectorMetrics.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-      function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        // Send this response.credential (ID token) to your server to verify and create a session
-      }
 
       function renderSignInButton() {
         google.accounts.id.initialize({
