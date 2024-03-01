@@ -154,8 +154,11 @@
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userIdToken');
+                    localStorage.clear();
             // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
-            localStorage.setItem('userEmail', data.user.email); // Example
+            localStorage.setItem('userEmail', data.user.email); 
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -163,12 +166,12 @@
         }
 
 
-      function signOut() {
-        // Example sign-out logic here
-        console.log('User signed out.');
-        // Here, you can also call renderSignInButton() again to refresh the sign-in state
-        renderSignInButton();
-      }
+    //   function signOut() {
+    //     // Example sign-out logic here
+    //     console.log('User signed out.');
+    //     // Here, you can also call renderSignInButton() again to refresh the sign-in state
+    //     renderSignInButton();
+    //   }
 
 
         function initializeGoogleSignIn() {
@@ -188,28 +191,27 @@
             initializeGoogleSignIn();
         };
 
-        function onSignIn(response) {
-            var id_token = response.credential;
-            console.log('sign in response', response);
-            fetch('/tokenSignIn', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Update frontend and storage with the current user's info
-                localStorage.clear();
-                localStorage.setItem('userEmail', data.user.email);
-                // Update UI components to reflect the signed-in user
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-        </script>
-        <script>
+        // function onSignIn(response) {
+        //     var id_token = response.credential;
+        //     console.log('sign in response', response);
+        //     fetch('/tokenSignIn', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ id_token })
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('Success:', data);
+        //         // Update frontend and storage with the current user's info
+        //         localStorage.clear();
+        //         localStorage.setItem('userEmail', data.user.email);
+        //         // Update UI components to reflect the signed-in user
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+        // }
+
             function signOut() {
                 //google.accounts.id.disableAutoSelect();
                 google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
@@ -219,6 +221,8 @@
                     localStorage.clear();
                     
                 });
+
+                renderSignInButton();
             }
         </script>
       
