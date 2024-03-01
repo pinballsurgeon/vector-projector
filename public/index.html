@@ -163,15 +163,24 @@
         }
 
 
-      function signOut() {
-        // Example sign-out logic here
-        console.log('User signed out.');
-        // Here, you can also call renderSignInButton() again to refresh the sign-in state
-        renderSignInButton();
-      }
+    //   function signOut() {
+    //     // Example sign-out logic here
+    //     console.log('User signed out.');
+    //     // Here, you can also call renderSignInButton() again to refresh the sign-in state
+    //     renderSignInButton();
+    //   }
 
 
         function initializeGoogleSignIn() {
+
+            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                    console.log('User signed out.');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userIdToken');
+                    localStorage.clear();
+                    
+                });
+
             google.accounts.id.initialize({
                 client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
                 callback: handleCredentialResponse
