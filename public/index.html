@@ -31,6 +31,7 @@
         .then(data => {
             console.log('Success:', data);
             // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
+            localStorage.clear();
             localStorage.setItem('userEmail', data.user.email); // Example
         })
         .catch((error) => {
