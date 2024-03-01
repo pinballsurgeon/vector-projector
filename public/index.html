@@ -136,7 +136,7 @@
           document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
           { theme: "outline", size: "large" }  // Customization options
         );
-        //google.accounts.id.prompt(); // Display the One Tap dialog
+        google.accounts.id.prompt(); // Display the One Tap dialog
       }
 
       window.onload = function () {
@@ -154,9 +154,12 @@
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            localStorage.removeItem('userEmail');
+            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
+                    console.log('User signed out.');
+                    localStorage.removeItem('userEmail');
                     localStorage.removeItem('userIdToken');
-                    localStorage.clear();
+                    localStorage.clear();                    
+                });
             // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
             localStorage.setItem('userEmail', data.user.email); 
         })
