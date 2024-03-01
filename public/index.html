@@ -17,7 +17,6 @@
 <body>
     <h1>Vector-Projector</h1>
 
-    
     <div id="g_id_onload"
         data-client_id="214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com"
         data-context="signin"
@@ -135,6 +134,7 @@
             .then(data => {
                 console.log('Success:', data);
                 // Update frontend and storage with the current user's info
+                localStorage.clear();
                 localStorage.setItem('userEmail', data.user.email);
                 // Update UI components to reflect the signed-in user
             })
@@ -152,17 +152,6 @@
                     localStorage.removeItem('userIdToken');
                     localStorage.clear();
                     
-
-                    // google.accounts.id.prompt((notification) => {
-                    //             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                    //                 document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-                    //                 // google.accounts.id.prompt()
-                    //             }
-                    //         });
-
-                    // Optionally, refresh or redirect the page to ensure a clean state
-                    // window.location.reload();
-                    // Update UI or redirect as needed
                 });
             }
             </script>
