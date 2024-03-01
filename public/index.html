@@ -17,7 +17,54 @@
 <body>
     <h1>Vector-Projector</h1>
 
-    <div id="g_id_onload"
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        // Send this response.credential (ID token) to your server to verify and create a session
+        fetch('/tokenSignIn', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_token: response.credential })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
+            localStorage.setItem('userEmail', data.user.email); // Example
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        }
+
+      function renderSignInButton() {
+        google.accounts.id.initialize({
+          client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
+          { theme: "outline", size: "large" }  // Customization options
+        );
+        google.accounts.id.prompt(); // Display the One Tap dialog
+      }
+
+      window.onload = function () {
+        renderSignInButton();
+      };
+
+      function signOut() {
+        // Example sign-out logic here
+        console.log('User signed out.');
+        // Here, you can also call renderSignInButton() again to refresh the sign-in state
+        renderSignInButton();
+      }
+    </script>
+    <div id="buttonDiv"></div>
+    <button onclick="signOut();">Sign Out</button>
+
+    <!-- <div id="g_id_onload"
         data-client_id="214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com"
         data-context="signin"
         data-ux_mode="popup"
@@ -31,10 +78,10 @@
         data-theme="outline"
         data-text="signin_with"
         data-size="large"
-        data-logo_alignment="left">
+        data-logo_alignment="right">
     </div>
 
-    <button onclick="signOut();">Sign Out</button>
+    <button onclick="signOut();">Sign Out</button> -->
 
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
