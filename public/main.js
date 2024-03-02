@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", function() {
   if (defaultTab) {
     defaultTab.className += " active";
      }
-//   newSidebarSelector.addEventListener("change", function() {
-//       updateSidebarContent(this.value);
-//   });
+  newSidebarSelector.addEventListener("change", function() {
+      updateSidebarContent(this.value);
+  });
 
   fetchPreviousQueries();
   // Initialize default content for the sidebar
-  // updateSidebarContent(newSidebarSelector.value);
+  updateSidebarContent(newSidebarSelector.value);
   initializeModels();                 // Fetch models on page load
   initializeModelParams();            // Fetch model parameters on page load
   initializePrompts();                // Fetch prompts on page load
