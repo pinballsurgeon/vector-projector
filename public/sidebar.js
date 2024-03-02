@@ -304,29 +304,27 @@ export async function fetchPreviousQueries() {
     }
 }
 
-function selectQuery(queryName) {
-    // Set the value of the userInput to the selected query's name
-    const userInput = document.getElementById('userInput');
-    userInput.value = queryName;
-
-    // Programmatically trigger a click on the askButton
-    document.getElementById('askButton').click();
-}
-
 function populateLibrary(queries) {
     const libraryDiv = document.getElementById('library');
     libraryDiv.innerHTML = ''; // Clear existing content
-    
+
     queries.forEach(query => {
         const queryBox = document.createElement('div');
         queryBox.classList.add('query-box');
-        queryBox.textContent = query.name;
-        queryBox.onclick = () => selectQuery(query); // Make sure to define this function
-        
-        // Add a data attribute to each box to identify them
-        queryBox.setAttribute('data-query-name', query.name);
-        
+        queryBox.textContent = query.name; // Assuming each query object has a 'name' property
+
+        // Bind the click event to selectQuery, passing the query's name
+        queryBox.addEventListener('click', () => selectQuery(query.name));
+
         libraryDiv.appendChild(queryBox);
     });
     libraryDiv.style.display = 'flex'; // Use flex to align items
+}
+
+function selectQuery(queryName) {
+    const userInput = document.getElementById('userInput');
+    userInput.value = queryName; // Make sure queryName is a string
+
+    // Programmatically trigger a click on the askButton
+    document.getElementById('askButton').click();
 }
