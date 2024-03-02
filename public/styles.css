@@ -295,7 +295,7 @@ span#thresholdValue {
 #library {
     display: flex;
     flex-direction: column; /* Stack the query boxes vertically */
-    max-height: 400px; /* Set a maximum height for the sidebar */
+    max-height: 600px; /* Set a maximum height for the sidebar */
     overflow-y: auto; /* Enable vertical scrolling */
     gap: 10px; /* Optional: Adds space between query boxes */
     padding: 10px; /* Optional: Adds some padding inside the scroll box */
