@@ -9,7 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
+    <!-- <script src="https://accounts.google.com/gsi/client" async defer></script> -->
     <!-- <meta name="google-signin-client_id" content="214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com"> -->
 
 
@@ -17,27 +18,8 @@
 <body>
     <h1>Vector-Projector</h1>
 
-    <!-- <div id="g_id_onload"
-        data-client_id="214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com"
-        data-context="signin"
-        data-ux_mode="popup"
-        data-callback="onSignIn"
-        data-itp_support="true">
-    </div>
-
-    <div class="g_id_signin"
-        data-type="standard"
-        data-shape="pill"
-        data-theme="outline"
-        data-text="signin_with"
-        data-size="large"
-        data-logo_alignment="left">
-    </div>
-
-    <button onclick="signOut();">Sign Out</button> -->
-
-    <div id="buttonDiv"></div>
-    <button onclick="signOut();">Sign Out</button>
+    <button id="btn-login" onclick="login()">Log In</button>
+    <button id="btn-logout" onclick="logout()" style="display:none;">Log Out</button>    
 
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
@@ -126,112 +108,65 @@
     <script type="module" src="vectorMetrics.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
+        let auth0 = null;
 
-      function renderSignInButton() {
-        google.accounts.id.initialize({
-          client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
-          callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("buttonDiv"), // Ensure this div exists in your HTML
-          { theme: "outline", size: "large" }  // Customization options
-        );
-        google.accounts.id.prompt(); // Display the One Tap dialog
-      }
-
-      window.onload = function () {
-        renderSignInButton();
-      };
-
-      function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        // Send this response.credential (ID token) to your server to verify and create a session
-        fetch('/tokenSignIn', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_token: response.credential })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Here, handle the session state on the frontend, e.g., updating UI or storing session info in localStorage
-            localStorage.setItem('userEmail', data.user.email); // Example
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-        }
-
-
-    //   function signOut() {
-    //     // Example sign-out logic here
-    //     console.log('User signed out.');
-    //     // Here, you can also call renderSignInButton() again to refresh the sign-in state
-    //     renderSignInButton();
-    //   }
-
-
-        function initializeGoogleSignIn() {
-
-            google.accounts.id.initialize({
-                client_id: "214466346009-0tv79jr11kcpbb7g5o44r9pddgg5h3ge.apps.googleusercontent.com",
-                callback: handleCredentialResponse
+        const initializeAuth0 = async () => {
+            auth0 = await createAuth0Client({
+                domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
+                client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
+                redirect_uri: window.location.origin
             });
 
-            google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
-                    console.log('User signed out.');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userIdToken');
-                    localStorage.clear();
-                    
-                });
-
-            google.accounts.id.renderButton(
-                document.getElementById('buttonDiv'), // Ensure this div is in your HTML
-                { theme: "outline", size: "large" } // Customization attributes
-            );
-            // Optionally prompt the user again
-            // google.accounts.id.prompt(); // Be cautious with automatically prompting users
-        }
-
-        window.onload = function() {
-            initializeGoogleSignIn();
+            // Update UI state based on whether the user is logged in
+            updateUI();
         };
 
-        function onSignIn(response) {
-            var id_token = response.credential;
-            console.log('sign in response', response);
-            fetch('/tokenSignIn', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Update frontend and storage with the current user's info
-                localStorage.clear();
-                localStorage.setItem('userEmail', data.user.email);
-                // Update UI components to reflect the signed-in user
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-        </script>
-        <script>
-            function signOut() {
-                //google.accounts.id.disableAutoSelect();
-                google.accounts.id.revoke(localStorage.getItem('userEmail'), () => {
-                    console.log('User signed out.');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userIdToken');
-                    localStorage.clear();
-                    
-                });
+        const updateUI = async () => {
+            const isAuthenticated = await auth0.isAuthenticated();
+
+            document.getElementById('btn-login').style.display = isAuthenticated ? 'none' : 'block';
+            document.getElementById('btn-logout').style.display = isAuthenticated ? 'block' : 'none';
+
+            // Handle more UI elements as needed
+        };
+
+        window.onload = async () => {
+            initializeAuth0();
+
+            // Check if the user is returning from Auth0 after authentication
+            const isAuthenticated = await auth0.isAuthenticated();
+
+            if (isAuthenticated) {
+                // User is authenticated
+                console.log('User is authenticated');
+                updateUI();
+            } else {
+                // Parse the authentication result
+                const query = window.location.search;
+                if (query.includes("code=") && query.includes("state=")) {
+                    // Process the login state
+                    await auth0.handleRedirectCallback();
+
+                    // Update UI
+                    updateUI();
+
+                    // Use replaceState to remove code and state from URL
+                    window.history.replaceState({}, document.title, "/");
+                }
             }
-        </script>
-      
-    
+        };
+
+
+        const login = async () => {
+            await auth0.loginWithRedirect();
+        };
+
+        const logout = () => {
+            auth0.logout({
+                returnTo: window.location.origin
+            });
+        };
+
+</script>
     </body>
     </html>
