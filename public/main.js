@@ -1,11 +1,11 @@
 import { fetchPreviousQueries, getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
-import { updateSpheres, clearSpheres } from './sphereManager.js';
+import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
-  const defaultTab = document.getElementById("tab-claude-v2");
+  const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
   if (defaultTab) {
     defaultTab.className += " active";
      }
