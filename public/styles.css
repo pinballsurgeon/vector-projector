@@ -291,3 +291,8 @@ span#thresholdValue {
     margin-right: 5px;
     vertical-align: middle;
 }
+
+#library {
+    max-height: 400px; /* Adjust based on your design */
+    overflow-y: auto;
+}

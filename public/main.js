@@ -1,4 +1,4 @@
-import { getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
+import { fetchPreviousQueries, getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres, clearSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
@@ -9,12 +9,13 @@ document.addEventListener("DOMContentLoaded", function() {
   if (defaultTab) {
     defaultTab.className += " active";
      }
-  newSidebarSelector.addEventListener("change", function() {
-      updateSidebarContent(this.value);
-  });
+//   newSidebarSelector.addEventListener("change", function() {
+//       updateSidebarContent(this.value);
+//   });
 
+  fetchPreviousQueries();
   // Initialize default content for the sidebar
-  updateSidebarContent(newSidebarSelector.value);
+  // updateSidebarContent(newSidebarSelector.value);
   initializeModels();                 // Fetch models on page load
   initializeModelParams();            // Fetch model parameters on page load
   initializePrompts();                // Fetch prompts on page load
@@ -102,12 +103,6 @@ async function openModelTab(evt, modelName) {
 
     // Declare all variables
     let i, tabcontent, tablinks;
-
-    // // Get all elements with class="tabcontent" and hide them
-    // tabcontent = document.getElementsByClassName("tabcontent");
-    // for (i = 0; i < tabcontent.length; i++) {
-    //     tabcontent[i].style.display = "none";
-    // }
 
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");

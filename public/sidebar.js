@@ -44,6 +44,7 @@ export function updateSidebarContent(selectedValue) {
     const groupsContent = document.getElementById('groupsContent');
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
     const promptEditors = document.getElementById('promptEditors');
+    const library = document.getElementById('library');
 
     logsContent.style.display = 'none';
     modelSelectionContent.style.display = 'none';
@@ -52,6 +53,7 @@ export function updateSidebarContent(selectedValue) {
     cubeContent.style.display = 'none';
     groupsContent.style.display = 'none';
     vectorMetricsContent.style.display = 'none';
+    library.style.display = 'none';
 
 
     const newSidebarSelector = document.getElementById('newSidebarSelector');
@@ -72,6 +74,12 @@ export function updateSidebarContent(selectedValue) {
         {
             vectorMetricsContent.style.display = 'block';
             }
+
+    if (newSidebarSelector.value == 'library')
+        {
+            library.style.display = 'block';
+            }
+
 
 }
 
@@ -279,4 +287,28 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
     }
 
     return Object.values(summedRatings);
+}
+
+async function fetchPreviousQueries() {
+    try {
+        const response = await fetch('/get_all_queries');
+        const queries = await response.json();
+        populateLibrary(queries);
+    } catch (error) {
+        console.error('Failed to fetch previous queries:', error);
+    }
+}
+
+
+function populateLibrary(queries) {
+    const libraryDiv = document.getElementById('library');
+    libraryDiv.innerHTML = ''; // Clear existing content
+    queries.forEach(query => {
+        const queryBox = document.createElement('div');
+        queryBox.classList.add('query-box'); // Add CSS class for styling
+        queryBox.textContent = query.name; // Assume each query has a 'name' property
+        queryBox.onclick = () => selectQuery(query); // Implement selectQuery to handle selection
+        libraryDiv.appendChild(queryBox);
+    });
+    libraryDiv.style.display = 'block';
 }

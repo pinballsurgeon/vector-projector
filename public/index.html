@@ -60,6 +60,7 @@
         <div id="new-sidebar-container" style="width: 30%;">
             <!-- Combo box for sidebar selections -->
             <select id="newSidebarSelector">
+                <option value="library">Library</option>
                 <option value="logs">Logs</option>
                 <option value="cubeContent">Cube Analytics</option>
                 <option value="groups">Groups and Clustering</option>
@@ -68,8 +69,9 @@
 
             <!-- Container for dynamic content -->
             <!-- <div id="dynamic-content"> -->
+                    <div id="library" style="display: block;"></div>
                     <div id="promptEditors" style="display: none;"></div>
-                    <div id="logsContent" style="display: block;"></div>
+                    <div id="logsContent" style="display: none;"></div>
                     <div id="modelSelectionContent" style="display: none;"></div>
                     <div id="modelParametersContent" style="display: none;"></div>
                     <div id="cubeContent" style="display: none;">

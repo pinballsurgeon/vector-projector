@@ -840,7 +840,7 @@ app.post('/tokenSignIn', async (req, res) => {
         });
         const payload = ticket.getPayload();
 
-        // console.log("token sign in", payload);
+        console.log("token sign in", payload);
         // Here, you might look up or register the user in your database
         // and establish a session
 
