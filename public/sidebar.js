@@ -289,7 +289,7 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
     return Object.values(summedRatings);
 }
 
-async function fetchPreviousQueries() {
+export async function fetchPreviousQueries() {
     try {
         const response = await fetch('/get_all_queries');
         const queries = await response.json();
