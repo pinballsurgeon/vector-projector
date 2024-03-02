@@ -293,6 +293,20 @@ span#thresholdValue {
 }
 
 #library {
-    max-height: 400px; /* Adjust based on your design */
-    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px; /* Adjust the gap size as needed */
+    padding: 10px;
+}
+
+.query-box {
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding inside the box */
+    text-align: center; /* Center text inside the box */
+    width: 200px; /* Fixed width, adjust as needed */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    cursor: pointer; /* Change cursor on hover */
 }
