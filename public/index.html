@@ -18,9 +18,13 @@
 <body>
     <h1>Vector-Projector</h1>
 
-    <button id="btn-login" onclick="login()">Log In</button>
-    <button id="btn-logout" onclick="logout()" style="display:none;">Log Out</button>    
-
+    <div id="auth-status" style="position: absolute; top: 0; right: 0; padding: 10px;">
+        <span id="user-info"></span>
+        <span id="status-icon"></span>
+        <button id="btn-login" onclick="login()">Log In</button>
+        <button id="btn-logout" onclick="logout()" style="display: none;">Log Out</button>
+    </div>
+      
     <!-- User input field and ask button -->
     <input type="text" id="userInput" placeholder="What topic...">
     <button id="askButton">Ask</button>
@@ -123,15 +127,33 @@
             }
         };
 
-
         const updateUI = async () => {
-            const isAuthenticated = await auth0.isAuthenticated();
-
-            document.getElementById('btn-login').style.display = isAuthenticated ? 'none' : 'block';
-            document.getElementById('btn-logout').style.display = isAuthenticated ? 'block' : 'none';
-
-            // Handle more UI elements as needed
-        };
+        const isAuthenticated = await auth0.isAuthenticated();
+        const userInfoDisplay = document.getElementById('user-info');
+        const statusIcon = document.getElementById('status-icon');
+        
+        if (isAuthenticated) {
+            const user = await auth0.getUser();
+            
+            // Display user's name and email
+            userInfoDisplay.textContent = `${user.name} (${user.email})`;
+            userInfoDisplay.style.display = 'inline';
+            
+            // Update status icon to green
+            statusIcon.style.backgroundColor = 'green';
+            
+            // Show logout button
+            document.getElementById('btn-login').style.display = 'none';
+            document.getElementById('btn-logout').style.display = 'inline-block';
+        } else {
+            // Hide user info and show login button
+            userInfoDisplay.style.display = 'none';
+            statusIcon.style.backgroundColor = 'black';
+            
+            document.getElementById('btn-login').style.display = 'inline-block';
+            document.getElementById('btn-logout').style.display = 'none';
+        }
+    };
 
         window.onload = async () => {
             await initializeAuth0();

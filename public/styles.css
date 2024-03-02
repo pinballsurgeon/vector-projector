@@ -273,3 +273,21 @@ span#thresholdValue {
     /* Add more custom styles as needed */
   }
   
+  #auth-status {
+    text-align: right;
+}
+
+#user-info {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+#status-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
