@@ -108,19 +108,8 @@
     <script type="module" src="vectorMetrics.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        // let auth0 = null;
 
-        const initializeAuth0 = async () => {
-            auth0 = await createAuth0Client({
-                domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
-                client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
-                redirect_uri: window.location.origin
-            });
-
-            // Update UI state based on whether the user is logged in
-            updateUI();
-        };
-
+        
         const updateUI = async () => {
             const isAuthenticated = await auth0.isAuthenticated();
 
@@ -131,7 +120,11 @@
         };
 
         window.onload = async () => {
-            initializeAuth0();
+            const auth0 = await createAuth0Client({
+                domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
+                client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
+                redirect_uri: window.location.origin
+            });
 
             // Check if the user is returning from Auth0 after authentication
             const isAuthenticated = await auth0.isAuthenticated();
