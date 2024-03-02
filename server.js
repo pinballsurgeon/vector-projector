@@ -565,6 +565,39 @@ app.get('/get_all_queries', async (req, res) => {
 });
 
 
+app.get('/get_library', async (req, res) => {
+    const client = new Client({
+        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+    try {
+        await client.connect();
+
+        const queryResult = await client.query(`
+            SELECT query, count(*) as models FROM cache GROUP BY query ORDER BY models DESC
+        `);
+
+        // Assuming you want to send back an array of queries regardless of whether there are results
+        const queries = queryResult.rows.map(row => ({ 
+            name: row.query, 
+            models: row.models 
+        }));
+
+        res.json({
+            exists: queries.length > 0,
+            queries: queries // This ensures you're sending an array of queries
+        });
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        await client.end(); // Ensure the client connection is closed
+    }
+});
+
+
 function calculateShannonEntropy(densities) {
     let totalPoints = densities.reduce((sum, val) => sum + val, 0);
     let probabilities = densities.map(density => density / totalPoints);

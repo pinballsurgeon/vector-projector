@@ -291,13 +291,19 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
 
 export async function fetchPreviousQueries() {
     try {
-        const response = await fetch('/get_all_queries');
-        const queries = await response.json();
-        populateLibrary(queries);
+        const response = await fetch('/get_library');
+        const result = await response.json();
+        if (result.exists) {
+            populateLibrary(result.queries); // Now correctly using the array of queries
+        } else {
+            console.log("No data found for this query");
+            // Handle the case where no queries are found (e.g., display a message)
+        }
     } catch (error) {
         console.error('Failed to fetch previous queries:', error);
     }
 }
+
 
 
 function populateLibrary(queries) {
