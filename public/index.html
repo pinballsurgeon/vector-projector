@@ -111,15 +111,18 @@
         let auth0 = null;
 
         const initializeAuth0 = async () => {
-            auth0 = await createAuth0Client({
-                domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
-                client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
-                redirect_uri: window.location.origin
-            });
-
-            // Update UI state based on whether the user is logged in
-            updateUI();
+            try {
+                auth0 = await createAuth0Client({
+                    domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
+                    client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
+                    redirect_uri: window.location.origin
+                });
+                updateUI();
+            } catch (error) {
+                console.error("Error initializing Auth0", error);
+            }
         };
+
 
         const updateUI = async () => {
             const isAuthenticated = await auth0.isAuthenticated();
@@ -131,7 +134,7 @@
         };
 
         window.onload = async () => {
-            initializeAuth0();
+            await initializeAuth0();
 
             // Check if the user is returning from Auth0 after authentication
             const isAuthenticated = await auth0.isAuthenticated();
