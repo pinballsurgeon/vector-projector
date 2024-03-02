@@ -304,7 +304,6 @@ function populateLibrary(queries) {
 
         libraryDiv.appendChild(queryBox);
     });
-    libraryDiv.style.display = 'flex'; // Use flex to align items
 }
 
 function selectQuery(queryName) {

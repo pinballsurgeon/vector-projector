@@ -294,12 +294,13 @@ span#thresholdValue {
 
 #library {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 10px; /* Adjust the gap size as needed */
-    padding: 10px;
+    flex-direction: column; /* Stack the query boxes vertically */
+    max-height: 400px; /* Set a maximum height for the sidebar */
+    overflow-y: auto; /* Enable vertical scrolling */
+    gap: 10px; /* Optional: Adds space between query boxes */
+    padding: 10px; /* Optional: Adds some padding inside the scroll box */
 }
+
 
 .query-box {
     border: 1px solid #ddd; /* Light grey border */
