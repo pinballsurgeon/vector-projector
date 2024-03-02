@@ -144,7 +144,10 @@ async function openModelTab(evt, modelName) {
         case "tab-gpt-4-turbo-preview":
             model = "gpt-4-turbo-preview";
             break;
-    // Add cases for other models
+        case "tab-gpt-3.5-turbo":
+                model = "gpt-3.5-turbo";
+                break;
+    // Add cases for other models 
     }
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
@@ -177,6 +180,7 @@ document.getElementById('tab-mistral-medium').addEventListener('click', (event) 
 document.getElementById('tab-mistral-large').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-large'));
 document.getElementById('tab-gpt-4-turbo-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-turbo-preview'));
 document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
+document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 
 document.getElementById('compareTab').addEventListener('click', compareModels);
 

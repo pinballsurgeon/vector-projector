@@ -5,10 +5,7 @@ export let selectedNumSequences;            // Save selected num_return_sequence
 
 // Initialize Model Parameters
 export function getModelAndParams() {
-    // selectedTemperature = document.getElementById('temperature').value;
-    // selectedTopP = document.getElementById('top_p').value;
-    // selectedNumSequences = document.querySelector('input[name="num_return_sequences"]:checked').value;
-    
+
     const selectedModelTab = document.querySelector('.tablinks.active');
     const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
 
@@ -23,16 +20,13 @@ export function getModelAndParams() {
 // Initialize Model
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
-    // modelSelectionContent.innerHTML = '';
-    // appendModelSelection();
+
 }
 
 // Initialize Model Parameters
 export function initializeModelParams() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
-    // document.getElementById('temperature').value = 0.5;
-    // document.getElementById('top_p').value = 0.5;
-    // document.getElementById('one').checked = true; 
+
 }
 
 // Update Sidebar Content
@@ -58,23 +52,21 @@ export function updateSidebarContent(selectedValue) {
 
     const newSidebarSelector = document.getElementById('newSidebarSelector');
     if (newSidebarSelector.value == 'logs')
-    {
-        logsContent.style.display = 'block';
-         };
+        {
+            logsContent.style.display = 'block';
+            };
     if (newSidebarSelector.value == 'cubeContent')
          {
             cubeContent.style.display = 'block';
-              }
+            }
     if (newSidebarSelector.value == 'groups')
         {
             groupsContent.style.display = 'block';
             }
-
     if (newSidebarSelector.value == 'vectorMetrics')
         {
             vectorMetricsContent.style.display = 'block';
             }
-
     if (newSidebarSelector.value == 'library')
         {
             library.style.display = 'block';
@@ -99,12 +91,6 @@ export function appendLog(message) {
         console.error('logsContent is null. Make sure the element exists and the ID is correct.');
     }
     
-    // If the logsContent is not currently displayed, switch to it
-    // const newSidebarSelector = document.getElementById('newSidebarSelector');
-    // if (newSidebarSelector.value !== 'logs') {
-    //     newSidebarSelector.value = 'logs';
-    //     updateSidebarContent('logs'); // Update the content to show logs
-    // }
 }
 
 // Build prompt sidebar
