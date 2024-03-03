@@ -403,7 +403,7 @@ span#thresholdValue {
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 12px; /* Even smaller font size for mobile */
+        font-size: 24px; /* Even smaller font size for mobile */
     }
 }
 
