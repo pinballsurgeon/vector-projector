@@ -51,13 +51,18 @@ let svg = d3.select("#my_dataviz").append("svg");
 
 // Function to resize the canvas
 function resize() {
-    let width = document.getElementById('canvas-container').offsetWidth - 40;  // subtracting padding
-    let height = (window.innerHeight * 0.75) - 40;  // 75% of the view height, subtracting padding
-    if (width < 0){
-      width = 0;
-    };
+    // Subtracting some value for padding/margins around the canvas for aesthetics
+    let margin = 20; // Adjust based on your layout
+    let headerHeight = document.querySelector('header')?.offsetHeight || 0; // If you have a header
+    let footerHeight = document.querySelector('footer')?.offsetHeight || 0; // If you have a footer
+
+    let availableHeight = window.innerHeight - headerHeight - footerHeight - (2 * margin); // Calculate available height
+
+    let width = document.getElementById('canvas-container').clientWidth - (2 * margin); // Use clientWidth for the width
+    let height = availableHeight > 0 ? availableHeight : 0; // Ensure height is not negative
+
     svg.attr("width", width)
-        .attr("height", height);
+       .attr("height", height);
 }
 
 // Call the resize function on window resize
