@@ -5,17 +5,26 @@
     box-sizing: border-box;
 }
 
-/* Style the body to use full viewport height and enable scroll */
+/* Style the body to use full viewport height and enable flex layout */
 body {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100vh; /* Use minimum height to fill the screen */
     background: #f9f9f9;
     font-family: Arial, sans-serif;
-    font-size: 16px;
     overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-y: auto; /* Allow vertical scroll if necessary */
 }
 
+/* Style the header to be at the top */
+.header {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    font-size: 2em; /* Large text size for the header */
+    text-align: center;
+}
 body, html {
     margin: 0;
     padding: 0;
@@ -35,18 +44,16 @@ body, html {
 #main-content {
     display: flex;
     flex-direction: row; /* Align children (tabs and sidebar) in a row */
-    align-items: stretch; /* Make sure children stretch to fill the container height */
-    height: calc(100vh - [HeaderHeight]px); /* Adjust based on your header's actual height */
-    padding-top: [HeaderHeight]px; /* Push content down so it's not hidden by the fixed header */
-    overflow: hidden; /* Optional: in case of minor overflows */
+    flex-grow: 1; /* Allow it to grow to fill available space */
+    overflow: hidden; /* Prevent overflow */
 }
 
-/* Style the main content area where canvas will be */
-#canvas-container {
-    position: relative;
-    flex-grow: 1; /* Allow canvas to fill available space */
-    overflow: auto; /* Allow scrolling within the canvas container if needed */
+/* Adjustments for canvas and sidebar containers */
+#canvas-container, #new-sidebar-container {
+    flex-grow: 1; /* Allow these elements to fill available space */
+    overflow: auto; /* Add scroll if content overflows */
 }
+
 
 /* Make input fields and buttons large and easily clickable */
 #userInput, .button {
@@ -287,10 +294,16 @@ span#thresholdValue {
     font-size: 16px; /* Default font size for desktop */
 }
 
-#auth-status {
+/* Adjust the #auth-status and #search-container positioning */
+#auth-status, #search-container {
     display: flex;
-    align-items: center;
-    /* No need for absolute positioning, flexbox will handle the layout */
+    justify-content: center; /* Center content horizontally */
+    margin: 20px 0; /* Add some vertical spacing */
+}
+
+/* Style for the login/logout buttons and search input/button */
+#btn-login, #btn-logout, #userInput, #askButton {
+    margin: 0 10px; /* Add some spacing around elements */
 }
 
 #user-info {
@@ -409,18 +422,16 @@ span#thresholdValue {
     }
 }
 
-/* Smaller screens (e.g., tablets) */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     #main-content {
         flex-direction: column; /* Stack sidebar and content vertically on smaller screens */
     }
 
-    #new-sidebar-container, #main-content > div:first-child {
-        flex-basis: 100%; /* Each takes full width of the screen */
-        height: auto; /* Allow natural height */
+    #new-sidebar-container, #canvas-container {
+        width: 100%; /* Full width for smaller screens */
     }
 }
-
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
