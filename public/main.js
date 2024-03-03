@@ -587,3 +587,13 @@ window.onload = async () => {
 // Export functions if needed or just attach them to window for global access
 window.login = login;
 window.logout = logout;
+
+window.addEventListener('load', async () => {
+    await initializeAuth0();
+    const isAuthenticated = await auth0.isAuthenticated();
+    if (isAuthenticated) {
+        console.log('User is authenticated');
+        // Update UI or redirect as necessary
+        updateUI();
+    }
+});
