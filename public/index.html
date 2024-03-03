@@ -13,20 +13,25 @@
 
 </head>
 <body>
-    <div id="site-logo">
-        <img src="images/vectorprojector.png" />
+    <div id="header">
+        <div id="site-logo">
+            <img src="images/vectorprojector.png" alt="VectorProjector Logo" />
+        </div>
+    
+        <div id="auth-status">
+            <span id="user-info"></span>
+            <span id="status-icon"></span>
+            <button id="btn-login" onclick="login()">Log In</button>
+            <button id="btn-logout" onclick="logout()" style="display: none;">Log Out</button>
+        </div>
     </div>
-
-    <div id="auth-status" style="position: absolute; top: 0; right: 0; padding: 10px;">
-        <span id="user-info"></span>
-        <span id="status-icon"></span>
-        <button id="btn-login" onclick="login()">Log In</button>
-        <button id="btn-logout" onclick="logout()" style="display: none;">Log Out</button>
-    </div>
-      
+    
     <!-- User input field and ask button -->
-    <input type="text" id="userInput" placeholder="What topic...">
-    <button id="askButton">Ask</button>
+    <div id="search-container">
+        <input type="text" id="userInput" placeholder="What topic...">
+        <button id="askButton">Ask</button>
+    </div>
+    
 
     <!-- Main content area -->
     <div id="main-content" style="display: flex;">

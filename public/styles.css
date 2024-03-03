@@ -273,8 +273,10 @@ span#thresholdValue {
     /* Add more custom styles as needed */
   }
   
-  #auth-status {
-    text-align: right;
+#auth-status {
+    display: flex;
+    align-items: center;
+    /* No need for absolute positioning, flexbox will handle the layout */
 }
 
 #user-info {
@@ -313,8 +315,14 @@ span#thresholdValue {
 }
 
 #site-logo img {
-    max-width: 100%; /* Ensure the image is responsive */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove any inline spacing */
-    margin: 0 auto; /* Center the logo if within a container */
+    max-width: calc(100% - 250px); /* Adjust the 250px to the width you need for the auth-status */
+    height: auto;
+    display: block;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; /* Adjust as needed */
 }
