@@ -28,7 +28,7 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
         appendLog(`User input: ${userInput}`);
         const fullPrompt = prompt.replace('<USERINPUT TOPIC>', userInput);
             
-        appendLog(`Full prompt: ${fullPrompt}`);
+        // appendLog(`Full prompt: ${fullPrompt}`);
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
         appendLog(`Selected model: ${model}`);
@@ -167,11 +167,11 @@ export const correctJsonObject = async (promptKey, replacements = {}) => {
         let fullPrompt = prompt;
         let completeResponse = "";
         let attempts = 0;  // Keep track of attempts to avoid infinite loops
-        const maxAttempts = 5;  // Set a maximum number of attempts
+        const maxAttempts = 3;  // Set a maximum number of attempts
 
         let original_fullprompt = fullPrompt;
         while (attempts < maxAttempts) {
-            appendLog(`Full prompt: ${fullPrompt}`);
+            // appendLog(`Full prompt: ${fullPrompt}`);
 
             const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
