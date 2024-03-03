@@ -355,7 +355,7 @@ span#thresholdValue {
 #userInput {
     flex-grow: 3; /* Allow the input to grow three times more than the button */
     padding: 10px;
-    border: 1px solid #ddd; /* A light border */
+    border: 2px solid #585858; /* A light border */
     border-radius: 4px; /* Slightly rounded corners */
     width: 0; /* Reset width to allow flex-grow to work properly */
 }
@@ -363,8 +363,8 @@ span#thresholdValue {
 #askButton {
     flex-grow: 1; /* Button will take up the space one time */
     padding: 10px;
-    background-color: #a8dba8; /* A pastel light green background */
-    border: none;
+    background-color: #585858; /* A pastel light green background */
+    border: 2px solid #585858;
     border-radius: 4px; /* Slightly rounded corners */
     color: white; /* Text color */
     cursor: pointer; /* Change cursor on hover */
@@ -373,7 +373,7 @@ span#thresholdValue {
 }
 
 #askButton:hover {
-    background-color: #79c879; /* A slightly darker green for hover effect */
+    background-color: #a1d6cf; /* A slightly darker green for hover effect */
 }
 
 @media (max-width: 768px) { /* Adjust for mobile screens */
