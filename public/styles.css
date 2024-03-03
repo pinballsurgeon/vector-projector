@@ -32,15 +32,6 @@ body, html {
     overflow: hidden; /* Prevent scrolling on the body to avoid overflow */
 }
 
-/* Style the header */
-.header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    font-size: 2em; /* Large text size for the header */
-    text-align: center;
-}
-
 #main-content {
     display: flex;
     flex-direction: row; /* Align children (tabs and sidebar) in a row */
@@ -347,19 +338,13 @@ span#thresholdValue {
     display: block;
 }
 
-/* #header {
+#header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px; /* Adjust as needed */
 }
 
-#header {
-    /* Make sure the header does not push content down */
-    position: fixed;
-    width: 100%;
-    z-index: 1; /* Ensure header is above other content */
-} */
 
 #search-container {
     display: flex;
