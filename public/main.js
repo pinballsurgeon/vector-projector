@@ -33,7 +33,7 @@ askButton.addEventListener('click', async () => {
 
     // Check for minimum query length
     if (userInputValue.length < 2) {
-        alert("Please enter at least 2 characters for your query.");
+        alert("Please enter a query.");
         return; // Exit the function early
     }
 
@@ -502,3 +502,76 @@ async function compareAttributes() {
     }
 }
 
+// Define auth0 as a global variable at the top of your main.js
+let auth0 = null;
+
+async function initializeAuth0() {
+    try {
+        auth0 = await createAuth0Client({
+            domain: 'dev-h3zfs1afk4agsssf.us.auth0.com',
+            client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
+            redirect_uri: window.location.origin,
+        });
+        await updateUI();
+    } catch (error) {
+        console.error("Error initializing Auth0", error);
+    }
+}
+
+async function updateUI() {
+    const isAuthenticated = await auth0.isAuthenticated();
+    const userInfoDisplay = document.getElementById('user-info');
+    const statusIcon = document.getElementById('status-icon');
+
+    if (isAuthenticated) {
+        const user = await auth0.getUser();
+        userInfoDisplay.textContent = `${user.name} (${user.email})`;
+        document.getElementById('btn-login').style.display = 'none';
+        document.getElementById('btn-logout').style.display = 'inline-block';
+    } else {
+        userInfoDisplay.style.display = 'none';
+        document.getElementById('btn-login').style.display = 'inline-block';
+        document.getElementById('btn-logout').style.display = 'none';
+    }
+}
+
+// The login function
+async function login() {
+    await auth0.loginWithRedirect();
+}
+
+// The logout function
+function logout() {
+    auth0.logout({
+        returnTo: window.location.origin,
+    });
+}
+
+window.onload = async () => {
+    await initializeAuth0();
+
+    // Check if the user is returning from Auth0 after authentication
+    const isAuthenticated = await auth0.isAuthenticated();
+
+    if (isAuthenticated) {
+        // User is authenticated
+        console.log('User is authenticated');
+        updateUI();
+    } else {
+        // Parse the authentication result
+        const query = window.location.search;
+        if (query.includes("code=") && query.includes("state=")) {
+            // Process the login state
+            await auth0.handleRedirectCallback();
+
+            // Update UI
+            updateUI();
+
+            // Use replaceState to remove code and state from URL
+            window.history.replaceState({}, document.title, "/");
+        }
+    }
+};
+// Export functions if needed or just attach them to window for global access
+window.login = login;
+window.logout = logout;
