@@ -502,7 +502,7 @@ async function compareAttributes() {
     }
 }
 
-// Define auth0 as a global variable at the top of your main.js
+
 let auth0 = null;
 
 async function initializeAuth0() {
@@ -512,88 +512,68 @@ async function initializeAuth0() {
             client_id: 'vWhUs5xQshlz8Chj7lxs0jQ0wOFtUuiW',
             redirect_uri: window.location.origin,
         });
-        await updateUI();
+        
+        // After initialization, check authentication status
+        const isAuthenticated = await auth0.isAuthenticated();
+        if (isAuthenticated) {
+            // If authenticated, update UI accordingly
+            await updateUI(true);
+        } else {
+            // Handle the case where the user is not authenticated
+            await handleAuthenticationResult();
+        }
     } catch (error) {
         console.error("Error initializing Auth0", error);
     }
 }
 
-async function updateUI() {
-    const isAuthenticated = await auth0.isAuthenticated();
+async function handleAuthenticationResult() {
+    // Parse the authentication result
+    const query = window.location.search;
+    if (query.includes("code=") && query.includes("state=")) {
+        // Process the login state
+        await auth0.handleRedirectCallback();
+        // After handling redirect, update UI based on authentication status
+        await updateUI(await auth0.isAuthenticated());
+        // Use replaceState to remove code and state from URL
+        window.history.replaceState({}, document.title, "/");
+    } else {
+        // If no authentication code present, just try updating UI
+        await updateUI(await auth0.isAuthenticated());
+    }
+}
+
+async function updateUI(isAuthenticated) {
     const userInfoDisplay = document.getElementById('user-info');
     const statusIcon = document.getElementById('status-icon');
 
-    if (isAuthenticated) {
+    if (isAuthenticated && auth0) {
         const user = await auth0.getUser();
         
-        // Display user's name and email
-        userInfoDisplay.textContent = `${user.name} (${user.email})`;
-        userInfoDisplay.style.display = 'inline';
-        
-        // Update status icon to green
-        statusIcon.style.backgroundColor = 'green';
-        
-        // Show logout button
+        // Check for user object before attempting to access its properties
+        if (user) {
+            // Display user's name and email
+            userInfoDisplay.textContent = `${user.name} (${user.email})`;
+            userInfoDisplay.style.display = 'inline';
+            // Update status icon to green
+            statusIcon.style.backgroundColor = 'green';
+        }
+
+        // Show logout button and hide login button
         document.getElementById('btn-login').style.display = 'none';
         document.getElementById('btn-logout').style.display = 'inline-block';
     } else {
         // Hide user info and show login button
         userInfoDisplay.style.display = 'none';
         statusIcon.style.backgroundColor = 'black';
-        
         document.getElementById('btn-login').style.display = 'inline-block';
         document.getElementById('btn-logout').style.display = 'none';
     }
-};
-
-
-// The login function
-async function login() {
-    await auth0.loginWithRedirect();
 }
 
-// The logout function
-function logout() {
-    auth0.logout({
-        returnTo: window.location.origin,
-    });
-}
+// Combine the window load event into a single call
+window.addEventListener('load', initializeAuth0);
 
-window.onload = async () => {
-    await initializeAuth0();
-
-    // Check if the user is returning from Auth0 after authentication
-    const isAuthenticated = await auth0.isAuthenticated();
-
-    if (isAuthenticated) {
-        // User is authenticated
-        console.log('User is authenticated');
-        updateUI();
-    } else {
-        // Parse the authentication result
-        const query = window.location.search;
-        if (query.includes("code=") && query.includes("state=")) {
-            // Process the login state
-            await auth0.handleRedirectCallback();
-
-            // Update UI
-            updateUI();
-
-            // Use replaceState to remove code and state from URL
-            window.history.replaceState({}, document.title, "/");
-        }
-    }
-};
 // Export functions if needed or just attach them to window for global access
-window.login = login;
-window.logout = logout;
-
-window.addEventListener('load', async () => {
-    await initializeAuth0();
-    const isAuthenticated = await auth0.isAuthenticated();
-    if (isAuthenticated) {
-        console.log('User is authenticated');
-        // Update UI or redirect as necessary
-        updateUI();
-    }
-});
+window.login = async () => { await auth0.loginWithRedirect(); };
+window.logout = () => { auth0.logout({ returnTo: window.location.origin }); };
