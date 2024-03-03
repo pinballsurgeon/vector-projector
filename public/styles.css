@@ -311,3 +311,10 @@ span#thresholdValue {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
     cursor: pointer; /* Change cursor on hover */
 }
+
+#site-logo img {
+    max-width: 100%; /* Ensure the image is responsive */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove any inline spacing */
+    margin: 0 auto; /* Center the logo if within a container */
+}
