@@ -342,8 +342,15 @@ span#thresholdValue {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px; /* Adjust as needed */
 }
 
+#header {
+    /* Make sure the header does not push content down */
+    position: fixed;
+    width: 100%;
+    z-index: 1; /* Ensure header is above other content */
+}
 
 #search-container {
     display: flex;
