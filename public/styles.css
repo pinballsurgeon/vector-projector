@@ -347,7 +347,7 @@ span#thresholdValue {
     display: block;
 }
 
-#header {
+/* #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -359,7 +359,7 @@ span#thresholdValue {
     position: fixed;
     width: 100%;
     z-index: 1; /* Ensure header is above other content */
-}
+} */
 
 #search-container {
     display: flex;
