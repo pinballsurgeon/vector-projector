@@ -525,15 +525,27 @@ async function updateUI() {
 
     if (isAuthenticated) {
         const user = await auth0.getUser();
+        
+        // Display user's name and email
         userInfoDisplay.textContent = `${user.name} (${user.email})`;
+        userInfoDisplay.style.display = 'inline';
+        
+        // Update status icon to green
+        statusIcon.style.backgroundColor = 'green';
+        
+        // Show logout button
         document.getElementById('btn-login').style.display = 'none';
         document.getElementById('btn-logout').style.display = 'inline-block';
     } else {
+        // Hide user info and show login button
         userInfoDisplay.style.display = 'none';
+        statusIcon.style.backgroundColor = 'black';
+        
         document.getElementById('btn-login').style.display = 'inline-block';
         document.getElementById('btn-logout').style.display = 'none';
     }
-}
+};
+
 
 // The login function
 async function login() {
