@@ -22,27 +22,47 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// // TOPIC HANDLER
-document.getElementById('askButton').addEventListener('click', async () => {
-  const userInputValue = document.getElementById('userInput').value;
-  const { model } = getModelAndParams();
+// Cache the askButton and userInput for efficiency
+const askButton = document.getElementById('askButton');
+const userInput = document.getElementById('userInput');
 
-  const queryParams = new URLSearchParams({ userInputValue, model }).toString();
-  // appendLog(`Fetch history payload: ${queryParams}`);
+// Topic Handler
+askButton.addEventListener('click', async () => {
+    const userInputValue = userInput.value.trim();
+    const { model } = getModelAndParams();
 
-  const response = await fetch(`/check_query?${queryParams}`);
-  const data = await response.json();
+    // Check for minimum query length
+    if (userInputValue.length < 2) {
+        alert("Please enter at least 2 characters for your query.");
+        return; // Exit the function early
+    }
 
-  // appendLog(`Fethced history response: ${JSON.stringify(data)}`);
-  // if (data.exists && data.pcaResult) {
-  if (data.exists) {
-      // Query exists, use saved PCA results
-      await createOrUpdateCube(data.pcaResult);
-      updateVectorMetricsContent();
-  } else {
-      // Query does not exist, proceed with generating new results
-      const rootList = await listPerpetuator();
-  }
+    // Disable the askButton to prevent multiple submissions
+    askButton.disabled = true;
+    askButton.textContent = 'Processing...'; // Optional: Provide user feedback
+
+    try {
+        const queryParams = new URLSearchParams({ userInputValue, model }).toString();
+
+        const response = await fetch(`/check_query?${queryParams}`);
+        const data = await response.json();
+
+        if (data.exists) {
+            // Query exists, use saved PCA results
+            await createOrUpdateCube(data.pcaResult);
+            updateVectorMetricsContent();
+        } else {
+            // Query does not exist, proceed with generating new results
+            const rootList = await listPerpetuator();
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request.");
+    } finally {
+        // Re-enable the askButton after processing is complete
+        askButton.disabled = false;
+        askButton.textContent = 'Ask'; // Reset button text
+    }
 });
 
 
