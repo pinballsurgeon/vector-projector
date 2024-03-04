@@ -248,46 +248,24 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
 
 export const claudethree = async (prompt, modelId) => {
-    const anthropic = new Anthropic({
-        apiKey: process.env.ANTHROPIC_KEY,
-      });
-      
-      const msg = await anthropic.messages.create({
-        model: "claude-3-opus-20240229",
-        max_tokens: 1000,
-        temperature: 0,
-        messages: [{"role": "user", "content": prompt}]
-      });
-
-      console.log('CLAUDE 3', msg);
-
     try {
-        const response = msg;
+        const anthropic = new Anthropic({
+            apiKey: process.env.ANTHROPIC_KEY,
+        });
+        
+        const msg = await anthropic.messages.create({
+            model: "claude-3-opus-20240229",
+            max_tokens: 1000,
+            temperature: 0,
+            messages: [{"role": "user", "content": prompt}]
+        });
 
-        const chunks = [];
+        console.log('CLAUDE 3', msg);
 
-        for await (const event of response.body) {
-            if (event.chunk && event.chunk.bytes) {
-                const chunk = JSON.parse(Buffer.from(event.chunk.bytes).toString("utf-8"));
-                chunks.push(chunk.completion); // change this line
-            } else if (
-                event.internalServerException ||
-                event.modelStreamErrorException ||
-                event.throttlingException ||
-                event.validationException
-            ) {
-                console.error(event);
-                break;
-            }
-        };
+        const response = msg.content[0];
+        const text = response.text;
 
-
-        //const responseBody = JSON.parse(decodedResponseBody);
-        //const res_complete = responseBody.completion;
-        const res_complete = chunks.join('');
-        console.log(res_complete);
-        return res_complete;
-        // return responseBody.generation;
+        return text;
 
     } catch (err) {
         console.error(err);
