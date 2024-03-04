@@ -372,7 +372,7 @@ span#thresholdValue {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 2px; /* Even smaller font size for mobile */
+        font-size: 10px; /* Even smaller font size for mobile */
     }
 
     #new-sidebar-container, #canvas-container {
@@ -382,7 +382,7 @@ span#thresholdValue {
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 2px; /* Even smaller font size for mobile */
+        font-size: 10px; /* Even smaller font size for mobile */
     }
 
     #search-container {
