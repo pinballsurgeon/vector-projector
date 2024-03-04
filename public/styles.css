@@ -368,22 +368,11 @@ span#thresholdValue {
     background-color: #a1d6cf; /* A slightly darker green for hover effect */
 }
 
-@media (max-width: 768px) { /* Adjust for mobile screens */
-    #search-container {
-        width: 100%; /* Full width on smaller screens */
-    }
-
-#userInput,
-    #askButton {
-        width: 100%; /* Full width on smaller screens */
-        flex-grow: 0; /* Prevent flex-grow on mobile */
-    }
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 10px; /* Even smaller font size for mobile */
+        font-size: 5px; /* Even smaller font size for mobile */
     }
 
     #new-sidebar-container, #canvas-container {
@@ -393,7 +382,17 @@ span#thresholdValue {
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 10px; /* Even smaller font size for mobile */
+        font-size: 5px; /* Even smaller font size for mobile */
+    }
+
+    #search-container {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+#userInput,
+    #askButton {
+        width: 100%; /* Full width on smaller screens */
+        flex-grow: 0; /* Prevent flex-grow on mobile */
     }
 }
 
