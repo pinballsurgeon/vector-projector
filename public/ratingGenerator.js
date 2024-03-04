@@ -92,6 +92,31 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                     continue; // Skip to the next item
                 }
             }
+        } else if (['claude-v3'].includes(model)) {
+
+            for (const item of items) {
+                // Await the processing of each item
+                sleep(5000);
+                const result = await fetchRatingsAndImageForItem(item, attributes_str);
+        
+                // Process the result
+                if (result && !result.error) { // Check if result is valid and no error
+                    ratings[result.item] = result.ratings;
+                    ratings[result.item]['imageUrl'] = result.imageUrl;
+        
+                    // Build ratings_str
+                    ratings_str += `"${result.item}": {`;
+                    Object.entries(result.ratings).forEach(([key, value], index, array) => {
+                        ratings_str += `"${key}": "${value}"`;
+                        if (index < array.length - 1) ratings_str += ", ";
+                    });
+                    ratings_str += `, "imageUrl": "${result.imageUrl}"`;
+                    ratings_str += "}";
+                    if (items.indexOf(result.item) < items.length - 1) ratings_str += ", ";
+                }
+            }
+
+
         } else {
 
             // Create an array of promises
@@ -117,7 +142,6 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                     if (items.indexOf(result.item) < items.length - 1) ratings_str += ", ";
                 }
             });
-
         }
 
     ratings_str += "}";  // Close the JSON object represented as a string
