@@ -369,31 +369,16 @@ span#thresholdValue {
 }
 
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    /* Adjustments for smaller screens (e.g., mobile devices) */
-    #new-sidebar-container {
-        width: 100%; /* Full width on smaller screens */
-        height: auto; /* Allow height to adjust based on content */
-        position: fixed; /* Optional: Make the sidebar fixed on small screens */
-        top: [HeaderHeight]px; /* Adjust based on your actual header height */
-        left: 0; /* Align to the left */
-        z-index: 1000; /* Ensure it's above other content */
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
+        font-size: 2px; /* Even smaller font size for mobile */
     }
-    
-    /* Additional styling for the combo box and dynamic content on smaller screens */
-    #new-sidebar-container > div, #newSidebarSelector {
-        width: 100%; /* Ensure they take full width of the sidebar */
-    }
-    
-    /* Hide dynamic content initially and show only the selected content */
-    #dynamic-content > div {
-        display: none; /* Hide all by default */
-    }
-    #dynamic-content > div.active {
-        display: block; /* Show active content */
+
+    #new-sidebar-container, #canvas-container {
+        width: 100%; /* Full width for smaller screens */
     }
 }
-
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
