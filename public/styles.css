@@ -286,10 +286,11 @@ span#thresholdValue {
 }
 
 /* Adjust the #auth-status and #search-container positioning */
-#auth-status, #search-container {
+/* Style the auth-status */
+#auth-status {
     display: flex;
-    justify-content: center; /* Center content horizontally */
-    margin: 20px 0; /* Add some vertical spacing */
+    align-items: center;
+    gap: 10px;
 }
 
 /* Style for the login/logout buttons and search input/button */
@@ -333,9 +334,8 @@ span#thresholdValue {
 }
 
 #site-logo img {
-    max-width: calc(100% - 250px); /* Adjust the 250px to the width you need for the auth-status */
+    width: 100%;
     height: auto;
-    display: block;
 }
 
 #header {
@@ -346,20 +346,24 @@ span#thresholdValue {
     z-index: 1;
 }
 
+/* Style the combined container */
+#combined-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
 
 #search-container {
     display: flex;
-    justify-content: center; /* Center the search container on the page */
-    align-items: center; /* Vertically align the input and button */
-    padding: 10px;
     gap: 10px; /* Adds space between the input box and the button */
 }
 
 #userInput {
-    flex: 2; /* Takes up 2/3 of the space */
+    flex-grow: 1;
     padding: 10px;
-    border: 1px solid #ddd; /* A light border */
-    border-radius: 4px; /* Slightly rounded corners */
+    border: 2px solid #ddd;
+    border-radius: 4px;
 }
 
 #search-container {
@@ -381,15 +385,12 @@ span#thresholdValue {
 }
 
 #askButton {
-    flex-grow: 1; /* Button will take up the space one time */
     padding: 10px;
-    background-color: #585858; /* A pastel light green background */
-    border: 2px solid #585858;
-    border-radius: 4px; /* Slightly rounded corners */
-    color: white; /* Text color */
-    cursor: pointer; /* Change cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
-    width: 0; /* Reset width to allow flex-grow to work properly */
+    background-color: #4CAF50; /* Pastel light green */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 #askButton:hover {

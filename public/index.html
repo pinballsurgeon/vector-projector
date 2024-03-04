@@ -17,7 +17,15 @@
         <div id="site-logo">
             <img src="images/vectorprojector.png" alt="VectorProjector Logo" />
         </div>
+    </div>
     
+    <!-- Combined container for search and auth status -->
+    <div id="combined-container">
+        <div id="search-container">
+            <input type="text" id="userInput" placeholder="What topic...">
+            <button id="askButton">Ask</button>
+        </div>
+
         <div id="auth-status">
             <span id="user-info"></span>
             <span id="status-icon"></span>
@@ -25,13 +33,6 @@
             <button id="btn-logout" onclick="logout()" style="display: none;">Log Out</button>
         </div>
     </div>
-    
-    <!-- User input field and ask button -->
-    <div id="search-container">
-        <input type="text" id="userInput" placeholder="What topic...">
-        <button id="askButton">Ask</button>
-    </div>
-    
 
     <!-- Main content area -->
     <div id="main-content" style="display: flex;">
