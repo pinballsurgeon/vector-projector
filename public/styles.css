@@ -147,30 +147,6 @@ span#thresholdValue {
     display: inline-block; /* Keeps it on the same line as the label */
     margin-left: 5px; /* Space between the label and value */
 }
-  
-/* Style adjustments for larger screens */
-@media (min-width: 768px) {
-    .sidebar {
-        width: 250px; /* Standard sidebar width */
-        right: -250px; /* Start offscreen to the right */
-    }
-
-    .sidebar.open {
-        right: 0; /* Align to the right edge of the viewport */
-    }
-
-    /* Adjust font sizes and paddings for larger screens */
-    .header {
-        font-size: 1.5em;
-    }
-
-    #userInput, .button {
-        font-size: 1em;
-        padding: 10px;
-    }
-
-    /* Additional styling as needed for larger screens */
-}
 
 /* Style the tab */
 .tab {
@@ -285,17 +261,14 @@ span#thresholdValue {
     font-size: 16px; /* Default font size for desktop */
 }
 
-/* Adjust the #auth-status and #search-container positioning */
-/* Style the auth-status */
 #auth-status {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Style for the login/logout buttons and search input/button */
 #btn-login, #btn-logout, #userInput, #askButton {
-    margin: 0 10px; /* Add some spacing around elements */
+    margin: 0 10px;
 }
 
 #user-info {
@@ -315,22 +288,21 @@ span#thresholdValue {
 
 #library {
     display: flex;
-    flex-direction: column; /* Stack the query boxes vertically */
-    max-height: 600px; /* Set a maximum height for the sidebar */
-    overflow-y: auto; /* Enable vertical scrolling */
-    gap: 10px; /* Optional: Adds space between query boxes */
-    padding: 10px; /* Optional: Adds some padding inside the scroll box */
+    flex-direction: column;
+    max-height: 600px;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 10px;
 }
 
-
 .query-box {
-    border: 1px solid #ddd; /* Light grey border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Padding inside the box */
-    text-align: center; /* Center text inside the box */
-    width: 200px; /* Fixed width, adjust as needed */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
-    cursor: pointer; /* Change cursor on hover */
+    border: 1px solid #ddd;
+    border-radius: 5px; 
+    padding: 10px 20px;
+    text-align: center; 
+    width: 200px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer; 
 }
 
 #site-logo img {
@@ -346,7 +318,6 @@ span#thresholdValue {
     z-index: 1;
 }
 
-/* Style the combined container */
 #combined-container {
     display: flex;
     justify-content: space-between;
@@ -356,7 +327,7 @@ span#thresholdValue {
 
 #search-container {
     display: flex;
-    gap: 10px; /* Adds space between the input box and the button */
+    gap: 10px; 
 }
 
 #userInput {
