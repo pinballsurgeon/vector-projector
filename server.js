@@ -249,11 +249,13 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
 export const claudethree = async (prompt, modelId) => {
     const client = new AnthropicBedrock({
+        awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
+        awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
         awsRegion: 'us-west-2',
       });
 
       const message = await client.messages.create({
-        model: 'anthropic.claude-3-sonnet-20240229-v1',
+        model: 'anthropic.claude-3-sonnet-20240229-v1:0',
         max_tokens: 256,
         messages: [{"role": "user", "content": prompt}]
       });
