@@ -163,6 +163,9 @@ async function openModelTab(evt, modelName) {
         case "tab-claude-v2":
             model = "claude-v2";
             break;
+        case "tab-claude-v3":
+            model = "claude-v3";
+            break;
         case "tab-gpt-4":
             model = "gpt-4";
             break;
@@ -208,7 +211,7 @@ async function openModelTab(evt, modelName) {
 
 // document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
 document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
-// document.getElementById('tab-gpt-4').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4'));
+document.getElementById('tab-claude-v3').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v3'));
 document.getElementById('tab-gpt-4-0125-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-0125-preview'));
 document.getElementById('tab-mistral-medium').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-medium'));
 document.getElementById('tab-mistral-large').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-large'));

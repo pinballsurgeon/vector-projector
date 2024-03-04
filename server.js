@@ -177,14 +177,14 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 });
 
 
-export const invokeTitanTextExpressV1 = async (prompt) => {
+export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
     const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
     // const modelId = 'amazon.titan-text-express-v1';
     // const modelId = 'meta.llama2-70b-chat-v1';
     // const modelId = 'meta.llama2-70b-v1';
     // const modelId = 'anthropic.claude-instant-v1';
-    const modelId = 'anthropic.claude-v2';
+    // const modelId = 'anthropic.claude-v2';
 
     const textGenerationConfig = {
         maxTokenCount: 512,
@@ -338,10 +338,18 @@ app.post('/ask', async (req, res, next) => {
         } else if (['claude-v2'].includes(model)) {
 
             const prompt = userInput;
-            const results = await invokeTitanTextExpressV1(prompt);
+            const results = await invokeTitanTextExpressV1(prompt, 'anthropic.claude-v2');
 
             const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
-            res.json({ response: results });            
+            res.json({ response: results });          
+            
+        } else if (['claude-v3'].includes(model)) {
+
+            const prompt = userInput;
+            const results = await invokeTitanTextExpressV1(prompt, 'anthropic.claude-3-sonnet-20240229-v1:0');
+
+            const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
+            res.json({ response: results });          
 
         } else if (['mistral-medium'].includes(model)) {
 
