@@ -382,8 +382,8 @@ span#thresholdValue {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    #main-content {
-        flex-direction: column; /* Stack sidebar and content vertically on smaller screens */
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
+        font-size: 10px; /* Even smaller font size for mobile */
     }
 
     #new-sidebar-container, #canvas-container {
