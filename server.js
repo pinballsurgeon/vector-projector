@@ -12,7 +12,7 @@ import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand, InvokeModelWithResponseStreamCommand } from "@aws-sdk/client-bedrock-runtime";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import AnthropicBedrock from '@anthropic-ai/bedrock-sdk';
 
 const { Client } = pg;
 
@@ -193,14 +193,6 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
         topP: 1,
     };
 
-    // const payload = {
-    //     //inputText: prompt,
-    //     prompt: prompt,
-    //     max_gen_len: 1000,
-    //     temperature: 0.5,
-    //     top_p: 0.7
-    //     //textGenerationConfig,
-    // };
 
     const payload = {
         // prompt: "Human:" + prompt + "Assistant: ",
@@ -222,9 +214,53 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
     try {
         const response = await client.send(command);
-        // console.log(`Llama2 response!`, response);
-        
-        // const decodedResponseBody = new TextDecoder().decode(response.body);
+
+        const chunks = [];
+
+        for await (const event of response.body) {
+            if (event.chunk && event.chunk.bytes) {
+                const chunk = JSON.parse(Buffer.from(event.chunk.bytes).toString("utf-8"));
+                chunks.push(chunk.completion); // change this line
+            } else if (
+                event.internalServerException ||
+                event.modelStreamErrorException ||
+                event.throttlingException ||
+                event.validationException
+            ) {
+                console.error(event);
+                break;
+            }
+        };
+
+
+        //const responseBody = JSON.parse(decodedResponseBody);
+        //const res_complete = responseBody.completion;
+        const res_complete = chunks.join('');
+        console.log(res_complete);
+        return res_complete;
+        // return responseBody.generation;
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+
+export const claudethree = async (prompt, modelId) => {
+    const client = new AnthropicBedrock({
+        awsRegion: 'us-west-2',
+      });
+
+      const message = await client.messages.create({
+        model: 'anthropic.claude-3-sonnet-20240229-v1:0',
+        max_tokens: 256,
+        messages: [{"role": "user", "content": prompt}]
+      });
+      console.log('CLAUDE 3', message);
+
+    try {
+        const response = message;
 
         const chunks = [];
 
