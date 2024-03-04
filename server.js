@@ -12,7 +12,7 @@ import bodyParser from 'body-parser';
 import pg from 'pg';
 import {BedrockRuntimeClient, InvokeModelCommand, InvokeModelWithResponseStreamCommand } from "@aws-sdk/client-bedrock-runtime";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import AnthropicBedrock from '@anthropic-ai/bedrock-sdk';
+import Anthropic from "@anthropic-ai/sdk";
 
 const { Client } = pg;
 
@@ -248,21 +248,21 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
 
 export const claudethree = async (prompt, modelId) => {
-    const client = new AnthropicBedrock({
-        awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
-        awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
-        awsRegion: 'us-west-2',
+    const anthropic = new Anthropic({
+        apiKey: process.env.athropic-key,
       });
-
-      const message = await client.messages.create({
-        model: 'anthropic.claude-3-sonnet-20240229-v1:0',
-        max_tokens: 256,
+      
+      const msg = await anthropic.messages.create({
+        model: "claude-3-opus-20240229",
+        max_tokens: 1000,
+        temperature: 0,
         messages: [{"role": "user", "content": prompt}]
       });
-      console.log('CLAUDE 3', message);
+
+      console.log('CLAUDE 3', msg);
 
     try {
-        const response = message;
+        const response = msg;
 
         const chunks = [];
 
