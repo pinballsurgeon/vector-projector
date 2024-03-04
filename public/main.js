@@ -52,9 +52,18 @@ askButton.addEventListener('click', async () => {
             await createOrUpdateCube(data.pcaResult);
             updateVectorMetricsContent();
         } else {
-            // Query does not exist, proceed with generating new results
-            const rootList = await listPerpetuator();
+            // Check if user is authenticated before proceeding
+            const isAuthenticated = await auth0.isAuthenticated();
+            if (isAuthenticated) {
+                // User is authenticated, proceed with generating new results
+                const rootList = await listPerpetuator();
+            } else {
+                // User is not authenticated, alert them or handle accordingly
+                alert("Please log in to run new queries.");
+                // Optionally, redirect to login or perform another action
+            }
         }
+
     } catch (error) {
         console.error("Error:", error);
         alert("An error occurred while processing your request.");
