@@ -382,7 +382,7 @@ app.post('/ask', async (req, res, next) => {
         } else if (['claude-v3'].includes(model)) {
 
             const prompt = userInput;
-            const results = await invokeTitanTextExpressV1(prompt, 'anthropic.claude-3-sonnet-20240229-v1:0');
+            const results = await claudethree(prompt, 'anthropic.claude-3-sonnet-20240229-v1:0');
 
             const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: results });          
