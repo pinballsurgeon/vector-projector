@@ -253,7 +253,7 @@ export const claudethree = async (prompt, modelId) => {
       });
 
       const message = await client.messages.create({
-        model: 'anthropic.claude-3-opus-20240229',
+        model: 'anthropic.claude-3-sonnet-20240229-v1',
         max_tokens: 256,
         messages: [{"role": "user", "content": prompt}]
       });
