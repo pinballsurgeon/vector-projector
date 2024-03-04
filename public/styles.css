@@ -398,7 +398,7 @@ span#thresholdValue {
 /* Example: Adjust for portrait vs. landscape */
 @media (orientation: portrait) {
     /* Potentially increase font size for easier reading in portrait mode */
-    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #Library select {
         font-size: 10px; /* Adjust based on readability */
     }
 }
