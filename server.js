@@ -249,7 +249,7 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
 export const claudethree = async (prompt, modelId) => {
     const anthropic = new Anthropic({
-        apiKey: process.env.athropic-key,
+        apiKey: process.env.ANTHROPIC_KEY,
       });
       
       const msg = await anthropic.messages.create({
