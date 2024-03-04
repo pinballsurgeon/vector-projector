@@ -371,7 +371,7 @@ span#thresholdValue {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 5px; /* Even smaller font size for mobile */
+        font-size: 2px; /* Even smaller font size for mobile */
     }
 
     #new-sidebar-container, #canvas-container {
@@ -381,7 +381,7 @@ span#thresholdValue {
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 5px; /* Even smaller font size for mobile */
+        font-size: 2px; /* Even smaller font size for mobile */
     }
 
     #search-container {
@@ -399,7 +399,7 @@ span#thresholdValue {
 @media (orientation: portrait) {
     /* Potentially increase font size for easier reading in portrait mode */
     #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
-        font-size: 14px; /* Adjust based on readability */
+        font-size: 5px; /* Adjust based on readability */
     }
 }
 
