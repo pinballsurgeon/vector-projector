@@ -320,8 +320,6 @@ app.post('/ask', async (req, res, next) => {
         const userInput = req.body.prompt;
         const model = req.body.model || 'gpt2'; // Provide a default value
 
-        await sleep(200)
-
         // OpenAI - Create Completion 
         if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
             const gptResponse = await openai.createCompletion({

@@ -6,6 +6,12 @@ import { updateVectorMetricsContent, createOrUpdateCube } from './cubeManager.js
 // import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
 // import { cubeDependencies } from 'mathjs';
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
 async function fetchRatingsAndImageForItem(item, attributes_str) {
     try {
         let promptKey = "rateAllAttributes";
@@ -87,6 +93,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                 }
             }
         } else {
+
             // Create an array of promises
             let promises = items.map(item => fetchRatingsAndImageForItem(item, attributes_str));
 
