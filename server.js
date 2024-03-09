@@ -495,13 +495,9 @@ app.listen(port, () => {
 );
 
 
-// app.use(bodyParser.json());  // This middleware parses incoming requests with JSON payloads
-
-
-
 app.post('/vector_db', async (req, res) => {
     const client = new Client({
-        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        connectionString: process.env.pgsql_conn,
         ssl: {
             rejectUnauthorized: false
         }
@@ -528,7 +524,7 @@ app.post('/vector_db', async (req, res) => {
 
 app.get('/check_query', async (req, res) => {
     const client = new Client({
-        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        connectionString: process.env.pgsql_conn,
         ssl: {
             rejectUnauthorized: false
         }
@@ -560,7 +556,7 @@ app.get('/check_query', async (req, res) => {
 
 app.get('/get_all_queries', async (req, res) => {
     const client = new Client({
-        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        connectionString: process.env.pgsql_conn,
         ssl: {
             rejectUnauthorized: false
         }
@@ -593,7 +589,7 @@ app.get('/get_all_queries', async (req, res) => {
 
 app.get('/get_library', async (req, res) => {
     const client = new Client({
-        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+        connectionString: process.env.pgsql_conn,
         ssl: {
             rejectUnauthorized: false
         }
@@ -758,7 +754,7 @@ app.get('/compare_vectors', async (req, res) => {
 
     try {
         const client = new Client({
-                        connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+                        connectionString: process.env.pgsql_conn,
                         ssl: {
                             rejectUnauthorized: false
                         }
@@ -827,10 +823,9 @@ function calculateAttributeMetrics(modelData) {
         const stdDev = Math.sqrt(values.map(val => Math.pow(val - avg, 2)).reduce((sum, val) => sum + val, 0) / values.length);
 
         // Calculate histogram data
-        // Assuming 10 bins for simplicity, each bin representing an interval [0-1, 1-2, ..., 9-10]
         const bins = Array(10).fill(0);
         values.forEach(value => {
-            const binIndex = Math.floor(value); // Assuming value is from 0 to 10
+            const binIndex = Math.floor(value); 
             if (binIndex >= 0 && binIndex < bins.length) {
                 bins[binIndex]++;
             }
@@ -849,7 +844,7 @@ app.get('/get_model_data', async (req, res) => {
 
     try {
         const client = new Client({
-            connectionString: "postgres://vfqzlejlllqrql:d5d26b2af53f87b9de74464e2f1adbd80a6808c4bdb93d111a29ee4be6c2ceaa@ec2-54-208-84-132.compute-1.amazonaws.com:5432/d7em8s8aiqge1a",
+            connectionString: process.env.pgsql_conn,
             ssl: {
                 rejectUnauthorized: false
             }
@@ -899,13 +894,82 @@ app.post('/tokenSignIn', async (req, res) => {
         });
         const payload = ticket.getPayload();
 
-        console.log("token sign in", payload);
-        // Here, you might look up or register the user in your database
-        // and establish a session
-
         res.status(200).json({ message: 'Authentication successful', user: payload });
     } catch (error) {
         console.error(error);
         res.status(401).json({ message: 'Authentication failed', error: error.toString() });
+    }
+});
+
+
+app.post('/users', async (req, res) => {
+    const client = new Client({
+        connectionString: process.env.pgsql_conn,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+
+    const { email, username } = req.body;
+
+    try {
+        await client.connect();
+        
+        // First, check if the user already exists
+        const checkUserExistsQuery = `
+            SELECT * FROM users WHERE email = $1
+        `;
+        const existingUserResult = await client.query(checkUserExistsQuery, [email]);
+        
+        if (existingUserResult.rows.length > 0) {
+            // User already exists
+            res.json({
+                message: "User already exists.",
+                user: existingUserResult.rows[0]
+            });
+        } else {
+            // Insert new user
+            const insertQuery = `
+                INSERT INTO users (email, username) VALUES ($1, $2) RETURNING *
+            `;
+            const newUserResult = await client.query(insertQuery, [email, username]);
+            
+            res.json({
+                message: "User added successfully.",
+                user: newUserResult.rows[0]
+            });
+        }
+    } catch (error) {
+        console.error("Error processing user request:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        client.end();
+    }
+});
+
+app.delete('/users/:email', async (req, res) => {
+    const client = new Client({
+        connectionString: process.env.pgsql_conn,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+
+    const { email } = req.params;
+
+    try {
+        await client.connect();
+        
+        const deleteQuery = `
+            DELETE FROM users WHERE email = $1
+        `;
+        await client.query(deleteQuery, [email]);
+        
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        client.end();
     }
 });

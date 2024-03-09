@@ -525,13 +525,10 @@ async function initializeAuth0() {
             redirect_uri: window.location.origin,
         });
         
-        // After initialization, check authentication status
         const isAuthenticated = await auth0.isAuthenticated();
         if (isAuthenticated) {
-            // If authenticated, update UI accordingly
             await updateUI(true);
         } else {
-            // Handle the case where the user is not authenticated
             await handleAuthenticationResult();
         }
     } catch (error) {
@@ -540,18 +537,48 @@ async function initializeAuth0() {
 }
 
 async function handleAuthenticationResult() {
-    // Parse the authentication result
     const query = window.location.search;
     if (query.includes("code=") && query.includes("state=")) {
-        // Process the login state
         await auth0.handleRedirectCallback();
-        // After handling redirect, update UI based on authentication status
-        await updateUI(await auth0.isAuthenticated());
-        // Use replaceState to remove code and state from URL
+        
+        const isAuthenticated = await auth0.isAuthenticated();
+        await updateUI(isAuthenticated);
+
+        if (isAuthenticated) {
+            // Get user profile
+            const user = await auth0.getUser();
+            
+            // Construct the user data to send
+            const userData = {
+                email: user.email,
+                username: user.nickname // or another appropriate field
+            };
+
+            // Send the user data to your backend to add/update the user
+            await updateUserInDatabase(userData);
+        }
+
         window.history.replaceState({}, document.title, "/");
     } else {
-        // If no authentication code present, just try updating UI
         await updateUI(await auth0.isAuthenticated());
+    }
+}
+
+async function updateUserInDatabase(userData) {
+    try {
+        const response = await fetch('/users', {
+            method: 'POST', // or 'PUT' if updating
+            headers: {
+                'Content-Type': 'application/json',
+                // Include any other headers your backend requires
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+        console.log('User update response:', data);
+    } catch (error) {
+        console.error('Error updating user in database:', error);
     }
 }
 
@@ -562,12 +589,9 @@ async function updateUI(isAuthenticated) {
     if (isAuthenticated && auth0) {
         const user = await auth0.getUser();
         
-        // Check for user object before attempting to access its properties
         if (user) {
-            // Display user's name and email
             userInfoDisplay.textContent = `${user.name} (${user.email})`;
             userInfoDisplay.style.display = 'inline';
-            // Update status icon to green
             statusIcon.style.backgroundColor = 'green';
         }
 
