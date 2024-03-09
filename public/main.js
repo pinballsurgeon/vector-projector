@@ -543,7 +543,7 @@ async function handleAuthenticationResult() {
     if (query.includes("code=") && query.includes("state=")) {
         await auth0.handleRedirectCallback();
         
-        console.log('Handle callback', query);
+        console.log('Handle callback');
         const isAuthenticated = await auth0.isAuthenticated();
         await updateUI(isAuthenticated);
 
@@ -563,6 +563,7 @@ async function handleAuthenticationResult() {
 
         window.history.replaceState({}, document.title, "/");
     } else {
+        console.log('Query doesnt include codeor state');
         await updateUI(await auth0.isAuthenticated());
     }
 }
