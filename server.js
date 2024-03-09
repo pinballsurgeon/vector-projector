@@ -50,14 +50,6 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
 app.use(express.static('public'));
 
-const { OAuth2Client } = require('google-auth-library');
-const auth_client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
 
 function covarianceMatrix(data) {
     const means = data[0].map((col, i) => math.mean(data.map(row => row[i])));
@@ -66,15 +58,6 @@ function covarianceMatrix(data) {
             math.mean(data.map(row => (row[i] - means[i]) * (row[j] - means[j])))));
 }
 
-function isValidItem(item, validKeys) {
-    const itemKeys = Object.keys(item);
-    // Check if item has the same keys as the valid keys
-    if (itemKeys.length !== validKeys.length || !itemKeys.every(key => validKeys.includes(key))) {
-        return false;
-    }
-    // Check if all values are numeric
-    return Object.values(item).every(value => typeof value === 'number');
-}
 
 function preprocessData(data) {
     // Step 1: Determine the set of valid nested keys from the first item
@@ -882,22 +865,6 @@ app.get('/get_model_data', async (req, res) => {
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
-    }
-});
-
-app.post('/tokenSignIn', async (req, res) => {
-    try {
-        const { id_token } = req.body;
-        const ticket = await auth_client.verifyIdToken({
-            idToken: id_token,
-            audience: process.env.GOOGLE_CLIENT_ID,
-        });
-        const payload = ticket.getPayload();
-
-        res.status(200).json({ message: 'Authentication successful', user: payload });
-    } catch (error) {
-        console.error(error);
-        res.status(401).json({ message: 'Authentication failed', error: error.toString() });
     }
 });
 
