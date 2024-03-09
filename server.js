@@ -1,31 +1,25 @@
 import express from 'express';
-import path from 'path';
 import { HfInference } from '@huggingface/inference';
 import MistralClient from '@mistralai/mistralai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
-import numeric from 'numeric';
 import * as math from 'mathjs';
 import mlMatrix from 'ml-matrix';
-import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+import { createRequire } from "module"; 
 import bodyParser from 'body-parser';
 import pg from 'pg';
-import {BedrockRuntimeClient, InvokeModelCommand, InvokeModelWithResponseStreamCommand } from "@aws-sdk/client-bedrock-runtime";
+import {BedrockRuntimeClient, InvokeModelWithResponseStreamCommand } from "@aws-sdk/client-bedrock-runtime";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
 
 const { Client } = pg;
 
-const require = createRequire(import.meta.url); // construct the require method
-const axios = require('axios'); // Axios for making requests
-
+const require = createRequire(import.meta.url);
+const axios = require('axios'); 
 
 const { Configuration, OpenAIApi } = require("openai");
-let imageCache = {};  // Create an in-memory image cache 
 
-// import the Google Images client at the top of your file
 const GoogleImages = require('google-images');
-// create an instance of the Google Images client
 const client = new GoogleImages(process.env.GOOG_IMG_1, process.env.GOOG_IMG_2);
 
 const hf_key = process.env.hf_key_1;
@@ -60,19 +54,19 @@ function covarianceMatrix(data) {
 
 
 function preprocessData(data) {
-    // Step 1: Determine the set of valid nested keys from the first item
+
     const sampleItem = data[Object.keys(data)[0]];
     const validNestedKeys = Object.keys(sampleItem);
     
-    // Step 2 & 3: Validate each item and ensure all nested keys match and values are numeric
+
     const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
         const itemKeys = Object.keys(value);
-        // Ensure item has the same keys as the valid nested keys and all values are numeric
+
         const isValidItem = itemKeys.length === validNestedKeys.length && 
                             itemKeys.every(k => validNestedKeys.includes(k) && typeof value[k] === 'number');
         
         if (isValidItem) {
-            acc[key] = value; // Keep item if it's valid
+            acc[key] = value;
         }
         return acc;
     }, {});
@@ -87,42 +81,32 @@ function performPCA(data) {
             throw new Error('No valid data items for PCA');
         }
 
-        // PCA KEYS
         const keys = Object.keys(preprocessedData);
         console.log(`PCA keys: ${keys}`);
 
-        // Convert objects to arrays of values
-        const values = Object.values(preprocessedData).map(obj => Object.values(obj)); // Convert objects to arrays
+        const values = Object.values(preprocessedData).map(obj => Object.values(obj));
 
-        // Center the data
         const meanValues = values[0].map((_, i) => ss.mean(values.map(row => row[i])));
         const centeredData = values.map(row => row.map((value, i) => value - meanValues[i]));
 
-        // Calculate covariance matrix SOMETHING NEW
         const covMatrix = covarianceMatrix(centeredData);
 
-        // Create a new ml-matrix instance from the covariance matrix
         const M = new mlMatrix.Matrix(covMatrix);
 
-        // Compute the eigenvectors and eigenvalues of the covariance matrix
         const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
         const eigenvalues = eigendecomposition.realEigenvalues;
         const eigenvectors = eigendecomposition.eigenvectorMatrix;
 
-        // Sort the eigenvectors based on the eigenvalues
         const sortedEigenvaluesIndices = eigenvalues
-            .map((val, idx) => [val, idx]) // attach the original index positions [eigenvalue, index]
-            .sort(([a], [b]) => b - a) // sort based on the eigenvalue in decreasing order
-            .map(([, idx]) => idx); // discard the sorted eigenvalues, we just want the indices
+            .map((val, idx) => [val, idx])
+            .sort(([a], [b]) => b - a)
+            .map(([, idx]) => idx);
         const sortedEigenvectors = sortedEigenvaluesIndices.map(i => eigenvectors.getColumn(i));
 
-        // Select the first three eigenvectors
         const selectedEigenvectors = sortedEigenvectors.slice(0, 3);
 
-        // Transform the data into the new space
         const transformedData = centeredData.map(row => selectedEigenvectors.map(eigenvector => math.dot(row, eigenvector)));
     
-        // Construct the result object
         const result = {};
         keys.forEach((key, i) => {
         result[key] = {
@@ -167,12 +151,6 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
     const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
-    // const modelId = 'amazon.titan-text-express-v1';
-    // const modelId = 'meta.llama2-70b-chat-v1';
-    // const modelId = 'meta.llama2-70b-v1';
-    // const modelId = 'anthropic.claude-instant-v1';
-    // const modelId = 'anthropic.claude-v2';
-
     const textGenerationConfig = {
         maxTokenCount: 512,
         stopSequences: ["\n"],
@@ -182,14 +160,11 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
 
 
     const payload = {
-        // prompt: "Human:" + prompt + "Assistant: ",
         prompt: prompt,
         max_tokens_to_sample: 100,
         temperature: 0.9,
         top_p: 0.9,
         top_k: 150,
-        // stop_sequences: ["\n"]
-        //textGenerationConfig,
     };
 
     const command = new InvokeModelWithResponseStreamCommand ({
@@ -207,7 +182,7 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
         for await (const event of response.body) {
             if (event.chunk && event.chunk.bytes) {
                 const chunk = JSON.parse(Buffer.from(event.chunk.bytes).toString("utf-8"));
-                chunks.push(chunk.completion); // change this line
+                chunks.push(chunk.completion);
             } else if (
                 event.internalServerException ||
                 event.modelStreamErrorException ||
@@ -219,13 +194,9 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
             }
         };
 
-
-        //const responseBody = JSON.parse(decodedResponseBody);
-        //const res_complete = responseBody.completion;
         const res_complete = chunks.join('');
         console.log(res_complete);
         return res_complete;
-        // return responseBody.generation;
 
     } catch (err) {
         console.error(err);
@@ -305,9 +276,8 @@ async function gemini_generateContent(prompt) {
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
-        const model = req.body.model || 'gpt2'; // Provide a default value
+        const model = req.body.model || 'gpt2'; 
 
-        // OpenAI - Create Completion 
         if (['text-davinci-003', 'text-davinci-002', 'gpt-3.5-turbo-instruct'].includes(model)) {
             const gptResponse = await openai.createCompletion({
                 model: model,
@@ -317,7 +287,6 @@ app.post('/ask', async (req, res, next) => {
             const clean_resp = gptResponse.data.choices[0].text.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
 
-        // OpenAI - Create Chat Completion 
         } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-0125-preview', 'gpt-4-1106-preview', 'gpt-4-turbo-preview'].includes(model)) {
 
             const gptResponse = await openai.createChatCompletion({
@@ -378,7 +347,6 @@ app.post('/ask', async (req, res, next) => {
             const clean_resp = chatResponse.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
 
-        // HuggingFace - Transformers
         } else {
             const max_length = req.body.max_length || 1000;
             const min_length = req.body.min_length || 30;
@@ -464,7 +432,6 @@ app.get('/generateImage/:prompt', async (req, res, next) => {
     }
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: err.toString() });
@@ -500,7 +467,7 @@ app.post('/vector_db', async (req, res) => {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        client.end(); // Ensure the client connection is closed
+        client.end();
     }
 });
 
@@ -533,7 +500,7 @@ app.get('/check_query', async (req, res) => {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        client.end(); // Ensure the client connection is closed
+        client.end();
     }
 });
 
@@ -565,7 +532,7 @@ app.get('/get_all_queries', async (req, res) => {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        client.end(); // Ensure the client connection is closed
+        client.end();
     }
 });
 
@@ -584,7 +551,6 @@ app.get('/get_library', async (req, res) => {
             SELECT query, count(*) as models FROM cache GROUP BY query ORDER BY models DESC
         `);
 
-        // Assuming you want to send back an array of queries regardless of whether there are results
         const queries = queryResult.rows.map(row => ({ 
             name: row.query, 
             models: row.models 
@@ -592,13 +558,13 @@ app.get('/get_library', async (req, res) => {
 
         res.json({
             exists: queries.length > 0,
-            queries: queries // This ensures you're sending an array of queries
+            queries: queries
         });
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        await client.end(); // Ensure the client connection is closed
+        await client.end();
     }
 });
 
@@ -613,12 +579,12 @@ function calculateShannonEntropy(densities) {
 }
 
 function calculateModelMetrics(cubeData) {
-    // Filter out items without valid coordinates
+
     const validCoordinates = Object.values(cubeData).filter(item => 
-        item.coordinates && // Ensure coordinates exist
-        !isNaN(item.coordinates.x) && // Ensure x is a number
-        !isNaN(item.coordinates.y) && // Ensure y is a number
-        !isNaN(item.coordinates.z)    // Ensure z is a number
+        item.coordinates && 
+        !isNaN(item.coordinates.x) && 
+        !isNaN(item.coordinates.y) && 
+        !isNaN(item.coordinates.z)    
     ).map(item => item.coordinates);
 
     const numOfCubes = validCoordinates.length;
@@ -628,16 +594,12 @@ function calculateModelMetrics(cubeData) {
     const averageDensities = calculateAverage(densities);
     const shannonEntropy = calculateShannonEntropy(densities);
 
-    // Calculate the histogram for pairwise distances
-    const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5); // 5 bins for the histogram
+    const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
 
-    // Calculate the histogram for densities
-    const densityHistogramData = calculateHistogramBins(densities, 5); // 5 bins for density histogram
+    const densityHistogramData = calculateHistogramBins(densities, 5);
 
-    // Calculate bounding volume area only if there are valid coordinates
     const boundingBoxVolume = validCoordinates.length > 0 ? calculateBoundingVolumeArea(validCoordinates) : 0;
 
-    // Return the calculated metrics
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
@@ -650,15 +612,12 @@ function calculateModelMetrics(cubeData) {
     };
 }
 
-// Function for calculating all pairwise distances
 function calculateAllPairwiseDistances(coordinates) {
-    // Flatten the array of distances between each pair of coordinates
     return coordinates.flatMap((coord, index, arr) =>
         arr.slice(index + 1).map(otherCoord => calculateDistance(coord, otherCoord))
     );
 }
 
-// Function to calculate the distance between two points in 3D space
 function calculateDistance(coord1, coord2) {
     return Math.sqrt(
         Math.pow(coord1.x - coord2.x, 2) +
@@ -667,7 +626,6 @@ function calculateDistance(coord1, coord2) {
     );
 }
 
-// Function for calculating the average of an array
 function calculateAverage(array) {
     const sum = array.reduce((acc, val) => acc + val, 0);
     return sum / array.length;
@@ -675,11 +633,10 @@ function calculateAverage(array) {
 
 
 function calculateBoundingVolumeArea(coordinates) {
-    // Initialize min and max coordinates
+
     let minX = Infinity, minY = Infinity, minZ = Infinity;
     let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
 
-    // Find min and max values for each coordinate axis
     coordinates.forEach(coord => {
         if (coord.x < minX) minX = coord.x;
         if (coord.y < minY) minY = coord.y;
@@ -689,12 +646,10 @@ function calculateBoundingVolumeArea(coordinates) {
         if (coord.z > maxZ) maxZ = coord.z;
     });
 
-    // Calculate differences for each axis
     let length = maxX - minX;
     let width = maxY - minY;
     let height = maxZ - minZ;
 
-    // Calculate volume
     return length * width * height;
 }
 
@@ -709,11 +664,11 @@ function calculateHistogramBins(pairwiseDistances, binCount) {
     for (let i = 0; i < binCount; i++) {
         binEdges.push(minDistance + i * binSize);
     }
-    binEdges.push(maxDistance); // Include the max edge
+    binEdges.push(maxDistance); 
 
     pairwiseDistances.forEach(distance => {
         let binIndex = Math.floor((distance - minDistance) / binSize);
-        // Make sure the maximum distance falls into the last bin
+
         binIndex = binIndex === binCount ? binCount - 1 : binIndex;
         bins[binIndex]++;
     });
@@ -721,13 +676,12 @@ function calculateHistogramBins(pairwiseDistances, binCount) {
     return { bins, binEdges };
 }
 
-// Function to estimate density based on average pairwise distance
 function estimateDensity(coordinates, avgDistance) {
     let halfAvgDistance = avgDistance / 2;
     return coordinates.map(coord => 
         coordinates.filter(otherCoord => 
             calculateDistance(coord, otherCoord) <= halfAvgDistance
-        ).length - 1 // Subtract 1 to exclude the point itself
+        ).length - 1 
     );
 }
 
@@ -751,25 +705,21 @@ app.get('/compare_vectors', async (req, res) => {
             ORDER BY LENGTH(cube_data #>> '{}') desc
         `, [userInputValue]);
 
-        // Close the database connection
         client.end();
 
-
-        // Process each row and ensure cube_data is an object
         const compareData = queryResult.rows.map(row => {
             const model = row.model;
             let cubeData;
 
             try {
-                // Attempt to parse cube_data if it's a string
+
                 cubeData = (typeof row.cube_data === 'string') ? JSON.parse(row.cube_data) : row.cube_data;
             } catch (e) {
                 console.error(`Failed to parse cube_data for model ${model}:`, e);
-                cubeData = {}; // default to an empty object in case of error
+                cubeData = {};
             }
 
-            // Now you have a valid cubeData object to work with
-            const metrics = calculateModelMetrics(cubeData); // Assumes calculateModelMetrics is defined correctly
+            const metrics = calculateModelMetrics(cubeData);
             return { model, ...metrics };
         });
 
@@ -780,16 +730,12 @@ app.get('/compare_vectors', async (req, res) => {
     }
 });
 
-
-
 function calculateAttributeMetrics(modelData) {
     let attributesAggregated = {};
 
-    // Iterate over each item in the model data
     Object.values(modelData).forEach(item => {
         const attributes = item.originalRatings;
 
-        // Aggregate attribute values
         for (let [key, value] of Object.entries(attributes)) {
             if (!attributesAggregated[key]) {
                 attributesAggregated[key] = [];
@@ -805,7 +751,6 @@ function calculateAttributeMetrics(modelData) {
         const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
         const stdDev = Math.sqrt(values.map(val => Math.pow(val - avg, 2)).reduce((sum, val) => sum + val, 0) / values.length);
 
-        // Calculate histogram data
         const bins = Array(10).fill(0);
         values.forEach(value => {
             const binIndex = Math.floor(value); 
@@ -882,20 +827,19 @@ app.post('/users', async (req, res) => {
     try {
         await client.connect();
         
-        // First, check if the user already exists
         const checkUserExistsQuery = `
             SELECT * FROM users WHERE email = $1
         `;
         const existingUserResult = await client.query(checkUserExistsQuery, [email]);
         
         if (existingUserResult.rows.length > 0) {
-            // User already exists
+
             res.json({
                 message: "User already exists.",
                 user: existingUserResult.rows[0]
             });
         } else {
-            // Insert new user
+
             const insertQuery = `
                 INSERT INTO users (email, username) VALUES ($1, $2) RETURNING *
             `;
