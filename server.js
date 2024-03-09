@@ -149,15 +149,7 @@ app.get('/prompt/:promptKey', (req, res, next) => {
 
 
 export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
-    const client = new BedrockRuntimeClient( { region: 'us-east-1' } );
-
-    const textGenerationConfig = {
-        maxTokenCount: 512,
-        stopSequences: ["\n"],
-        temperature: 0.5,
-        topP: 1,
-    };
-
+    const client_bd = new BedrockRuntimeClient( { region: 'us-east-1' } );
 
     const payload = {
         prompt: prompt,
@@ -175,7 +167,7 @@ export const invokeTitanTextExpressV1 = async (prompt, modelId) => {
     });
 
     try {
-        const response = await client.send(command);
+        const response = await client_bd.send(command);
 
         const chunks = [];
 
@@ -318,15 +310,14 @@ app.post('/ask', async (req, res, next) => {
             const prompt = userInput;
             const results = await claudethree(prompt, 'anthropic.claude-3-sonnet-20240229-v1:0');
 
-            const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: results });          
 
         } else if (['mistral-medium'].includes(model)) {
 
             const apiKey = process.env.MISTRAL_API_KEY;
-            const client = new MistralClient(apiKey);
+            const client_ms = new MistralClient(apiKey);
             
-            const chatResponse = await client.chat({
+            const chatResponse = await client_ms.chat({
               model: 'mistral-medium',
               messages: [{role: 'user', content: userInput}],
             });
@@ -337,9 +328,9 @@ app.post('/ask', async (req, res, next) => {
         } else if (['mistral-large'].includes(model)) {
 
             const apiKey = process.env.MISTRAL_API_KEY;
-            const client = new MistralClient(apiKey);
+            const client_ms = new MistralClient(apiKey);
             
-            const chatResponse = await client.chat({
+            const chatResponse = await client_ms.chat({
               model: 'mistral-large-latest',
               messages: [{role: 'user', content: userInput}],
             });
@@ -391,11 +382,11 @@ const DEFAULT_IMAGE_URL = "https://cdn.iconscout.com/icon/premium/png-256-thumb/
 
 async function searchImage(query) {
     try {
-        const images = await client.search(query, {size: 'small'});
+        const images = await client.search(query, {size: 'small', safe: true});
 
         for (let image of images) {
             const imageUrl = image.url;
-            if (await isImageCORSCompliant(imageUrl)) {
+            if (imageUrl.startsWith("https://") && await isImageCORSCompliant(imageUrl)) {
                 return imageUrl;
             }
         }
