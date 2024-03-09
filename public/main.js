@@ -128,8 +128,6 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 
 async function openModelTab(evt, modelName) {
 
-    // appendLog(`Open Model Tab - Started`);
-
     // Hide the compare container and show the canvas container
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
@@ -184,7 +182,6 @@ async function openModelTab(evt, modelName) {
         case "tab-gpt-3.5-turbo":
                 model = "gpt-3.5-turbo";
                 break;
-    // Add cases for other models 
     }
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
@@ -196,9 +193,7 @@ async function openModelTab(evt, modelName) {
         const response = await fetch(`/check_query?${queryParams}`);
         const data = await response.json();
 
-        // appendLog(`Fetched history response: ${JSON.stringify(data)}`);
         if (data.exists) {
-            // Query exists, use saved PCA results
             await createOrUpdateCube(data.pcaResult);
             updateVectorMetricsContent();
         } else {
@@ -209,7 +204,6 @@ async function openModelTab(evt, modelName) {
     }
 }
 
-// document.getElementById('tab-text-davinci-003').addEventListener('click', (event) => openModelTab(event, 'tab-text-davinci-003'));
 document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
 document.getElementById('tab-claude-v3').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v3'));
 document.getElementById('tab-gpt-4-0125-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-0125-preview'));
@@ -231,9 +225,9 @@ async function compareModels() {
     // Hide and clear the canvas
     const canvasContainer = document.getElementById('canvas-container');
     canvasContainer.style.display = 'none';
-    clearCanvas(); // Make sure this function is imported or accessible
+    clearCanvas();
 
-    // try {
+ 
         const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
         const compareData = await response.json();
         
@@ -245,54 +239,53 @@ async function compareModels() {
         
         // Iterate over models and create a summary for each
         compareData.forEach(modelResult => {
-            // Create a container for the model
-            const modelDiv = document.createElement('div');
-            modelDiv.classList.add('model-result-container', 'model-card'); // added 'model-card' for styling
             
-            appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
+        // Create a container for the model
+        const modelDiv = document.createElement('div');
+        modelDiv.classList.add('model-result-container', 'model-card'); // added 'model-card' for styling
+        
+        appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
 
-            // Create a title for the model
-            const modelTitle = document.createElement('h3');
-            modelTitle.textContent = `${modelResult.model}`;
-            modelDiv.appendChild(modelTitle);
+        // Create a title for the model
+        const modelTitle = document.createElement('h3');
+        modelTitle.textContent = `${modelResult.model}`;
+        modelDiv.appendChild(modelTitle);
 
-            append2DVisualization(modelDiv, modelResult);
+        append2DVisualization(modelDiv, modelResult);
 
-            // Create a paragraph for the item count
-            const itemCountParagraph = document.createElement('p');
-            itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
-            modelDiv.appendChild(itemCountParagraph);
+        // Create a paragraph for the item count
+        const itemCountParagraph = document.createElement('p');
+        itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
+        modelDiv.appendChild(itemCountParagraph);
 
-            // Create a paragraph for the average pairwise distance
-            const avgDistanceParagraph = document.createElement('p');
-            avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
-            modelDiv.appendChild(avgDistanceParagraph);
+        // Create a paragraph for the average pairwise distance
+        const avgDistanceParagraph = document.createElement('p');
+        avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+        modelDiv.appendChild(avgDistanceParagraph);
 
-            // Create a paragraph for the average neighbors within half pair wise distance
-            const avgDensityParagraph = document.createElement('p');
-            avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
-            modelDiv.appendChild(avgDensityParagraph);
+        // Create a paragraph for the average neighbors within half pair wise distance
+        const avgDensityParagraph = document.createElement('p');
+        avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
+        modelDiv.appendChild(avgDensityParagraph);
 
-            // Create a paragraph for the bounding box volume
-            const boundingBoxVolumeParagraph = document.createElement('p');
-            boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
-            modelDiv.appendChild(boundingBoxVolumeParagraph);
+        // Create a paragraph for the bounding box volume
+        const boundingBoxVolumeParagraph = document.createElement('p');
+        boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
+        modelDiv.appendChild(boundingBoxVolumeParagraph);
 
-            // Create a paragraph for Shannon Entropy
-            const entropyParagraph = document.createElement('p');
-            entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
-            modelDiv.appendChild(entropyParagraph);
+        // Create a paragraph for Shannon Entropy
+        const entropyParagraph = document.createElement('p');
+        entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
+        modelDiv.appendChild(entropyParagraph);
 
-            // Append histogram canvases for pairwise distances and density
-            appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
-            appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
+        // Append histogram canvases for pairwise distances and density
+        appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
+        appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
 
-            // Append the model container to the compare container
-            compareContainer.appendChild(modelDiv);
-        });
-    // } catch (error) {
-    //     console.error(`Error during comparison: ${error}`);
-    // }
+        // Append the model container to the compare container
+        compareContainer.appendChild(modelDiv);
+    });
+
 }
 
  function appendHistogramCanvas(modelDiv, histogramData, chartLabel) {
