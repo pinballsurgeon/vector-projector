@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://unpkg.com/three@0.130.1/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <script src="https://unpkg.com/three@0.130.1/build/three.min.js"></script>
+        <script src="https://unpkg.com/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
+        <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
 
-</head>
+    </head>
 <body>
     <div id="header">
         <div id="site-logo">
@@ -20,7 +21,6 @@
         </div>
     </div>
     
-    <!-- Combined container for search and auth status -->
     <div id="combined-container">
         <div id="search-container">
             <input type="text" id="userInput" placeholder="What topic...">
@@ -35,13 +35,10 @@
         </div>
     </div>
 
-    <!-- Main content area -->
     <div id="main-content" style="display: flex;">
 
-        <!-- Tab container -->
         <div style="width: 70%;">
 
-            <!-- Tab links -->
             <div class="tab">
                 <button class="tablinks" id="tab-gemini-pro">gemini-pro</button>
                 <button class="tablinks" id="tab-gpt-3.5-turbo">gpt-3.5-turbo</button>
@@ -53,12 +50,9 @@
                 <button class="tablinks" id="tab-gpt-4-turbo-preview">gpt-4-turbo</button>
                 <button class="tablinks" id="compareTab">Entropy</button>
                 <button class="tablinks" id="attributesTab">Attributes</button>
-                <!-- Add other model tabs here -->
             </div>
         
-            <!-- Tab content -->
             <div id="tab-content">
-                <!-- D3 Canvas container, assuming 'text-davinci-003' tab should show this by default -->
                 <div id="canvas-container" class="tabcontent" style="display: block;">
                     <div id="my_dataviz"></div>
                 </div>
@@ -67,9 +61,7 @@
 
         </div>
 
-        <!-- New sidebar container -->
         <div id="new-sidebar-container" style="width: 30%;">
-            <!-- Combo box for sidebar selections -->
             <select id="newSidebarSelector">
                 <option value="library">Library</option>
                 <option value="logs">Logs</option>
@@ -78,8 +70,6 @@
                 <option value="vectorMetrics">Vector Metrics</option>
             </select>
 
-            <!-- Container for dynamic content -->
-            <!-- <div id="dynamic-content"> -->
                     <div id="library" style="display: block;"></div>
                     <div id="promptEditors" style="display: none;"></div>
                     <div id="logsContent" style="display: none;"></div>
@@ -88,10 +78,7 @@
                     <div id="cubeContent" style="display: none;">
                         <h3 id="sidebarTitle"></h3> 
 
-                        <!-- Image for Cube Analytics -->
                         <img id="sidebarCubeImage" src="" alt="Cube Image" style="width: 100%; height: auto;">
-                    
-                        <!-- Canvas for Ratings Bar Chart -->
                         <canvas id="ratingsBarChart"></canvas>
                     </div>
                     <div id="groupsContent" style="display: none;">
@@ -107,7 +94,6 @@
                         <div id="groupsImagesContainer"></div>
                     </div>
                     <div id="vectorMetricsContent" style="display: none;"></div>
-            <!-- </div> -->
     </div>
 
     <script type="module" src="main.js"></script>
@@ -120,4 +106,4 @@
     <script type="module" src="vectorMetrics.js"></script>
     
     </body>
-    </html>
+</html>
