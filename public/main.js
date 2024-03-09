@@ -539,9 +539,11 @@ async function initializeAuth0() {
 
 async function handleAuthenticationResult() {
     const query = window.location.search;
+    console.log('Auth Query', query);
     if (query.includes("code=") && query.includes("state=")) {
         await auth0.handleRedirectCallback();
         
+        console.log('Handle callback', query);
         const isAuthenticated = await auth0.isAuthenticated();
         await updateUI(isAuthenticated);
 
