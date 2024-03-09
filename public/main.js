@@ -22,24 +22,20 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// Cache the askButton and userInput for efficiency
 const askButton = document.getElementById('askButton');
 const userInput = document.getElementById('userInput');
 
-// Topic Handler
 askButton.addEventListener('click', async () => {
-    const userInputValue = userInput.value.trim();
+    const userInputValue = userInput.value.trim().toLowerCase();
     const { model } = getModelAndParams();
 
-    // Check for minimum query length
     if (userInputValue.length < 2) {
         alert("Please enter a query.");
-        return; // Exit the function early
+        return;
     }
 
-    // Disable the askButton to prevent multiple submissions
     askButton.disabled = true;
-    askButton.textContent = 'Processing...'; // Optional: Provide user feedback
+    askButton.textContent = 'Processing...';
 
     try {
         const queryParams = new URLSearchParams({ userInputValue, model }).toString();
@@ -48,19 +44,18 @@ askButton.addEventListener('click', async () => {
         const data = await response.json();
 
         if (data.exists) {
-            // Query exists, use saved PCA results
+
             await createOrUpdateCube(data.pcaResult);
             updateVectorMetricsContent();
         } else {
-            // Check if user is authenticated before proceeding
+
             const isAuthenticated = await auth0.isAuthenticated();
             if (isAuthenticated) {
-                // User is authenticated, proceed with generating new results
+
                 const rootList = await listPerpetuator();
             } else {
-                // User is not authenticated, alert them or handle accordingly
+
                 alert("Please log in to run new queries.");
-                // Optionally, redirect to login or perform another action
             }
         }
 
@@ -146,7 +141,7 @@ async function openModelTab(evt, modelName) {
     document.getElementById(modelName).style.display = "block";
     evt.currentTarget.className += " active";
 
-    const userInputValue = document.getElementById('userInput').value;
+    const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
     if (!userInputValue.trim()) {
         alert('Please enter a query');
         return;
@@ -239,7 +234,7 @@ async function compareModels() {
         
         // Iterate over models and create a summary for each
         compareData.forEach(modelResult => {
-            
+
         // Create a container for the model
         const modelDiv = document.createElement('div');
         modelDiv.classList.add('model-result-container', 'model-card'); // added 'model-card' for styling
@@ -429,7 +424,7 @@ function createHistogramBar(counts, maxCount) {
 
 
 async function compareAttributes() {
-    const userInputValue = document.getElementById('userInput').value;
+    const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
     if (!userInputValue) {
         alert("Please enter a query to compare.");
         return;

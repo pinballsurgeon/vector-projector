@@ -13,7 +13,7 @@ export const listPerpetuator = async () => {
     const newPromptKey = "refinedList";
 
     // Getting the user input from the 'userInput' element
-    const userInput = (document.getElementById('userInput').value).trim().toLowerCase();;
+    const userInput = (document.getElementById('userInput').value).trim().toLowerCase();
     appendLog(`User input: ${userInput}`);
 
     // Generating the initial list using the fetchListFromLLM function
