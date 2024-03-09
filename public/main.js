@@ -554,7 +554,7 @@ async function handleAuthenticationResult() {
             // Construct the user data to send
             const userData = {
                 email: user.email,
-                // username: user.nickname // or another appropriate field
+                username: user.nickname // or another appropriate field
             };
 
             // Send the user data to your backend to add/update the user
