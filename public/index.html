@@ -25,7 +25,18 @@
         <div id="search-container">
             <input type="text" id="userInput" placeholder="What topic...">
             <button id="askButton">Ask</button>
+            <!-- Model selection button -->
+            <button id="modelSelectionButton">gpt-3.5-turbo</button>
         </div>
+        
+        <!-- Hidden model selection menu -->
+        <div id="modelSelectionMenu" style="display: none;">
+            <button class="modelOption" data-model="gemini-pro">gemini-pro</button>
+            <button class="modelOption" data-model="gpt-3.5-turbo">gpt-3.5-turbo</button>
+            <button class="modelOption" data-model="claude-2">claude-2</button>
+            <!-- Add other models as needed -->
+        </div>
+        
 
         <div id="auth-status">
                 <button id="btn-login" onclick="login()">Log In</button>
