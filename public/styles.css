@@ -257,7 +257,7 @@ span#thresholdValue {
     height: calc(100vh - [HeaderHeight]px); /* Adjust for any header/footer height */
 }
 
-#auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
+#auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #auth-status span select {
     font-size: 16px; /* Default font size for desktop */
 }
 
@@ -372,7 +372,7 @@ span#thresholdValue {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #user-info select {
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #user-info, #auth-status span  select {
         font-size: 10px; /* Even smaller font size for mobile */
     }
 
@@ -382,7 +382,7 @@ span#thresholdValue {
 }
 /* Very small screens (e.g., mobile phones) */
 @media (max-width: 480px) {
-    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #user-info select {
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #user-info, #auth-status span  select {
         font-size: 10px; /* Even smaller font size for mobile */
     }
 
