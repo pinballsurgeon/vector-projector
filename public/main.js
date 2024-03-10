@@ -606,18 +606,9 @@ window.addEventListener('load', initializeAuth0);
 window.login = async () => { await auth0.loginWithRedirect(); };
 window.logout = () => { auth0.logout({ returnTo: window.location.origin }); };
 
-document.getElementById('modelSelectionButton').addEventListener('click', function() {
-    var menu = document.getElementById('modelSelectionMenu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-});
-
-var modelOptions = document.querySelectorAll('.modelOption');
-modelOptions.forEach(function(option) {
-    option.addEventListener('click', function() {
-        var selectedModel = this.getAttribute('data-model');
-        document.getElementById('modelSelectionButton').textContent = selectedModel;
-        // Hide the menu after selection
-        document.getElementById('modelSelectionMenu').style.display = 'none';
-        // Now you can use the selectedModel variable for whatever you need
-    });
+document.getElementById('modelSelectionDropdown').addEventListener('change', function() {
+    var selectedModel = this.value;
+    // Now you can use the selectedModel variable for whatever you need
+    console.log("Selected model:", selectedModel);
+    // Example: update the UI or make a request based on the selected model
 });

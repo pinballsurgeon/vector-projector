@@ -25,9 +25,14 @@
         <div id="search-container">
             <input type="text" id="userInput" placeholder="What topic...">
             <button id="askButton">Ask</button>
-            <!-- Model selection button -->
-            <button id="modelSelectionButton">gpt-3.5-turbo</button>
-        </div>
+            <!-- Model selection dropdown -->
+            <select id="modelSelectionDropdown">
+                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                <option value="gemini-pro">gemini-pro</option>
+                <option value="claude-2">claude-2</option>
+                <!-- Add other models as needed -->
+            </select>
+        </div>        
         
         <!-- Hidden model selection menu -->
         <div id="modelSelectionMenu" style="display: none;">
