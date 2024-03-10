@@ -584,7 +584,7 @@ async function updateUI(isAuthenticated) {
         if (user) {
             userInfoDisplay.textContent = `${user.name}`;
             userInfoDisplay.style.display = 'inline';
-            statusIcon.style.backgroundColor = 'green';
+            // statusIcon.style.backgroundColor = 'green';
         }
 
         // Show logout button and hide login button
@@ -593,7 +593,7 @@ async function updateUI(isAuthenticated) {
     } else {
         // Hide user info and show login button
         userInfoDisplay.style.display = 'none';
-        statusIcon.style.backgroundColor = 'black';
+        // statusIcon.style.backgroundColor = 'black';
         document.getElementById('btn-login').style.display = 'inline-block';
         document.getElementById('btn-logout').style.display = 'none';
     }
