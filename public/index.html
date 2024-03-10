@@ -25,23 +25,18 @@
         <div id="search-container">
             <input type="text" id="userInput" placeholder="What topic...">
             <button id="askButton">Ask</button>
-            <!-- Model selection dropdown -->
+
             <select id="modelSelectionDropdown">
-                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                <option value="gemini-pro">gemini-pro</option>
-                <option value="claude-2">claude-2</option>
-                <!-- Add other models as needed -->
+                <option value="tab-gpt-3.5-turbo">gpt-3.5-turbo</option>
+                <option value="tab-gemini-pro">gemini-pro</option>
+                <option value="tab-claude-v2">claude-2</option>
+                <option value="tab-claude-v3">claude-3</option>
+                <option value="tab-gpt-4-0125-preview">gpt-4</option>
+                <option value="tab-mistral-medium">mistral-medium</option>
+                <option value="tab-mistral-large">mistral-large</option>
+                <option value="tab-gpt-4-turbo-preview">gpt-4-turbo</option>
             </select>
         </div>        
-        
-        <!-- Hidden model selection menu -->
-        <div id="modelSelectionMenu" style="display: none;">
-            <button class="modelOption" data-model="gemini-pro">gemini-pro</button>
-            <button class="modelOption" data-model="gpt-3.5-turbo">gpt-3.5-turbo</button>
-            <button class="modelOption" data-model="claude-2">claude-2</button>
-            <!-- Add other models as needed -->
-        </div>
-        
 
         <div id="auth-status">
                 <button id="btn-login" onclick="login()">Log In</button>
