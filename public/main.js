@@ -582,7 +582,7 @@ async function updateUI(isAuthenticated) {
         const user = await auth0.getUser();
         
         if (user) {
-            userInfoDisplay.textContent = `${user.name} (${user.email})`;
+            userInfoDisplay.textContent = `${user.name}`;
             userInfoDisplay.style.display = 'inline';
             statusIcon.style.backgroundColor = 'green';
         }
