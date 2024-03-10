@@ -263,8 +263,16 @@ span#thresholdValue {
 
 #auth-status {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
+}
+
+#button-container {
+    margin-bottom: 10px; /* Adjust as needed for spacing */
+}
+
+#user-info-container {
+    align-self: center; /* Center user-info under the buttons */
 }
 
 #btn-login, #btn-logout, #userInput, #askButton {
