@@ -372,7 +372,7 @@ span#thresholdValue {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container select {
+    #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #user-info select {
         font-size: 10px; /* Even smaller font size for mobile */
     }
 
