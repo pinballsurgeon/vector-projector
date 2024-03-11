@@ -141,11 +141,10 @@ async function openModelTab(evt) {
     document.getElementById('tab-model').style.display = "block";
     evt.currentTarget.className += " active";
 
-    // const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
-    // if (!userInputValue.trim()) {
-    //     alert('Please enter a query');
-    //     return;
-    // }
+    const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
+    if (!userInputValue.trim()) {
+        return;
+    }
 
     // // Extract the model name from the button ID if necessary
     // let model = "";
