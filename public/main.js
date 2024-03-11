@@ -121,8 +121,8 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 });
 
 
+// async function openModelTab(evt, modelName) {
 async function openModelTab(evt, modelName) {
-
     // Hide the compare container and show the canvas container
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
@@ -138,65 +138,65 @@ async function openModelTab(evt, modelName) {
     }
 
     // // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(modelName).style.display = "block";
+    document.getElementById('tab-model').style.display = "block";
     evt.currentTarget.className += " active";
 
-    const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
-    if (!userInputValue.trim()) {
-        alert('Please enter a query');
-        return;
-    }
+    // const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
+    // if (!userInputValue.trim()) {
+    //     alert('Please enter a query');
+    //     return;
+    // }
 
-    // Extract the model name from the button ID if necessary
-    let model = "";
-    switch (modelName) {
-        case "tab-gemini-pro":
-            model = "gemini-pro";
-            break;
-        case "tab-claude-v2":
-            model = "claude-v2";
-            break;
-        case "tab-claude-v3":
-            model = "claude-v3";
-            break;
-        case "tab-gpt-4":
-            model = "gpt-4";
-            break;
-        case "tab-mistral-medium":
-            model = "mistral-medium";
-            break;
-        case "tab-mistral-large":
-            model = "mistral-large";
-            break;
-        case "tab-gpt-4-0125-preview":
-            model = "gpt-4-0125-preview";
-            break;
-        case "tab-gpt-4-turbo-preview":
-            model = "gpt-4-turbo-preview";
-            break;
-        case "tab-gpt-3.5-turbo":
-                model = "gpt-3.5-turbo";
-                break;
-    }
+    // // Extract the model name from the button ID if necessary
+    // let model = "";
+    // switch (modelName) {
+    //     case "tab-gemini-pro":
+    //         model = "gemini-pro";
+    //         break;
+    //     case "tab-claude-v2":
+    //         model = "claude-v2";
+    //         break;
+    //     case "tab-claude-v3":
+    //         model = "claude-v3";
+    //         break;
+    //     case "tab-gpt-4":
+    //         model = "gpt-4";
+    //         break;
+    //     case "tab-mistral-medium":
+    //         model = "mistral-medium";
+    //         break;
+    //     case "tab-mistral-large":
+    //         model = "mistral-large";
+    //         break;
+    //     case "tab-gpt-4-0125-preview":
+    //         model = "gpt-4-0125-preview";
+    //         break;
+    //     case "tab-gpt-4-turbo-preview":
+    //         model = "gpt-4-turbo-preview";
+    //         break;
+    //     case "tab-gpt-3.5-turbo":
+    //             model = "gpt-3.5-turbo";
+    //             break;
+    // }
 
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     
     updateSidebarContent();
 
 
-    try {
-        const response = await fetch(`/check_query?${queryParams}`);
-        const data = await response.json();
+    // try {
+    //     const response = await fetch(`/check_query?${queryParams}`);
+    //     const data = await response.json();
 
-        if (data.exists) {
-            await createOrUpdateCube(data.pcaResult);
-            updateVectorMetricsContent();
-        } else {
-            const rootList = await listPerpetuator();
-        }
-    } catch (error) {
-        appendLog(`Error: ${error}`);
-    }
+    //     if (data.exists) {
+    //         await createOrUpdateCube(data.pcaResult);
+    //         updateVectorMetricsContent();
+    //     } else {
+    //         const rootList = await listPerpetuator();
+    //     }
+    // } catch (error) {
+    //     appendLog(`Error: ${error}`);
+    // }
 }
 
 // document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
@@ -208,6 +208,7 @@ async function openModelTab(evt, modelName) {
 // document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
 // document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 
+document.getElementById('tab-model').addEventListener('click', openModelTab);
 document.getElementById('compareTab').addEventListener('click', compareModels);
 
 async function compareModels() {
