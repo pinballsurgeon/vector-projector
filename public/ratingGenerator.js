@@ -1,10 +1,9 @@
 // Import the necessary functions from dataStore.js
 import { getLLMListResponse, getLLMTopicAttributes } from './dataStore.js';
-import { appendLog, getModelAndParams, listPrompts } from './sidebar.js';
-import { fetchListFromLLM, fetchJSONFromLLM, correctJsonObject } from './llmService.js';
+import { appendLog, getModelAndParams } from './sidebar.js';
+import { fetchListFromLLM, fetchJSONFromLLM } from './llmService.js';
 import { updateVectorMetricsContent, createOrUpdateCube } from './cubeManager.js';
-// import { calculateConvexHull } from './vectorMetrics.js'; // Import the function
-// import { cubeDependencies } from 'mathjs';
+
 
 function sleep(ms) {
     return new Promise((resolve) => {
