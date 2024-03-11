@@ -184,19 +184,20 @@ async function openModelTab(evt, modelName) {
     updateSidebarContent();
 
 
-    // try {
-    //     const response = await fetch(`/check_query?${queryParams}`);
-    //     const data = await response.json();
+    try {
+        const response = await fetch(`/check_query?${queryParams}`);
+        const data = await response.json();
 
-    //     if (data.exists) {
-    //         await createOrUpdateCube(data.pcaResult);
-    //         updateVectorMetricsContent();
-    //     } else {
-    //         const rootList = await listPerpetuator();
-    //     }
-    // } catch (error) {
-    //     appendLog(`Error: ${error}`);
-    // }
+        if (data.exists) {
+            await createOrUpdateCube(data.pcaResult);
+            updateVectorMetricsContent();
+        }
+        // } else {
+        //     const rootList = await listPerpetuator();
+        // }
+    } catch (error) {
+        appendLog(`Error: ${error}`);
+    }
 }
 
 // document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
