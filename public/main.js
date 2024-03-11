@@ -178,10 +178,10 @@ async function openModelTab(evt) {
     //             break;
     // }
 
-    const { model_, temperature, top_p, num_return_sequences } = getModelAndParams();
-    const queryParams = new URLSearchParams({ userInputValue, model_ }).toString();
+    const { model } = getModelAndParams();
+    const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     
-    appendLog(`Model during OpenTab - ${model_}`);
+    appendLog(`Model during OpenTab - ${model}`);
     appendLog(`User Input during OpenTab - ${userInputValue}`);
     appendLog(`query params - ${queryParams}`);
 
