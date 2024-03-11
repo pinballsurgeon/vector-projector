@@ -1,13 +1,15 @@
-export let selectedModel;                   // Save selected model
-export let selectedTemperature;             // Save selected temperature
-export let selectedTopP;                    // Save selected top_p
-export let selectedNumSequences;            // Save selected num_return_sequences
+export let selectedModel;
+export let selectedTemperature;
+export let selectedTopP;
+export let selectedNumSequences;
 
-// Initialize Model Parameters
 export function getModelAndParams() {
 
-    const selectedModelTab = document.querySelector('.tablinks.active');
-    const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+    // const selectedModelTab = document.querySelector('.tablinks.active');
+    // const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
+
+    const modelSelectionDropdown = document.getElementById('modelSelectionDropdown');
+    const model = modelSelectionDropdown.value.replace('tab-', '');
 
     return { 
         model: model, 

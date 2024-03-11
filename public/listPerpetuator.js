@@ -1,4 +1,3 @@
-// listPerpetuator.js
 import { fetchListFromLLM } from './llmService.js';
 import { appendLog } from './sidebar.js';
 import { combineAndCleanList } from './listProcessor.js';
@@ -34,10 +33,6 @@ export const listPerpetuator = async () => {
     
     // Displaying the final list in the 'gptResponse' element
     setLLMListResponse(combinedList.join(", "));
-    // document.getElementById('llmListResponse').innerText = combinedList.join(", ");
-
-    // Update visibility of the button
-    // handleListButtonVisibility();
     differentiatingTopicsGenerator();
 
     // Returning the final list
