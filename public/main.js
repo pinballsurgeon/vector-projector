@@ -179,7 +179,8 @@ async function openModelTab(evt) {
     //             break;
     // }
 
-    const queryParams = new URLSearchParams({ userInputValue, model }).toString();
+    const { model_, temperature, top_p, num_return_sequences } = getModelAndParams();
+    const queryParams = new URLSearchParams({ userInputValue, model_ }).toString();
     
     updateSidebarContent();
 
