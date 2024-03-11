@@ -122,7 +122,7 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 
 
 // async function openModelTab(evt, modelName) {
-async function openModelTab(evt, modelName) {
+async function openModelTab(evt) {
     // Hide the compare container and show the canvas container
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
@@ -209,7 +209,7 @@ async function openModelTab(evt, modelName) {
 // document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
 // document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 
-document.getElementById('tab-model').addEventListener('click', openModelTab);
+document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', compareModels);
 
 async function compareModels() {
