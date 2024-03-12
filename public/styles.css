@@ -9,14 +9,13 @@
 body {
     display: flex;
     flex-direction: column; /* Stack elements vertically */
-    min-height: 100vh; /* Use minimum height to fill the screen */
+    height: auto; /* Adjust height based on content */
     background: #f9f9f9;
     font-family: Arial, sans-serif;
     overflow-x: hidden; /* Prevent horizontal scroll */
-    overflow-y: auto; /* Allow vertical scroll if necessary */
 }
 
-/* Style the header to be at the top */
+/* Style the header */
 .header {
     width: 100%;
     background-color: #333;
@@ -24,77 +23,58 @@ body {
     padding: 10px;
     text-align: center;
 }
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%; /* Ensure the body takes up the full viewport height */
-    overflow: hidden; /* Prevent scrolling on the body to avoid overflow */
-}
 
+/* Main content styling */
 #main-content {
     display: flex;
-    flex-direction: row; /* Align children (tabs and sidebar) in a row */
-    flex-grow: 1; /* Allow it to grow to fill available space */
-    overflow: hidden; /* Prevent overflow */
+    flex-direction: column; /* Change to column layout for mobile */
+    height: auto; /* Allow content to define the height */
 }
 
 /* Adjustments for canvas and sidebar containers */
 #canvas-container, #new-sidebar-container {
-    flex-grow: 1; /* Allow these elements to fill available space */
-    overflow: auto; /* Add scroll if content overflows */
+    width: 100%; /* Ensure they don't exceed screen size */
+    max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
+    overflow: auto; /* Enable scrolling within the container */
 }
 
-
-/* Make input fields and buttons large and easily clickable */
+/* Input fields and buttons styling for better mobile interaction */
 #userInput, .button {
-    width: calc(100% - 20px); /* Subtract padding */
-    margin: 10px;
-    padding: 15px;
-    font-size: 1.5em; /* Larger text size */
+    width: calc(100% - 20px);
+    margin: 10px auto; /* Centering */
+    padding: 10px;
+    font-size: 1em; /* Adjust font size for mobile */
 }
 
-/* Ensure the dynamic content sections fill the container */
+/* Dynamic content styling */
 #dynamic-content > div {
-    width: 100%;
-    height: 100%; /* Ensure these divs take full height of their container */
-    display: none; /* Hide them by default, shown dynamically */
+    display: none; /* Keep hidden initially */
+    overflow: auto; /* Enable scroll within each content section */
 }
 
-#tab-content {
-    flex-grow: 2; /* Allow tab content to fill the available space */
-    display: flex;
-    flex-direction: column; /* Stack content vertically */
-    overflow: auto; /* Scroll if content overflows */
-}
-
-/* Style the sidebar for mobile devices */
+/* Sidebar styling optimized for mobile devices */
 .sidebar {
     position: fixed;
     top: 0;
-    right: -85%; /* Start offscreen to the right */
-    width: 85%; /* Take up most of the screen on mobile */
-    max-width: 300px; /* But don't get too wide on larger screens */
-    height: 100%; /* Full height */
+    width: 85%; /* Use a percentage of the screen width */
+    max-width: 300px; /* Max width to avoid overly wide sidebars on larger screens */
+    height: 100%;
     background: #fff;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Shadow to the left */
-    transition: right 0.3s; /* Animate the transition */
-    z-index: 2; /* Above content */
-    overflow-y: auto; /* Scroll long content */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s;
+    z-index: 2;
+    overflow-y: auto; /* Allow vertical scrolling */
+    right: -100%; /* Initially offscreen */
 }
 
+/* Cube container styling */
 .cube-container {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
-.sidebar-cube-image {
-    width: 100px; /* or any other size */
-    height: auto;
-    margin: 5px;
-    border: 1px solid #ddd; /* optional */
-    border-radius: 4px; /* optional */
+.sidebar-cube-image, .cube-name {
+    margin: 5px 0; /* Adjust spacing */
 }
 
 .cube-name {

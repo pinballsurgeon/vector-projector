@@ -238,12 +238,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 
 function calculateAverageRatingsExceptFor(itemName, cubes) {
 
-    // Check if cubes is empty
     if (cubes.length === 0) {
         return [];
     }
 
-    // Locate the originalRatings keys from the selected item
     let attributes = [];
     for (let cube of cubes) {
         if (cube.userData.itemName === itemName) {
@@ -252,15 +250,13 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
         }
     }
 
-    // Initialize summed ratings and total count
     let summedRatings = {};
-    let totalCount = cubes.length - 1; // minus the selected cube
+    let totalCount = cubes.length - 1;
 
     for (let attribute of attributes) {
-        summedRatings[attribute] = 0;  // initialize
+        summedRatings[attribute] = 0;
     }
 
-    // Sum up the ratings
     for (let cube of cubes) {
         if (cube.userData.itemName !== itemName) {
             for (let attribute of attributes) {
@@ -269,7 +265,6 @@ function calculateAverageRatingsExceptFor(itemName, cubes) {
         }
     }
 
-    // Calculate the averages
     for (let attribute of attributes) {
         summedRatings[attribute] = summedRatings[attribute] / totalCount;
     }
@@ -282,10 +277,9 @@ export async function fetchPreviousQueries() {
         const response = await fetch('/get_library');
         const result = await response.json();
         if (result.exists) {
-            populateLibrary(result.queries); // Now correctly using the array of queries
+            populateLibrary(result.queries);
         } else {
             console.log("No data found for this query");
-            // Handle the case where no queries are found (e.g., display a message)
         }
     } catch (error) {
         console.error('Failed to fetch previous queries:', error);
@@ -294,14 +288,13 @@ export async function fetchPreviousQueries() {
 
 function populateLibrary(queries) {
     const libraryDiv = document.getElementById('library');
-    libraryDiv.innerHTML = ''; // Clear existing content
+    libraryDiv.innerHTML = '';
 
     queries.forEach(query => {
         const queryBox = document.createElement('div');
         queryBox.classList.add('query-box');
-        queryBox.textContent = query.name; // Assuming each query object has a 'name' property
+        queryBox.textContent = query.name;
 
-        // Bind the click event to selectQuery, passing the query's name
         queryBox.addEventListener('click', () => selectQuery(query.name));
 
         libraryDiv.appendChild(queryBox);
@@ -310,8 +303,7 @@ function populateLibrary(queries) {
 
 function selectQuery(queryName) {
     const userInput = document.getElementById('userInput');
-    userInput.value = queryName; // Make sure queryName is a string
+    userInput.value = queryName; 
 
-    // Programmatically trigger a click on the askButton
     document.getElementById('askButton').click();
 }
