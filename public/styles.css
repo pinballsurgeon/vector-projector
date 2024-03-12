@@ -24,11 +24,18 @@ body {
     text-align: center;
 }
 
-/* Main content styling */
 #main-content {
     display: flex;
-    flex-direction: column; /* Change to column layout for mobile */
-    height: auto; /* Allow content to define the height */
+    flex-direction: row; /* Ensure horizontal layout */
+    width: 100%; /* Ensure it spans the full width of its parent */
+    align-items: flex-start; /* Align items at the start of the flex container */
+}
+
+/* Styling for the main container that holds tabs and content */
+div[style*="width: 70%;"] {
+    flex-grow: 1; /* Allow it to grow and take necessary space */
+    max-width: 70%; /* Maximum width allocated */
+    /* Ensure any additional styling needed for padding, margin, etc. */
 }
 
 /* Adjustments for canvas and sidebar containers */
@@ -65,6 +72,32 @@ body {
     z-index: 2;
     overflow-y: auto; /* Allow vertical scrolling */
     right: -100%; /* Initially offscreen */
+}
+
+
+/* Style the tab container */
+#main-content > div:first-child { /* Assuming the first child is the tab container */
+    flex: 0 0 70%; /* Flex-grow | Flex-shrink | Basis */
+    /* Ensure content doesn't overflow */
+    overflow-y: auto;
+}
+
+/* Style adjustments for the combo box and dynamic content */
+#newSidebarSelector, #dynamic-content > div:first-child{
+    width: 100%; /* Full width of the sidebar container */
+    margin-bottom: 10px; /* Space after the selector */
+}
+#new-sidebar-container {
+    width: 30%; /* Default width */
+    max-height: calc(100vh - [HeaderHeight]px); /* Adjust the header height as needed */
+    overflow-y: auto; /* Enable scrolling for overflow content */
+    padding: 10px; /* Optional padding for aesthetics */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Ensure the sidebar and its content fit the screen height */
+#new-sidebar-container, #dynamic-content {
+    height: calc(100vh - [HeaderHeight]px); /* Adjust for any header/footer height */
 }
 
 /* Cube container styling */
@@ -212,30 +245,6 @@ span#thresholdValue {
     /* Additional styles if needed */
 }
 
-/* Style the tab container */
-#main-content > div:first-child { /* Assuming the first child is the tab container */
-    flex: 0 0 70%; /* Flex-grow | Flex-shrink | Basis */
-    /* Ensure content doesn't overflow */
-    overflow-y: auto;
-}
-
-/* Style adjustments for the combo box and dynamic content */
-#newSidebarSelector, #dynamic-content > div:first-child{
-    width: 100%; /* Full width of the sidebar container */
-    margin-bottom: 10px; /* Space after the selector */
-}
-#new-sidebar-container {
-    width: 30%; /* Default width */
-    max-height: calc(100vh - [HeaderHeight]px); /* Adjust the header height as needed */
-    overflow-y: auto; /* Enable scrolling for overflow content */
-    padding: 10px; /* Optional padding for aesthetics */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-/* Ensure the sidebar and its content fit the screen height */
-#new-sidebar-container, #dynamic-content {
-    height: calc(100vh - [HeaderHeight]px); /* Adjust for any header/footer height */
-}
 
 #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #auth-status span select {
     font-size: 16px; /* Default font size for desktop */
