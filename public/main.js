@@ -85,8 +85,8 @@ function resize() {
     let width = document.getElementById('canvas-container').clientWidth - (2 * margin); // Use clientWidth for the width
     let height = availableHeight > 0 ? availableHeight : 0; // Ensure height is not negative
 
-    svg.attr("width", width)
-       .attr("height", height);
+    // svg.attr("width", width)
+    //    .attr("height", height);
 }
 
 // Call the resize function on window resize
