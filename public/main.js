@@ -74,37 +74,40 @@ askButton.addEventListener('click', async () => {
 let svg = d3.select("#my_dataviz").append("svg");
 
 function resize() {
-    console.log("Window size:", window.innerWidth, "x", window.innerHeight);
-    console.log("Screen size:", screen.width, "x", screen.height);
+    const container = document.getElementById('canvas-container');
+    const svg = container.querySelector('svg');
+    const canvas = container.querySelector('canvas');
 
-    let marginPercentage = 0.02; // Example: 2% of the viewport width
-    let margin = Math.max(window.innerWidth * marginPercentage, 10); // Minimum margin of 10px
-    console.log("Calculated margin:", margin);
+    // Margin around the SVG for aesthetics (optional)
+    const margin = 20;
 
-    let headerHeight = document.querySelector('header')?.offsetHeight || 0;
-    let footerHeight = document.querySelector('footer')?.offsetHeight || 0;
-    console.log("Header height:", headerHeight, "Footer height:", footerHeight);
+    // Calculate available space, taking into account the margin
+    const availableWidth = window.innerWidth - 2 * margin;
+    const availableHeight = window.innerHeight - 2 * margin;
 
-    let availableHeight = window.innerHeight - headerHeight - footerHeight - (2 * margin);
-    let availableWidth = document.getElementById('canvas-container').clientWidth - (2 * margin);
-    console.log("Available space:", availableWidth, "x", availableHeight);
+    // Assuming you want the SVG to fit within the available space without distorting its aspect ratio
+    const aspectRatio = svg.getAttribute('width') / svg.getAttribute('height');
+    let width, height;
 
-    // Optionally maintain an aspect ratio
-    let aspectRatio = 16 / 9;
-    let calculatedHeight = availableWidth / aspectRatio;
+    // Adjust dimensions based on the aspect ratio
+    if (availableWidth / availableHeight > aspectRatio) {
+        height = availableHeight;
+        width = height * aspectRatio;
+    } else {
+        width = availableWidth;
+        height = width / aspectRatio;
+    }
 
-    let height = Math.min(availableHeight, calculatedHeight);
-    let width = height * aspectRatio; // Ensure the width respects the aspect ratio
+    // Apply calculated dimensions and center the SVG
+    svg.style.width = `${width}px`;
+    svg.style.height = `${height}px`;
+    svg.style.marginLeft = `${(availableWidth - width) / 2}px`;
+    svg.style.marginTop = `${(availableHeight - height) / 2}px`;
 
-    console.log("Final SVG dimensions:", width, "x", height);
-
-    svg.attr("width", width)
-       .attr("height", height)
-       .style("margin-left", (availableWidth - width) / 2 + "px")
-       .style("margin-top", (availableHeight - height) / 2 + "px");
-
-    console.log("SVG margins:", (availableWidth - width) / 2, "px (left/right),", (availableHeight - height) / 2, "px (top/bottom)");
+    // Log the final dimensions for debugging
+    console.log("SVG final dimensions:", width, "x", height);
 }
+
 
 // Call the resize function on window resize
 window.addEventListener('resize', resize);
