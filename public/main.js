@@ -73,20 +73,33 @@ askButton.addEventListener('click', async () => {
 // Assuming svg is your d3.js canvas
 let svg = d3.select("#my_dataviz").append("svg");
 
-// Function to resize the canvas
 function resize() {
-    // Subtracting some value for padding/margins around the canvas for aesthetics
-    let margin = 20; // Adjust based on your layout
-    let headerHeight = document.querySelector('header')?.offsetHeight || 0; // If you have a header
-    let footerHeight = document.querySelector('footer')?.offsetHeight || 0; // If you have a footer
+    // Dynamic padding based on viewport size
+    let marginPercentage = 0.02; // Example: 2% of the viewport width
+    let margin = Math.max(window.innerWidth * marginPercentage, 10); // Minimum margin of 10px
 
-    let availableHeight = window.innerHeight - headerHeight - footerHeight - (2 * margin); // Calculate available height
+    // Account for header and footer
+    let headerHeight = document.querySelector('header')?.offsetHeight || 0;
+    let footerHeight = document.querySelector('footer')?.offsetHeight || 0;
 
-    let width = document.getElementById('canvas-container').clientWidth - (2 * margin); // Use clientWidth for the width
-    let height = availableHeight > 0 ? availableHeight : 0; // Ensure height is not negative
+    // Calculate available space
+    let availableHeight = window.innerHeight - headerHeight - footerHeight - (2 * margin);
+    let availableWidth = document.getElementById('canvas-container').clientWidth - (2 * margin);
 
-    // svg.attr("width", width)
-    //    .attr("height", height);
+    // Optionally, maintain an aspect ratio (e.g., 16:9, 4:3)
+    let aspectRatio = 16 / 9;
+    let calculatedHeight = availableWidth / aspectRatio;
+
+    // Use the smaller of the available height or the height based on aspect ratio
+    let height = Math.min(availableHeight, calculatedHeight);
+    let width = height * aspectRatio; // Ensure the width respects the aspect ratio
+
+    // Update the SVG dimensions
+    svg.attr("width", width)
+       .attr("height", height)
+       // Center the SVG in the canvas container
+       .style("margin-left", (availableWidth - width) / 2 + "px")
+       .style("margin-top", (availableHeight - height) / 2 + "px");
 }
 
 // Call the resize function on window resize
