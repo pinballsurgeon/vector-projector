@@ -90,10 +90,6 @@ function resize() {
     canvas.width = availableWidth * dpi;
     canvas.height = availableHeight * dpi;
 
-    // Optional: If you have a rendering context for the canvas, scale it to match the DPI
-    // const ctx = canvas.getContext('2d');
-    // ctx.scale(dpi, dpi);
-
     // Log the final dimensions for debugging
     console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
 }
@@ -608,7 +604,7 @@ function adjustCanvasSize() {
     const canvasHeight = viewportHeight; // Full height minus header
 
     // Adjust the renderer size
-    renderer.setSize(canvasWidth, canvasHeight);
+    // renderer.setSize(canvasWidth, canvasHeight);
 
     // Adjust camera aspect ratio and update projection matrix
     camera.aspect = canvasWidth / canvasHeight;
