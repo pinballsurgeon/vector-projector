@@ -1,7 +1,7 @@
 import { fetchPreviousQueries, getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas } from './cubeManager.js';
+import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer} from './cubeManager.js';
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
@@ -604,7 +604,7 @@ function adjustCanvasSize() {
     const canvasHeight = viewportHeight; // Full height minus header
 
     // Adjust the renderer size
-    // renderer.setSize(canvasWidth, canvasHeight);
+    renderer.setSize(canvasWidth, canvasHeight);
 
     // Adjust camera aspect ratio and update projection matrix
     // camera.aspect = canvasWidth / canvasHeight;
