@@ -74,32 +74,36 @@ askButton.addEventListener('click', async () => {
 let svg = d3.select("#my_dataviz").append("svg");
 
 function resize() {
-    // Dynamic padding based on viewport size
+    console.log("Window size:", window.innerWidth, "x", window.innerHeight);
+    console.log("Screen size:", screen.width, "x", screen.height);
+
     let marginPercentage = 0.02; // Example: 2% of the viewport width
     let margin = Math.max(window.innerWidth * marginPercentage, 10); // Minimum margin of 10px
+    console.log("Calculated margin:", margin);
 
-    // Account for header and footer
     let headerHeight = document.querySelector('header')?.offsetHeight || 0;
     let footerHeight = document.querySelector('footer')?.offsetHeight || 0;
+    console.log("Header height:", headerHeight, "Footer height:", footerHeight);
 
-    // Calculate available space
     let availableHeight = window.innerHeight - headerHeight - footerHeight - (2 * margin);
     let availableWidth = document.getElementById('canvas-container').clientWidth - (2 * margin);
+    console.log("Available space:", availableWidth, "x", availableHeight);
 
-    // Optionally, maintain an aspect ratio (e.g., 16:9, 4:3)
+    // Optionally maintain an aspect ratio
     let aspectRatio = 16 / 9;
     let calculatedHeight = availableWidth / aspectRatio;
 
-    // Use the smaller of the available height or the height based on aspect ratio
     let height = Math.min(availableHeight, calculatedHeight);
     let width = height * aspectRatio; // Ensure the width respects the aspect ratio
 
-    // Update the SVG dimensions
+    console.log("Final SVG dimensions:", width, "x", height);
+
     svg.attr("width", width)
        .attr("height", height)
-       // Center the SVG in the canvas container
        .style("margin-left", (availableWidth - width) / 2 + "px")
        .style("margin-top", (availableHeight - height) / 2 + "px");
+
+    console.log("SVG margins:", (availableWidth - width) / 2, "px (left/right),", (availableHeight - height) / 2, "px (top/bottom)");
 }
 
 // Call the resize function on window resize
