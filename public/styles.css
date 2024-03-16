@@ -3,6 +3,10 @@ html, body {
     margin: 0;
 }
 
+html, body {
+    overflow: hidden; /* This prevents scrolling on the entire page */
+}
+
 body {
     display: flex;
     flex-direction: column;
