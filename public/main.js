@@ -155,37 +155,6 @@ async function openModelTab(evt) {
         return;
     }
 
-    // // Extract the model name from the button ID if necessary
-    // let model = "";
-    // switch (modelName) {
-    //     case "tab-gemini-pro":
-    //         model = "gemini-pro";
-    //         break;
-    //     case "tab-claude-v2":
-    //         model = "claude-v2";
-    //         break;
-    //     case "tab-claude-v3":
-    //         model = "claude-v3";
-    //         break;
-    //     case "tab-gpt-4":
-    //         model = "gpt-4";
-    //         break;
-    //     case "tab-mistral-medium":
-    //         model = "mistral-medium";
-    //         break;
-    //     case "tab-mistral-large":
-    //         model = "mistral-large";
-    //         break;
-    //     case "tab-gpt-4-0125-preview":
-    //         model = "gpt-4-0125-preview";
-    //         break;
-    //     case "tab-gpt-4-turbo-preview":
-    //         model = "gpt-4-turbo-preview";
-    //         break;
-    //     case "tab-gpt-3.5-turbo":
-    //             model = "gpt-3.5-turbo";
-    //             break;
-    // }
 
     const { model } = getModelAndParams();
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
@@ -627,3 +596,29 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
     console.log("Selected model:", selectedModel);
     // Example: update the UI or make a request based on the selected model
 });
+
+function adjustCanvasSize() {
+    const canvasContainer = document.getElementById('canvas-container');
+    const sidebarContainer = document.getElementById('new-sidebar-container');
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight - document.getElementById('header').offsetHeight; // Adjust if you have a header
+
+    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width
+    const canvasHeight = viewportHeight; // Full height minus header
+
+    // Adjust the renderer size
+    renderer.setSize(canvasWidth, canvasHeight);
+
+    // Adjust camera aspect ratio and update projection matrix
+    camera.aspect = canvasWidth / canvasHeight;
+    camera.updateProjectionMatrix();
+
+    // If using OrbitControls or similar, you may need to update them here
+}
+
+// Listen for resize events
+window.addEventListener('resize', adjustCanvasSize);
+
+// Initial adjustment
+adjustCanvasSize();
