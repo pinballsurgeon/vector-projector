@@ -70,44 +70,33 @@ askButton.addEventListener('click', async () => {
 });
 
 
-// Assuming svg is your d3.js canvas
-let svg = d3.select("#my_dataviz").append("svg");
-
 function resize() {
     const container = document.getElementById('canvas-container');
-    const svg = container.querySelector('svg');
     const canvas = container.querySelector('canvas');
 
-    // Margin around the SVG for aesthetics (optional)
+    // Margin around the canvas for aesthetics (optional)
     const margin = 20;
 
     // Calculate available space, taking into account the margin
     const availableWidth = window.innerWidth - 2 * margin;
     const availableHeight = window.innerHeight - 2 * margin;
 
-    // Assuming you want the SVG to fit within the available space without distorting its aspect ratio
-    const aspectRatio = svg.getAttribute('width') / svg.getAttribute('height');
-    let width, height;
+    // Assuming the canvas should take up all available space
+    canvas.style.width = `${availableWidth}px`;
+    canvas.style.height = `${availableHeight}px`;
 
-    // Adjust dimensions based on the aspect ratio
-    if (availableWidth / availableHeight > aspectRatio) {
-        height = availableHeight;
-        width = height * aspectRatio;
-    } else {
-        width = availableWidth;
-        height = width / aspectRatio;
-    }
+    // Adjust the actual size of the canvas drawing buffer for high DPI screens
+    const dpi = window.devicePixelRatio;
+    canvas.width = availableWidth * dpi;
+    canvas.height = availableHeight * dpi;
 
-    // Apply calculated dimensions and center the SVG
-    svg.style.width = `${width}px`;
-    svg.style.height = `${height}px`;
-    svg.style.marginLeft = `${(availableWidth - width) / 2}px`;
-    svg.style.marginTop = `${(availableHeight - height) / 2}px`;
+    // Optional: If you have a rendering context for the canvas, scale it to match the DPI
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpi, dpi);
 
     // Log the final dimensions for debugging
-    console.log("SVG final dimensions:", width, "x", height);
+    console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
 }
-
 
 // Call the resize function on window resize
 window.addEventListener('resize', resize);
