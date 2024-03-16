@@ -1,20 +1,18 @@
-/* Reset margin and padding for all elements */
-* {
+html, body {
+    height: 100%;
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
-/* Style the body to use full viewport height and enable flex layout */
 body {
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    height: auto; /* Adjust height based on content */
-    background: #f9f9f9;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    flex-direction: column;
 }
 
+#main-content {
+    display: flex;
+    flex: 1; /* Take up all available space */
+    overflow: hidden; /* Prevent scrolling within the main content area */
+}
 /* Style the header */
 .header {
     width: 100%;
@@ -24,13 +22,6 @@ body {
     text-align: center;
 }
 
-#main-content {
-    display: flex;
-    flex-direction: row; /* Ensure horizontal layout */
-    width: 100%; /* Ensure it spans the full width of its parent */
-    align-items: flex-start; /* Align items at the start of the flex container */
-}
-
 /* Styling for the main container that holds tabs and content */
 div[style*="width: 70%;"] {
     flex-grow: 1; /* Allow it to grow and take necessary space */
@@ -38,11 +29,14 @@ div[style*="width: 70%;"] {
     /* Ensure any additional styling needed for padding, margin, etc. */
 }
 
-/* Adjustments for canvas and sidebar containers */
-#canvas-container, #new-sidebar-container {
-    width: 100%; /* Ensure they don't exceed screen size */
-    max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
-    overflow: auto; /* Enable scrolling within the container */
+#canvas-container {
+    flex: 0.7; /* 70% of the available space */
+    overflow: auto; /* Allow scrolling within the canvas container if necessary */
+}
+
+#new-sidebar-container {
+    flex: 0.3; /* 30% of the available space */
+    overflow: auto; /* Allow scrolling within the sidebar if necessary */
 }
 
 /* Input fields and buttons styling for better mobile interaction */
