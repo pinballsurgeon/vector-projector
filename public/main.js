@@ -607,8 +607,8 @@ function adjustCanvasSize() {
     // renderer.setSize(canvasWidth, canvasHeight);
 
     // Adjust camera aspect ratio and update projection matrix
-    camera.aspect = canvasWidth / canvasHeight;
-    camera.updateProjectionMatrix();
+    // camera.aspect = canvasWidth / canvasHeight;
+    // camera.updateProjectionMatrix();
 
     // If using OrbitControls or similar, you may need to update them here
 }
