@@ -3,10 +3,6 @@ html, body {
     margin: 0;
 }
 
-html, body {
-    overflow: hidden; /* This prevents scrolling on the entire page */
-}
-
 body {
     display: flex;
     flex-direction: column;
@@ -33,14 +29,11 @@ div[style*="width: 70%;"] {
     /* Ensure any additional styling needed for padding, margin, etc. */
 }
 
-#canvas-container {
-    flex: 0.7; /* 70% of the available space */
-    overflow: auto; /* Allow scrolling within the canvas container if necessary */
-}
-
-#new-sidebar-container {
-    flex: 0.3; /* 30% of the available space */
-    overflow: auto; /* Allow scrolling within the sidebar if necessary */
+/* Adjustments for canvas and sidebar containers */
+#canvas-container, #new-sidebar-container {
+    width: 100%; /* Ensure they don't exceed screen size */
+    max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
+    overflow: auto; /* Enable scrolling within the container */
 }
 
 /* Input fields and buttons styling for better mobile interaction */
