@@ -91,8 +91,8 @@ function resize() {
     canvas.height = availableHeight * dpi;
 
     // Optional: If you have a rendering context for the canvas, scale it to match the DPI
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpi, dpi);
+    // const ctx = canvas.getContext('2d');
+    // ctx.scale(dpi, dpi);
 
     // Log the final dimensions for debugging
     console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
@@ -597,3 +597,28 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
     // Example: update the UI or make a request based on the selected model
 });
 
+function adjustCanvasSize() {
+    const canvasContainer = document.getElementById('canvas-container');
+    const sidebarContainer = document.getElementById('new-sidebar-container');
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight - document.getElementById('header').offsetHeight; // Adjust if you have a header
+
+    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width
+    const canvasHeight = viewportHeight; // Full height minus header
+
+    // Adjust the renderer size
+    renderer.setSize(canvasWidth, canvasHeight);
+
+    // Adjust camera aspect ratio and update projection matrix
+    camera.aspect = canvasWidth / canvasHeight;
+    camera.updateProjectionMatrix();
+
+    // If using OrbitControls or similar, you may need to update them here
+}
+
+// Listen for resize events
+window.addEventListener('resize', adjustCanvasSize);
+
+// Initial adjustment
+adjustCanvasSize();
