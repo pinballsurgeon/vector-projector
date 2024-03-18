@@ -1,7 +1,7 @@
 import { fetchPreviousQueries, getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer} from './cubeManager.js';
+import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer, camera} from './cubeManager.js';
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
