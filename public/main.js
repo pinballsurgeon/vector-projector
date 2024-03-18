@@ -1,7 +1,7 @@
 import { fetchPreviousQueries, getModelAndParams, updateSidebarContent, initializeModels, initializeModelParams, initializePrompts, appendLog } from './sidebar.js';
 import { updateSpheres } from './sphereManager.js';
 import { listPerpetuator } from './listPerpetuator.js';
-import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer, camera} from './cubeManager.js';
+import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer} from './cubeManager.js';
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
@@ -594,27 +594,23 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
 });
 
 function adjustCanvasSize() {
-    const headerHeight = document.getElementById('header').offsetHeight;
-    const combinedContainerHeight = document.getElementById('combined-container').offsetHeight;
-    const tabContentHeight = document.getElementById('tab-content').offsetHeight; // Assuming you want to consider this in calculations
-    const margin = 20; // Example margin for aesthetics
+    const canvasContainer = document.getElementById('canvas-container');
+    const sidebarContainer = document.getElementById('new-sidebar-container');
 
     const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportHeight = window.innerHeight - document.getElementById('header').offsetHeight; // Adjust if you have a header
 
-    // Calculating available height by subtracting other elements' heights and margin
-    const availableHeight = viewportHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin);
+    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width
+    const canvasHeight = viewportHeight; // Full height minus header
 
-    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width for the canvas container
-    // Ensure the canvasHeight doesn't exceed the availableHeight to prevent overflow
-    const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
-
-    // Adjust the renderer size based on calculated width and height
+    // Adjust the renderer size
     renderer.setSize(canvasWidth, canvasHeight);
 
-    // Adjust camera aspect ratio and update projection matrix to fit the new size
+    // Adjust camera aspect ratio and update projection matrix
     camera.aspect = canvasWidth / canvasHeight;
     camera.updateProjectionMatrix();
+
+    // If using OrbitControls or similar, you may need to update them here
 }
 
 // Listen for resize events
