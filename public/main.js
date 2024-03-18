@@ -599,19 +599,15 @@ function adjustCanvasSize() {
     const tabContentHeight = document.getElementById('tab-content').offsetHeight; // Assuming you want to consider this in calculations
     const margin = 20; // Example margin for aesthetics
 
-    // Calculating available height by subtracting other elements' heights and margin
-    const viewportHeight = window.innerHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin);
-
-    const canvasContainer = document.getElementById('canvas-container');
-    const sidebarContainer = document.getElementById('new-sidebar-container');
-
     const viewportWidth = window.innerWidth;
-    
-    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width for the canvas container
-    const sidebarWidth = viewportWidth * 0.3; // 30% of viewport width for the sidebar container
+    const viewportHeight = window.innerHeight;
 
-    // Ensure the canvasHeight doesn't exceed the viewportHeight to prevent overflow
-    const canvasHeight = Math.max(0, viewportHeight); // Prevent negative values
+    // Calculating available height by subtracting other elements' heights and margin
+    const availableHeight = viewportHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin);
+
+    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width for the canvas container
+    // Ensure the canvasHeight doesn't exceed the availableHeight to prevent overflow
+    const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
 
     // Adjust the renderer size based on calculated width and height
     renderer.setSize(canvasWidth, canvasHeight);
@@ -619,20 +615,7 @@ function adjustCanvasSize() {
     // Adjust camera aspect ratio and update projection matrix to fit the new size
     camera.aspect = canvasWidth / canvasHeight;
     camera.updateProjectionMatrix();
-
-    // Optionally adjust sidebar size
-    sidebarContainer.style.height = `${canvasHeight}px`; // Match sidebar height to canvas height
-    sidebarContainer.style.width = `${sidebarWidth}px`; // Set sidebar width
-
-    // Apply styles to canvas container if needed
-    canvasContainer.style.width = `${canvasWidth}px`;
-    canvasContainer.style.height = `${canvasHeight}px`;
-
-    // Log for debugging
-    console.log(`Adjusted Canvas Size: ${canvasWidth}x${canvasHeight}`);
-    console.log(`Viewport: ${viewportWidth}x${viewportHeight}`);
 }
-
 
 // Listen for resize events
 window.addEventListener('resize', adjustCanvasSize);
