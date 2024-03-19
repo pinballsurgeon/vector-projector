@@ -70,35 +70,35 @@ askButton.addEventListener('click', async () => {
 });
 
 
-function resize() {
-    const container = document.getElementById('canvas-container');
-    const canvas = container.querySelector('canvas');
+// function resize() {
+//     const container = document.getElementById('canvas-container');
+//     const canvas = container.querySelector('canvas');
 
-    // Margin around the canvas for aesthetics (optional)
-    const margin = 20;
+//     // Margin around the canvas for aesthetics (optional)
+//     const margin = 20;
 
-    // Calculate available space, taking into account the margin
-    const availableWidth = window.innerWidth - 2 * margin;
-    const availableHeight = window.innerHeight - 2 * margin;
+//     // Calculate available space, taking into account the margin
+//     const availableWidth = window.innerWidth - 2 * margin;
+//     const availableHeight = window.innerHeight - 2 * margin;
 
-    // Assuming the canvas should take up all available space
-    canvas.style.width = `${availableWidth}px`;
-    canvas.style.height = `${availableHeight}px`;
+//     // Assuming the canvas should take up all available space
+//     canvas.style.width = `${availableWidth}px`;
+//     canvas.style.height = `${availableHeight}px`;
 
-    // Adjust the actual size of the canvas drawing buffer for high DPI screens
-    const dpi = window.devicePixelRatio;
-    canvas.width = availableWidth * dpi;
-    canvas.height = availableHeight * dpi;
+//     // Adjust the actual size of the canvas drawing buffer for high DPI screens
+//     const dpi = window.devicePixelRatio;
+//     canvas.width = availableWidth * dpi;
+//     canvas.height = availableHeight * dpi;
 
-    // Log the final dimensions for debugging
-    console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
-}
+//     // Log the final dimensions for debugging
+//     console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
+// }
 
-// Call the resize function on window resize
-window.addEventListener('resize', resize);
+// // Call the resize function on window resize
+// window.addEventListener('resize', resize);
 
-// Initial call to set up the canvas size properly
-resize();
+// // Initial call to set up the canvas size properly
+// resize();
 
 // Event listener for the sliders
 document.getElementById('sphereThreshold').addEventListener('input', function() {
