@@ -594,23 +594,33 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
 });
 
 function adjustCanvasSize() {
-    const canvasContainer = document.getElementById('canvas-container');
-    const sidebarContainer = document.getElementById('new-sidebar-container');
+    const headerHeight = document.getElementById('header').offsetHeight;
+    const combinedContainerHeight = document.getElementById('combined-container').offsetHeight;
+    const tabContentHeight = document.getElementById('tab-content').offsetHeight; // Assuming you want to consider this in calculations
+    const margin = 20; // Example margin for aesthetics
 
     const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight - document.getElementById('header').offsetHeight; // Adjust if you have a header
+    const viewportHeight = window.innerHeight;
+    console.log("Viewport height:", viewportHeight);
+    console.log("Viewport width:", viewportWidth);
 
-    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width
-    const canvasHeight = viewportHeight; // Full height minus header
+    // Calculating available height by subtracting other elements' heights and margin
+    const availableHeight = viewportHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin);
+    console.log("Available height:", availableHeight);
 
-    // Adjust the renderer size
+
+    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width for the canvas container
+    // Ensure the canvasHeight doesn't exceed the availableHeight to prevent overflow
+    const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
+    console.log("Canvas width:", canvasWidth);
+    console.log("Canvas height:", canvasHeight);
+
+    // Adjust the renderer size based on calculated width and height
     renderer.setSize(canvasWidth, canvasHeight);
 
-    // Adjust camera aspect ratio and update projection matrix
+    // Adjust camera aspect ratio and update projection matrix to fit the new size
     camera.aspect = canvasWidth / canvasHeight;
     camera.updateProjectionMatrix();
-
-    // If using OrbitControls or similar, you may need to update them here
 }
 
 // Listen for resize events
