@@ -10,10 +10,11 @@ body {
 }
 
 #main-content {
+    height: calc(100vh - [HeaderHeight]px);
     display: flex;
-    flex: 1; /* Take up all available space */
-    overflow: hidden; /* Prevent scrolling within the main content area */
+    overflow: hidden;
 }
+
 /* Style the header */
 .header {
     width: 100%;
