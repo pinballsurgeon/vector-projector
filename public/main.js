@@ -605,7 +605,7 @@ function adjustCanvasSize() {
     console.log("Viewport width:", viewportWidth);
 
     // Calculating available height by subtracting other elements' heights and margin
-    const availableHeight = viewportHeight - ( headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin)) * 1.3;
+    const availableHeight = viewportHeight - ( ( headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin) ) * 1.3) ;
     
     console.log("Header height:", headerHeight);
     console.log("Combined height:", combinedContainerHeight);
