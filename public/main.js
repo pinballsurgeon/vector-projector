@@ -613,7 +613,7 @@ function adjustCanvasSize() {
     console.log("Margin:", (2 * margin));
     console.log("Available height:", availableHeight);
 
-    const canvasWidth = viewportWidth * 0.68; 
+    const canvasWidth = viewportWidth * 0.67; 
     const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
     console.log("Canvas width:", canvasWidth);
     console.log("Canvas height:", canvasHeight);
