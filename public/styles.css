@@ -46,6 +46,11 @@ div[style*="width: 70%;"] {
     font-size: 1em; /* Adjust font size for mobile */
 }
 
+/* Dynamic content styling */
+#dynamic-content > div {
+    display: none; /* Keep hidden initially */
+    overflow: auto; /* Enable scroll within each content section */
+}
 
 /* Sidebar styling optimized for mobile devices */
 .sidebar {
@@ -61,7 +66,6 @@ div[style*="width: 70%;"] {
     overflow-y: auto; /* Allow vertical scrolling */
     right: -100%; /* Initially offscreen */
 }
-
 
 /* Style adjustments for the combo box and dynamic content */
 #newSidebarSelector, #dynamic-content > div:first-child{
