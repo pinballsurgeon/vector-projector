@@ -35,6 +35,7 @@ div[style*="width: 70%;"] {
 #canvas-container, #new-sidebar-container {
     width: 67vw; /* Ensure they don't exceed screen size */
     max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
+    flex-grow: 1;
 }
 
 /* Input fields and buttons styling for better mobile interaction */
