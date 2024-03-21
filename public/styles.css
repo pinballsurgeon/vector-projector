@@ -63,13 +63,6 @@ div[style*="width: 70%;"] {
 }
 
 
-/* Style the tab container */
-#main-content > div:first-child { /* Assuming the first child is the tab container */
-    flex: 0 0 70%; /* Flex-grow | Flex-shrink | Basis */
-    /* Ensure content doesn't overflow */
-    overflow-y: auto;
-}
-
 /* Style adjustments for the combo box and dynamic content */
 #newSidebarSelector, #dynamic-content > div:first-child{
     width: 100%; /* Full width of the sidebar container */
