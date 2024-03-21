@@ -36,6 +36,7 @@ div[style*="width: 70%;"] {
     width: 67vw; /* Ensure they don't exceed screen size */
     max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
     flex-grow: 1;
+    overflow: auto; /* Enable scrolling within the container */
 }
 
 /* Input fields and buttons styling for better mobile interaction */
