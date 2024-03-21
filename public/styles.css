@@ -48,7 +48,6 @@ div[style*="width: 70%;"] {
 
 /* Dynamic content styling */
 #dynamic-content > div {
-    display: none; /* Keep hidden initially */
     overflow: auto; /* Enable scroll within each content section */
 }
 
