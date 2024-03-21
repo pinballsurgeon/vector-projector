@@ -604,8 +604,8 @@ function adjustCanvasSize() {
     console.log("Viewport height:", viewportHeight);
     console.log("Viewport width:", viewportWidth);
 
-    // Calculating available height by subtracting other elements' heights and margin
-    const availableHeight = viewportHeight - ( headerHeight / 2) - ( combinedContainerHeight / 2) - tabContentHeight - (2 * margin) ;
+    // Calculating available height by subtracting other elements' heights and margin, dow we need to account for browser content?
+    const availableHeight = viewportHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin) ;
     
     console.log("Header height:", headerHeight);
     console.log("Combined height:", combinedContainerHeight);
@@ -613,7 +613,7 @@ function adjustCanvasSize() {
     console.log("Margin:", (2 * margin));
     console.log("Available height:", availableHeight);
 
-    const canvasWidth = viewportWidth * 0.7; // 70% of viewport width for the canvas container
+    const canvasWidth = viewportWidth * 0.65; // 70% of viewport width for the canvas container
     // Ensure the canvasHeight doesn't exceed the availableHeight to prevent overflow
     const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
     console.log("Canvas width:", canvasWidth);
