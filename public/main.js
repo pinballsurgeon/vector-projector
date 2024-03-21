@@ -628,7 +628,7 @@ function adjustCanvasSize() {
 }
 
 // Listen for resize events
-// window.addEventListener('resize', adjustCanvasSize);
+window.addEventListener('resize', adjustCanvasSize);
 
 // Initial adjustment
 adjustCanvasSize();
