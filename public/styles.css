@@ -33,7 +33,7 @@ div[style*="width: 70%;"] {
 
 /* Adjustments for canvas and sidebar containers */
 #canvas-container, #new-sidebar-container {
-    width: 100%; /* Ensure they don't exceed screen size */
+    width: 67vw; /* Ensure they don't exceed screen size */
     max-height: 90vh; /* Limit height to 90% of viewport height to ensure it fits screen */
 }
 
