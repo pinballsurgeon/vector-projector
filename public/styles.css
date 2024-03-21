@@ -46,11 +46,6 @@ div[style*="width: 70%;"] {
     font-size: 1em; /* Adjust font size for mobile */
 }
 
-/* Dynamic content styling */
-#dynamic-content > div {
-    display: none; /* Keep hidden initially */
-    overflow: auto; /* Enable scroll within each content section */
-}
 
 /* Sidebar styling optimized for mobile devices */
 .sidebar {
