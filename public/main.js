@@ -626,8 +626,18 @@ function adjustCanvasSize() {
     camera.updateProjectionMatrix();
 }
 
-// Listen for resize events
-window.addEventListener('resize', adjustCanvasSize);
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
 
-// Initial adjustment
-adjustCanvasSize();
+window.addEventListener('resize', debounce(adjustCanvasSize, 100));
+
+
+window.onload = function() {
+    adjustCanvasSize();
+};
