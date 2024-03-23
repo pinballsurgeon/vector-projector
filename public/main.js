@@ -596,7 +596,7 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
 function adjustCanvasSize() {
     const headerHeight = document.getElementById('header').offsetHeight;
     const combinedContainerHeight = document.getElementById('combined-container').offsetHeight;
-    const tabContentHeight = document.getElementById('tab').offsetHeight; // Assuming you want to consider this in calculations
+    const tabContentHeight = document.getElementById('tab-content').offsetHeight; // Assuming you want to consider this in calculations
     const margin = 20; // Example margin for aesthetics
 
     const viewportWidth = window.innerWidth;
