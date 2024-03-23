@@ -70,36 +70,6 @@ askButton.addEventListener('click', async () => {
 });
 
 
-// function resize() {
-//     const container = document.getElementById('canvas-container');
-//     const canvas = container.querySelector('canvas');
-
-//     // Margin around the canvas for aesthetics (optional)
-//     const margin = 20;
-
-//     // Calculate available space, taking into account the margin
-//     const availableWidth = window.innerWidth - 2 * margin;
-//     const availableHeight = window.innerHeight - 2 * margin;
-
-//     // Assuming the canvas should take up all available space
-//     canvas.style.width = `${availableWidth}px`;
-//     canvas.style.height = `${availableHeight}px`;
-
-//     // Adjust the actual size of the canvas drawing buffer for high DPI screens
-//     const dpi = window.devicePixelRatio;
-//     canvas.width = availableWidth * dpi;
-//     canvas.height = availableHeight * dpi;
-
-//     // Log the final dimensions for debugging
-//     console.log("Canvas final dimensions:", availableWidth, "x", availableHeight);
-// }
-
-// // Call the resize function on window resize
-// window.addEventListener('resize', resize);
-
-// // Initial call to set up the canvas size properly
-// resize();
-
 // Event listener for the sliders
 document.getElementById('sphereThreshold').addEventListener('input', function() {
   const thresholdValue = parseFloat(this.value);
@@ -134,7 +104,7 @@ async function openModelTab(evt) {
 
 
     // Declare all variables
-    let i, tabcontent, tablinks;
+    let i, tablinks;
 
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
@@ -197,10 +167,10 @@ async function compareModels() {
         return;
     }
 
-    // Hide and clear the canvas
-    const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.style.display = 'none';
-    clearCanvas();
+        // Hide and clear the canvas
+        const canvasContainer = document.getElementById('canvas-container');
+        canvasContainer.style.display = 'none';
+        clearCanvas();
 
  
         const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
@@ -596,7 +566,7 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
 function adjustCanvasSize() {
     const headerHeight = document.getElementById('header').offsetHeight;
     const combinedContainerHeight = document.getElementById('combined-container').offsetHeight;
-    const tabContentHeight = document.getElementById('tab-content').offsetHeight; // Assuming you want to consider this in calculations
+    const tabContentHeight = document.getElementById('tab').offsetHeight; // Assuming you want to consider this in calculations
     const margin = 20; // Example margin for aesthetics
 
     const viewportWidth = window.innerWidth;
