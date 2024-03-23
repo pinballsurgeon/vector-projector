@@ -170,6 +170,11 @@ span#thresholdValue {
     background-color: #ccc;
   }
   
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px;
+  }
   
   /* Style the compare container to display as a grid */
   .compare-results-grid {
