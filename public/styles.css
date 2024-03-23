@@ -31,6 +31,13 @@ div[style*="width: 70%;"] {
     /* Ensure any additional styling needed for padding, margin, etc. */
 }
 
+/* Adjustments for canvas and sidebar containers */
+#canvas-container, #new-sidebar-container {
+    /* width: 67vw; 
+    max-height: 90vh; */
+    /* flex-grow: 1; */
+    overflow: auto; /* Enable scrolling within the container */
+}
 
 /* Input fields and buttons styling for better mobile interaction */
 #userInput, .button {
