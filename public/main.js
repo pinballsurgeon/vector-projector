@@ -526,25 +526,20 @@ async function updateUserInDatabase(userData) {
 
 async function updateUI(isAuthenticated) {
     const userInfoDisplay = document.getElementById('user-info');
-    const statusIcon = document.getElementById('status-icon');
 
     if (isAuthenticated && auth0) {
         const user = await auth0.getUser();
         
         if (user) {
             userInfoDisplay.textContent = `${user.name}`;
-            userInfoDisplay.style.display = 'inline';
-            // statusIcon.style.backgroundColor = 'green';
+            userInfoDisplay.style.display = 'block'; // Changed from 'inline' to better suit the vertical layout
         }
 
-        // Show logout button and hide login button
         document.getElementById('btn-login').style.display = 'none';
-        document.getElementById('btn-logout').style.display = 'inline-block';
+        document.getElementById('btn-logout').style.display = 'block'; // Changed to 'block' to ensure it appears below the username
     } else {
-        // Hide user info and show login button
         userInfoDisplay.style.display = 'none';
-        // statusIcon.style.backgroundColor = 'black';
-        document.getElementById('btn-login').style.display = 'inline-block';
+        document.getElementById('btn-login').style.display = 'block';
         document.getElementById('btn-logout').style.display = 'none';
     }
 }
