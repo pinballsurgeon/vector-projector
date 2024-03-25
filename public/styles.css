@@ -246,13 +246,16 @@ span#thresholdValue {
 
 .query-box {
     border: 1px solid #ddd;
-    border-radius: 5px; 
+    border-radius: 5px;
     padding: 10px 20px;
-    text-align: center; 
-    width: 200px; 
+    text-align: center;
+    max-width: 200px; /* Maximum width, but can be smaller */
+    width: 100%; /* Adjust to container width */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    cursor: pointer; 
+    cursor: pointer;
+    box-sizing: border-box;
 }
+
 
 #site-logo img {
     width: 100%;
