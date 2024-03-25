@@ -24,7 +24,7 @@ body {
 }
 
 #header img {
-    width: 50%; /* Makes the image width 50% of the #header container */
+    width: 30%; /* Makes the image width 50% of the #header container */
     height: auto; /* Maintains the aspect ratio of the image */
     display: block; /* Removes bottom margin/whitespace */
     margin: 0 auto; /* Center the image horizontally */
