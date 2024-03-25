@@ -24,21 +24,6 @@ body {
     text-align: center;
 }
 
-/* Styling for the main container that holds tabs and content */
-div[style*="width: 70%;"] {
-    flex-grow: 1; /* Allow it to grow and take necessary space */
-    max-width: 70%; /* Maximum width allocated */
-    /* Ensure any additional styling needed for padding, margin, etc. */
-}
-
-/* Adjustments for canvas and sidebar containers */
-#canvas-container, #new-sidebar-container {
-    /* width: 67vw; 
-    max-height: 90vh; */
-    /* flex-grow: 1; */
-    overflow: auto; /* Enable scrolling within the container */
-}
-
 /* Input fields and buttons styling for better mobile interaction */
 #userInput, .button {
     width: calc(100% - 20px);
@@ -47,38 +32,75 @@ div[style*="width: 70%;"] {
     font-size: 1em; /* Adjust font size for mobile */
 }
 
+#auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #auth-status span select {
+    font-size: calc(10px + (6 * (100vw - 1001px) / (2144 - 1001)));
+}
 
-/* Sidebar styling optimized for mobile devices */
+#auth-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#button-container {
+    margin-bottom: 10px; /* Adjust as needed for spacing */
+}
+
+#btn-login, #btn-logout, #userInput, #askButton {
+    margin: 0 10px;
+}
+
+#user-info {
+    margin-bottom: 10px;
+}
+
+#user-info-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+div[style*="width: 70%;"] {
+    flex-grow: 1; 
+    max-width: 70%; 
+  
+}
+
+
+#canvas-container, #new-sidebar-container, .sidebar {
+    overflow-x: hidden; 
+    overflow-y: auto;
+}
+
+
 .sidebar {
     position: fixed;
     top: 0;
-    width: 85%; /* Use a percentage of the screen width */
-    max-width: 300px; /* Max width to avoid overly wide sidebars on larger screens */
+    width: 85%; 
+    max-width: 300px; 
     height: 100%;
     background: #fff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
-    transition: right 0.3s;
+    transition: right 1s;
     z-index: 2;
-    overflow-y: auto; /* Allow vertical scrolling */
-    right: -100%; /* Initially offscreen */
+    /* overflow-y: auto; */
+    right: -100%; 
 }
 
-/* Style adjustments for the combo box and dynamic content */
-#newSidebarSelector > div:first-child{
-    width: 100%; /* Full width of the sidebar container */
-    margin-bottom: 10px; /* Space after the selector */
-}
 #new-sidebar-container {
-    width: 30%; /* Default width */
-    max-height: calc(100vh - [HeaderHeight]px); /* Adjust the header height as needed */
-    overflow-y: auto; /* Enable scrolling for overflow content */
-    padding: 10px; /* Optional padding for aesthetics */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 30%; /* Responsive width adjustments may be required */
+    max-height: calc(100vh - [HeaderHeight]px); /* Adjust [HeaderHeight] to your header's height */
+    padding: 10px;
+    box-sizing: border-box; /* Includes padding in the width and height */
 }
 
-/* Ensure the sidebar and its content fit the screen height */
-#new-sidebar-container {
-    height: calc(100vh - [HeaderHeight]px); /* Adjust for any header/footer height */
+#library {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Ensures vertical scrolling */
+    gap: 10px; /* Space between items */
+    padding: 10px; /* Padding inside the library container */
 }
 
 /* Cube container styling */
@@ -187,26 +209,25 @@ span#thresholdValue {
 }
 
 
-/* Style each model's card */
 .model-card {
-    border: 1px solid #ddd; /* add a border */
-    border-radius: 8px; /* rounded corners */
-    padding: 20px; /* padding inside the card */
-    background-color: #fff; /* white background */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
-    display: flex; /* use flexbox for internal layout */
-    flex-direction: column; /* stack children vertically */
-    align-items: center; /* center content horizontally */
-    text-align: center; /* center text */
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
 }
 
 .model-result-container h3 {
-    margin-bottom: 15px; /* space below the title */
+    margin-bottom: 15px; 
 }
 
 .model-result-container p {
-    font-size: 1em; /* readable font size */
-    margin-bottom: 10px; /* space below the paragraph */
+    font-size: 1em; 
+    margin-bottom: 10px; 
 }
 
 .model-result-container, .attribute-container {
@@ -217,50 +238,10 @@ span#thresholdValue {
 }
 
 #logsContent {
-    padding: 10px; /* Add padding for visual spacing */
-    overflow-y: auto; /* Allow scrolling if content is too long */
-    max-height: 80vh; /* Limit the height and allow scrolling */
-    margin-bottom: 5px; /* Space out log messages */
-    /* Additional styles if needed */
-}
-
-
-#auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #auth-status span select {
-    font-size: calc(10px + (6 * (100vw - 1001px) / (2144 - 1001)));
-}
-
-#auth-status {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#button-container {
-    margin-bottom: 10px; /* Adjust as needed for spacing */
-}
-
-#btn-login, #btn-logout, #userInput, #askButton {
-    margin: 0 10px;
-}
-
-#user-info-container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    margin: 0 10px;
-}
-
-#user-info {
-    margin-bottom: 10px;
-}
-
-#library {
-    display: flex;
-    flex-direction: column;
-    max-height: 600px;
-    overflow-y: auto;
-    gap: 10px;
-    padding: 10px;
+    padding: 10px; 
+    overflow-y: auto; 
+    max-height: 80vh; 
+    margin-bottom: 5px;
 }
 
 .query-box {
