@@ -553,9 +553,7 @@ window.logout = () => { auth0.logout({ returnTo: window.location.origin }); };
 
 document.getElementById('modelSelectionDropdown').addEventListener('change', function() {
     var selectedModel = this.value;
-    // Now you can use the selectedModel variable for whatever you need
     console.log("Selected model:", selectedModel);
-    // Example: update the UI or make a request based on the selected model
 });
 
 function adjustCanvasSize() {
