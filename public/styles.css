@@ -38,7 +38,7 @@ body {
 }
 
 #auth-status button, #search-container input, #search-container button, .tab button, #modelSelectionDropdown, #new-sidebar-container, #auth-status span select {
-    font-size: calc(10px + (6 * (100vw - 1001px) / (2144 - 1001)));
+    font-size: calc(12px + (6 * (100vw - 1001px) / (2144 - 1001)));
 }
 
 #auth-status {
