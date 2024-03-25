@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: center; /* Centers the child horizontally */
     align-items: center; /* Centers the child vertically, if needed */
-    width: 50%; /* Full width of its parent */
+    width: 100%; /* Full width of its parent */
     z-index: 1;
 }
 
