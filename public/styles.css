@@ -15,7 +15,6 @@ body {
     overflow: auto;
 }
 
-/* Style the header */
 .header {
     width: 100%;
     background-color: #333;
@@ -24,12 +23,11 @@ body {
     text-align: center;
 }
 
-/* Input fields and buttons styling for better mobile interaction */
 #userInput, .button {
     width: calc(100% - 20px);
-    margin: 10px auto; /* Centering */
+    margin: 10px auto;
     padding: 10px;
-    font-size: 1em; /* Adjust font size for mobile */
+    font-size: 1em;
 }
 
 #auth-status button, #search-container input, #search-container button, .tab button, #new-sidebar-container, #auth-status span select {
@@ -43,7 +41,7 @@ body {
 }
 
 #button-container {
-    margin-bottom: 10px; /* Adjust as needed for spacing */
+    margin-bottom: 10px;
 }
 
 #btn-login, #btn-logout, #userInput, #askButton {
@@ -67,7 +65,6 @@ div[style*="width: 70%;"] {
   
 }
 
-
 #canvas-container, #new-sidebar-container, .sidebar {
     overflow-x: hidden; 
     overflow-y: auto;
@@ -84,33 +81,31 @@ div[style*="width: 70%;"] {
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 1s;
     z-index: 2;
-    /* overflow-y: auto; */
     right: -100%; 
 }
 
 #new-sidebar-container {
-    width: 30%; /* Responsive width adjustments may be required */
-    max-height: calc(100vh - [HeaderHeight]px); /* Adjust [HeaderHeight] to your header's height */
+    width: 30%;
+    max-height: calc(100vh - [HeaderHeight]px);
     padding: 10px;
-    box-sizing: border-box; /* Includes padding in the width and height */
+    box-sizing: border-box;
 }
 
 #library {
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Ensures vertical scrolling */
-    gap: 10px; /* Space between items */
-    padding: 10px; /* Padding inside the library container */
+    overflow-y: auto;
+    gap: 10px;
+    padding: 10px;
 }
 
-/* Cube container styling */
 .cube-container {
     align-items: center;
     margin: 10px 0;
 }
 
 .sidebar-cube-image, .cube-name {
-    margin: 5px 0; /* Adjust spacing */
+    margin: 5px 0;
 }
 
 .cube-name {
@@ -119,51 +114,40 @@ div[style*="width: 70%;"] {
     margin-top: 5px;
 }
 
-/* When sidebar is open, it should take up 85% of the screen */
-.sidebar.open {
-    right: 0; /* Align to the right edge of the viewport */
-}
-
-/* Style the sidebar content */
-.sidebar-header, .sidebar-content {
-    padding: 20px;
-}
-
 #groupsContent {
-    padding: 10px; /* Adds padding inside the container */
-    margin-bottom: 10px; /* Space below the container */
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 #groupsContent label,
 #groupsContent input[type="range"],
 #groupsContent canvas,
 #groupsContent div {
-    display: block; /* Makes each element take a full row */
-    margin-bottom: 10px; /* Adds space below each element */
+    display: block; 
+    margin-bottom: 10px; 
 }
 
 #groupsContent label {
-    font-weight: bold; /* Makes label text bold */
-    margin-top: 10px; /* Additional space above each label */
+    font-weight: bold; 
+    margin-top: 10px;
 }
 
 #groupsContent input[type="range"] {
-    width: 100%; /* Makes the slider take full width of the container */
-    cursor: pointer; /* Changes cursor type on hover */
+    width: 100%; 
+    cursor: pointer; 
 }
 
 #groupsContent canvas,
 #groupsContent div {
-    max-width: 100%; /* Ensures they don't overflow the container */
-    height: auto; /* Keeps the aspect ratio of images */
+    max-width: 100%;
+    height: auto;
 }
 
 span#thresholdValue {
-    display: inline-block; /* Keeps it on the same line as the label */
-    margin-left: 5px; /* Space between the label and value */
+    display: inline-block;
+    margin-left: 5px;
 }
 
-/* Style the tab */
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
@@ -171,7 +155,6 @@ span#thresholdValue {
     z-index: 1; 
   }
   
-  /* Style the buttons inside the tab */
   .tab button {
     background-color: inherit;
     float: left;
@@ -182,32 +165,27 @@ span#thresholdValue {
     transition: 0.3s;
   }
   
-  /* Change background color of buttons on hover */
   .tab button:hover {
     background-color: #ddd;
   }
   
-  /* Create an active/current tablink class */
   .tab button.active {
     background-color: #ccc;
   }
   
-  /* Style the tab content */
   .tabcontent {
     display: none;
     padding: 6px;
   }
   
-  /* Style the compare container to display as a grid */
   .compare-results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* create as many columns as will fit */
-    grid-auto-rows: minmax(100px, auto); /* minimum row height */
-    gap: 10px; /* space between cards */
-    padding: 10px; /* padding around the grid */
-    overflow-x: auto; /* allows for horizontal scrolling if needed */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+    gap: 10px;
+    padding: 10px;
+    overflow-x: auto;
 }
-
 
 .model-card {
     border: 1px solid #ddd; 
@@ -249,13 +227,12 @@ span#thresholdValue {
     border-radius: 5px;
     padding: 10px 20px;
     text-align: center;
-    max-width: 200px; /* Maximum width, but can be smaller */
-    width: 100%; /* Adjust to container width */
+    max-width: 200px;
+    width: 100%;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     cursor: pointer;
     box-sizing: border-box;
 }
-
 
 #site-logo img {
     width: 100%;
@@ -292,25 +269,25 @@ span#thresholdValue {
 
 #search-container {
     display: flex;
-    justify-content: center; /* Center the search container on the page */
-    align-items: center; /* Vertically align the input and button */
-    width: 33.33%; /* Set width to 1/3 of its parent container */
-    margin: 0 auto; /* Center the search container horizontally */
+    justify-content: center;
+    align-items: center;
+    width: 33.33%; 
+    margin: 0 auto;
     padding: 10px;
-    gap: 10px; /* Adds space between the input box and the button */
+    gap: 10px;
 }
 
 #userInput {
-    flex-grow: 3; /* Allow the input to grow three times more than the button */
+    flex-grow: 3;
     padding: 10px;
-    border: 2px solid #585858; /* A light border */
-    border-radius: 4px; /* Slightly rounded corners */
-    width: 0; /* Reset width to allow flex-grow to work properly */
+    border: 2px solid #585858;
+    border-radius: 4px;
+    width: 0;
 }
 
 #askButton {
     padding: 10px;
-    background-color: #4CAF50; /* Pastel light green */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
@@ -318,15 +295,13 @@ span#thresholdValue {
 }
 
 #askButton:hover {
-    background-color: #a1d6cf; /* A slightly darker green for hover effect */
+    background-color: #a1d6cf; 
 }
-
-
 
 
 #modelSelectionDropdown {
     padding: 5px;
-    margin-left: 5px; /* Adjust spacing between the Ask button and the dropdown */
-    border: 1px solid #ccc; /* Custom border */
-    border-radius: 4px; /* Rounded corners */
+    margin-left: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
 }
