@@ -15,22 +15,19 @@ body {
     overflow: auto;
 }
 
-.header {
-    width: 50%;
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-}
-
 #header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    justify-content: center; /* Centers the child horizontally */
+    align-items: center; /* Centers the child vertically, if needed */
+    width: 100%; /* Full width of its parent */
     z-index: 1;
+}
+
+#header img {
+    width: 50%; /* Makes the image width 50% of the #header container */
+    height: auto; /* Maintains the aspect ratio of the image */
+    display: block; /* Removes bottom margin/whitespace */
+    margin: 0 auto; /* Center the image horizontally */
 }
 
 #userInput, .button {
