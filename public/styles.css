@@ -254,13 +254,6 @@ span#thresholdValue {
     padding: 10px;
 }
 
-#userInput {
-    flex-grow: 1;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-}
-
 #search-container {
     display: flex;
     justify-content: center;
