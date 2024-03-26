@@ -271,7 +271,7 @@ span#thresholdValue {
     border-radius: 4px;
     /* Ensure it's at least 20% of the viewport width, 
        but can grow to fill the container */
-    width: min(100%, 20vw); /* Adapted for responsiveness */
+    width: min(50%, 20vw); /* Adapted for responsiveness */
     box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
