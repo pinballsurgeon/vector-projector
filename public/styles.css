@@ -265,14 +265,12 @@ span#thresholdValue {
 }
 
 #userInput {
-    flex-grow: 1; /* Allow it to fill available space */
+    flex-grow: 1;
     padding: 10px;
     border: 2px solid #585858;
     border-radius: 4px;
-    /* Ensure it's at least 20% of the viewport width, 
-       but can grow to fill the container */
-    width: min(50%, 20vw); /* Adapted for responsiveness */
-    box-sizing: border-box; /* Include padding and border in width calculation */
+    width: min(50%, 20vw);
+    box-sizing: border-box; 
 }
 
 
