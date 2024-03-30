@@ -264,15 +264,6 @@ span#thresholdValue {
     gap: 10px;
 }
 
-#userInput {
-    flex-grow: 1;
-    padding: 10px;
-    border: 2px solid #585858;
-    border-radius: 4px;
-    width: min(50%, 20vw);
-    box-sizing: border-box; 
-}
-
 
 #askButton {
     padding: 10px;
