@@ -45,7 +45,7 @@ body {
 }
 
 #btn-login, #btn-logout, #userInput, #askButton {
-    margin: 0 10px;
+    margin: 0 5px;
 }
 
 #user-info {
@@ -257,7 +257,9 @@ span#thresholdValue {
     gap: 10px;
 }
 
+
 #askButton {
+    padding: 8px;
     background-color: #4CAF50;
     color: white;
     border: none;
