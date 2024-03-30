@@ -588,7 +588,7 @@ function debounce(func, wait) {
     };
 }
 
-window.addEventListener('resize', debounce(adjustCanvasSize, 100));
+window.addEventListener('resize', debounce(adjustCanvasSize, 10));
 
 
 window.onload = function() {
