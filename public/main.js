@@ -501,7 +501,6 @@ async function handleAuthenticationResult() {
 
         window.history.replaceState({}, document.title, "/");
     } else {
-        console.log('Query doesnt include codeor state');
         await updateUI(await auth0.isAuthenticated());
     }
 }
