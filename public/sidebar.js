@@ -159,12 +159,8 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 
     const ctx = ratingsBarChartCanvas.getContext('2d'); // Get the context
 
-
-    // Calculate average ratings for all other cubes
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
-    // Create the data for Chart.js
-    // First, build an array of objects for sorting
     let attributesArray = [];
     Object.keys(originalRatings).forEach((attribute, index) => {
         attributesArray.push({
@@ -174,11 +170,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         });
     });
 
-    // Sort the array based on the absolute difference between the selected cube's value and the average value
     attributesArray.sort((a, b) => {
         let diffA = Math.abs(a.selectedValue - a.averageValue);
         let diffB = Math.abs(b.selectedValue - b.averageValue);
-        return diffB - diffA;  // For descending order
+        return diffB - diffA; 
     });
 
     const barChartData = {
@@ -199,16 +194,16 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         }]
     };
 
-    // Create the new chart instance
     myBarChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'bar', // Keep as 'bar' for both horizontal and vertical bars
         data: barChartData,
         options: {
+            indexAxis: 'y', // 'x' for vertical bars (default), 'y' for horizontal bars
             scales: {
                 x: {
                     ticks: {
-                        autoSkip: false, // ensures that labels are not skipped
-                        maxRotation: 90, // keeps the labels horizontal
+                        autoSkip: false,
+                        maxRotation: 90, 
                         minRotation: 90
                     }
                 },
@@ -222,7 +217,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     left: 2,
                     right: 2,
                     top: 5,
-                    bottom: 50 // adjust this value to provide more space below the chart
+                    bottom: 50 
                 }
             },
             plugins: {
@@ -230,8 +225,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     display: false
                 }
             }
-        }
-        
+        }    
     });
 
 }
