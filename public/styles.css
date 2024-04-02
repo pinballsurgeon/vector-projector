@@ -278,3 +278,9 @@ span#thresholdValue {
     border: 1px solid #ccc; 
     border-radius: 4px; 
 }
+
+#cubeContent {
+    max-width: 100%;
+    max-height: 500px; 
+    overflow: hidden;
+}
