@@ -593,3 +593,28 @@ window.addEventListener('resize', debounce(adjustCanvasSize, 10));
 window.onload = function() {
     adjustCanvasSize();
 };
+
+
+function adjustImageSize() {
+    const cubeContent = document.getElementById('cubeContent');
+    const sidebarCubeImage = document.getElementById('sidebarCubeImage');
+    
+    if (!cubeContent || !sidebarCubeImage) return; // Exit if elements are not found
+
+    // Determine the container width
+    const containerWidth = cubeContent.offsetWidth;
+
+    // Set image size based on container width
+    if (containerWidth < 600) { // Example threshold, adjust as needed
+        sidebarCubeImage.style.width = "90%";
+        sidebarCubeImage.style.height = "90%";
+    } else {
+        sidebarCubeImage.style.width = "40%";
+        sidebarCubeImage.style.height = "40%";
+    }
+}
+
+
+// Adjust image size on window load and resize
+window.addEventListener('load', adjustImageSize);
+window.addEventListener('resize', adjustImageSize);
