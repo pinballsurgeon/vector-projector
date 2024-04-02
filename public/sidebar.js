@@ -195,10 +195,12 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     };
 
     myBarChart = new Chart(ctx, {
-        type: 'bar', // Keep as 'bar' for both horizontal and vertical bars
+        type: 'bar', 
         data: barChartData,
         options: {
-            indexAxis: 'y', // 'x' for vertical bars (default), 'y' for horizontal bars
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y', 
             scales: {
                 x: {
                     ticks: {
