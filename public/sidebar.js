@@ -125,14 +125,14 @@ function adjustImageSize() {
     
     if (!cubeContent || !sidebarCubeImage) return; // Exit if elements are not found
 
-    // Determine the container width
-    const containerWidth = cubeContent.style.width;
-    console.log('Container Width', containerWidth);
+    // Use getBoundingClientRect to get the width
+    const containerWidth = cubeContent.getBoundingClientRect().width;
+    console.log('Container Width:', containerWidth);
 
     // Set image size based on container width
     if (containerWidth < 300) { // Example threshold, adjust as needed
-        sidebarCubeImage.style.width = "40%";
-        sidebarCubeImage.style.height = "40%";
+        sidebarCubeImage.style.width = "90%";
+        sidebarCubeImage.style.height = "90%";
     } else {
         sidebarCubeImage.style.width = "40%";
         sidebarCubeImage.style.height = "40%";
