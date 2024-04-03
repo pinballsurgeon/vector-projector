@@ -129,7 +129,7 @@ function adjustImageSize() {
     const containerWidth = cubeContent.offsetWidth;
 
     // Set image size based on container width
-    if (containerWidth < 600) { // Example threshold, adjust as needed
+    if (containerWidth < 300) { // Example threshold, adjust as needed
         sidebarCubeImage.style.width = "90%";
         sidebarCubeImage.style.height = "90%";
     } else {
