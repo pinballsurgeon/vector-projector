@@ -126,7 +126,7 @@ function adjustImageSize() {
     if (!cubeContent || !sidebarCubeImage) return; // Exit if elements are not found
 
     // Determine the container width
-    const containerWidth = cubeContent.offsetWidth;
+    const containerWidth = cubeContent.width;
     console.log('Container Width', containerWidth);
 
     // Set image size based on container width
