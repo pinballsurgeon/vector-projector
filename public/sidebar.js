@@ -141,10 +141,7 @@ function adjustImageSize() {
 
 
 // Adjust image size on window load and resize
-window.addEventListener('load', () => {
-    setTimeout(adjustImageSize, 100); // Delay execution for 100ms
-});
-
+document.addEventListener('DOMContentLoaded', adjustImageSize);
 window.addEventListener('resize', adjustImageSize);
 
 
