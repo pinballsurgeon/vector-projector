@@ -467,7 +467,7 @@ async function initializeAuth0() {
         if (isAuthenticated) {
             await updateUI(true);
         } else {
-            console.log('HANDLE UNAUTHENTICATED');
+            
             await handleAuthenticationResult();
         }
     } catch (error) {

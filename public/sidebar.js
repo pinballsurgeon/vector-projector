@@ -127,6 +127,7 @@ function adjustImageSize() {
 
     // Determine the container width
     const containerWidth = cubeContent.offsetWidth;
+    console.log('Container Width', containerWidth);
 
     // Set image size based on container width
     if (containerWidth < 300) { // Example threshold, adjust as needed
