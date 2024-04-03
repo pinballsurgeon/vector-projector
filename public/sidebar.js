@@ -157,6 +157,8 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
     const promptEditors = document.getElementById('promptEditors');
 
+    adjustImageSize();
+
     // Start by hiding all contents
     logsContent.style.display = 'none';
     modelSelectionContent.style.display = 'none';
