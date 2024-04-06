@@ -50,7 +50,7 @@ export const fetchListFromLLM = async (promptKey, userInput, replacements = {}) 
       appendLog(`Error during list generation: ${error}`);
     }
 };
-
+ 
 export const fetchJSONFromLLM = async (promptKey, userInput, replacements = {}) => {
     try {
         let prompt = listPrompts[promptKey];

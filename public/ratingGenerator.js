@@ -95,7 +95,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
             for (const item of items) {
                 // Await the processing of each item
-                sleep(5000);
+                sleep(500);
                 const result = await fetchRatingsAndImageForItem(item, attributes_str);
         
                 // Process the result
