@@ -285,6 +285,7 @@ span#thresholdValue {
 }
 
 .chart-container {
+    height: 250px;
     margin: 15px 0;
     padding: 10px;
     border: 1px solid #e0e0e0; 
