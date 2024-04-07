@@ -172,19 +172,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
     adjustImageSize();
 
-    const ratingsBarChartCanvas = document.getElementById('ratingsBarChart');
-
-    // Destroy the previous chart instance if it exists
-    if (myBarChart) {
-        myBarChart.destroy();
-    }
-    
-    // Make sure the canvas element exists
-    if (ratingsBarChartCanvas === null) {
-        console.error("Canvas element not found");
-        return;
-    }
-
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
     cubeContent.innerHTML = '<h3 id="sidebarTitle"></h3><img id="sidebarCubeImage" src="" alt="Cube Image">';
@@ -216,7 +203,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
     
         new Chart(ctx, {
-            type: 'horizontalBar', // Change to horizontal bar
+            type: 'bar', // Use 'bar' type for both vertical and horizontal bars
             data: {
                 labels: ['Rating'],
                 datasets: [{
@@ -232,23 +219,28 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                indexAxis: 'y', // This makes the bar chart horizontal
                 scales: {
-                    xAxes: [{
+                    x: { // This is now 'x' instead of 'xAxes'
+                        beginAtZero: true,
+                        max: 10, // Force 0-10 range
                         ticks: {
-                            beginAtZero: true,
-                            max: 10, // Force 0-10 range
+                            stepSize: 1 // Ensures that tick intervals are whole numbers
                         }
-                    }],
-                    yAxes: [{
-                        display: false // Since it's a horizontal bar, we'll hide the y-axis
-                    }]
+                    },
+                    y: { // This is now 'y' instead of 'yAxes'
+                        display: false
+                    }
                 },
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                }
             }
         });
+        
     });
 
 
