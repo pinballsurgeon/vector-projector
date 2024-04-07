@@ -185,32 +185,35 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         return;
     }
 
-    const ctx = ratingsBarChartCanvas.getContext('2d'); // Get the context
+    // const ctx = ratingsBarChartCanvas.getContext('2d'); // Get the context
     // Ensure the container for the charts is empty to prevent duplicating charts on subsequent calls
     cubeContent.innerHTML = '';
 
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
-    Object.keys(originalRatings).forEach((attribute) => {
-        // Create a container for each attribute chart
-        const chartContainer = document.createElement('div');
-        chartContainer.style.margin = '20px 0'; // Adjust spacing as needed
-        chartContainer.classList.add('chart-container'); // Add a class for styling purposes
+    cubeContent.style.maxHeight = '500px'; // or whatever maximum height you prefer
+    cubeContent.style.overflowY = 'auto';
+    
+    const totalAttributes = Object.keys(originalRatings).length;
+    const maxContainerHeight = 500; // Adjust based on your needs or dynamically calculate
+    const chartContainerHeight = Math.max(100, maxContainerHeight / totalAttributes); // Ensure a minimum height for readability    
 
-        // Create a header for the attribute
+    Object.keys(originalRatings).forEach((attribute, index) => {
+        const chartContainer = document.createElement('div');
+        chartContainer.style.margin = '10px 0';
+        chartContainer.style.height = `${chartContainerHeight}px`; // Set the height dynamically
+        chartContainer.classList.add('chart-container');
+    
         const header = document.createElement('h3');
         header.textContent = attribute;
-        header.style.textAlign = 'center'; // Center the header
+        header.style.textAlign = 'center';
         chartContainer.appendChild(header);
-
-        // Create a canvas for the chart
+    
         const canvas = document.createElement('canvas');
         chartContainer.appendChild(canvas);
-
-        // Append the chart container to the cubeContent
+    
         cubeContent.appendChild(chartContainer);
-
-        // Now, create the chart
+    
         const ctx = canvas.getContext('2d');
         const selectedValue = originalRatings[attribute];
         const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
