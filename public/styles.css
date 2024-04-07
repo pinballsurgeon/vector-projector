@@ -286,10 +286,10 @@ span#thresholdValue {
 
 .chart-container {
     height: 250px;
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #e0e0e0; 
-    border-radius: 8px; 
+    padding: 5px; /* Reduced padding */
+    margin-bottom: 10px; /* Space between charts */
+    border: 1px solid #e0e0e0; /* Light border */
+    border-radius: 5px; /* Slightly rounded corners for a smooth look */
     background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
 }

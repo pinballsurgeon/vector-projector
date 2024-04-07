@@ -210,43 +210,63 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         const ctx = canvas.getContext('2d');
 
         new Chart(ctx, {
-            type: 'bar', // Use 'bar' type for both vertical and horizontal bars
+            type: 'bar', 
             data: {
                 labels: ['Rating'],
                 datasets: [{
-                    label: 'Selected Cube',
+                    label: itemName, // Now using itemName directly as label
                     data: [selectedValue],
                     backgroundColor: 'blue',
+                    // Datalabels configuration for this dataset
+                    datalabels: {
+                        align: 'end',
+                        anchor: 'end',
+                        color: '#fff', // White text color for better visibility
+                    }
                 }, {
-                    label: 'Average',
+                    label: 'All Other Avg.', // Label for average values
                     data: [averageValue],
                     backgroundColor: 'red',
+                    // Datalabels configuration for this dataset
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'start',
+                        color: '#fff', // White text color for better visibility
+                    }
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                indexAxis: 'y', // This makes the bar chart horizontal
+                indexAxis: 'y',
                 scales: {
-                    x: { // This is now 'x' instead of 'xAxes'
+                    x: { 
                         beginAtZero: true,
-                        max: 10, // Force 0-10 range
+                        max: 10,
                         ticks: {
-                            stepSize: 1 // Ensures that tick intervals are whole numbers
+                            stepSize: 1
                         }
                     },
-                    y: { // This is now 'y' instead of 'yAxes'
+                    y: { 
                         display: false
                     }
                 },
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top',
+                        display: false, // Hide the legend
+                    },
+                    // Enable datalabels plugin with some global configuration if needed
+                    datalabels: {
+                        color: '#000',
+                        font: {
+                            weight: 'bold'
+                        }
                     }
                 }
-            }
+            },
+            plugins: [ChartDataLabels] // Ensure the datalabels plugin is registered
         });
+        
         
     });
 
