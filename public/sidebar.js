@@ -186,77 +186,69 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     }
 
     const ctx = ratingsBarChartCanvas.getContext('2d'); // Get the context
+    // Ensure the container for the charts is empty to prevent duplicating charts on subsequent calls
+    cubeContent.innerHTML = '';
 
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
-    let attributesArray = [];
-    Object.keys(originalRatings).forEach((attribute, index) => {
-        attributesArray.push({
-            name: attribute,
-            selectedValue: originalRatings[attribute],
-            averageValue: averageRatings[index]
+    Object.keys(originalRatings).forEach((attribute) => {
+        // Create a container for each attribute chart
+        const chartContainer = document.createElement('div');
+        chartContainer.style.margin = '20px 0'; // Adjust spacing as needed
+        chartContainer.classList.add('chart-container'); // Add a class for styling purposes
+
+        // Create a header for the attribute
+        const header = document.createElement('h3');
+        header.textContent = attribute;
+        header.style.textAlign = 'center'; // Center the header
+        chartContainer.appendChild(header);
+
+        // Create a canvas for the chart
+        const canvas = document.createElement('canvas');
+        chartContainer.appendChild(canvas);
+
+        // Append the chart container to the cubeContent
+        cubeContent.appendChild(chartContainer);
+
+        // Now, create the chart
+        const ctx = canvas.getContext('2d');
+        const selectedValue = originalRatings[attribute];
+        const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [attribute],
+                datasets: [{
+                    label: 'Selected Cube',
+                    data: [selectedValue],
+                    backgroundColor: 'blue'
+                }, {
+                    label: 'Average',
+                    data: [averageValue],
+                    backgroundColor: 'red'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        display: false // Hide the x-axis labels since we only have one category per chart
+                    },
+                    y: {
+                        beginAtZero: true // Ensure the y-axis begins at zero for a uniform scale
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true // Optionally, adjust or remove the legend
+                    }
+                }
+            }
         });
     });
 
-    attributesArray.sort((a, b) => {
-        let diffA = Math.abs(a.selectedValue - a.averageValue);
-        let diffB = Math.abs(b.selectedValue - b.averageValue);
-        return diffB - diffA; 
-    });
-
-    const barChartData = {
-        labels: attributesArray.map(attribute => attribute.name),
-        datasets: [{
-            type: 'line',
-            label: 'Average Ratings',
-            data: attributesArray.map(attribute => attribute.averageValue),
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false
-        }, {
-            label: 'Selected Cube Ratings',
-            data: attributesArray.map(attribute => attribute.selectedValue),
-            backgroundColor: 'blue',
-            borderColor: 'blue',
-            borderWidth: 1,
-        }]
-    };
-
-    myBarChart = new Chart(ctx, {
-        type: 'bar', 
-        data: barChartData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y', 
-            scales: {
-                x: {
-                    ticks: {
-                        autoSkip: false,
-                        maxRotation: 90, 
-                        minRotation: 90
-                    }
-                },
-                y: {
-                    suggestedMin: 0,
-                    suggestedMax: 11
-                }
-            },
-            layout: {
-                padding: {
-                    left: 2,
-                    right: 2,
-                    top: 5,
-                    bottom: 50 
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }    
-    });
 
 }
 
