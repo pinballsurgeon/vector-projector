@@ -157,8 +157,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
     const promptEditors = document.getElementById('promptEditors');
 
-    adjustImageSize();
-
     // Start by hiding all contents
     logsContent.style.display = 'none';
     modelSelectionContent.style.display = 'none';
@@ -172,6 +170,8 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     sidebarCubeImage.src = imageUrl;
     sidebarTitle.textContent = itemName;
     
+    adjustImageSize();
+
     const ratingsBarChartCanvas = document.getElementById('ratingsBarChart');
 
     // Destroy the previous chart instance if it exists
