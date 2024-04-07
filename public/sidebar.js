@@ -185,69 +185,71 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         return;
     }
 
+    const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
+
     cubeContent.innerHTML = '<h3 id="sidebarTitle"></h3><img id="sidebarCubeImage" src="" alt="Cube Image">';
-// Re-apply the image and title
-document.getElementById('sidebarCubeImage').src = imageUrl;
-document.getElementById('sidebarTitle').textContent = itemName;
-
-const totalAttributes = Object.keys(originalRatings).length;
-const maxContainerHeight = 500; // Adjust based on your dynamic calculations or needs
-
-Object.keys(originalRatings).forEach((attribute) => {
-    const chartContainer = document.createElement('div');
-    chartContainer.classList.add('chart-container');
-
-    // Header for the attribute
-    const header = document.createElement('h3');
-    header.textContent = attribute;
-    header.style.textAlign = 'center';
-    chartContainer.appendChild(header);
-
-    // Canvas for the chart
-    const canvas = document.createElement('canvas');
-    chartContainer.appendChild(canvas);
-
-    cubeContent.appendChild(chartContainer);
-
-    const ctx = canvas.getContext('2d');
-    const selectedValue = originalRatings[attribute];
-    const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
-
-    new Chart(ctx, {
-        type: 'horizontalBar', // Change to horizontal bar
-        data: {
-            labels: ['Rating'],
-            datasets: [{
-                label: 'Selected Cube',
-                data: [selectedValue],
-                backgroundColor: 'blue',
-            }, {
-                label: 'Average',
-                data: [averageValue],
-                backgroundColor: 'red',
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        max: 10, // Force 0-10 range
-                    }
-                }],
-                yAxes: [{
-                    display: false // Since it's a horizontal bar, we'll hide the y-axis
+    // Re-apply the image and title
+    document.getElementById('sidebarCubeImage').src = imageUrl;
+    document.getElementById('sidebarTitle').textContent = itemName;
+    
+    const totalAttributes = Object.keys(originalRatings).length;
+    const maxContainerHeight = 500; // Adjust based on your dynamic calculations or needs
+    
+    Object.keys(originalRatings).forEach((attribute) => {
+        const chartContainer = document.createElement('div');
+        chartContainer.classList.add('chart-container');
+    
+        // Header for the attribute
+        const header = document.createElement('h3');
+        header.textContent = attribute;
+        header.style.textAlign = 'center';
+        chartContainer.appendChild(header);
+    
+        // Canvas for the chart
+        const canvas = document.createElement('canvas');
+        chartContainer.appendChild(canvas);
+    
+        cubeContent.appendChild(chartContainer);
+    
+        const ctx = canvas.getContext('2d');
+        const selectedValue = originalRatings[attribute];
+        const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
+    
+        new Chart(ctx, {
+            type: 'horizontalBar', // Change to horizontal bar
+            data: {
+                labels: ['Rating'],
+                datasets: [{
+                    label: 'Selected Cube',
+                    data: [selectedValue],
+                    backgroundColor: 'blue',
+                }, {
+                    label: 'Average',
+                    data: [averageValue],
+                    backgroundColor: 'red',
                 }]
             },
-            legend: {
-                display: true,
-                position: 'top',
-            },
-        }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 10, // Force 0-10 range
+                        }
+                    }],
+                    yAxes: [{
+                        display: false // Since it's a horizontal bar, we'll hide the y-axis
+                    }]
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+            }
+        });
     });
-});
 
 
 }
