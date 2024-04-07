@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', adjustImageSize);
 window.addEventListener('resize', adjustImageSize);
 
 
-let myBarChart;
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
     const sidebarCubeImage = document.getElementById('sidebarCubeImage');
@@ -174,34 +173,42 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
 
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
+    // Clear previous contents and set the image and title again
     cubeContent.innerHTML = '<h3 id="sidebarTitle"></h3><img id="sidebarCubeImage" src="" alt="Cube Image">';
-    // Re-apply the image and title
     document.getElementById('sidebarCubeImage').src = imageUrl;
     document.getElementById('sidebarTitle').textContent = itemName;
     
-    const totalAttributes = Object.keys(originalRatings).length;
-    const maxContainerHeight = 500; // Adjust based on your dynamic calculations or needs
-    
-    Object.keys(originalRatings).forEach((attribute) => {
+    // Calculate differences and sort
+    let attributesWithDifferences = Object.keys(originalRatings).map(attribute => {
+        const selectedValue = originalRatings[attribute];
+        const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
+        return {
+            attribute,
+            selectedValue,
+            averageValue,
+            difference: Math.abs(selectedValue - averageValue)
+        };
+    }).sort((a, b) => b.difference - a.difference); // Sort by difference, descending
+
+    // Now create chart containers and charts for each attribute, in sorted order
+    attributesWithDifferences.forEach(({ attribute, selectedValue, averageValue }) => {
         const chartContainer = document.createElement('div');
         chartContainer.classList.add('chart-container');
-    
+
         // Header for the attribute
         const header = document.createElement('h3');
         header.textContent = attribute;
         header.style.textAlign = 'center';
         chartContainer.appendChild(header);
-    
+
         // Canvas for the chart
         const canvas = document.createElement('canvas');
         chartContainer.appendChild(canvas);
-    
+
         cubeContent.appendChild(chartContainer);
-    
+
         const ctx = canvas.getContext('2d');
-        const selectedValue = originalRatings[attribute];
-        const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
-    
+
         new Chart(ctx, {
             type: 'bar', // Use 'bar' type for both vertical and horizontal bars
             data: {
