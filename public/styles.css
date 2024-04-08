@@ -285,17 +285,11 @@ span#thresholdValue {
 }
 
 .chart-container {
-    flex: 1; /* Each chart container will take up equal space */
-    margin: 5px 0; /* Adjust margin as needed */
-    padding: 5px; /* Adjust padding as needed */
-    display: flex;
-    flex-direction: column;
-}
-
-.chart-container h3 {
-    flex: 0 0 auto; /* The title takes up the space it needs, no more */
-}
-
-.chart-container canvas {
-    flex: 1; /* The canvas takes up the remaining space */
+    height: 100px;
+    padding: 5px; 
+    margin-bottom: 10px; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
 }
