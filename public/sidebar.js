@@ -203,24 +203,25 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     attributesWithDifferences.forEach(({ attribute, selectedValue, averageValue }) => {
         const chartContainer = document.createElement('div');
         chartContainer.classList.add('chart-container');
-
+    
         // Header for the attribute
         const header = document.createElement('h3');
         header.textContent = attribute;
         header.style.textAlign = 'center';
         chartContainer.appendChild(header);
-
-        // Canvas for the chart
-        const chartHeight = calculateChartHeight(chartContainer, header, 5, 10);
-        const canvas = document.createElement('canvas');
-        canvas.height = chartHeight; // Set the height of the canvas
-
-        chartContainer.appendChild(canvas);
-
+    
+        // Append the chart container before calculating height
         cubeContent.appendChild(chartContainer);
-
+    
+        // Now calculate the chart height
+        const chartHeight = calculateChartHeight(chartContainer, header, 5, 10);
+    
+        // Canvas for the chart
+        const canvas = document.createElement('canvas');
+        chartContainer.appendChild(canvas);
+        
         const ctx = canvas.getContext('2d');
-
+    
         new Chart(ctx, {
             type: 'bar', 
             data: {
@@ -271,7 +272,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     legend: {
                         display: false, 
                     },
-
                     datalabels: {
                         color: '#000',
                         font: {
@@ -280,10 +280,14 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     }
                 }
             },
+            // Set the height in the chart options
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                height: chartHeight
+            },
             plugins: [ChartDataLabels]
         });
-        
-        
     });
 
 
