@@ -145,6 +145,19 @@ function adjustImageSize() {
 document.addEventListener('DOMContentLoaded', adjustImageSize);
 window.addEventListener('resize', adjustImageSize);
 
+function calculateChartHeight(container, titleElement, padding, margin) {
+    // Height of the container
+    const containerHeight = container.clientHeight;
+
+    // Height of the title element
+    const titleHeight = titleElement.offsetHeight;
+
+    // Total vertical padding and margin
+    const totalVerticalPaddingMargin = 2 * (padding + margin);
+
+    // Calculate available height for the chart
+    return containerHeight - titleHeight - totalVerticalPaddingMargin;
+}
 
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
@@ -167,17 +180,12 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     document.getElementById('cubeContent').style.display = 'block';
     cubeContent.style.display = 'block';
         
-    // sidebarCubeImage.src = imageUrl;
-    // sidebarTitle.textContent = itemName;
-    
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
     // Clear previous contents and set the image and title again
     cubeContent.innerHTML = '<h3 id="sidebarTitle"></h3><img id="sidebarCubeImage" src="" alt="Cube Image">';
     document.getElementById('sidebarCubeImage').src = imageUrl;
     document.getElementById('sidebarTitle').textContent = itemName;
-    
-    // adjustImageSize();
 
     // Calculate differences and sort
     let attributesWithDifferences = Object.keys(originalRatings).map(attribute => {
@@ -203,7 +211,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         chartContainer.appendChild(header);
 
         // Canvas for the chart
+        const chartHeight = calculateChartHeight(chartContainer, header, 5, 10);
         const canvas = document.createElement('canvas');
+        canvas.height = chartHeight; // Set the height of the canvas
+
         chartContainer.appendChild(canvas);
 
         cubeContent.appendChild(chartContainer);
