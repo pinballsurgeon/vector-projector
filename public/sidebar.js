@@ -213,7 +213,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         // Canvas for the chart
         const chartHeight = ( calculateChartHeight(chartContainer, header, 5, 10) );
         const canvas = document.createElement('canvas');
-        canvas.height = chartHeight; // Set the height of the canvas
 
         chartContainer.appendChild(canvas);
 
