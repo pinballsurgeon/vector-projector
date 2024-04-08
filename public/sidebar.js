@@ -252,7 +252,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 }]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 maintainAspectRatio: false,
                 height: chartHeight,
                 indexAxis: 'y',
