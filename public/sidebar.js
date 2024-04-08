@@ -1,3 +1,5 @@
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 export let selectedModel;
 export let selectedTemperature;
 export let selectedTopP;
@@ -214,24 +216,28 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             data: {
                 labels: ['Rating'],
                 datasets: [{
-                    label: itemName, // Now using itemName directly as label
+                    label: itemName,
                     data: [selectedValue],
                     backgroundColor: 'blue',
-                    // Datalabels configuration for this dataset
                     datalabels: {
-                        align: 'end',
-                        anchor: 'end',
-                        color: '#fff', // White text color for better visibility
+                        align: 'center',
+                        anchor: 'center',
+                        formatter: function(value, context) {
+                            return context.dataset.label; // This will use the label from the dataset
+                        },
+                        color: '#fff',
                     }
                 }, {
-                    label: 'All Other Avg.', // Label for average values
+                    label: 'All Other Avg.',
                     data: [averageValue],
                     backgroundColor: 'red',
-                    // Datalabels configuration for this dataset
                     datalabels: {
-                        align: 'start',
-                        anchor: 'start',
-                        color: '#fff', // White text color for better visibility
+                        align: 'center',
+                        anchor: 'center',
+                        formatter: function(value, context) {
+                            return context.dataset.label; // This will use the label from the dataset
+                        },
+                        color: '#fff',
                     }
                 }]
             },
