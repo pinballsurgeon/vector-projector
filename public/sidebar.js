@@ -258,18 +258,18 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 },
                 plugins: {
                     legend: {
-                        display: false, // Hide the legend
+                        display: false, 
                     },
-                    // Enable datalabels plugin with some global configuration if needed
+
                     datalabels: {
-                        color: '#000',
+                        color: '#fff',
                         font: {
                             weight: 'bold'
                         }
                     }
                 }
             },
-            plugins: [ChartDataLabels] // Ensure the datalabels plugin is registered
+            plugins: [ChartDataLabels]
         });
         
         
