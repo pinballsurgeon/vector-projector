@@ -148,8 +148,8 @@ window.addEventListener('resize', adjustImageSize);
 
 
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
-    const sidebarCubeImage = document.getElementById('sidebarCubeImage');
-    const sidebarTitle = document.getElementById("sidebarTitle");
+    // const sidebarCubeImage = document.getElementById('sidebarCubeImage');
+    // const sidebarTitle = document.getElementById("sidebarTitle");
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
@@ -167,11 +167,9 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     document.getElementById('cubeContent').style.display = 'block';
     cubeContent.style.display = 'block';
         
-    sidebarCubeImage.src = imageUrl;
-    sidebarTitle.textContent = itemName;
+    // sidebarCubeImage.src = imageUrl;
+    // sidebarTitle.textContent = itemName;
     
-    adjustImageSize();
-
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
     // Clear previous contents and set the image and title again
@@ -179,6 +177,8 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     document.getElementById('sidebarCubeImage').src = imageUrl;
     document.getElementById('sidebarTitle').textContent = itemName;
     
+    adjustImageSize();
+
     // Calculate differences and sort
     let attributesWithDifferences = Object.keys(originalRatings).map(attribute => {
         const selectedValue = originalRatings[attribute];
@@ -262,7 +262,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     },
 
                     datalabels: {
-                        color: '#fff',
+                        color: '#000',
                         font: {
                             weight: 'bold'
                         }
