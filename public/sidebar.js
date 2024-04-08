@@ -177,7 +177,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     document.getElementById('sidebarCubeImage').src = imageUrl;
     document.getElementById('sidebarTitle').textContent = itemName;
     
-    adjustImageSize();
+    // adjustImageSize();
 
     // Calculate differences and sort
     let attributesWithDifferences = Object.keys(originalRatings).map(attribute => {
