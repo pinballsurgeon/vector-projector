@@ -1,4 +1,3 @@
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 export let selectedModel;
 export let selectedTemperature;
