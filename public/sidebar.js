@@ -270,7 +270,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     },
 
                     datalabels: {
-                        color: '#000',
+                        color: '#fff',
                         font: {
                             weight: 'bold'
                         }
