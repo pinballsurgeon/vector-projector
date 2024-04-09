@@ -199,25 +199,23 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         };
     }).sort((a, b) => b.difference - a.difference); // Sort by difference, descending
 
-    // Now create chart containers and charts for each attribute, in sorted order
     attributesWithDifferences.forEach(({ attribute, selectedValue, averageValue }) => {
         const chartContainer = document.createElement('div');
         chartContainer.classList.add('chart-container');
-
+    
         // Header for the attribute
         const header = document.createElement('h3');
         header.textContent = attribute;
         header.style.textAlign = 'center';
         chartContainer.appendChild(header);
-
+    
         // Canvas for the chart
-        const chartHeight = ( calculateChartHeight(chartContainer, header, 5, 10) );
         const canvas = document.createElement('canvas');
-
+        canvas.style.width = '100%'; // Set the width to 100% to fill the container
         chartContainer.appendChild(canvas);
-
+    
         cubeContent.appendChild(chartContainer);
-
+    
         const ctx = canvas.getContext('2d');
 
         new Chart(ctx, {
@@ -253,8 +251,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             options: {
                 responsive: false,
                 maintainAspectRatio: false,
-                height: 20,
-                width: 20,
+                height: chartHeight,
                 indexAxis: 'y',
                 scales: {
                     x: { 

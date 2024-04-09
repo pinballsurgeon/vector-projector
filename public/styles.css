@@ -121,14 +121,24 @@ div[style*="width: 70%;"] {
 
 
 .chart-container {
-    padding: 5px; 
-    margin-bottom: 10px; 
-    border: 1px solid #e0e0e0; 
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-    box-sizing: border-box;
-    max-width: 100%
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    flex: 1; /* Allow the canvas to expand to fill the container */
+    /* Remove any explicit height if it was previously set */
+}
+
+.chart-container h3 {
+    /* The header takes up the space it needs */
+    flex: 0;
 }
 
 #groupsContent {
