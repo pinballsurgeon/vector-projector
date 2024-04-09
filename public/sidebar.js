@@ -244,7 +244,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                         formatter: function(value, context) {
                             return context.dataset.label; // This will use the label from the dataset
                         },
-                        color: '#fff',
+                        color: '#000',
                     }
                 }]
             },
