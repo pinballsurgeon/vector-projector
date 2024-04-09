@@ -267,13 +267,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 plugins: {
                     legend: {
                         display: false, 
-                    },
-
-                    datalabels: {
-                        color: '#fff',
-                        font: {
-                            weight: 'bold'
-                        }
                     }
                 }
             },
