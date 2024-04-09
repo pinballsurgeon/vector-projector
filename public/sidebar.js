@@ -145,24 +145,7 @@ function adjustImageSize() {
 document.addEventListener('DOMContentLoaded', adjustImageSize);
 window.addEventListener('resize', adjustImageSize);
 
-function calculateChartHeight(container, titleElement, padding, margin) {
-    // Height of the container
-    const containerHeight = container.clientHeight;
-
-    // Height of the title element
-    const titleHeight = titleElement.offsetHeight;
-
-    // Total vertical padding and margin
-    const totalVerticalPaddingMargin = 2 * (padding + margin);
-
-    // Calculate available height for the chart
-    return containerHeight - titleHeight - totalVerticalPaddingMargin;
-}
-
-
 export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes) {
-    // const sidebarCubeImage = document.getElementById('sidebarCubeImage');
-    // const sidebarTitle = document.getElementById("sidebarTitle");
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
     const modelParametersContent = document.getElementById('modelParametersContent');
