@@ -198,7 +198,15 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
         chartContainer.appendChild(canvas);
     
         cubeContent.appendChild(chartContainer);
-    
+
+        const headerHeight = header.offsetHeight; // Get the actual height of the header
+        const containerPadding = parseInt(window.getComputedStyle(chartContainer).paddingTop, 10) +
+                                parseInt(window.getComputedStyle(chartContainer).paddingBottom, 10);
+        const availableHeight = chartContainer.clientHeight - headerHeight - containerPadding;
+
+        // Set this height on the chart canvas
+        canvas.style.height = `${availableHeight}px`;
+            
         const ctx = canvas.getContext('2d');
 
         new Chart(ctx, {
@@ -216,6 +224,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                             return context.dataset.label;
                         },
                         color: '#000',
+                        font: {
+                            size: '12', 
+                            weight: 'bold'
+                        },
                     }
                 }, {
                     label: 'All Others',
@@ -224,10 +236,15 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     datalabels: {
                         align: 'center',
                         anchor: 'center',
-                        formatter: function(value, context) {
-                            return context.dataset.label;
-                        },
                         color: '#000',
+                        font: function(context) {
+                            const width = context.chart.width;
+                            const size = Math.round(width / 32);
+                            return {
+                                size: size,
+                                weight: 'bold'
+                            };
+                        }
                     }
                 }]
             },
