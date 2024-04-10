@@ -194,7 +194,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
         // Canvas for the chart
         const canvas = document.createElement('canvas');
-        canvas.style.width = '100%'; // Set the width to 100% to fill the container
+        canvas.style.width = '100%';
         chartContainer.appendChild(canvas);
     
         cubeContent.appendChild(chartContainer);
@@ -213,19 +213,19 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                         align: 'center',
                         anchor: 'center',
                         formatter: function(value, context) {
-                            return context.dataset.label; // This will use the label from the dataset
+                            return context.dataset.label;
                         },
-                        color: '#fff',
+                        color: '#000',
                     }
                 }, {
-                    label: 'All Other Avg.',
+                    label: 'All Others',
                     data: [averageValue],
                     backgroundColor: 'red',
                     datalabels: {
                         align: 'center',
                         anchor: 'center',
                         formatter: function(value, context) {
-                            return context.dataset.label; // This will use the label from the dataset
+                            return context.dataset.label;
                         },
                         color: '#000',
                     }
