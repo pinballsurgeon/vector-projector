@@ -216,7 +216,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 datasets: [{
                     label: itemName,
                     data: [selectedValue],
-                    backgroundColor: 'blue',
+                    backgroundColor: '#b3ffb3',
                     datalabels: {
                         align: 'center',
                         anchor: 'center',
@@ -232,7 +232,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                 }, {
                     label: 'All Others',
                     data: [averageValue],
-                    backgroundColor: 'red',
+                    backgroundColor: '#ffcce6',
                     datalabels: {
                         align: 'center',
                         anchor: 'center',
