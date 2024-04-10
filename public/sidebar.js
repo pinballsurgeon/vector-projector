@@ -237,6 +237,9 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                         align: 'center',
                         anchor: 'center',
                         color: '#000',
+                        formatter: function(value, context) {
+                            return context.dataset.label;
+                        },
                         font: function(context) {
                             const width = context.chart.width;
                             const size = Math.round(width / 32);
