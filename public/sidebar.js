@@ -241,7 +241,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                             return context.dataset.label;
                         },
                         font: function(context) {
-                            const width = context.chart.width;
+                            const width = context.chart.height;
                             const size = Math.round(width / 32);
                             return {
                                 size: size,
