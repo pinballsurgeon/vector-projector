@@ -127,6 +127,7 @@ div[style*="width: 70%;"] {
 }
 
 .chart-container canvas {
+    max-height: 100%;
     flex: 1;
 }
 
