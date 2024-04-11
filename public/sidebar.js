@@ -224,8 +224,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                         },
                         color: '#000',
                         font: {
-                            size: '12', 
-                            weight: 'bold'
+                            size: '10'
                         },
                     }
                 }, {
@@ -239,8 +238,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                             return context.dataset.label;
                         },
                         font: {
-                            size: '12', 
-                            weight: 'bold'
+                            size: '10'
                         },
                     }
                 }]
