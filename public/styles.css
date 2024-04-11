@@ -24,13 +24,13 @@ body {
 }
 
 #header img {
-    width: 30%; /* Makes the image width 50% of the #header container */
-    height: auto; /* Maintains the aspect ratio of the image */
-    display: block; /* Removes bottom margin/whitespace */
-    margin: 0 auto; /* Center the image horizontally */
+    width: 30%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
-#auth-status button, #search-container input, #search-container button, .tab button, #modelSelectionDropdown, #new-sidebar-container, #auth-status span select {
+#chart-container, #chart-container canvas, #auth-status button, #search-container input, #search-container button, .tab button, #modelSelectionDropdown, #new-sidebar-container, #auth-status span select {
     font-size: calc(12px + (6 * (100vw - 1001px) / (2144 - 1001)));
 }
 
