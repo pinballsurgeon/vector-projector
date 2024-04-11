@@ -234,7 +234,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     data: [averageValue],
                     backgroundColor: '#ffcce6',
                     datalabels: {
-                        align: 'center',
+                        align: 'left',
                         anchor: 'center',
                         color: '#000',
                         formatter: function(value, context) {
