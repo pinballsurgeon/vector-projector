@@ -240,14 +240,10 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                         formatter: function(value, context) {
                             return context.dataset.label;
                         },
-                        font: function(context) {
-                            const width = context.chart.height;
-                            const size = Math.round(width / 32);
-                            return {
-                                size: size,
-                                weight: 'bold'
-                            };
-                        }
+                        font: {
+                            size: '12', 
+                            weight: 'bold'
+                        },
                     }
                 }]
             },
