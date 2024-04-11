@@ -219,7 +219,6 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     backgroundColor: '#b3ffb3',
                     datalabels: {
                         align: 'left',
-                        anchor: 'left',
                         formatter: function(value, context) {
                             return context.dataset.label;
                         },
