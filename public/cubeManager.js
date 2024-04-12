@@ -27,6 +27,35 @@ controls.update();
 // Container for cube features
 export let cubes = [];
 
+function createTextSprite(message, fontSize = 24, fontFace = 'Arial', textColor = '#FFFFFF') {
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = `${fontSize}px ${fontFace}`;
+
+    // Set canvas size based on text width
+    const metrics = context.measureText(message);
+    const textWidth = metrics.width;
+    canvas.width = textWidth;
+    canvas.height = fontSize * 1.5; // Roughly enough for most fonts
+
+    // Need to reset font since canvas was resized
+    context.font = `${fontSize}px ${fontFace}`;
+    context.fillStyle = textColor;
+    context.fillText(message, 0, fontSize);
+
+    // Use canvas contents as a texture
+    const texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+
+    // Create sprite material and sprite
+    const material = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.set(2, 1, 1); // Scale sprite as needed
+
+    return sprite;
+}
+
 
 export const createOrUpdateCube = (data) => {
 
@@ -35,6 +64,14 @@ export const createOrUpdateCube = (data) => {
 
     const textureLoader = new THREE.TextureLoader();
     let cubeCreationPromises = [];
+
+    const keys = Object.keys(data);
+    for (let i = keys.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [keys[i], keys[j]] = [keys[j], keys[i]];
+    }
+    
+    const selectedKeys = keys.slice(0, 5);
 
     for (let itemName in data) {
         const item = data[itemName];
@@ -45,8 +82,7 @@ export const createOrUpdateCube = (data) => {
             continue; // Skip this iteration and move to the next item
         }
 
-        // Create a new promise for each cube
-        let cubePromise = new Promise((resolve) => {  // Note: Only using resolve here
+        let cubePromise = new Promise((resolve) => { 
             const xPos = parseFloat(item.coordinates.x);
             const yPos = parseFloat(item.coordinates.y);
             const zPos = parseFloat(item.coordinates.z);
@@ -63,7 +99,23 @@ export const createOrUpdateCube = (data) => {
                     scene.add(cube);
                     cubes.push(cube);
 
-                    resolve(); // Resolve the promise when the cube is loaded
+                    if (selectedKeys.includes(cube.userData.itemName)) {
+                        const labelSprite = createTextSprite(cube.userData.itemName);
+                        labelSprite.position.set(cube.position.x, cube.position.y + 1.5, cube.position.z); 
+                        scene.add(labelSprite);
+                    }
+
+                    if (selectedKeys.includes(cube.userData.itemName)) {
+                        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+                        const lineGeometry = new THREE.Geometry();
+                        lineGeometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
+                        lineGeometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y + 1.5, cube.position.z));
+                
+                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        scene.add(line);
+                    }
+
+                    resolve();
                 },
                 undefined, 
                 (error) => {
@@ -75,6 +127,7 @@ export const createOrUpdateCube = (data) => {
 
         cubeCreationPromises.push(cubePromise);
     }
+
 
     // Return a promise that resolves when all cubes have been created, including those that failed to load
     return Promise.all(cubeCreationPromises);
