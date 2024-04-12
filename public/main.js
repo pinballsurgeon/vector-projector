@@ -25,39 +25,6 @@ document.addEventListener("DOMContentLoaded", function() {
 const askButton = document.getElementById('askButton');
 const userInput = document.getElementById('userInput');
 
-
-
-function createTextSprite(message, fontSize = 24, fontFace = 'Arial', textColor = '#FFFFFF') {
-    // Create a canvas element
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.font = `${fontSize}px ${fontFace}`;
-
-    // Set canvas size based on text width
-    const metrics = context.measureText(message);
-    const textWidth = metrics.width;
-    canvas.width = textWidth;
-    canvas.height = fontSize * 1.5; // Roughly enough for most fonts
-
-    // Need to reset font since canvas was resized
-    context.font = `${fontSize}px ${fontFace}`;
-    context.fillStyle = textColor;
-    context.fillText(message, 0, fontSize);
-
-    // Use canvas contents as a texture
-    const texture = new THREE.Texture(canvas);
-    texture.needsUpdate = true;
-
-    // Create sprite material and sprite
-    const material = new THREE.SpriteMaterial({ map: texture });
-    const sprite = new THREE.Sprite(material);
-    sprite.scale.set(2, 1, 1); // Scale sprite as needed
-
-    return sprite;
-}
-
-
-
 askButton.addEventListener('click', async () => {
     const userInputValue = userInput.value.trim().toLowerCase();
     const { model } = getModelAndParams();
