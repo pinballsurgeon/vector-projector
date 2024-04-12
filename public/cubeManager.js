@@ -106,12 +106,13 @@ export const createOrUpdateCube = (data) => {
                     }
 
                     if (selectedKeys.includes(cube.userData.itemName)) {
-                        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-                        const lineGeometry = new THREE.Geometry();
-                        lineGeometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
-                        lineGeometry.vertices.push(new THREE.Vector3(cube.position.x, cube.position.y + 1.5, cube.position.z));
-                
-                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+                        const points = [];
+                        points.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
+                        points.push(new THREE.Vector3(cube.position.x, cube.position.y + 1.5, cube.position.z));
+                        
+                        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                        const line = new THREE.Line(geometry, material);
                         scene.add(line);
                     }
 
