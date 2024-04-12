@@ -121,7 +121,7 @@ export const createOrUpdateCube = (data) => {
                 undefined, 
                 (error) => {
                     appendLog(`Failed to load texture from URL ${jpgData}. Error: ${error}`);
-                    resolve(); // Still resolve the promise on error but without an 'error' flag to allow iteration to continue
+                    resolve(); 
                 }
             );
         });
@@ -130,29 +130,20 @@ export const createOrUpdateCube = (data) => {
     }
 
 
-    // Return a promise that resolves when all cubes have been created, including those that failed to load
     return Promise.all(cubeCreationPromises);
 };
 
 
-
-// Make function globally available
 window.createOrUpdateCube = createOrUpdateCube;
 
 
-
-
-
-// Animation
 export const animate = function () {
     requestAnimationFrame(animate);
 
-    // Update the camera's position
     scene.rotation.y += 0.001;
 
-    angle += speed; // Increment the angle
+    angle += speed; 
 
-    // Ensure the camera keeps looking at the center of the scene
     camera.lookAt(scene.position);
 
     controls.update();
@@ -163,32 +154,24 @@ export const animate = function () {
 
 animate(); 
 
-// CLICK INTERACTION
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
-// ray caster
 export const raycaster = new THREE.Raycaster();
 export const mouse = new THREE.Vector2();
 
 function onCubeClick(intersectedCube) {
 
-    // Make sure to access nested 'object' and then 'userData' properties
     const imageUrl = intersectedCube.userData.image;
-    // appendLog(`image url - ${imageUrl}`);
     const itemName = intersectedCube.userData.itemName;
     
-    // appendLog(`image name - ${itemName}`);
+
     const originalRatings = intersectedCube.userData.originalRatings;
-    // appendLog(`original ratings - ${JSON.stringify(originalRatings)}`);
 
     setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes);
     
-    // Update the new sidebar selector to 'Cube Analytics'
     const newSidebarSelector = document.getElementById('newSidebarSelector');
     newSidebarSelector.value = 'cubeContent';
-    // document.getElementById('cubeName').textContent = itemName;
-
-    // Call the updateSidebarContent function with the new value
+    
     updateSidebarContent('cubeContent');
 }
 
