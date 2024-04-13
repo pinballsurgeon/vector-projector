@@ -2,19 +2,15 @@ import { appendLog, updateSidebarContent, setCubeImageInSidebar } from './sideba
 import { clearSpheres } from './sphereManager.js';
 import { checkForSphereClick } from './sphereManager.js';
 
-// Create scene, camera, and renderer
 export const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 export const renderer = new THREE.WebGLRenderer({ antialias: true });
-//renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Define some variables for rotation
-let angle = 0; // Starting angle
-let speed = 0.01; // Define this based on how fast you want the rotation to be
+let angle = 0;
+let speed = 0.01;
 
 camera.position.z = 20;
 
-// Attach renderer to 'my_dataviz' div
 document.getElementById('my_dataviz').appendChild(renderer.domElement);
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -24,34 +20,29 @@ renderer.setSize(my_dataviz.clientWidth, my_dataviz.clientHeight);
 
 controls.update();
 
-// Container for cube features
 export let cubes = [];
 
 function createTextSprite(message, fontSize = 24, fontFace = 'Arial', textColor = '#FFFFFF') {
-    // Create a canvas element
+
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     context.font = `${fontSize}px ${fontFace}`;
 
-    // Set canvas size based on text width
     const metrics = context.measureText(message);
     const textWidth = metrics.width;
     canvas.width = textWidth;
-    canvas.height = fontSize * 1.5; // Roughly enough for most fonts
+    canvas.height = fontSize * 1.5;
 
-    // Need to reset font since canvas was resized
     context.font = `${fontSize}px ${fontFace}`;
     context.fillStyle = textColor;
     context.fillText(message, 0, fontSize);
 
-    // Use canvas contents as a texture
     const texture = new THREE.Texture(canvas);
     texture.needsUpdate = true;
 
-    // Create sprite material and sprite
     const material = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(material);
-    sprite.scale.set(2, 1, 1); // Scale sprite as needed
+    sprite.scale.set(2, 1, 1);
 
     return sprite;
 }
@@ -76,10 +67,9 @@ export const createOrUpdateCube = (data) => {
     for (let itemName in data) {
         const item = data[itemName];
 
-        // Check if coordinates or image data are missing, skip to the next item if so
         if (!item.coordinates || !item.image || typeof item.coordinates.x === 'undefined' || typeof item.coordinates.y === 'undefined' || typeof item.coordinates.z === 'undefined') {
             appendLog(`Skipping ${itemName} due to missing data.`);
-            continue; // Skip this iteration and move to the next item
+            continue; 
         }
 
         let cubePromise = new Promise((resolve) => { 
@@ -99,9 +89,21 @@ export const createOrUpdateCube = (data) => {
                     scene.add(cube);
                     cubes.push(cube);
 
+                    if (cube.position.x < 0) {
+                        x_label_offset = -1.5;
+                    } else {
+                        x_label_offset = 1.5;
+                    }
+
+                    if (cube.position.y < 0) {
+                        y_label_offset = -1.5;
+                    } else {
+                        y_label_offset = 1.5;
+                    }
+
                     if (selectedKeys.includes(cube.userData.itemName)) {
                         const labelSprite = createTextSprite(cube.userData.itemName);
-                        labelSprite.position.set(cube.position.x, cube.position.y + 1.5, cube.position.z); 
+                        labelSprite.position.set(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z); 
                         scene.add(labelSprite);
                     }
 
@@ -109,7 +111,7 @@ export const createOrUpdateCube = (data) => {
                         const material = new THREE.LineBasicMaterial({ color: 0xffffff });
                         const points = [];
                         points.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
-                        points.push(new THREE.Vector3(cube.position.x, cube.position.y + 1.5, cube.position.z));
+                        points.push(new THREE.Vector3(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z));
                         
                         const geometry = new THREE.BufferGeometry().setFromPoints(points);
                         const line = new THREE.Line(geometry, material);
@@ -129,13 +131,10 @@ export const createOrUpdateCube = (data) => {
         cubeCreationPromises.push(cubePromise);
     }
 
-
     return Promise.all(cubeCreationPromises);
 };
 
-
 window.createOrUpdateCube = createOrUpdateCube;
-
 
 export const animate = function () {
     requestAnimationFrame(animate);
@@ -171,31 +170,24 @@ function onCubeClick(intersectedCube) {
     
     const newSidebarSelector = document.getElementById('newSidebarSelector');
     newSidebarSelector.value = 'cubeContent';
-    
+
     updateSidebarContent('cubeContent');
 }
 
-
-// Check for type of object clicked
 function checkForCubeClick() {
 
-    // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 
-    // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(cubes);
 
     if (intersects.length > 0) {
 
-        // Assuming cubes are the primary target, but can be refined further
         onCubeClick(intersects[0].object);
     }
 }
 
-// Check for user clocking mouse
 function onMouseClick(event) {
 
-    // ensure only expected items for clickery ect.
     if(event.target !== renderer.domElement) return;
 
     const rect = renderer.domElement.getBoundingClientRect();
@@ -228,7 +220,6 @@ function createHistogramData(distances, binCount) {
     return { histogramData, binRanges };
 }
 
-
 function calculateDistancesToCentroid(cubes) {
     const centroid = calculateCentroid(cubes);
     let distances = cubes.map(cube => {
@@ -240,7 +231,6 @@ function calculateDistancesToCentroid(cubes) {
     });
     return distances;
 }
-
 
 function calculateCentroid(cubes) {
     let sumX = 0, sumY = 0, sumZ = 0, count = 0;
@@ -283,7 +273,7 @@ function calculatePairwiseDistances(cubes) {
             count++;
         }
     }
-    return totalDistance / count; // average distance
+    return totalDistance / count;
 }
 
 function estimateDensity(cubes, radius) {
@@ -297,9 +287,9 @@ function estimateDensity(cubes, radius) {
             );
             if (distance <= radius) count++;
         });
-        return count; // Number of points within the radius
+        return count;
     });
-    return densities; // Array of densities for each point
+    return densities;
 }
 
 function drawBoundingBox(boundingBox) {
@@ -341,24 +331,21 @@ export function updateVectorMetricsContent() {
 
     appendLog(`Vector Metrics - Start`);
     const vectorMetricsContent = document.getElementById('vectorMetricsContent');
-    vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>'; // Reset content
+    vectorMetricsContent.innerHTML = '<p>Vector SALLY Metrics:</p>';
 
     const centroid = calculateCentroid(cubes);
     const boundingBox = calculateBoundingBox(cubes);
     const avgDistance = calculatePairwiseDistances(cubes);
     const densities = estimateDensity(cubes, (avgDistance / 2).toFixed(0));
 
-    // Display these values in vectorMetricsContent
     vectorMetricsContent.innerHTML += `<p>Centroid: (${centroid.x.toFixed(8)}, ${centroid.y.toFixed(8)}, ${centroid.z.toFixed(8)})</p>`;
     vectorMetricsContent.innerHTML += `<p>Bounding Box: Min (${boundingBox.minX.toFixed(2)}, ${boundingBox.minY.toFixed(2)}, ${boundingBox.minZ.toFixed(2)}) - Max (${boundingBox.maxX.toFixed(2)}, ${boundingBox.maxY.toFixed(2)}, ${boundingBox.maxZ.toFixed(2)})</p>`;
     vectorMetricsContent.innerHTML += `<p>Average Pairwise Distance: ${avgDistance.toFixed(2)}</p>`;
     vectorMetricsContent.innerHTML += `<p>Estimated Density: ${densities}</p>`;
 
-    // Calculate distances to centroid and create histogram data
     const distances = calculateDistancesToCentroid(cubes);
-    const { histogramData, binRanges } = createHistogramData(distances, 10); // 10 bins
+    const { histogramData, binRanges } = createHistogramData(distances, 10);
 
-    // Create the histogram chart
     const histogramCanvas = document.createElement('canvas');
     vectorMetricsContent.appendChild(histogramCanvas);
     const ctx = histogramCanvas.getContext('2d');
@@ -368,7 +355,7 @@ export function updateVectorMetricsContent() {
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: binRanges, // Use binRanges as labels
+            labels: binRanges, 
             datasets: [{
                 label: 'Number of Cubes',
                 data: histogramData,
@@ -390,10 +377,8 @@ export function updateVectorMetricsContent() {
     vectorMetricsContent.appendChild(densityHistogramCanvas);
     const densityCtx = densityHistogramCanvas.getContext('2d');
 
-    // Calculate histogram data for densities
     const { histogramData: densityHistogramData, labels: densityLabels } = calculateDensityHistogramData(densities);
 
-    // Create the density histogram chart
     new Chart(densityCtx, {
         type: 'bar',
         data: {
@@ -417,8 +402,6 @@ export function updateVectorMetricsContent() {
 
 }
 
-
-
 export function clearCanvas() {
 
     cubes.forEach(cube => scene.remove(cube));
@@ -428,14 +411,13 @@ export function clearCanvas() {
         let object = scene.children[0];
 
         if (object.isMesh) {
-            // Dispose geometry and material
             if (object.geometry) {
                 object.geometry.dispose();
             }
 
             if (object.material) {
                 if (object.material instanceof Array) {
-                    // In case of multi-materials
+
                     object.material.forEach(material => material.dispose());
                 } else {
                     object.material.dispose();

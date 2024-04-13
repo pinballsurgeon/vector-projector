@@ -90,8 +90,6 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
   updateSpheres(thresholdValue, minCubesValue, overlapValue);
 });
 
-
-
 async function openModelTab(evt) {
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
