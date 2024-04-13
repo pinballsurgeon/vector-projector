@@ -279,7 +279,6 @@ span#thresholdValue {
     gap: 10px;
 }
 
-
 #askButton {
     padding: 8px;
     background-color: #4CAF50;
@@ -299,4 +298,3 @@ span#thresholdValue {
     border: 1px solid #ccc; 
     border-radius: 4px; 
 }
-

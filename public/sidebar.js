@@ -219,13 +219,13 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     backgroundColor: '#b3ffb3',
                     datalabels: {
                         align: 'center',
-                        anchor: 'center',
+                        anchor: 'right',
                         formatter: function(value, context) {
                             return context.dataset.label;
                         },
                         color: '#000',
                         font: {
-                            size: '10'
+                            size: '12'
                         },
                     }
                 }, {
@@ -234,13 +234,13 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
                     backgroundColor: '#ffcce6',
                     datalabels: {
                         align: 'center',
-                        anchor: 'center',
+                        anchor: 'right',
                         color: '#000',
                         formatter: function(value, context) {
                             return context.dataset.label;
                         },
                         font: {
-                            size: '10'
+                            size: '12'
                         },
                     }
                 }]

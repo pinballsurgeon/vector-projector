@@ -14,13 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   fetchPreviousQueries();
-  // Initialize default content for the sidebar
   updateSidebarContent(newSidebarSelector.value);
-  initializeModels();                 // Fetch models on page load
-  initializeModelParams();            // Fetch model parameters on page load
-  initializePrompts();                // Fetch prompts on page load
+  initializeModels();
+  initializeModelParams();
+  initializePrompts();
 });
-
 
 const askButton = document.getElementById('askButton');
 const userInput = document.getElementById('userInput');
