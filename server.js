@@ -478,8 +478,8 @@ app.post('/entropy_db', async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             ON CONFLICT (query, model) 
             DO UPDATE SET 
-                items_number = EXCLUDED.items, 
-                pairwise_number = EXCLUDED.pairwise,
+                items_number = EXCLUDED.items_number, 
+                pairwise_number = EXCLUDED.pairwise_number,
                 density = EXCLUDED.density,
                 volume = EXCLUDED.volume,
                 entropy = EXCLUDED.entropy
