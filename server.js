@@ -473,20 +473,29 @@ app.post('/entropy_db', async (req, res) => {
         await client.connect();
         const { items, pairwise, density, volume, entropy, query, model } = req.body;
 
-        await client.query(`
+        const queryText = `
             INSERT INTO entropy (items, pairwise, density, volume, entropy, query, model)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
-            ON CONFLICT (model, query) 
-            DO UPDATE SET cube_data = EXCLUDED.cube_data
-        `, [items, pairwise, density, volume, entropy, query, model]);
-        res.status(200).send("Done");
+            ON CONFLICT (query, model) 
+            DO UPDATE SET 
+                items = EXCLUDED.items, 
+                pairwise = EXCLUDED.pairwise,
+                density = EXCLUDED.density,
+                volume = EXCLUDED.volume,
+                entropy = EXCLUDED.entropy
+        `;
+
+        // Execute the query with the provided values
+        await client.query(queryText, [items, pairwise, density, volume, entropy, query, model]);
+        res.status(200).send("Record added or updated successfully.");
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        client.end();
+        await client.end();  // Ensure the client disconnects properly
     }
 });
+
 
 app.get('/check_query', async (req, res) => {
     const client = new Client({
