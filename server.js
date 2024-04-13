@@ -474,12 +474,12 @@ app.post('/entropy_db', async (req, res) => {
         const { items, pairwise, density, volume, entropy, query, model } = req.body;
 
         const queryText = `
-            INSERT INTO entropy (items, pairwise, density, volume, entropy, query, model)
+            INSERT INTO entropy (items_number, pairwise_number, density, volume, entropy, query, model)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             ON CONFLICT (query, model) 
             DO UPDATE SET 
-                items = EXCLUDED.items, 
-                pairwise = EXCLUDED.pairwise,
+                items_number = EXCLUDED.items, 
+                pairwise_number = EXCLUDED.pairwise,
                 density = EXCLUDED.density,
                 volume = EXCLUDED.volume,
                 entropy = EXCLUDED.entropy
