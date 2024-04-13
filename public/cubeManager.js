@@ -93,15 +93,15 @@ export const createOrUpdateCube = (data) => {
                     let y_label_offset = 0;
 
                     if (cube.position.x < 0) {
-                        x_label_offset = -1.5;
+                        x_label_offset = -2.5;
                     } else {
-                        x_label_offset = 1.5;
+                        x_label_offset = 2.5;
                     }
 
                     if (cube.position.y < 0) {
-                        y_label_offset = -1.5;
+                        y_label_offset = -2.5;
                     } else {
-                        y_label_offset = 1.5;
+                        y_label_offset = 2.5;
                     }
 
                     if (selectedKeys.includes(cube.userData.itemName)) {
