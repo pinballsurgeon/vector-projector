@@ -186,6 +186,27 @@ async function compareModels() {
         appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
         appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
         compareContainer.appendChild(modelDiv);
+
+        const payload = {
+            items: modelResult.numberOfCubes,
+            pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
+            density: modelResult.averageDensities.toFixed(2),
+            volume: modelResult.boundingBoxVolume.toFixed(2),
+            entropy: modelResult.shannonEntropy.toFixed(2),
+            query: userInputValue,
+            model
+        };
+            
+        fetch('/entropy_db', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+
+
     });
 
 }

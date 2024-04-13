@@ -462,6 +462,31 @@ app.post('/vector_db', async (req, res) => {
     }
 });
 
+app.post('/entropy_db', async (req, res) => {
+    const client = new Client({
+        connectionString: process.env.pgsql_conn,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+    try {
+        await client.connect();
+        const { items, pairwise, density, volume, entropy, query, model } = req.body;
+
+        await client.query(`
+            INSERT INTO entropy (items, pairwise, density, volume, entropy, query, model)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            ON CONFLICT (model, query) 
+            DO UPDATE SET cube_data = EXCLUDED.cube_data
+        `, [items, pairwise, density, volume, entropy, query, model]);
+        res.status(200).send("Done");
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    } finally {
+        client.end();
+    }
+});
 
 app.get('/check_query', async (req, res) => {
     const client = new Client({
