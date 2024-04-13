@@ -61,14 +61,11 @@ askButton.addEventListener('click', async () => {
         console.error("Error:", error);
         alert("An error occurred while processing your request.");
     } finally {
-        // Re-enable the askButton after processing is complete
         askButton.disabled = false;
-        askButton.textContent = 'Ask'; // Reset button text
+        askButton.textContent = 'Ask';
     }
 });
 
-
-// Event listener for the sliders
 document.getElementById('sphereThreshold').addEventListener('input', function() {
   const thresholdValue = parseFloat(this.value);
   const minCubesValue = parseInt(document.getElementById('minCubesSlider').value);
@@ -94,23 +91,18 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 });
 
 
-// async function openModelTab(evt, modelName) {
+
 async function openModelTab(evt) {
-    // Hide the compare container and show the canvas container
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
 
-
-    // Declare all variables
     let i, tablinks;
 
-    // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
-    // // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById('tab-model').style.display = "block";
     evt.currentTarget.className += " active";
 
@@ -119,16 +111,10 @@ async function openModelTab(evt) {
         return;
     }
 
-
     const { model } = getModelAndParams();
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     
-    appendLog(`Model during OpenTab - ${model}`);
-    appendLog(`User Input during OpenTab - ${userInputValue}`);
-    appendLog(`query params - ${queryParams}`);
-
     updateSidebarContent();
-
 
     try {
         const response = await fetch(`/check_query?${queryParams}`);
@@ -138,22 +124,11 @@ async function openModelTab(evt) {
             await createOrUpdateCube(data.pcaResult);
             updateVectorMetricsContent();
         }
-        // } else {
-        //     const rootList = await listPerpetuator();
-        // }
+
     } catch (error) {
         appendLog(`Error: ${error}`);
     }
 }
-
-// document.getElementById('tab-claude-v2').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v2'));
-// document.getElementById('tab-claude-v3').addEventListener('click', (event) => openModelTab(event, 'tab-claude-v3'));
-// document.getElementById('tab-gpt-4-0125-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-0125-preview'));
-// document.getElementById('tab-mistral-medium').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-medium'));
-// document.getElementById('tab-mistral-large').addEventListener('click', (event) => openModelTab(event, 'tab-mistral-large'));
-// document.getElementById('tab-gpt-4-turbo-preview').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-4-turbo-preview'));
-// document.getElementById('tab-gemini-pro').addEventListener('click', (event) => openModelTab(event, 'tab-gemini-pro'));
-// document.getElementById('tab-gpt-3.5-turbo').addEventListener('click', (event) => openModelTab(event, 'tab-gpt-3.5-turbo'));
 
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', compareModels);
@@ -165,67 +140,53 @@ async function compareModels() {
         return;
     }
 
-        // Hide and clear the canvas
         const canvasContainer = document.getElementById('canvas-container');
         canvasContainer.style.display = 'none';
         clearCanvas();
 
- 
         const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
         const compareData = await response.json();
         
-        // Clear existing data in the compare container
         const compareContainer = document.getElementById('compare-container');
         compareContainer.innerHTML = '';
-        compareContainer.style.display = 'flex'; // use flexbox to align items neatly
-        compareContainer.classList.add('compare-results-grid'); // add a class for grid styling
+        compareContainer.style.display = 'flex';
+        compareContainer.classList.add('compare-results-grid');
         
-        // Iterate over models and create a summary for each
         compareData.forEach(modelResult => {
 
-        // Create a container for the model
         const modelDiv = document.createElement('div');
-        modelDiv.classList.add('model-result-container', 'model-card'); // added 'model-card' for styling
+        modelDiv.classList.add('model-result-container', 'model-card');
         
         appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
 
-        // Create a title for the model
         const modelTitle = document.createElement('h3');
         modelTitle.textContent = `${modelResult.model}`;
         modelDiv.appendChild(modelTitle);
 
         append2DVisualization(modelDiv, modelResult);
 
-        // Create a paragraph for the item count
         const itemCountParagraph = document.createElement('p');
         itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
         modelDiv.appendChild(itemCountParagraph);
 
-        // Create a paragraph for the average pairwise distance
         const avgDistanceParagraph = document.createElement('p');
         avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
         modelDiv.appendChild(avgDistanceParagraph);
 
-        // Create a paragraph for the average neighbors within half pair wise distance
         const avgDensityParagraph = document.createElement('p');
         avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
         modelDiv.appendChild(avgDensityParagraph);
 
-        // Create a paragraph for the bounding box volume
         const boundingBoxVolumeParagraph = document.createElement('p');
         boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
         modelDiv.appendChild(boundingBoxVolumeParagraph);
 
-        // Create a paragraph for Shannon Entropy
         const entropyParagraph = document.createElement('p');
         entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
         modelDiv.appendChild(entropyParagraph);
 
-        // Append histogram canvases for pairwise distances and density
         appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
         appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
-
-        // Append the model container to the compare container
         compareContainer.appendChild(modelDiv);
     });
 
@@ -236,7 +197,6 @@ async function compareModels() {
   const ctx = canvas.getContext('2d');
   modelDiv.appendChild(canvas);
 
-  // Prepare histogram data for chart
   const { bins, binEdges } = histogramData;
   const histogramLabels = binEdges.map((edge, index) => {
       if (index === bins.length) return;
@@ -260,7 +220,7 @@ async function compareModels() {
               y: {
                   beginAtZero: true,
                   ticks: {
-                      stepSize: 1 // Ensure that density is always a whole number
+                      stepSize: 1
                   }
               }
           }
@@ -268,39 +228,32 @@ async function compareModels() {
   });
 }
 
-// main.js
 function append2DVisualization(modelDiv, modelResult) {
-  // Create a canvas element
+
   const canvas = document.createElement('canvas');
-  canvas.width = 200; // Set width
-  canvas.height = 200; // Set height
+  canvas.width = 200;
+  canvas.height = 200;
   modelDiv.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
 
-  // Assume we have a set of points (vector representations) for the modelResult
-  const points = modelResult.vectorPoints; // This should be an array of {x, y, z} objects
+  const points = modelResult.vectorPoints;
 
-  // Normalize the points to fit the canvas
   const normalizedPoints = normalizePoints(points, canvas.width, canvas.height);
 
-  // Draw each point
   normalizedPoints.forEach(point => {
-      // Use the z-coordinate to determine the color and size (as a simple depth effect)
-      const depth = (point.z + 1) / 2; // Normalize z value between 0 and 1
-      const size = depth * 5 + 2; // Size based on depth
+      const depth = (point.z + 1) / 2;
+      const size = depth * 5 + 2;
       const blueIntensity = depth * 255;
 
-      // Draw a circle for each point
       ctx.beginPath();
       ctx.arc(point.x, point.y, size, 0, 2 * Math.PI, false);
-      ctx.fillStyle = `rgba(135, 206, 250, ${0.5 + depth * 0.5})`; // Light blue with transparency
+      ctx.fillStyle = `rgba(135, 206, 250, ${0.5 + depth * 0.5})`;
       ctx.fill();
   });
 }
 
 function normalizePoints(points, width, height) {
-  // Find the range of the points
   const xValues = points.map(p => p.x);
   const yValues = points.map(p => p.y);
   const zValues = points.map(p => p.z);
@@ -311,33 +264,30 @@ function normalizePoints(points, width, height) {
   const zMax = Math.max(...zValues);
   const zMin = Math.min(...zValues);
 
-  // Normalize points to fit within the canvas
   return points.map(p => ({
       x: ((p.x - xMin) / (xMax - xMin)) * width,
       y: ((p.y - yMin) / (yMax - yMin)) * height,
-      z: (p.z - zMin) / (zMax - zMin) // Normalized between 0 and 1 for depth effect
+      z: (p.z - zMin) / (zMax - zMin)
   }));
 }
 
 document.getElementById('attributesTab').addEventListener('click', compareAttributes);
 
-// Function to create a histogram bar
 function createHistogramBar(counts, maxCount) {
   const barContainer = document.createElement('div');
-  barContainer.style.width = '100%'; // Full width of the container
-  barContainer.style.backgroundColor = '#f0f0f0'; // Light grey background
-  barContainer.style.border = '1px solid #ccc'; // Border for the bar container
-  barContainer.style.borderRadius = '5px'; // Rounded corners for aesthetics
-  barContainer.style.overflow = 'hidden'; // Ensures the inner bar doesn't overflow
+  barContainer.style.width = '100%';
+  barContainer.style.backgroundColor = '#f0f0f0';
+  barContainer.style.border = '1px solid #ccc';
+  barContainer.style.borderRadius = '5px';
+  barContainer.style.overflow = 'hidden';
   barContainer.style.display = 'flex';
-  barContainer.style.position = 'relative'; // Needed to position values
+  barContainer.style.position = 'relative';
 
-  // Function to determine the bar color based on value
   const getBarColor = value => {
-    if (value <= 2) return '#5DADE2'; // Blue
-    if (value <= 5) return '#58D68D'; // Green
-    if (value <= 8) return '#F4D03F'; // Yellow
-    return '#EC7063'; // Red
+    if (value <= 2) return '#5DADE2';
+    if (value <= 5) return '#58D68D';
+    if (value <= 8) return '#F4D03F';
+    return '#EC7063';
   };
 
   counts.forEach((binCount, index) => {
@@ -368,9 +318,6 @@ function createHistogramBar(counts, maxCount) {
   return barContainer;
 }
 
-
-
-
 async function compareAttributes() {
     const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
     if (!userInputValue) {
@@ -394,22 +341,18 @@ async function compareAttributes() {
             const modelDiv = document.createElement('div');
             modelDiv.classList.add('model-result-container', 'model-card');
 
-            // Create a title for the model
             const modelTitle = document.createElement('h3');
             modelTitle.textContent = `${attributes.model}`;
             modelDiv.appendChild(modelTitle);
 
-            // Convert attribute entries to an array, sort by stdDev, and then iterate
             Object.entries(attributes)
-              .sort((a, b) => b[1].stdDev - a[1].stdDev) // Sort by stdDev descending
+              .sort((a, b) => b[1].stdDev - a[1].stdDev)
               .forEach(([attribute, stats]) => {
 
                 try {
-                    // Check if any stat is undefined and skip this attribute if so
                     if (stats.max === undefined || stats.min === undefined || stats.avg === undefined || stats.stdDev === undefined) {
-                        return; // Skip this attribute
+                        return;
                     }
-
 
                     const attributeContainer = document.createElement('div');
                     attributeContainer.classList.add('attribute-container');
@@ -417,7 +360,6 @@ async function compareAttributes() {
                     const attributeTitle = document.createElement('p');
                     attributeTitle.textContent = `Attribute: ${attribute}`;
                     attributeContainer.appendChild(attributeTitle);
-
 
                     const max = stats.max.toFixed(2);
                     const min = stats.min.toFixed(2);
@@ -429,11 +371,8 @@ async function compareAttributes() {
                     statsParagraph.textContent = statsText;
                     attributeContainer.appendChild(statsParagraph);
 
-                    // Create and append the bar graph here
                     const histogramBar = createHistogramBar(stats.histogram, Math.max(...stats.histogram));
                     attributeContainer.appendChild(histogramBar);
-
-                    // Optionally, create and append a bar graph here
 
                     modelDiv.appendChild(attributeContainer);
 
@@ -449,7 +388,6 @@ async function compareAttributes() {
         console.error(`Error during attributes comparison: ${error}`);
     }
 }
-
 
 let auth0 = null;
 
@@ -484,16 +422,14 @@ async function handleAuthenticationResult() {
         await updateUI(isAuthenticated);
 
         if (isAuthenticated) {
-            // Get user profile
+
             const user = await auth0.getUser();
             
-            // Construct the user data to send
             const userData = {
                 email: user.email,
-                username: user.nickname // or another appropriate field
+                username: user.nickname
             };
 
-            // Send the user data to your backend to add/update the user
             await updateUserInDatabase(userData);
         }
 
@@ -506,10 +442,9 @@ async function handleAuthenticationResult() {
 async function updateUserInDatabase(userData) {
     try {
         const response = await fetch('/users', {
-            method: 'POST', // or 'PUT' if updating
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Include any other headers your backend requires
             },
             body: JSON.stringify(userData)
         });
@@ -529,11 +464,11 @@ async function updateUI(isAuthenticated) {
         
         if (user) {
             userInfoDisplay.textContent = `${user.name}`;
-            userInfoDisplay.style.display = 'block'; // Changed from 'inline' to better suit the vertical layout
+            userInfoDisplay.style.display = 'block';
         }
 
         document.getElementById('btn-login').style.display = 'none';
-        document.getElementById('btn-logout').style.display = 'block'; // Changed to 'block' to ensure it appears below the username
+        document.getElementById('btn-logout').style.display = 'block';
     } else {
         userInfoDisplay.style.display = 'none';
         document.getElementById('btn-login').style.display = 'block';
@@ -541,10 +476,8 @@ async function updateUI(isAuthenticated) {
     }
 }
 
-// Combine the window load event into a single call
 window.addEventListener('load', initializeAuth0);
 
-// Export functions if needed or just attach them to window for global access
 window.login = async () => { await auth0.loginWithRedirect(); };
 window.logout = () => { auth0.logout({ returnTo: window.location.origin }); };
 
@@ -556,22 +489,19 @@ document.getElementById('modelSelectionDropdown').addEventListener('change', fun
 function adjustCanvasSize() {
     const headerHeight = document.getElementById('header').offsetHeight;
     const combinedContainerHeight = document.getElementById('combined-container').offsetHeight;
-    const tabContentHeight = document.getElementById('tab-sliver').offsetHeight; // Assuming you want to consider this in calculations
-    const margin = 20; // Example margin for aesthetics
+    const tabContentHeight = document.getElementById('tab-sliver').offsetHeight;
+    const margin = 20;
 
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Calculating available height by subtracting other elements' heights and margin, dow we need to account for browser content?
     const availableHeight = viewportHeight - headerHeight - combinedContainerHeight - tabContentHeight - (2 * margin) ;
 
     const canvasWidth = viewportWidth * 0.67; 
-    const canvasHeight = Math.max(0, availableHeight); // Prevent negative values
+    const canvasHeight = Math.max(0, availableHeight);
 
-    // Adjust the renderer size based on calculated width and height
     renderer.setSize(canvasWidth, canvasHeight);
 
-    // Adjust camera aspect ratio and update projection matrix to fit the new size
     camera.aspect = canvasWidth / canvasHeight;
     camera.updateProjectionMatrix();
 }
@@ -586,7 +516,6 @@ function debounce(func, wait) {
 }
 
 window.addEventListener('resize', debounce(adjustCanvasSize, 10));
-
 
 window.onload = function() {
     adjustCanvasSize();

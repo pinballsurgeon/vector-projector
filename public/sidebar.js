@@ -1,14 +1,9 @@
-
 export let selectedModel;
 export let selectedTemperature;
 export let selectedTopP;
 export let selectedNumSequences;
 
 export function getModelAndParams() {
-
-    // const selectedModelTab = document.querySelector('.tablinks.active');
-    // const model = selectedModelTab ? selectedModelTab.id.replace('tab-', '') : null;
-
     const modelSelectionDropdown = document.getElementById('modelSelectionDropdown');
     const model = modelSelectionDropdown.value.replace('tab-', '');
 
@@ -20,19 +15,14 @@ export function getModelAndParams() {
     }; 
 }
 
-// Initialize Model
 export function initializeModels() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
-
 }
 
-// Initialize Model Parameters
 export function initializeModelParams() {
     const modelSelectionContent = document.getElementById('modelSelectionContent');
-
 }
 
-// Update Sidebar Content
 export function updateSidebarContent(selectedValue) {
     const logsContent = document.getElementById('logsContent');
     const modelSelectionContent = document.getElementById('modelSelectionContent');
@@ -51,7 +41,6 @@ export function updateSidebarContent(selectedValue) {
     groupsContent.style.display = 'none';
     vectorMetricsContent.style.display = 'none';
     library.style.display = 'none';
-
 
     const newSidebarSelector = document.getElementById('newSidebarSelector');
     if (newSidebarSelector.value == 'logs')
@@ -74,11 +63,8 @@ export function updateSidebarContent(selectedValue) {
         {
             library.style.display = 'block';
             }
-
-
 }
 
-// Write to log
 export function appendLog(message) {
     const logElement = document.createElement('p');
     const date = new Date();
@@ -86,17 +72,15 @@ export function appendLog(message) {
     logElement.textContent = `${formattedDate} - ${message}`;
     const logsContent = document.getElementById('logsContent');
     
-    console.log(logsContent); // Debug line to check if logsContent is null
+    console.log(logsContent);
 
     if (logsContent) {
         logsContent.appendChild(logElement);
     } else {
         console.error('logsContent is null. Make sure the element exists and the ID is correct.');
     }
-    
 }
 
-// Build prompt sidebar
 export let listPrompts;
 
 export function initializePrompts() {
@@ -109,7 +93,7 @@ export function initializePrompts() {
             const label = document.createElement('label');
             label.textContent = prompt;
             const textarea = document.createElement('textarea');
-            textarea.rows = 10;                     // Set the height to 10 lines
+            textarea.rows = 10;
             textarea.value = listPrompts[prompt];
             textarea.addEventListener('change', () => listPrompts[prompt] = textarea.value);
             promptEditors.appendChild(label);
@@ -119,19 +103,16 @@ export function initializePrompts() {
     .catch(error => console.log('Error:', error));
 }
 
-
 function adjustImageSize() {
     const cubeContent = document.getElementById('cubeContent');
     const sidebarCubeImage = document.getElementById('sidebarCubeImage');
     
-    if (!cubeContent || !sidebarCubeImage) return; // Exit if elements are not found
+    if (!cubeContent || !sidebarCubeImage) return;
 
-    // Use getBoundingClientRect to get the width
     const containerWidth = cubeContent.getBoundingClientRect().width;
     console.log('Container Width:', containerWidth);
 
-    // Set image size based on container width
-    if (containerWidth < 300) { // Example threshold, adjust as needed
+    if (containerWidth < 300) {
         sidebarCubeImage.style.width = "90%";
         sidebarCubeImage.style.height = "90%";
     } else {
@@ -140,8 +121,6 @@ function adjustImageSize() {
     }
 }
 
-
-// Adjust image size on window load and resize
 document.addEventListener('DOMContentLoaded', adjustImageSize);
 window.addEventListener('resize', adjustImageSize);
 
@@ -153,24 +132,20 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
     
     const promptEditors = document.getElementById('promptEditors');
 
-    // Start by hiding all contents
     logsContent.style.display = 'none';
     modelSelectionContent.style.display = 'none';
     modelParametersContent.style.display = 'none';
     promptEditors.style.display = 'none';
         
-    // Make sure the 'cubeContent' div is visible
     document.getElementById('cubeContent').style.display = 'block';
     cubeContent.style.display = 'block';
         
     const averageRatings = calculateAverageRatingsExceptFor(itemName, cubes);
 
-    // Clear previous contents and set the image and title again
     cubeContent.innerHTML = '<h3 id="sidebarTitle"></h3><img id="sidebarCubeImage" src="" alt="Cube Image">';
     document.getElementById('sidebarCubeImage').src = imageUrl;
     document.getElementById('sidebarTitle').textContent = itemName;
 
-    // Calculate differences and sort
     let attributesWithDifferences = Object.keys(originalRatings).map(attribute => {
         const selectedValue = originalRatings[attribute];
         const averageValue = averageRatings[Object.keys(originalRatings).indexOf(attribute)];
@@ -180,31 +155,28 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             averageValue,
             difference: Math.abs(selectedValue - averageValue)
         };
-    }).sort((a, b) => b.difference - a.difference); // Sort by difference, descending
+    }).sort((a, b) => b.difference - a.difference);
 
     attributesWithDifferences.forEach(({ attribute, selectedValue, averageValue }) => {
         const chartContainer = document.createElement('div');
         chartContainer.classList.add('chart-container');
     
-        // Header for the attribute
         const header = document.createElement('h3');
         header.textContent = attribute;
         header.style.textAlign = 'center';
         chartContainer.appendChild(header);
     
-        // Canvas for the chart
         const canvas = document.createElement('canvas');
         canvas.style.width = '100%';
         chartContainer.appendChild(canvas);
     
         cubeContent.appendChild(chartContainer);
 
-        const headerHeight = header.offsetHeight; // Get the actual height of the header
+        const headerHeight = header.offsetHeight;
         const containerPadding = parseInt(window.getComputedStyle(chartContainer).paddingTop, 10) +
                                 parseInt(window.getComputedStyle(chartContainer).paddingBottom, 10);
         const availableHeight = chartContainer.clientHeight - headerHeight - containerPadding;
 
-        // Set this height on the chart canvas
         canvas.style.height = `${availableHeight}px`;
             
         const ctx = canvas.getContext('2d');
@@ -270,9 +242,7 @@ export function setCubeImageInSidebar(imageUrl, itemName, originalRatings, cubes
             plugins: [ChartDataLabels]
         });
         
-        
     });
-
 
 }
 
