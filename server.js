@@ -485,14 +485,13 @@ app.post('/entropy_db', async (req, res) => {
                 entropy = EXCLUDED.entropy
         `;
 
-        // Execute the query with the provided values
         await client.query(queryText, [items, pairwise, density, volume, entropy, query, model]);
         res.status(200).send("Record added or updated successfully.");
     } catch (error) {
         console.error("Error processing request:", error);
         res.status(500).send("Internal server error");
     } finally {
-        await client.end();  // Ensure the client disconnects properly
+        await client.end();
     }
 });
 

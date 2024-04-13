@@ -194,7 +194,7 @@ async function compareModels() {
                 volume: modelResult.boundingBoxVolume.toFixed(2),
                 entropy: modelResult.shannonEntropy.toFixed(2),
                 query: userInputValue,
-                model: modelTitle
+                model: modelResult.model
             };
                 
             fetch('/entropy_db', {
