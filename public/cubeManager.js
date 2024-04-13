@@ -89,37 +89,37 @@ export const createOrUpdateCube = (data) => {
                     scene.add(cube);
                     cubes.push(cube);
 
-                    let x_label_offset = 0;
-                    let y_label_offset = 0;
+                    // let x_label_offset = 0;
+                    // let y_label_offset = 0;
 
-                    if (cube.position.x < 0) {
-                        x_label_offset = -2.5;
-                    } else {
-                        x_label_offset = 2.5;
-                    }
+                    // if (cube.position.x < 0) {
+                    //     x_label_offset = -2.5;
+                    // } else {
+                    //     x_label_offset = 2.5;
+                    // }
 
-                    if (cube.position.y < 0) {
-                        y_label_offset = -2.5;
-                    } else {
-                        y_label_offset = 2.5;
-                    }
+                    // if (cube.position.y < 0) {
+                    //     y_label_offset = -2.5;
+                    // } else {
+                    //     y_label_offset = 2.5;
+                    // }
 
-                    if (selectedKeys.includes(cube.userData.itemName)) {
-                        const labelSprite = createTextSprite(cube.userData.itemName);
-                        labelSprite.position.set(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z); 
-                        scene.add(labelSprite);
-                    }
+                    // if (selectedKeys.includes(cube.userData.itemName)) {
+                    //     const labelSprite = createTextSprite(cube.userData.itemName);
+                    //     labelSprite.position.set(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z); 
+                    //     scene.add(labelSprite);
+                    // }
 
-                    if (selectedKeys.includes(cube.userData.itemName)) {
-                        const material = new THREE.LineBasicMaterial({ color: 0xffffff });
-                        const points = [];
-                        points.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
-                        points.push(new THREE.Vector3(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z));
+                    // if (selectedKeys.includes(cube.userData.itemName)) {
+                    //     const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+                    //     const points = [];
+                    //     points.push(new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z));
+                    //     points.push(new THREE.Vector3(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z));
                         
-                        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                        const line = new THREE.Line(geometry, material);
-                        scene.add(line);
-                    }
+                    //     const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    //     const line = new THREE.Line(geometry, material);
+                    //     scene.add(line);
+                    // }
 
                     resolve();
                 },
