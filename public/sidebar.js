@@ -71,8 +71,6 @@ export function appendLog(message) {
     const formattedDate = `${date.getMonth() + 1}/${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     logElement.textContent = `${formattedDate} - ${message}`;
     const logsContent = document.getElementById('logsContent');
-    
-    console.log(logsContent);
 
     if (logsContent) {
         logsContent.appendChild(logElement);
