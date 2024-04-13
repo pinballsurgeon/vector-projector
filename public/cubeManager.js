@@ -431,3 +431,43 @@ export function clearCanvas() {
         scene.remove(object); 
     }
 }
+
+// Global array to keep track of labels and lines for easy removal
+let labelsAndLines = [];
+
+function updateRandomLabels() {
+    labelsAndLines.forEach(obj => scene.remove(obj));
+    labelsAndLines = [];
+
+    if (cubes.length < 5) return;
+
+    let selectedCubes = [];
+    let indices = new Set();
+    while (indices.size < 5) {
+        const randomIndex = Math.floor(Math.random() * cubes.length);
+        indices.add(randomIndex);
+    }
+    indices.forEach(index => selectedCubes.push(cubes[index]));
+
+    selectedCubes.forEach(cube => {
+        const x_label_offset = cube.position.x < 0 ? -2.5 : 2.5;
+        const y_label_offset = cube.position.y < 0 ? -2.5 : 2.5;
+
+        const labelSprite = createTextSprite(cube.userData.itemName);
+        labelSprite.position.set(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z);
+        scene.add(labelSprite);
+        labelsAndLines.push(labelSprite);
+
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const points = [new THREE.Vector3(cube.position.x, cube.position.y, cube.position.z),
+                        new THREE.Vector3(cube.position.x + x_label_offset, cube.position.y + y_label_offset, cube.position.z)];
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(lineGeometry, lineMaterial);
+        scene.add(line);
+        labelsAndLines.push(line);
+    });
+}
+
+window.addEventListener('load', () => {
+    setInterval(updateRandomLabels, 5000);
+});
