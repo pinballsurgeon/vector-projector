@@ -89,6 +89,9 @@ export const createOrUpdateCube = (data) => {
                     scene.add(cube);
                     cubes.push(cube);
 
+                    let x_label_offset = 0;
+                    let y_label_offset = 0;
+
                     if (cube.position.x < 0) {
                         x_label_offset = -1.5;
                     } else {
