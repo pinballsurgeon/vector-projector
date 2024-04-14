@@ -130,7 +130,7 @@ async function openModelTab(evt) {
 
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
-// document.getElementById('compareTab').addEventListener('click', compareModels);
+document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 
 async function compareModels(evt) {
     const userInputValue = document.getElementById('userInput').value;
@@ -300,7 +300,7 @@ function normalizePoints(points, width, height) {
   }));
 }
 
-document.getElementById('attributesTab').addEventListener('click', compareAttributes);
+
 
 function createHistogramBar(counts, maxCount) {
   const barContainer = document.createElement('div');
@@ -347,7 +347,7 @@ function createHistogramBar(counts, maxCount) {
   return barContainer;
 }
 
-async function compareAttributes() {
+async function compareAttributes(evt) {
     const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
     if (!userInputValue) {
         alert("Please enter a query to compare.");
