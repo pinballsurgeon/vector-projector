@@ -139,10 +139,12 @@ async function compareModels(evt) {
         return;
     }
 
-    // tablinks = document.getElementsByClassName("tablinks");
-    // for (i = 0; i < tablinks.length; i++) {
-    //     tablinks[i].className = tablinks[i].className.replace(" active", "");
-    // }
+    let i, tablinks;
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
 
     document.getElementById('compareTab').style.display = "block";
     evt.currentTarget.className += " active";
@@ -351,6 +353,8 @@ async function compareAttributes() {
         alert("Please enter a query to compare.");
         return;
     }
+
+    let i, tablinks;
 
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
