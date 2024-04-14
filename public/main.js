@@ -132,7 +132,7 @@ document.getElementById('tab-model').addEventListener('click', (event) => openMo
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('compareTab').addEventListener('click', compareModels);
 
-async function compareModels() {
+async function compareModels(evt) {
     const userInputValue = document.getElementById('userInput').value;
     if (!userInputValue) {
         alert("Please enter a query to compare.");
