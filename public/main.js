@@ -129,7 +129,8 @@ async function openModelTab(evt) {
 }
 
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
-document.getElementById('compareTab').addEventListener('click', compareModels);
+document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
+// document.getElementById('compareTab').addEventListener('click', compareModels);
 
 async function compareModels() {
     const userInputValue = document.getElementById('userInput').value;
