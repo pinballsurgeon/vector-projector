@@ -611,6 +611,39 @@ function calculateShannonEntropy(coordinates) {
     return (entropyX + entropyY + entropyZ) / 3;
 }
 
+function aggregateAllAttributeValues(cubeData) {
+    let allValues = [];
+
+    cubeData.forEach(item => {
+        const attributes = item.originalRatings; // Assuming 'originalRatings' contains the 1-10 ratings
+        for (const value of Object.values(attributes)) {
+            if (value >= 1 && value <= 10) {  // Ensuring only valid ratings are considered
+                allValues.push(value);
+            }
+        }
+    });
+
+    return allValues;
+}
+
+
+function calculateShannonEntropy_attributes(values) {
+    let frequency = new Array(11).fill(0);
+    values.forEach(value => {
+        if (value >= 1 && value <= 10) frequency[value]++;
+    });
+
+    const total = values.length;
+    return frequency.reduce((acc, freq) => {
+        if (freq > 0) {
+            const p = freq / total;
+            return acc - p * Math.log2(p);
+        }
+        return acc;
+    }, 0);
+}
+
+
 function calculateModelMetrics(cubeData) {
 
     const validCoordinates = Object.values(cubeData).filter(item => 
@@ -625,7 +658,10 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    const shannonEntropy = calculateShannonEntropy(validCoordinates);
+    const shannonEntropy = calculateShannonEntropy(validCoordinates);    
+
+    const allAttributeValues = aggregateAllAttributeValues(cubeData);
+    const rawAttributeEntropy = calculateShannonEntropy(allAttributeValues); 
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
 
@@ -641,7 +677,9 @@ function calculateModelMetrics(cubeData) {
         densityHistogramData,
         vectorPoints: validCoordinates,
         averageDensities,
-        shannonEntropy
+        shannonEntropy,
+        rawAttributeEntropy: rawAttributeEntropy,
+        numberOfAttributes: Object.keys(allAttributeValues).length
     };
 }
 
