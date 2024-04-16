@@ -593,13 +593,22 @@ app.get('/get_library', async (req, res) => {
 });
 
 
-function calculateShannonEntropy(densities) {
-    let totalPoints = densities.reduce((sum, val) => sum + val, 0);
-    let probabilities = densities.map(density => density / totalPoints);
-    let entropy = probabilities.reduce((sum, p) => {
-        return p > 0 ? sum - p * Math.log2(p) : sum;
-    }, 0);
-    return entropy;
+function calculateShannonEntropy(coordinates) {
+    // Bin the data to approximate the probability distribution
+    let bins = calculateHistogramBins(coordinates.map(coord => coord.x), 10);
+    let probabilities = bins.bins.map(bin => bin / coordinates.length);
+    let entropyX = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
+
+    bins = calculateHistogramBins(coordinates.map(coord => coord.y), 10);
+    probabilities = bins.bins.map(bin => bin / coordinates.length);
+    let entropyY = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
+
+    bins = calculateHistogramBins(coordinates.map(coord => coord.z), 10);
+    probabilities = bins.bins.map(bin => bin / coordinates.length);
+    let entropyZ = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
+
+    // Consider using a weighted sum if the scales of x, y, z are very different
+    return (entropyX + entropyY + entropyZ) / 3;
 }
 
 function calculateModelMetrics(cubeData) {
@@ -616,7 +625,7 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    const shannonEntropy = calculateShannonEntropy(densities);
+    const shannonEntropy = calculateShannonEntropy(validCoordinates);
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
 
