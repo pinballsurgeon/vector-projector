@@ -594,7 +594,7 @@ app.get('/get_library', async (req, res) => {
 
 
 function calculateShannonEntropy(coordinates) {
-    // Bin the data to approximate the probability distribution
+    
     let bins = calculateHistogramBins(coordinates.map(coord => coord.x), 1000);
     let probabilities = bins.bins.map(bin => bin / coordinates.length);
     let entropyX = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
@@ -607,60 +607,8 @@ function calculateShannonEntropy(coordinates) {
     probabilities = bins.bins.map(bin => bin / coordinates.length);
     let entropyZ = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
 
-    // Consider using a weighted sum if the scales of x, y, z are very different
     return (entropyX + entropyY + entropyZ) / 3;
 }
-
-function aggregateAllAttributeValues(cubeData) {
-    let attributesAggregated = {};
-
-    // Process each item's ratings, ensuring all attributes are captured even if they differ between items
-    // cubeData.forEach(item => {
-    Object.values(cubeData).forEach(item => {
-        const attributes = item.originalRatings;
-
-        // First, ensure every known attribute is accounted for in this item
-        Object.keys(attributesAggregated).forEach(key => {
-            if (attributes[key] === undefined) {
-                attributes[key] = null; // Assign a null value where data is missing
-            }
-        });
-
-        // Now aggregate or initialize the attributes for this item
-        Object.entries(attributes).forEach(([key, value]) => {
-            if (!attributesAggregated[key]) {
-                attributesAggregated[key] = [];
-            }
-            if (value >= 1 && value <= 10) {  // Ensuring only valid ratings are considered
-                attributesAggregated[key].push(value);
-            }
-        });
-    });
-
-    return attributesAggregated;
-}
-
-
-
-function calculateShannonEntropy_attributes(values) {
-    // Filter out any null values added for missing attributes
-    values = values.filter(value => value !== null);
-
-    let frequency = new Array(11).fill(0);
-    values.forEach(value => {
-        if (value >= 1 && value <= 10) frequency[value]++;
-    });
-
-    const total = values.length;
-    return frequency.reduce((acc, freq) => {
-        if (freq > 0) {
-            const p = freq / total;
-            return acc - p * Math.log2(p);
-        }
-        return acc;
-    }, 0);
-}
-
 
 function calculateModelMetrics(cubeData) {
 
@@ -676,10 +624,7 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    const shannonEntropy = calculateShannonEntropy(validCoordinates);    
-
-    const allAttributeValues = aggregateAllAttributeValues(cubeData);
-    const rawAttributeEntropy = calculateShannonEntropy_attributes(allAttributeValues); 
+    const shannonEntropy = calculateShannonEntropy(validCoordinates);
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
 
@@ -695,9 +640,7 @@ function calculateModelMetrics(cubeData) {
         densityHistogramData,
         vectorPoints: validCoordinates,
         averageDensities,
-        shannonEntropy,
-        rawAttributeEntropy: rawAttributeEntropy,
-        numberOfAttributes: Object.keys(allAttributeValues).length
+        shannonEntropy
     };
 }
 
