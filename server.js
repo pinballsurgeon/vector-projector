@@ -595,15 +595,15 @@ app.get('/get_library', async (req, res) => {
 
 function calculateShannonEntropy(coordinates) {
     // Bin the data to approximate the probability distribution
-    let bins = calculateHistogramBins(coordinates.map(coord => coord.x), 100);
+    let bins = calculateHistogramBins(coordinates.map(coord => coord.x), 1000);
     let probabilities = bins.bins.map(bin => bin / coordinates.length);
     let entropyX = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
 
-    bins = calculateHistogramBins(coordinates.map(coord => coord.y), 100);
+    bins = calculateHistogramBins(coordinates.map(coord => coord.y), 1000);
     probabilities = bins.bins.map(bin => bin / coordinates.length);
     let entropyY = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
 
-    bins = calculateHistogramBins(coordinates.map(coord => coord.z), 100);
+    bins = calculateHistogramBins(coordinates.map(coord => coord.z), 1000);
     probabilities = bins.bins.map(bin => bin / coordinates.length);
     let entropyZ = probabilities.reduce((sum, p) => p > 0 ? sum - p * Math.log2(p) : sum, 0);
 
