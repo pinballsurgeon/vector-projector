@@ -615,7 +615,8 @@ function aggregateAllAttributeValues(cubeData) {
     let attributesAggregated = {};
 
     // Process each item's ratings, ensuring all attributes are captured even if they differ between items
-    cubeData.forEach(item => {
+    // cubeData.forEach(item => {
+    Object.values(cubeData).forEach(item => {
         const attributes = item.originalRatings;
 
         // First, ensure every known attribute is accounted for in this item
