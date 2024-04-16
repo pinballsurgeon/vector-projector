@@ -612,22 +612,39 @@ function calculateShannonEntropy(coordinates) {
 }
 
 function aggregateAllAttributeValues(cubeData) {
-    let allValues = [];
+    let attributesAggregated = {};
 
+    // Process each item's ratings, ensuring all attributes are captured even if they differ between items
     cubeData.forEach(item => {
-        const attributes = item.originalRatings; // Assuming 'originalRatings' contains the 1-10 ratings
-        for (const value of Object.values(attributes)) {
-            if (value >= 1 && value <= 10) {  // Ensuring only valid ratings are considered
-                allValues.push(value);
+        const attributes = item.originalRatings;
+
+        // First, ensure every known attribute is accounted for in this item
+        Object.keys(attributesAggregated).forEach(key => {
+            if (attributes[key] === undefined) {
+                attributes[key] = null; // Assign a null value where data is missing
             }
-        }
+        });
+
+        // Now aggregate or initialize the attributes for this item
+        Object.entries(attributes).forEach(([key, value]) => {
+            if (!attributesAggregated[key]) {
+                attributesAggregated[key] = [];
+            }
+            if (value >= 1 && value <= 10) {  // Ensuring only valid ratings are considered
+                attributesAggregated[key].push(value);
+            }
+        });
     });
 
-    return allValues;
+    return attributesAggregated;
 }
 
 
+
 function calculateShannonEntropy_attributes(values) {
+    // Filter out any null values added for missing attributes
+    values = values.filter(value => value !== null);
+
     let frequency = new Array(11).fill(0);
     values.forEach(value => {
         if (value >= 1 && value <= 10) frequency[value]++;
@@ -661,7 +678,7 @@ function calculateModelMetrics(cubeData) {
     const shannonEntropy = calculateShannonEntropy(validCoordinates);    
 
     const allAttributeValues = aggregateAllAttributeValues(cubeData);
-    const rawAttributeEntropy = calculateShannonEntropy(allAttributeValues); 
+    const rawAttributeEntropy = calculateShannonEntropy_attributes(allAttributeValues); 
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
 
