@@ -130,7 +130,7 @@ async function openModelTab(evt) {
 
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
-document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
+// document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 document.getElementById('modelLeaderTab').addEventListener('click', (event) => compareModels(event));
 
 async function compareModels(evt) {
