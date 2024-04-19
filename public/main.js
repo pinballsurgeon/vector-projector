@@ -131,7 +131,36 @@ async function openModelTab(evt) {
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
-document.getElementById('modelLeaderTab').addEventListener('click', (event) => compareModels(event));
+document.getElementById('modelLeaderTab').addEventListener('click', async (event) => {
+    event.preventDefault();
+    const response = await fetch('/model_averages');
+    const modelAverages = await response.json();
+
+    const container = document.getElementById('compare-container');
+    container.innerHTML = ''; // Clear previous content
+    container.style.display = 'flex';
+
+    modelAverages.forEach(model => {
+        const modelDiv = document.createElement('div');
+        modelDiv.classList.add('model-result-container', 'model-card');
+
+        const modelTitle = document.createElement('h3');
+        modelTitle.textContent = model.model;
+        modelDiv.appendChild(modelTitle);
+
+        const avgMetric1Paragraph = document.createElement('p');
+        avgMetric1Paragraph.textContent = `Average Metric 1: ${model.avgMetric1.toFixed(2)}`;
+        modelDiv.appendChild(avgMetric1Paragraph);
+
+        const avgMetric2Paragraph = document.createElement('p');
+        avgMetric2Paragraph.textContent = `Average Metric 2: ${model.avgMetric2.toFixed(2)}`;
+        modelDiv.appendChild(avgMetric2Paragraph);
+
+        container.appendChild(modelDiv);
+    });
+});
+
+
 
 async function compareModels(evt) {
     const userInputValue = document.getElementById('userInput').value;

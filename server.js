@@ -916,3 +916,89 @@ app.delete('/users/:email', async (req, res) => {
         client.end();
     }
 });
+
+app.get('/model_averages', async (req, res) => {
+    try {
+        const client = new Client({
+            connectionString: process.env.pgsql_conn,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+        await client.connect();
+
+        const queryResult = await client.query(`
+
+        with query_base as (
+            select query
+                , avg(items_number) avg_items_number
+                , avg(pairwise_number) avg_pairwise_number
+                , avg(density) avg_density
+                , avg(volume) avg_volume
+                , avg(entropy) avg_entropy 
+        
+                , max(items_number) max_items_number
+                , max(pairwise_number) max_pairwise_number
+                , max(density) max_density
+                , max(volume) max_volume
+                , max(entropy) max_entropy 
+        
+                from entropy 
+                group by query 
+        ),
+        
+        model_base as (
+                select etr.model
+                    , etr.query
+                    , etr.items_number
+                    , etr.pairwise_number
+                    , etr.density
+                    , etr.volume
+                    , etr.entropy
+        
+                    , items_number / avg_items_number items_number_rel
+                    , pairwise_number / avg_pairwise_number pairwise_number_rel
+                    , density / avg_density density_rel
+                    , volume / avg_volume volume_rel
+                    , entropy / avg_entropy entropy_rel
+        
+                    , items_number / max_items_number items_number_max
+                    , pairwise_number / max_pairwise_number pairwise_number_max
+                    , density / max_density density_max
+                    , volume / max_volume volume_max
+                    , entropy / max_entropy entropy_max
+                    
+                  from entropy etr
+        
+                  left join query_base qb
+                    on qb.query = etr.query 
+        )
+        
+        
+        select model
+            , count(distinct query) querys_ran
+            , avg(items_number_max) items_pct
+            , avg(pairwise_number_max) pairwise_pct
+            , avg(density_max) density_pct
+            , avg(volume_max) volume_pct
+            , avg(entropy_max) entropy_pct 
+            
+          from model_base
+        
+         group by model  
+        `);
+
+        client.end();
+
+        const modelAverages = queryResult.rows.map(row => ({
+            model: row.model,
+            avgMetric1: parseFloat(row.items_pct),
+            avgMetric2: parseFloat(row.entropy_pct)
+        }));
+
+        res.json(modelAverages);
+    } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).send("Internal server error");
+    }
+});
