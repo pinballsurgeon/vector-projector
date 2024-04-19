@@ -152,20 +152,34 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
 
+    // const modelAverages = queryResult.rows.map(row => ({
+    //     model: row.model,
+    //     querys_ran: parseFloat(row.querys_ran),
+    //     entropy_pct: parseFloat(row.entropy_pct),
+    //     volume_pct: parseFloat(row.volume_pct),
+    //     density_pct: parseFloat(row.density_pct),
+    // }));
+
     // Sort models by Metric 2 descending
-    modelAverages.sort((a, b) => b.avgMetric2 - a.avgMetric2);
+    modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
 
     const data = {
         labels: modelAverages.map(model => model.model),
         datasets: [{
-            label: 'Average Metric 1',
-            data: modelAverages.map(model => model.avgMetric1),
+            label: 'Relative Entropy',
+            data: modelAverages.map(model => model.entropy_pct),
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1
         }, {
-            label: 'Average Metric 2',
-            data: modelAverages.map(model => model.avgMetric2),
+            label: 'Number of Queries',
+            data: modelAverages.map(model => model.querys_ran),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Relative Vector Volume',
+            data: modelAverages.map(model => model.volume_pct),
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1

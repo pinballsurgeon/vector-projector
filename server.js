@@ -992,8 +992,10 @@ app.get('/model_averages', async (req, res) => {
 
         const modelAverages = queryResult.rows.map(row => ({
             model: row.model,
-            avgMetric1: parseFloat(row.items_pct),
-            avgMetric2: parseFloat(row.entropy_pct)
+            querys_ran: parseFloat(row.querys_ran),
+            entropy_pct: parseFloat(row.entropy_pct),
+            volume_pct: parseFloat(row.volume_pct),
+            density_pct: parseFloat(row.density_pct),
         }));
 
         res.json(modelAverages);
