@@ -131,6 +131,7 @@ async function openModelTab(evt) {
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
+document.getElementById('modelLeaderTab').addEventListener('click', (event) => compareModels(event));
 
 async function compareModels(evt) {
     const userInputValue = document.getElementById('userInput').value;
@@ -164,58 +165,58 @@ async function compareModels(evt) {
         
         compareData.forEach(modelResult => {
 
-        const modelDiv = document.createElement('div');
-        modelDiv.classList.add('model-result-container', 'model-card');
-        
-        appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
-
-        const modelTitle = document.createElement('h3');
-        modelTitle.textContent = `${modelResult.model}`;
-        modelDiv.appendChild(modelTitle);
-
-        append2DVisualization(modelDiv, modelResult);
-
-        const itemCountParagraph = document.createElement('p');
-        itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
-        modelDiv.appendChild(itemCountParagraph);
-
-        const avgDistanceParagraph = document.createElement('p');
-        avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
-        modelDiv.appendChild(avgDistanceParagraph);
-
-        const avgDensityParagraph = document.createElement('p');
-        avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
-        modelDiv.appendChild(avgDensityParagraph);
-
-        const boundingBoxVolumeParagraph = document.createElement('p');
-        boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
-        modelDiv.appendChild(boundingBoxVolumeParagraph);
-
-        const entropyParagraph = document.createElement('p');
-        entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
-        modelDiv.appendChild(entropyParagraph);
-
-        appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
-        appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
-        compareContainer.appendChild(modelDiv);
-
-        const payload = {
-            items: modelResult.numberOfCubes,
-            pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
-            density: modelResult.averageDensities.toFixed(2),
-            volume: modelResult.boundingBoxVolume.toFixed(2),
-            entropy: modelResult.shannonEntropy.toFixed(2),
-            query: userInputValue,
-            model: modelResult.model
-        };
+            const modelDiv = document.createElement('div');
+            modelDiv.classList.add('model-result-container', 'model-card');
             
-        fetch('/entropy_db', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
+            appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
+
+            const modelTitle = document.createElement('h3');
+            modelTitle.textContent = `${modelResult.model}`;
+            modelDiv.appendChild(modelTitle);
+
+            append2DVisualization(modelDiv, modelResult);
+
+            const itemCountParagraph = document.createElement('p');
+            itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
+            modelDiv.appendChild(itemCountParagraph);
+
+            const avgDistanceParagraph = document.createElement('p');
+            avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+            modelDiv.appendChild(avgDistanceParagraph);
+
+            const avgDensityParagraph = document.createElement('p');
+            avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
+            modelDiv.appendChild(avgDensityParagraph);
+
+            const boundingBoxVolumeParagraph = document.createElement('p');
+            boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
+            modelDiv.appendChild(boundingBoxVolumeParagraph);
+
+            const entropyParagraph = document.createElement('p');
+            entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
+            modelDiv.appendChild(entropyParagraph);
+
+            appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
+            appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
+            compareContainer.appendChild(modelDiv);
+
+            const payload = {
+                items: modelResult.numberOfCubes,
+                pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
+                density: modelResult.averageDensities.toFixed(2),
+                volume: modelResult.boundingBoxVolume.toFixed(2),
+                entropy: modelResult.shannonEntropy.toFixed(2),
+                query: userInputValue,
+                model: modelResult.model
+            };
+                
+            fetch('/entropy_db', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
                     
     });
 
