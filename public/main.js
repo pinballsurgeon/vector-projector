@@ -132,6 +132,22 @@ document.getElementById('tab-model').addEventListener('click', (event) => openMo
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 document.getElementById('modelLeaderTab').addEventListener('click', async (event) => {
+
+
+    let i, tablinks;
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById('compareTab').style.display = "block";
+    evt.currentTarget.className += " active";
+
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.style.display = 'none';
+    clearCanvas();
+
     event.preventDefault();
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
