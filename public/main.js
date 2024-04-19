@@ -132,47 +132,62 @@ document.getElementById('tab-model').addEventListener('click', (event) => openMo
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 document.getElementById('modelLeaderTab').addEventListener('click', async (event) => {
-
+    event.preventDefault();
 
     let i, tablinks;
-
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-
-    document.getElementById('compareTab').style.display = "block";
     event.currentTarget.className += " active";
 
     const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.style.display = 'none';
-    clearCanvas();
+    canvasContainer.innerHTML = ''; // Clear any existing content
+    canvasContainer.style.display = 'block';
 
-    event.preventDefault();
+    const canvas = document.createElement('canvas');
+    canvasContainer.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
 
-    const container = document.getElementById('compare-container');
-    container.innerHTML = ''; // Clear previous content
-    container.style.display = 'flex';
+    // Sort models by Metric 2 descending
+    modelAverages.sort((a, b) => b.avgMetric2 - a.avgMetric2);
 
-    modelAverages.forEach(model => {
-        const modelDiv = document.createElement('div');
-        modelDiv.classList.add('model-result-container', 'model-card');
+    const data = {
+        labels: modelAverages.map(model => model.model),
+        datasets: [{
+            label: 'Average Metric 1',
+            data: modelAverages.map(model => model.avgMetric1),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Average Metric 2',
+            data: modelAverages.map(model => model.avgMetric2),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
 
-        const modelTitle = document.createElement('h3');
-        modelTitle.textContent = model.model;
-        modelDiv.appendChild(modelTitle);
-
-        const avgMetric1Paragraph = document.createElement('p');
-        avgMetric1Paragraph.textContent = `Average Metric 1: ${model.avgMetric1.toFixed(2)}`;
-        modelDiv.appendChild(avgMetric1Paragraph);
-
-        const avgMetric2Paragraph = document.createElement('p');
-        avgMetric2Paragraph.textContent = `Average Metric 2: ${model.avgMetric2.toFixed(2)}`;
-        modelDiv.appendChild(avgMetric2Paragraph);
-
-        container.appendChild(modelDiv);
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            indexAxis: 'y', // Makes the bar chart horizontal
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
     });
 });
 
