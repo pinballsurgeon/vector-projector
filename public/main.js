@@ -142,7 +142,7 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
     }
 
     document.getElementById('compareTab').style.display = "block";
-    evt.currentTarget.className += " active";
+    event.currentTarget.className += " active";
 
     const canvasContainer = document.getElementById('canvas-container');
     canvasContainer.style.display = 'none';
