@@ -929,15 +929,16 @@ app.get('/model_averages', async (req, res) => {
 
         const queryResult = await client.query(`
 
+
         with query_base as (
             select query
-                , avg(items_number) avg_items_number
+                , avg(items_number) * 1.0 avg_items_number
                 , avg(pairwise_number) avg_pairwise_number
                 , avg(density) avg_density
                 , avg(volume) avg_volume
                 , avg(entropy) avg_entropy 
         
-                , max(items_number) max_items_number
+                , max(items_number) * 1.0 max_items_number
                 , max(pairwise_number) max_pairwise_number
                 , max(density) max_density
                 , max(volume) max_volume
@@ -956,13 +957,13 @@ app.get('/model_averages', async (req, res) => {
                     , etr.volume
                     , etr.entropy
         
-                    , items_number / avg_items_number items_number_rel
+                    , ( items_number * 1.0 ) / avg_items_number items_number_rel
                     , pairwise_number / avg_pairwise_number pairwise_number_rel
                     , density / avg_density density_rel
                     , volume / avg_volume volume_rel
                     , entropy / avg_entropy entropy_rel
         
-                    , items_number / max_items_number items_number_max
+                    , ( items_number * 1.0 ) / max_items_number items_number_max
                     , pairwise_number / max_pairwise_number pairwise_number_max
                     , density / max_density density_max
                     , volume / max_volume volume_max
@@ -971,7 +972,7 @@ app.get('/model_averages', async (req, res) => {
                   from entropy etr
         
                   left join query_base qb
-                    on qb.query = etr.query 
+                    on qb.query = etr.query  
         )
         
         
@@ -986,6 +987,7 @@ app.get('/model_averages', async (req, res) => {
           from model_base
         
          group by model  
+
         `);
 
         client.end();
