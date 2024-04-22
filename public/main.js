@@ -141,70 +141,68 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
     }
     event.currentTarget.className += " active";
 
-    const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.innerHTML = ''; // Clear any existing content
-    canvasContainer.style.display = 'block';
-
-    const canvas = document.createElement('canvas');
-    canvasContainer.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    const response = await fetch('/model_averages');
-    const modelAverages = await response.json();
-
-    // const modelAverages = queryResult.rows.map(row => ({
-    //     model: row.model,
-    //     querys_ran: parseFloat(row.querys_ran),
-    //     entropy_pct: parseFloat(row.entropy_pct),
-    //     volume_pct: parseFloat(row.volume_pct),
-    //     density_pct: parseFloat(row.density_pct),
-    // }));
-
-    // Sort models by Metric 2 descending
-    modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
-
-    const data = {
-        labels: modelAverages.map(model => model.model),
-        datasets: [{
-            label: 'Relative Entropy',
-            data: modelAverages.map(model => model.entropy_pct),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Number of Queries',
-            data: modelAverages.map(model => model.querys_ran),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Relative Vector Volume',
-            data: modelAverages.map(model => model.volume_pct),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(153, 230, 76, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-            indexAxis: 'y', // Makes the bar chart horizontal
-            scales: {
-                x: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true
-                }
-            }
-        }
-    });
+    // Initially activate the first sub-tab and prepare the first chart
+    showChart(new Event('click'), 'EntropyChart');
 });
 
+// The showChart function needs to handle the initialization and updating of charts
+async function showChart(evt, chartId) {
+    const chartContainers = document.getElementsByClassName("chart-content");
+    for (let i = 0; i < chartContainers.length; i++) {
+        chartContainers[i].style.display = "none"; // Hide all charts initially
+    }
+    document.getElementById(chartId).style.display = "block"; // Show the selected chart
+
+    const subTablinks = document.getElementsByClassName("sub-tablinks");
+    for (let i = 0; i < subTablinks.length; i++) {
+        subTablinks[i].className = subTablinks[i].className.replace(" active", "");
+    }
+    evt.currentTarget.className += " active"; // Set the current tab as active
+
+    // Only create the chart if it does not already exist
+    const container = document.getElementById(chartId);
+    if (!container.hasChildNodes()) {
+        const canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        const response = await fetch('/model_averages');
+        const modelAverages = await response.json();
+
+        // You can sort and filter data here based on the type of chart
+        // This is a generic setup; you might need to adjust sorting based on the specific chart
+        modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
+
+        const data = {
+            labels: modelAverages.map(model => model.model),
+            datasets: [{
+                label: chartId,
+                data: modelAverages.map(model => model.entropy_pct),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y', // Makes the bar chart horizontal
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+}
 
 
 async function compareModels(evt) {
