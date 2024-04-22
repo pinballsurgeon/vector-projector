@@ -141,12 +141,12 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
     }
     event.currentTarget.className += " active";
 
-    // Initially activate the first sub-tab and prepare the first chart
-    showChart(new Event('click'), 'EntropyChart');
+    // Directly activate the first sub-tab and prepare the first chart
+    showChart('EntropyChart');
 });
 
-// The showChart function needs to handle the initialization and updating of charts
-async function showChart(evt, chartId) {
+
+async function showChart(chartId) {
     const chartContainers = document.getElementsByClassName("chart-content");
     for (let i = 0; i < chartContainers.length; i++) {
         chartContainers[i].style.display = "none"; // Hide all charts initially
@@ -155,11 +155,13 @@ async function showChart(evt, chartId) {
 
     const subTablinks = document.getElementsByClassName("sub-tablinks");
     for (let i = 0; i < subTablinks.length; i++) {
-        subTablinks[i].className = subTablinks[i].className.replace(" active", "");
+        subTablinks[i].className = subTablinks[i].className.replace(" active", ""); // Remove active class
+        if (subTablinks[i].getAttribute('onclick').includes(chartId)) {
+            subTablinks[i].className += " active"; // Set the current tab as active
+        }
     }
-    evt.currentTarget.className += " active"; // Set the current tab as active
 
-    // Only create the chart if it does not already exist
+    // Proceed with creating the chart if it does not already exist
     const container = document.getElementById(chartId);
     if (!container.hasChildNodes()) {
         const canvas = document.createElement('canvas');
@@ -169,14 +171,13 @@ async function showChart(evt, chartId) {
         const response = await fetch('/model_averages');
         const modelAverages = await response.json();
 
-        // You can sort and filter data here based on the type of chart
-        // This is a generic setup; you might need to adjust sorting based on the specific chart
+        // Sort and prepare data for the chart
         modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
 
         const data = {
             labels: modelAverages.map(model => model.model),
             datasets: [{
-                label: chartId,
+                label: 'Relative Entropy',
                 data: modelAverages.map(model => model.entropy_pct),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -188,7 +189,7 @@ async function showChart(evt, chartId) {
             type: 'bar',
             data: data,
             options: {
-                indexAxis: 'y', // Makes the bar chart horizontal
+                indexAxis: 'y',
                 scales: {
                     x: {
                         beginAtZero: true
