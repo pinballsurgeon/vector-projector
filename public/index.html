@@ -54,29 +54,22 @@
         
         
     </div>
-
     <div id="main-content" style="display: flex;">
-
         <div style="width: 70%;">
-
             <div id="tab-sliver" class="tab">
                 <button class="tablinks" id="tab-model">3D Space</button>
                 <button class="tablinks" id="compareTab">Entropy</button>
-                <!-- <button class="tablinks" id="attributesTab">Attributes</button> -->
                 <button class="tablinks" id="modelLeaderTab">Leaders</button>
-                <!-- Add this within your existing Model Leaders tab structure -->
-
-
             </div>
-        
+            
             <div id="tab-content">
                 <div id="canvas-container" class="tabcontent" style="display: block;">
                     <div id="my_dataviz"></div>
                 </div>
                 <div id="compare-container" style="display: none;"></div>
-                <div id="chart-content" class="tabcontent">
+                <div id="modelLeaderContent" class="tabcontent" style="display: none;">
                     <div class="sub-tabs">
-                        <button class="sub-tablinks active" onclick="showChart(event, 'EntropyChart')">Relative Entropy</button>
+                        <button class="sub-tablinks" onclick="showChart(event, 'EntropyChart')">Relative Entropy</button>
                         <button class="sub-tablinks" onclick="showChart(event, 'QueryChart')">Number of Queries</button>
                         <button class="sub-tablinks" onclick="showChart(event, 'VolumeChart')">Relative Vector Volume</button>
                     </div>
@@ -85,8 +78,9 @@
                     <div id="VolumeChart" class="chart-content" style="display:none;"></div>
                 </div>
             </div>
-
         </div>
+    </div>
+    
 
         <div id="new-sidebar-container" style="width: 30%;">
             <select id="newSidebarSelector">

@@ -131,79 +131,81 @@ async function openModelTab(evt) {
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
-document.getElementById('modelLeaderTab').addEventListener('click', async (event) => {
+document.getElementById('modelLeaderTab').addEventListener('click', function(event) {
     event.preventDefault();
 
-    let i, tablinks;
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    let tablinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
     }
-    event.currentTarget.className += " active";
+    event.currentTarget.classList.add("active");
 
-    // Directly activate the first sub-tab and prepare the first chart
-    showChart('EntropyChart');
+    let tabContents = document.getElementsByClassName("tabcontent");
+    for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+    }
+    document.getElementById("modelLeaderContent").style.display = "block";
+
+    showChart('EntropyChart'); // Default to showing the EntropyChart
 });
 
-
-async function showChart(chartId) {
-    const chartContainers = document.getElementsByClassName("chart-content");
-    for (let i = 0; i < chartContainers.length; i++) {
-        chartContainers[i].style.display = "none"; // Hide all charts initially
+function showChart(chartId) {
+    let charts = document.getElementsByClassName("chart-content");
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].style.display = "none";
     }
-    document.getElementById(chartId).style.display = "block"; // Show the selected chart
+    document.getElementById(chartId).style.display = "block";
 
-    const subTablinks = document.getElementsByClassName("sub-tablinks");
+    let subTablinks = document.getElementsByClassName("sub-tablinks");
     for (let i = 0; i < subTablinks.length; i++) {
-        subTablinks[i].className = subTablinks[i].className.replace(" active", ""); // Remove active class
+        subTablinks[i].classList.remove("active");
         if (subTablinks[i].getAttribute('onclick').includes(chartId)) {
-            subTablinks[i].className += " active"; // Set the current tab as active
+            subTablinks[i].classList.add("active");
         }
     }
-
-    // Proceed with creating the chart if it does not already exist
+    
+    // Check if chart already exists to avoid recreating it
     const container = document.getElementById(chartId);
     if (!container.hasChildNodes()) {
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-
-        const response = await fetch('/model_averages');
-        const modelAverages = await response.json();
-
-        // Sort and prepare data for the chart
-        modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
-
-        const data = {
-            labels: modelAverages.map(model => model.model),
-            datasets: [{
-                label: 'Relative Entropy',
-                data: modelAverages.map(model => model.entropy_pct),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                }
-            }
-        });
+        createChart(chartId); // Function to create the chart if it doesn't exist
     }
 }
+
+async function createChart(chartId) {
+    const canvas = document.createElement('canvas');
+    document.getElementById(chartId).appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const response = await fetch('/model_averages');
+    const modelAverages = await response.json();
+    modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
+    const data = buildChartData(modelAverages, chartId); // Assume buildChartData is defined to prepare the specific chart data
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            indexAxis: 'y',
+            scales: { x: { beginAtZero: true } },
+            plugins: { legend: { display: true } }
+        }
+    });
+}
+
+function buildChartData(modelAverages, chartId) {
+    // This function needs to build the data object based on the chartId
+    // For example, different handling for EntropyChart, QueryChart, etc.
+    return {
+        labels: modelAverages.map(model => model.model),
+        datasets: [{
+            label: 'Some Metric',
+            data: modelAverages.map(model => model.some_metric),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+}
+
 
 
 async function compareModels(evt) {
