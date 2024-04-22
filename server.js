@@ -929,76 +929,76 @@ app.get('/model_averages', async (req, res) => {
 
         const queryResult = await client.query(`
 
-        
-with query_base as (
-    select query
-        , avg(items_number) * 1.0 avg_items_number
-        , avg(pairwise_number) avg_pairwise_number
-        , avg(density) avg_density
-        , avg(volume) avg_volume
-        , avg(entropy) avg_entropy 
+                        
+                with query_base as (
+                    select query
+                        , avg(items_number) * 1.0 avg_items_number
+                        , avg(pairwise_number) avg_pairwise_number
+                        , avg(density) avg_density
+                        , avg(volume) avg_volume
+                        , avg(entropy) avg_entropy 
 
-        , max(items_number) * 1.0 max_items_number
-        , max(pairwise_number) max_pairwise_number
-        , max(density) max_density
-        , max(volume) max_volume
-        , max(entropy) max_entropy 
+                        , max(items_number) * 1.0 max_items_number
+                        , max(pairwise_number) max_pairwise_number
+                        , max(density) max_density
+                        , max(volume) max_volume
+                        , max(entropy) max_entropy 
 
-        from entropy 
-        group by query 
-),
+                        from entropy 
+                        group by query 
+                ),
 
-model_base as (
-        select etr.model
-            , etr.query
-            , etr.items_number
-            , etr.pairwise_number
-            , etr.density
-            , etr.volume
-            , etr.entropy
+                model_base as (
+                        select etr.model
+                            , etr.query
+                            , etr.items_number
+                            , etr.pairwise_number
+                            , etr.density
+                            , etr.volume
+                            , etr.entropy
 
-            , ( items_number * 1.0 ) / avg_items_number items_number_rel
-            , pairwise_number / avg_pairwise_number pairwise_number_rel
-            , density / avg_density density_rel
-            , volume / avg_volume volume_rel
-            , entropy / avg_entropy entropy_rel
+                            , ( items_number * 1.0 ) / avg_items_number items_number_rel
+                            , pairwise_number / avg_pairwise_number pairwise_number_rel
+                            , density / avg_density density_rel
+                            , volume / avg_volume volume_rel
+                            , entropy / avg_entropy entropy_rel
 
-            , ( items_number * 1.0 ) / max_items_number items_number_max
-            , pairwise_number / max_pairwise_number pairwise_number_max
-            , density / max_density density_max
-            , volume / max_volume volume_max
-            , entropy / max_entropy entropy_max
-            
-          from entropy etr
+                            , ( items_number * 1.0 ) / max_items_number items_number_max
+                            , pairwise_number / max_pairwise_number pairwise_number_max
+                            , density / max_density density_max
+                            , volume / max_volume volume_max
+                            , entropy / max_entropy entropy_max
+                            
+                        from entropy etr
 
-          left join query_base qb
-            on qb.query = etr.query  
-),
+                        left join query_base qb
+                            on qb.query = etr.query  
+                ),
 
-agg_model_cnt as (
+                agg_model_cnt as (
 
-    select max(query_ran) max_query_ran
-      from (
-          select model
-              , count(distinct query) query_ran
-            from entropy
-          group by model
-      ) sal
+                    select max(query_ran) max_query_ran
+                    from (
+                        select model
+                            , count(distinct query) query_ran
+                            from entropy
+                        group by model
+                    ) sal
 
-)
+                )
 
 
-select model
-    , ( count(distinct query) * 1.00 ) / ( select max(max_query_ran) * 1.00 from agg_model_cnt ) querys_ran
-    , avg(items_number_max) items_pct
-    , avg(pairwise_number_max) pairwise_pct
-    , avg(density_max) density_pct
-    , avg(volume_max) volume_pct
-    , avg(entropy_max) entropy_pct 
-    
-  from model_base
+                select model
+                    , ( count(distinct query) * 1.00 ) / ( select max(max_query_ran) * 1.00 from agg_model_cnt ) querys_ran
+                    , avg(items_number_max) items_pct
+                    , avg(pairwise_number_max) pairwise_pct
+                    , avg(density_max) density_pct
+                    , avg(volume_max) volume_pct
+                    , avg(entropy_max) entropy_pct 
+                    
+                from model_base
 
- group by model  
+                group by model  
 
         `);
 
