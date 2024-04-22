@@ -181,7 +181,7 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
             label: 'Relative Vector Volume',
             data: modelAverages.map(model => model.volume_pct),
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            borderColor: 'rgba(123, 230, 76, 1)',
             borderWidth: 1
         }]
     };
