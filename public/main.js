@@ -131,79 +131,76 @@ async function openModelTab(evt) {
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
-document.getElementById('modelLeaderTab').addEventListener('click', function(event) {
-    event.preventDefault();
-
-    let tablinks = document.getElementsByClassName("tablinks");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
-    event.currentTarget.classList.add("active");
-
-    let tabContents = document.getElementsByClassName("tabcontent");
-    for (let i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
-    }
-    document.getElementById("modelLeaderContent").style.display = "block";
-
-    showChart('EntropyChart'); // Default to showing the EntropyChart
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('btnEntropyChart').addEventListener('click', function() {
+        showChart('EntropyChart');
+    });
+    document.getElementById('btnQueryChart').addEventListener('click', function() {
+        showChart('QueryChart');
+    });
+    document.getElementById('btnVolumeChart').addEventListener('click', function() {
+        showChart('VolumeChart');
+    });
 });
 
 function showChart(chartId) {
-    let charts = document.getElementsByClassName("chart-content");
-    for (let i = 0; i < charts.length; i++) {
-        charts[i].style.display = "none";
+    const chartContainers = document.getElementsByClassName("chart-content");
+    for (let i = 0; i < chartContainers.length; i++) {
+        chartContainers[i].style.display = "none"; // Hide all charts initially
     }
-    document.getElementById(chartId).style.display = "block";
+    document.getElementById(chartId).style.display = "block"; // Show the selected chart
 
-    let subTablinks = document.getElementsByClassName("sub-tablinks");
+    const subTablinks = document.getElementsByClassName("sub-tablinks");
     for (let i = 0; i < subTablinks.length; i++) {
-        subTablinks[i].classList.remove("active");
-        if (subTablinks[i].getAttribute('onclick').includes(chartId)) {
-            subTablinks[i].classList.add("active");
+        subTablinks[i].classList.remove("active"); // Remove active class
+        if (subTablinks[i].id === 'btn' + chartId) {
+            subTablinks[i].classList.add("active"); // Set the current tab as active
         }
     }
-    
-    // Check if chart already exists to avoid recreating it
+
+    // Initialize the chart if it doesn't exist
     const container = document.getElementById(chartId);
     if (!container.hasChildNodes()) {
-        createChart(chartId); // Function to create the chart if it doesn't exist
+        const canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        initializeChart(ctx, chartId); // Function to create the chart
     }
 }
 
-async function createChart(chartId) {
-    const canvas = document.createElement('canvas');
-    document.getElementById(chartId).appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-    const response = await fetch('/model_averages');
-    const modelAverages = await response.json();
-    modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
-    const data = buildChartData(modelAverages, chartId); // Assume buildChartData is defined to prepare the specific chart data
+function initializeChart(ctx, chartId) {
+    // Fetch data and create a chart
+    fetch('/model_averages').then(response => response.json()).then(modelAverages => {
+        modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
+        const data = {
+            labels: modelAverages.map(model => model.model),
+            datasets: [{
+                label: 'Metric',
+                data: modelAverages.map(model => model[chartId]), // Adjust based on actual data property
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-            indexAxis: 'y',
-            scales: { x: { beginAtZero: true } },
-            plugins: { legend: { display: true } }
-        }
-    });
-}
-
-function buildChartData(modelAverages, chartId) {
-    // This function needs to build the data object based on the chartId
-    // For example, different handling for EntropyChart, QueryChart, etc.
-    return {
-        labels: modelAverages.map(model => model.model),
-        datasets: [{
-            label: 'Some Metric',
-            data: modelAverages.map(model => model.some_metric),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    };
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }).catch(error => console.error('Error loading chart data:', error));
 }
 
 
