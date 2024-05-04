@@ -131,18 +131,20 @@ async function openModelTab(evt) {
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
-document.getElementById('modelLeaderTab').addEventListener('click', async (event) => {
+document.getElementById('modelLeaderTab').addEventListener('click', loadMetricData);
+document.getElementById('metricSelect').addEventListener('change', loadMetricData);
+
+async function loadMetricData(event) {
     event.preventDefault();
 
-    let i, tablinks;
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
+    let tablinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    event.currentTarget.className += " active";
+    document.getElementById('modelLeaderTab').className += " active";
 
     const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.innerHTML = ''; // Clear any existing content
+    canvasContainer.innerHTML = '';
     canvasContainer.style.display = 'block';
 
     const canvas = document.createElement('canvas');
@@ -152,28 +154,33 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
 
-    // Sort models by Metric 2 descending
-    modelAverages.sort((a, b) => b.entropy_pct - a.entropy_pct);
+    const selectedMetric = document.getElementById('metricSelect').value;
+    let label, dataKey;
+
+    switch (selectedMetric) {
+        case 'entropy':
+            label = 'Relative Entropy';
+            dataKey = 'entropy_pct';
+            break;
+        case 'queries':
+            label = 'Number of Queries';
+            dataKey = 'querys_ran';
+            break;
+        case 'volume':
+            label = 'Relative Vector Volume';
+            dataKey = 'volume_pct';
+            break;
+    }
+
+    modelAverages.sort((a, b) => b[dataKey] - a[dataKey]);
 
     const data = {
         labels: modelAverages.map(model => model.model),
         datasets: [{
-            label: 'Relative Entropy',
-            data: modelAverages.map(model => model.entropy_pct),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Number of Queries',
-            data: modelAverages.map(model => model.querys_ran),
+            label: label,
+            data: modelAverages.map(model => model[dataKey]),
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Relative Vector Volume',
-            data: modelAverages.map(model => model.volume_pct),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(153, 230, 76, 1)',
             borderWidth: 1
         }]
     };
@@ -182,7 +189,7 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
         type: 'bar',
         data: data,
         options: {
-            indexAxis: 'y', // Makes the bar chart horizontal
+            indexAxis: 'y',
             scales: {
                 x: {
                     beginAtZero: true
@@ -195,7 +202,7 @@ document.getElementById('modelLeaderTab').addEventListener('click', async (event
             }
         }
     });
-});
+}
 
 
 
