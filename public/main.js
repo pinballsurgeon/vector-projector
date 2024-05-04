@@ -132,7 +132,15 @@ document.getElementById('tab-model').addEventListener('click', (event) => openMo
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 document.getElementById('modelLeaderTab').addEventListener('click', loadMetricData);
-document.getElementById('metricSelect').addEventListener('change', loadMetricData);
+
+// Assuming you have some mechanism to detect other tab clicks, make sure to hide the dropdown
+document.querySelectorAll('.tablinks').forEach(tab => {
+    tab.addEventListener('click', function() {
+        if (this.id !== 'modelLeaderTab') {
+            document.getElementById('metricSelect').style.display = 'none';
+        }
+    });
+});
 
 async function loadMetricData(event) {
     event.preventDefault();
@@ -141,7 +149,10 @@ async function loadMetricData(event) {
     for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById('modelLeaderTab').className += " active";
+    this.className += " active";
+
+    // Show the dropdown only when this tab is active
+    document.getElementById('metricSelect').style.display = 'block';
 
     const canvasContainer = document.getElementById('canvas-container');
     canvasContainer.innerHTML = '';
@@ -151,9 +162,9 @@ async function loadMetricData(event) {
     canvasContainer.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
+    // Your fetch and chart code remains unchanged
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
-
     const selectedMetric = document.getElementById('metricSelect').value;
     let label, dataKey;
 
@@ -173,7 +184,6 @@ async function loadMetricData(event) {
     }
 
     modelAverages.sort((a, b) => b[dataKey] - a[dataKey]);
-
     const data = {
         labels: modelAverages.map(model => model.model),
         datasets: [{
