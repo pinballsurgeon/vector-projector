@@ -91,42 +91,50 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 });
 
 async function openModelTab(evt) {
+    // Hide all other container elements that might interfere visually
     document.getElementById('compare-container').style.display = 'none';
     document.getElementById('canvas-container').style.display = 'block';
+    document.getElementById('metricSelect').style.display = 'none';  // Ensure the dropdown is hidden when not in the modelLeaderTab
 
-    let i, tablinks;
-
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
+    // Reset active class for all tabs
+    let tablinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
+    // Display the current tab content and set it as active
     document.getElementById('tab-model').style.display = "block";
     evt.currentTarget.className += " active";
 
+    // Retrieve user input
     const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
-    if (!userInputValue.trim()) {
+    if (!userInputValue) {
         return;
     }
 
+    // Get model and other parameters based on the user's input
     const { model } = getModelAndParams();
     const queryParams = new URLSearchParams({ userInputValue, model }).toString();
     
+    // Update sidebar or any other related content for the new tab
     updateSidebarContent();
 
     try {
+        // Fetch data specific to the current tab
         const response = await fetch(`/check_query?${queryParams}`);
         const data = await response.json();
 
+        // Check if data exists and update UI accordingly
         if (data.exists) {
-            await createOrUpdateCube(data.pcaResult);
-            updateVectorMetricsContent();
+            await createOrUpdateCube(data.pcaResult); // Assume this updates a visualization like a PCA plot
+            updateVectorMetricsContent(); // Update UI elements with new data
         }
 
     } catch (error) {
-        appendLog(`Error: ${error}`);
+        appendLog(`Error: ${error}`); // Log any errors
     }
 }
+
 
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
