@@ -132,6 +132,7 @@ document.getElementById('tab-model').addEventListener('click', (event) => openMo
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
 document.getElementById('modelLeaderTab').addEventListener('click', loadMetricData);
+document.getElementById('metricSelect').addEventListener('change', loadMetricData);
 
 // Assuming you have some mechanism to detect other tab clicks, make sure to hide the dropdown
 document.querySelectorAll('.tablinks').forEach(tab => {
