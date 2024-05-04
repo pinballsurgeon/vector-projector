@@ -673,6 +673,12 @@ function calculateAverage(array) {
     return sum / array.length;
 }
 
+function calculateStandardDeviation(values) {
+    const mean = calculateAverage(values);
+    const variance = values.reduce((acc, value) => acc + Math.pow(value - mean, 2), 0) / values.length;
+    return Math.sqrt(variance);
+}
+
 
 function calculateBoundingVolumeArea(coordinates) {
 
