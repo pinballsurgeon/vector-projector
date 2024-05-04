@@ -164,11 +164,15 @@
             </div>
         
             <div id="tab-content">
-                <select id="metricSelect" style="display: none;">
+                <select id="metricSelect">
                     <option value="entropy">Relative Entropy</option>
                     <option value="queries">Number of Queries</option>
                     <option value="volume">Relative Vector Volume</option>
+                    <option value="density">Relative Density</option>
+                    <option value="items">Relative Items</option>
+                    <option value="pairwise">Relative Pairwise</option>
                 </select>
+                
                 <div id="canvas-container" class="tabcontent" style="display: none;">
                     <div id="my_dataviz"></div>  <!-- Visualization specifically for 3D models -->
                     <canvas id="leaderChart"></canvas>  <!-- Dedicated canvas for the leader chart -->

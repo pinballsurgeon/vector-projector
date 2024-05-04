@@ -1010,7 +1010,10 @@ app.get('/model_averages', async (req, res) => {
             entropy_pct: parseFloat(row.entropy_pct),
             volume_pct: parseFloat(row.volume_pct),
             density_pct: parseFloat(row.density_pct),
+            items_pct: parseFloat(row.items_pct),           
+            pairwise_pct: parseFloat(row.pairwise_pct)     
         }));
+        
 
         res.json(modelAverages);
     } catch (error) {

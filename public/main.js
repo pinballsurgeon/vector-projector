@@ -150,9 +150,10 @@ function loadMetricData(event) {
 
 function updateLeaderChart() {
     const ctx = document.getElementById('leaderChart').getContext('2d');
-    const response = fetch('/model_averages').then(response => response.json()).then(modelAverages => {
+    fetch('/model_averages').then(response => response.json()).then(modelAverages => {
         const selectedMetric = document.getElementById('metricSelect').value;
         let label, dataKey;
+
         switch (selectedMetric) {
             case 'entropy':
                 label = 'Relative Entropy';
@@ -165,6 +166,18 @@ function updateLeaderChart() {
             case 'volume':
                 label = 'Relative Vector Volume';
                 dataKey = 'volume_pct';
+                break;
+            case 'density':
+                label = 'Relative Density';
+                dataKey = 'density_pct';
+                break;
+            case 'items':
+                label = 'Relative Items';
+                dataKey = 'items_pct';
+                break;
+            case 'pairwise':
+                label = 'Relative Pairwise';
+                dataKey = 'pairwise_pct';
                 break;
         }
 
@@ -197,8 +210,12 @@ function updateLeaderChart() {
                 }
             }
         });
+    }).catch(error => {
+        console.error('Error fetching or processing data:', error);
+        appendLog(`Error: ${error}`);
     });
 }
+
 
 function updateActiveTab(currentTarget) {
     let tablinks = document.getElementsByClassName("tablinks");
