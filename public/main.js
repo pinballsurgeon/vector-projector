@@ -167,14 +167,17 @@ async function loadMetricData(event) {
     document.getElementById('metricSelect').style.display = 'block';
 
     const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.innerHTML = '';
+
+    // Clear previous canvases only, preserve `my_dataviz` if needed
+    clearCanvasElements(canvasContainer);
+
     canvasContainer.style.display = 'block';
 
     const canvas = document.createElement('canvas');
     canvasContainer.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // Your fetch and chart code remains unchanged
+    // Fetch and chart code remains unchanged, as provided in your script
     const response = await fetch('/model_averages');
     const modelAverages = await response.json();
     const selectedMetric = document.getElementById('metricSelect').value;
@@ -226,6 +229,15 @@ async function loadMetricData(event) {
     });
 }
 
+function clearCanvasElements(container) {
+    // Iterate over child elements and remove only canvas elements
+    for (let i = container.children.length - 1; i >= 0; i--) {
+        let child = container.children[i];
+        if (child.tagName === 'CANVAS') {
+            container.removeChild(child);
+        }
+    }
+}
 
 
 async function compareModels(evt) {
