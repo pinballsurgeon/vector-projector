@@ -91,23 +91,13 @@ document.getElementById('overlapSlider').addEventListener('input', function() {
 });
 
 async function openModelTab(evt) {
-    // Hide all other container elements that might interfere visually
-    document.getElementById('compare-container').style.display = 'none';
+    hideAllVisualComponents();
+    updateActiveTab(evt.currentTarget);
+
+    // Show only the relevant components for this tab
     document.getElementById('canvas-container').style.display = 'block';
-    document.getElementById('metricSelect').style.display = 'none';  // Ensure the dropdown is hidden when not in the modelLeaderTab
+    document.getElementById('my_dataviz').style.display = 'block'; // Show 3D visualization
 
-    // Reset active class for all tabs
-    let tablinks = document.getElementsByClassName("tablinks");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    const canvasContainer = document.getElementById('canvas-container');
-    canvasContainer.innerHTML = ''; // Clears any existing canvases/charts    
-
-    // Display the current tab content and set it as active
-    document.getElementById('tab-model').style.display = "block";
-    evt.currentTarget.className += " active";
 
     // Retrieve user input
     const userInputValue = document.getElementById('userInput').value.trim().toLowerCase();
@@ -138,80 +128,83 @@ async function openModelTab(evt) {
     }
 }
 
+// Function to hide all UI components that are tab-specific
+function hideAllVisualComponents() {
+    document.getElementById('my_dataviz').style.display = 'none';
+    document.getElementById('leaderChart').style.display = 'none';
+    document.getElementById('metricSelect').style.display = 'none'; // Hide this unless the leader tab is active
+}
 
-async function loadMetricData(event) {
+function loadMetricData(event) {
     event.preventDefault();
+    hideAllVisualComponents();
+    updateActiveTab(event.currentTarget);
 
+    document.getElementById('canvas-container').style.display = 'block';
+    document.getElementById('leaderChart').style.display = 'block'; // Show the chart canvas
+    document.getElementById('metricSelect').style.display = 'block'; // Show the metric selector
+
+    updateLeaderChart(); // Assume this is a function that sets up the leader chart
+}
+
+function updateLeaderChart() {
+    const ctx = document.getElementById('leaderChart').getContext('2d');
+    const response = fetch('/model_averages').then(response => response.json()).then(modelAverages => {
+        const selectedMetric = document.getElementById('metricSelect').value;
+        let label, dataKey;
+        switch (selectedMetric) {
+            case 'entropy':
+                label = 'Relative Entropy';
+                dataKey = 'entropy_pct';
+                break;
+            case 'queries':
+                label = 'Number of Queries';
+                dataKey = 'querys_ran';
+                break;
+            case 'volume':
+                label = 'Relative Vector Volume';
+                dataKey = 'volume_pct';
+                break;
+        }
+
+        modelAverages.sort((a, b) => b[dataKey] - a[dataKey]);
+        const data = {
+            labels: modelAverages.map(model => model.model),
+            datasets: [{
+                label: label,
+                data: modelAverages.map(model => model[dataKey]),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    });
+}
+
+function updateActiveTab(currentTarget) {
     let tablinks = document.getElementsByClassName("tablinks");
     for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    this.className += " active";
-
-    // Show the dropdown only when this tab is active
-    document.getElementById('metricSelect').style.display = 'block';
-
-    const canvasContainer = document.getElementById('canvas-container');
-
-    // Clear previous canvases only, preserve `my_dataviz` if needed
-    clearCanvasElements(canvasContainer);
-
-    canvasContainer.style.display = 'block';
-
-    const canvas = document.createElement('canvas');
-    canvasContainer.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    // Fetch and chart code remains unchanged, as provided in your script
-    const response = await fetch('/model_averages');
-    const modelAverages = await response.json();
-    const selectedMetric = document.getElementById('metricSelect').value;
-    let label, dataKey;
-
-    switch (selectedMetric) {
-        case 'entropy':
-            label = 'Relative Entropy';
-            dataKey = 'entropy_pct';
-            break;
-        case 'queries':
-            label = 'Number of Queries';
-            dataKey = 'querys_ran';
-            break;
-        case 'volume':
-            label = 'Relative Vector Volume';
-            dataKey = 'volume_pct';
-            break;
-    }
-
-    modelAverages.sort((a, b) => b[dataKey] - a[dataKey]);
-    const data = {
-        labels: modelAverages.map(model => model.model),
-        datasets: [{
-            label: label,
-            data: modelAverages.map(model => model[dataKey]),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-            indexAxis: 'y',
-            scales: {
-                x: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true
-                }
-            }
-        }
-    });
+    currentTarget.className += " active";
 }
 
 function clearCanvasElements(container) {

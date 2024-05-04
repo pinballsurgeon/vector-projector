@@ -169,12 +169,11 @@
                     <option value="queries">Number of Queries</option>
                     <option value="volume">Relative Vector Volume</option>
                 </select>
-                <div id="canvas-container" class="tabcontent" style="display: block;">
-
-                    
-                    <div id="my_dataviz"></div>
-                    
+                <div id="canvas-container" class="tabcontent" style="display: none;">
+                    <div id="my_dataviz"></div>  <!-- Visualization specifically for 3D models -->
+                    <canvas id="leaderChart"></canvas>  <!-- Dedicated canvas for the leader chart -->
                 </div>
+                
                 <div id="compare-container" style="display: none;"></div>
             </div>
 
