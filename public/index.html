@@ -164,12 +164,13 @@
             </div>
         
             <div id="tab-content">
+                <select id="metricSelect">
+                    <option value="entropy">Relative Entropy</option>
+                    <option value="queries">Number of Queries</option>
+                    <option value="volume">Relative Vector Volume</option>
+                </select>
                 <div id="canvas-container" class="tabcontent" style="display: block;">
-                    <select id="metricSelect">
-                        <option value="entropy">Relative Entropy</option>
-                        <option value="queries">Number of Queries</option>
-                        <option value="volume">Relative Vector Volume</option>
-                    </select>
+
                     
                     <div id="my_dataviz"></div>
                     
