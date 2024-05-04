@@ -128,11 +128,12 @@ async function openModelTab(evt) {
     }
 }
 
-// Function to hide all UI components that are tab-specific
 function hideAllVisualComponents() {
+    document.getElementById('canvas-container').style.display = 'none';
     document.getElementById('my_dataviz').style.display = 'none';
     document.getElementById('leaderChart').style.display = 'none';
-    document.getElementById('metricSelect').style.display = 'none'; // Hide this unless the leader tab is active
+    document.getElementById('metricSelect').style.display = 'none';
+    document.getElementById('compare-container').style.display = 'none';
 }
 
 function loadMetricData(event) {
@@ -207,16 +208,6 @@ function updateActiveTab(currentTarget) {
     currentTarget.className += " active";
 }
 
-function clearCanvasElements(container) {
-    // Iterate over child elements and remove only canvas elements
-    for (let i = container.children.length - 1; i >= 0; i--) {
-        let child = container.children[i];
-        if (child.tagName === 'CANVAS') {
-            container.removeChild(child);
-        }
-    }
-}
-
 document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
 document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
 // document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
@@ -234,90 +225,85 @@ document.querySelectorAll('.tablinks').forEach(tab => {
 
 
 async function compareModels(evt) {
+
+    hideAllVisualComponents();  // Ensure this hides all elements that shouldn't be visible
+    updateActiveTab(evt.currentTarget);  // Set the current tab as active
+
     const userInputValue = document.getElementById('userInput').value;
     if (!userInputValue) {
         alert("Please enter a query to compare.");
         return;
     }
 
-    let i, tablinks;
+ 
 
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.style.display = 'none';
+    clearCanvas();
 
-    document.getElementById('compareTab').style.display = "block";
-    evt.currentTarget.className += " active";
+    const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
+    const compareData = await response.json();
+    
+    const compareContainer = document.getElementById('compare-container');
+    compareContainer.innerHTML = '';
+    compareContainer.style.display = 'flex';
+    compareContainer.classList.add('compare-results-grid');
+    
+    compareData.forEach(modelResult => {
 
-
-        const canvasContainer = document.getElementById('canvas-container');
-        canvasContainer.style.display = 'none';
-        clearCanvas();
-
-        const response = await fetch(`/compare_vectors?query=${encodeURIComponent(userInputValue)}`);
-        const compareData = await response.json();
+        const modelDiv = document.createElement('div');
+        modelDiv.classList.add('model-result-container', 'model-card');
         
-        const compareContainer = document.getElementById('compare-container');
-        compareContainer.innerHTML = '';
-        compareContainer.style.display = 'flex';
-        compareContainer.classList.add('compare-results-grid');
-        
-        compareData.forEach(modelResult => {
+        appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
 
-            const modelDiv = document.createElement('div');
-            modelDiv.classList.add('model-result-container', 'model-card');
+        const modelTitle = document.createElement('h3');
+        modelTitle.textContent = `${modelResult.model}`;
+        modelDiv.appendChild(modelTitle);
+
+        append2DVisualization(modelDiv, modelResult);
+
+        const itemCountParagraph = document.createElement('p');
+        itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
+        modelDiv.appendChild(itemCountParagraph);
+
+        const avgDistanceParagraph = document.createElement('p');
+        avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+        modelDiv.appendChild(avgDistanceParagraph);
+
+        const avgDensityParagraph = document.createElement('p');
+        avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
+        modelDiv.appendChild(avgDensityParagraph);
+
+        const boundingBoxVolumeParagraph = document.createElement('p');
+        boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
+        modelDiv.appendChild(boundingBoxVolumeParagraph);
+
+        const entropyParagraph = document.createElement('p');
+        entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
+        modelDiv.appendChild(entropyParagraph);
+
+        appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
+        appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
+        compareContainer.appendChild(modelDiv);
+
+        const payload = {
+            items: modelResult.numberOfCubes,
+            pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
+            density: modelResult.averageDensities.toFixed(2),
+            volume: modelResult.boundingBoxVolume.toFixed(2),
+            entropy: modelResult.shannonEntropy.toFixed(2),
+            query: userInputValue,
+            model: modelResult.model
+        };
             
-            appendLog(`Model Result - ${JSON.stringify(modelResult)}`);
-
-            const modelTitle = document.createElement('h3');
-            modelTitle.textContent = `${modelResult.model}`;
-            modelDiv.appendChild(modelTitle);
-
-            append2DVisualization(modelDiv, modelResult);
-
-            const itemCountParagraph = document.createElement('p');
-            itemCountParagraph.textContent = `Number of items: ${modelResult.numberOfCubes}`;
-            modelDiv.appendChild(itemCountParagraph);
-
-            const avgDistanceParagraph = document.createElement('p');
-            avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
-            modelDiv.appendChild(avgDistanceParagraph);
-
-            const avgDensityParagraph = document.createElement('p');
-            avgDensityParagraph.textContent = `Avg. Neighbors: ${modelResult.averageDensities.toFixed(2)}`;
-            modelDiv.appendChild(avgDensityParagraph);
-
-            const boundingBoxVolumeParagraph = document.createElement('p');
-            boundingBoxVolumeParagraph.textContent = `Vector Volume: ${modelResult.boundingBoxVolume.toFixed(2)}`;
-            modelDiv.appendChild(boundingBoxVolumeParagraph);
-
-            const entropyParagraph = document.createElement('p');
-            entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
-            modelDiv.appendChild(entropyParagraph);
-
-            appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
-            appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
-            compareContainer.appendChild(modelDiv);
-
-            const payload = {
-                items: modelResult.numberOfCubes,
-                pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
-                density: modelResult.averageDensities.toFixed(2),
-                volume: modelResult.boundingBoxVolume.toFixed(2),
-                entropy: modelResult.shannonEntropy.toFixed(2),
-                query: userInputValue,
-                model: modelResult.model
-            };
+        fetch('/entropy_db', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
                 
-            fetch('/entropy_db', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-                    
     });
 
 }
