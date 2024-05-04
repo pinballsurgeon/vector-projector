@@ -317,9 +317,12 @@ async function compareModels(evt) {
             volume: modelResult.boundingBoxVolume.toFixed(2),
             entropy: modelResult.shannonEntropy.toFixed(2),
             query: userInputValue,
-            model: modelResult.model
+            model: modelResult.model,
+            numberOfAttributes: modelResult.numberOfAttributes,  // New metric
+            averageAttributeValue: modelResult.averageAttributeValue.toFixed(2),  // New metric
+            standardDeviation: modelResult.standardDeviation.toFixed(2)  // New metric
         };
-            
+        
         fetch('/entropy_db', {
             method: 'POST',
             headers: {
@@ -327,6 +330,7 @@ async function compareModels(evt) {
             },
             body: JSON.stringify(payload)
         });
+        
                 
     });
 

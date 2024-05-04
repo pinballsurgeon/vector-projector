@@ -471,21 +471,24 @@ app.post('/entropy_db', async (req, res) => {
     });
     try {
         await client.connect();
-        const { items, pairwise, density, volume, entropy, query, model } = req.body;
+        const { items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviation } = req.body;
 
         const queryText = `
-            INSERT INTO entropy (items_number, pairwise_number, density, volume, entropy, query, model)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            INSERT INTO entropy (items_number, pairwise_number, density, volume, entropy, query, model, num_attributes, avg_attribute_value, stddev)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             ON CONFLICT (query, model) 
             DO UPDATE SET 
                 items_number = EXCLUDED.items_number, 
                 pairwise_number = EXCLUDED.pairwise_number,
                 density = EXCLUDED.density,
                 volume = EXCLUDED.volume,
-                entropy = EXCLUDED.entropy
+                entropy = EXCLUDED.entropy,
+                num_attributes = EXCLUDED.num_attributes,
+                avg_attribute_value = EXCLUDED.avg_attribute_value,
+                stddev = EXCLUDED.stddev
         `;
 
-        await client.query(queryText, [items, pairwise, density, volume, entropy, query, model]);
+        await client.query(queryText, [items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviation]);
         res.status(200).send("Record added or updated successfully.");
     } catch (error) {
         console.error("Error processing request:", error);
@@ -494,6 +497,7 @@ app.post('/entropy_db', async (req, res) => {
         await client.end();
     }
 });
+
 
 
 app.get('/check_query', async (req, res) => {
@@ -611,7 +615,6 @@ function calculateShannonEntropy(coordinates) {
 }
 
 function calculateModelMetrics(cubeData) {
-
     const validCoordinates = Object.values(cubeData).filter(item => 
         item.coordinates && 
         !isNaN(item.coordinates.x) && 
@@ -624,13 +627,16 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
+    const standardDeviation = calculateStandardDeviation(densities);
     const shannonEntropy = calculateShannonEntropy(validCoordinates);
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
-
     const densityHistogramData = calculateHistogramBins(densities, 5);
-
     const boundingBoxVolume = validCoordinates.length > 0 ? calculateBoundingVolumeArea(validCoordinates) : 0;
+
+    // Assuming 'attributes' are part of the cubeData items
+    const numberOfAttributes = cubeData.someProperty ? cubeData.someProperty.length : 0;
+    const averageAttributeValue = cubeData.someProperty ? calculateAverage(cubeData.someProperty) : 0;
 
     return {
         numberOfCubes: numOfCubes,
@@ -640,9 +646,13 @@ function calculateModelMetrics(cubeData) {
         densityHistogramData,
         vectorPoints: validCoordinates,
         averageDensities,
-        shannonEntropy
+        shannonEntropy,
+        numberOfAttributes,
+        averageAttributeValue,
+        standardDeviation
     };
 }
+
 
 function calculateAllPairwiseDistances(coordinates) {
     return coordinates.flatMap((coord, index, arr) =>
