@@ -139,21 +139,6 @@ async function openModelTab(evt) {
 }
 
 
-document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
-document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
-// document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
-document.getElementById('modelLeaderTab').addEventListener('click', loadMetricData);
-document.getElementById('metricSelect').addEventListener('change', loadMetricData);
-
-// Assuming you have some mechanism to detect other tab clicks, make sure to hide the dropdown
-document.querySelectorAll('.tablinks').forEach(tab => {
-    tab.addEventListener('click', function() {
-        if (this.id !== 'modelLeaderTab') {
-            document.getElementById('metricSelect').style.display = 'none';
-        }
-    });
-});
-
 async function loadMetricData(event) {
     event.preventDefault();
 
@@ -238,6 +223,21 @@ function clearCanvasElements(container) {
         }
     }
 }
+
+document.getElementById('tab-model').addEventListener('click', (event) => openModelTab(event));
+document.getElementById('compareTab').addEventListener('click', (event) => compareModels(event));
+// document.getElementById('attributesTab').addEventListener('click', (event) => compareAttributes(event));
+document.getElementById('modelLeaderTab').addEventListener('click', loadMetricData);
+document.getElementById('metricSelect').addEventListener('change', loadMetricData);
+
+// Assuming you have some mechanism to detect other tab clicks, make sure to hide the dropdown
+document.querySelectorAll('.tablinks').forEach(tab => {
+    tab.addEventListener('click', function() {
+        if (this.id !== 'modelLeaderTab') {
+            document.getElementById('metricSelect').style.display = 'none';
+        }
+    });
+});
 
 
 async function compareModels(evt) {
