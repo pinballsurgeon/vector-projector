@@ -102,6 +102,9 @@ async function openModelTab(evt) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
+    const canvasContainer = document.getElementById('canvas-container');
+    canvasContainer.innerHTML = ''; // Clears any existing canvases/charts    
+
     // Display the current tab content and set it as active
     document.getElementById('tab-model').style.display = "block";
     evt.currentTarget.className += " active";
