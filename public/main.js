@@ -150,10 +150,15 @@ function loadMetricData(event) {
 
 function updateLeaderChart() {
     const ctx = document.getElementById('leaderChart').getContext('2d');
+
+    // Check if there's an existing chart instance and destroy it if exists
+    if (window.myLeaderChart) {
+        window.myLeaderChart.destroy();
+    }
+
     fetch('/model_averages').then(response => response.json()).then(modelAverages => {
         const selectedMetric = document.getElementById('metricSelect').value;
         let label, dataKey;
-
         switch (selectedMetric) {
             case 'entropy':
                 label = 'Relative Entropy';
@@ -193,7 +198,8 @@ function updateLeaderChart() {
             }]
         };
 
-        new Chart(ctx, {
+        // Create a new chart instance and assign it to window object for global access
+        window.myLeaderChart = new Chart(ctx, {
             type: 'bar',
             data: data,
             options: {
@@ -215,6 +221,7 @@ function updateLeaderChart() {
         appendLog(`Error: ${error}`);
     });
 }
+
 
 
 function updateActiveTab(currentTarget) {
