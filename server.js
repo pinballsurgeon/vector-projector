@@ -675,10 +675,18 @@ function calculateAverage(array) {
     return sum / array.length;
 }
 
+function calculateStandardDeviation(values) {
+    const mean = calculateAverage(values);
+    const variance = values.reduce((acc, value) => acc + Math.pow(value - mean, 2), 0) / values.length;
+    return Math.sqrt(variance);
+}
+
+
 function calculateStandardDeviationFromOrigin(coordinates) {
     const distancesFromOrigin = coordinates.map(coord => Math.sqrt(coord.x**2 + coord.y**2 + coord.z**2));
     return calculateStandardDeviation(distancesFromOrigin);
 }
+
 
 function calculateCentroid(coordinates) {
     const sum = coordinates.reduce((acc, coord) => {
