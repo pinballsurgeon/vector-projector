@@ -627,7 +627,7 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    const standardDeviation = calculateStandardDeviation(densities);
+    const standardDeviation = calculateStandardDeviation(validCoordinates);
     const shannonEntropy = calculateShannonEntropy(validCoordinates);
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
