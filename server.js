@@ -627,7 +627,8 @@ function calculateModelMetrics(cubeData) {
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
     const averageDensities = calculateAverage(densities);
-    const standardDeviation = calculateStandardDeviation(validCoordinates);
+    const stdDevFromOrigin = calculateStandardDeviationFromOrigin(validCoordinates);
+    const stdDevFromCentroid = calculateStandardDeviationFromCentroid(validCoordinates);
     const shannonEntropy = calculateShannonEntropy(validCoordinates);
 
     const pairwiseHistogramData = calculateHistogramBins(pairwiseDistances, 5);
@@ -638,7 +639,7 @@ function calculateModelMetrics(cubeData) {
     const averageAttributeValue = calculateAverageAttributeValue(cubeData);
     
     return {
-        numberOfCubes: numOfCubes,
+        numberOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
         boundingBoxVolume,
         pairwiseHistogramData,
@@ -648,9 +649,11 @@ function calculateModelMetrics(cubeData) {
         shannonEntropy,
         numberOfAttributes,
         averageAttributeValue,
-        standardDeviation
+        standardDeviationFromOrigin: stdDevFromOrigin,
+        standardDeviationFromCentroid: stdDevFromCentroid
     };
 }
+
 
 
 function calculateAllPairwiseDistances(coordinates) {
@@ -672,11 +675,37 @@ function calculateAverage(array) {
     return sum / array.length;
 }
 
-function calculateStandardDeviation(values) {
-    const mean = calculateAverage(values);
-    const variance = values.reduce((acc, value) => acc + Math.pow(value - mean, 2), 0) / values.length;
-    return Math.sqrt(variance);
+function calculateStandardDeviationFromOrigin(coordinates) {
+    const distancesFromOrigin = coordinates.map(coord => Math.sqrt(coord.x**2 + coord.y**2 + coord.z**2));
+    return calculateStandardDeviation(distancesFromOrigin);
 }
+
+function calculateCentroid(coordinates) {
+    const sum = coordinates.reduce((acc, coord) => {
+        acc.x += coord.x;
+        acc.y += coord.y;
+        acc.z += coord.z;
+        return acc;
+    }, {x: 0, y: 0, z: 0});
+    return {
+        x: sum.x / coordinates.length,
+        y: sum.y / coordinates.length,
+        z: sum.z / coordinates.length
+    };
+}
+
+function calculateStandardDeviationFromCentroid(coordinates) {
+    const centroid = calculateCentroid(coordinates);
+    const distancesFromCentroid = coordinates.map(coord => 
+        Math.sqrt(
+            (coord.x - centroid.x)**2 + 
+            (coord.y - centroid.y)**2 + 
+            (coord.z - centroid.z)**2
+        )
+    );
+    return calculateStandardDeviation(distancesFromCentroid);
+}
+
 
 function calculateNumberOfAttributes(cubeData) {
     const attributeSet = new Set();
