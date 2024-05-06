@@ -622,7 +622,7 @@ function calculateModelMetrics(cubeData) {
         !isNaN(item.coordinates.z)    
     ).map(item => item.coordinates);
 
-    const numOfCubes = validCoordinates.length;
+    const numberOfCubes = validCoordinates.length;
     const pairwiseDistances = calculateAllPairwiseDistances(validCoordinates);
     const averagePairwiseDistance = calculateAverage(pairwiseDistances);
     const densities = estimateDensity(validCoordinates, averagePairwiseDistance);
