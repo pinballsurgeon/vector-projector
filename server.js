@@ -634,10 +634,9 @@ function calculateModelMetrics(cubeData) {
     const densityHistogramData = calculateHistogramBins(densities, 5);
     const boundingBoxVolume = validCoordinates.length > 0 ? calculateBoundingVolumeArea(validCoordinates) : 0;
 
-    // Assuming 'attributes' are part of the cubeData items
-    const numberOfAttributes = cubeData.someProperty ? cubeData.someProperty.length : 0;
-    const averageAttributeValue = cubeData.someProperty ? calculateAverage(cubeData.someProperty) : 0;
-
+    const numberOfAttributes = calculateNumberOfAttributes(cubeData);
+    const averageAttributeValue = calculateAverageAttributeValue(cubeData);
+    
     return {
         numberOfCubes: numOfCubes,
         pairwiseAvgDistance: averagePairwiseDistance,
@@ -677,6 +676,36 @@ function calculateStandardDeviation(values) {
     const mean = calculateAverage(values);
     const variance = values.reduce((acc, value) => acc + Math.pow(value - mean, 2), 0) / values.length;
     return Math.sqrt(variance);
+}
+
+function calculateNumberOfAttributes(cubeData) {
+    const attributeSet = new Set();
+
+    Object.values(cubeData).forEach(item => {
+        if (item.originalRatings) {
+            Object.keys(item.originalRatings).forEach(attribute => {
+                attributeSet.add(attribute);
+            });
+        }
+    });
+
+    return attributeSet.size;  // Returns the count of unique attributes
+}
+
+function calculateAverageAttributeValue(cubeData) {
+    let totalSum = 0;
+    let totalCount = 0;
+
+    Object.values(cubeData).forEach(item => {
+        if (item.originalRatings) {
+            Object.values(item.originalRatings).forEach(value => {
+                totalSum += value;
+                totalCount++;
+            });
+        }
+    });
+
+    return totalCount > 0 ? totalSum / totalCount : 0;  // Returns the average of all attribute values
 }
 
 
