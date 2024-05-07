@@ -147,7 +147,6 @@ function loadMetricData(event) {
 
     updateLeaderChart(); // Assume this is a function that sets up the leader chart
 }
-
 function updateLeaderChart() {
     const ctx = document.getElementById('leaderChart').getContext('2d');
 
@@ -183,6 +182,22 @@ function updateLeaderChart() {
             case 'pairwise':
                 label = 'Relative Pairwise';
                 dataKey = 'pairwise_pct';
+                break;
+            case 'num_attributes':
+                label = 'Number of Attributes';
+                dataKey = 'num_attributes_pct';
+                break;
+            case 'stdDevCentroid':
+                label = 'Standard Deviation from Centroid';
+                dataKey = 'standardDeviationFromCentroid_pct';
+                break;
+            case 'stdDevOrigin':
+                label = 'Standard Deviation from Origin';
+                dataKey = 'standardDeviationFromOrigin_pct';
+                break;
+            case 'stdDevAttributes':
+                label = 'Standard Deviation of Attributes';
+                dataKey = 'stdevAttributeValue_pct';
                 break;
         }
 
@@ -221,7 +236,6 @@ function updateLeaderChart() {
         appendLog(`Error: ${error}`);
     });
 }
-
 
 
 function updateActiveTab(currentTarget) {
