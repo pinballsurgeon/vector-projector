@@ -1087,17 +1087,17 @@ app.get('/model_averages', async (req, res) => {
                     , volume / avg_volume volume_rel
                     , entropy / avg_entropy entropy_rel
         
-                    , ( items_number * 1.0 ) / max_items_number items_number_max
-                    , pairwise_number / max_pairwise_number pairwise_number_max
-                    , density / max_density density_max
-                    , volume / max_volume volume_max
-                    , entropy / max_entropy entropy_max
+                    , items_number * 1.0  / max_items_number items_number_max
+                    , pairwise_number * 1.0 / max_pairwise_number pairwise_number_max
+                    , density * 1.0 / max_density density_max
+                    , volume * 1.0 / max_volume volume_max
+                    , entropy * 1.0 / max_entropy entropy_max
         
-                    , num_attributes / max_num_attributes num_attributes_max
-                    , avg_attribute_value / max_avg_attribute_value avg_attribute_value_max
-                    , standardDeviationFromCentroid / max_standardDeviationFromCentroid standardDeviationFromCentroid_max
-                    , standardDeviationFromOrigin / max_standardDeviationFromOrigin standardDeviationFromOrigin_max
-                    , stdevAttributeValue / max_stdevAttributeValue stdevAttributeValue_max
+                    , num_attributes * 1.0 / max_num_attributes num_attributes_max
+                    , avg_attribute_value * 1.0 / max_avg_attribute_value avg_attribute_value_max
+                    , standardDeviationFromCentroid * 1.0 / max_standardDeviationFromCentroid standardDeviationFromCentroid_max
+                    , standardDeviationFromOrigin * 1.0 / max_standardDeviationFromOrigin standardDeviationFromOrigin_max
+                    , stdevAttributeValue * 1.0 / max_stdevAttributeValue stdevAttributeValue_max
                     
                   from entropy etr
         
@@ -1134,7 +1134,6 @@ app.get('/model_averages', async (req, res) => {
           from model_base
         
          group by model  
-
         `);
 
         client.end();
