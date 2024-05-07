@@ -1057,7 +1057,7 @@ app.get('/model_averages', async (req, res) => {
                 , max(density) max_density
                 , max(volume) max_volume
                 , max(entropy) max_entropy 
-                , max(num_attributes) max_num_attributes
+                , max(num_attributes) * 1.0 max_num_attributes
                 , max(avg_attribute_value) max_avg_attribute_value
                 , max(standardDeviationFromCentroid) max_standardDeviationFromCentroid
                 , max(standardDeviationFromOrigin) max_standardDeviationFromOrigin
@@ -1070,12 +1070,12 @@ app.get('/model_averages', async (req, res) => {
         model_base as (
                 select etr.model
                     , etr.query
-                    , etr.items_number
+                    , etr.items_number * 1.0
                     , etr.pairwise_number
                     , etr.density
                     , etr.volume
                     , etr.entropy
-                    , etr.num_attributes
+                    , etr.num_attributes * 1.0
                     , etr.avg_attribute_value
                     , etr.standardDeviationFromCentroid
                     , etr.standardDeviationFromOrigin
@@ -1146,7 +1146,7 @@ app.get('/model_averages', async (req, res) => {
             density_pct: parseFloat(row.density_pct),
             items_pct: parseFloat(row.items_pct),           
             pairwise_pct: parseFloat(row.pairwise_pct),
-            num_attributes_pct: parseFloat(row.pairwise_pct),    
+            num_attributes_pct: parseFloat(row.num_attributes_pct),    
             standardDeviationFromCentroid_pct: parseFloat(row.standardDeviationFromCentroid_pct),  
             standardDeviationFromOrigin_pct: parseFloat(row.standardDeviationFromOrigin_pct),  
             stdevAttributeValue_pct: parseFloat(row.stdevAttributeValue_pct)  
