@@ -310,6 +310,9 @@ async function compareModels(evt) {
         appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
         compareContainer.appendChild(modelDiv);
 
+        console.info('MODEL', modelResult.model)
+        console.info('ATTRIBUTE AVG', modelResult.averageAttributeValue)
+
         const payload = {
             items: modelResult.numberOfCubes,
             pairwise: modelResult.pairwiseAvgDistance.toFixed(2),
