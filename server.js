@@ -1152,6 +1152,7 @@ app.get('/model_averages', async (req, res) => {
             stdevAttributeValue_pct: parseFloat(row.stdevAttributeValue_pct)  
         }));
         
+        console.info("MODEL AVERAGE ROW INFO:", modelAverages);
 
         res.json(modelAverages);
     } catch (error) {
