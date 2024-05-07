@@ -485,7 +485,8 @@ app.post('/entropy_db', async (req, res) => {
                 entropy = EXCLUDED.entropy,
                 num_attributes = EXCLUDED.num_attributes,
                 avg_attribute_value = EXCLUDED.avg_attribute_value,
-                stddev = EXCLUDED.stddev
+                standardDeviationFromCentroid = EXCLUDED.standardDeviationFromCentroid,
+                standardDeviationFromOrigin = EXCLUDED.standardDeviationFromOrigin
         `;
 
         await client.query(queryText, [items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviation]);

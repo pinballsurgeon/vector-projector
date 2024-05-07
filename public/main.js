@@ -318,9 +318,10 @@ async function compareModels(evt) {
             entropy: modelResult.shannonEntropy.toFixed(2),
             query: userInputValue,
             model: modelResult.model,
-            numberOfAttributes: modelResult.numberOfAttributes,  // New metric
-            averageAttributeValue: modelResult.averageAttributeValue.toFixed(2),  // New metric
-            standardDeviation: modelResult.standardDeviation.toFixed(2)  // New metric
+            numberOfAttributes: modelResult.numberOfAttributes,  
+            averageAttributeValue: modelResult.averageAttributeValue.toFixed(2), 
+            standardDeviationFromOrigin: modelResult.standardDeviationFromOrigin.toFixed(2),
+            standardDeviationFromCentroid: modelResult.standardDeviationFromCentroid.toFixed(2)   
         };
         
         fetch('/entropy_db', {
