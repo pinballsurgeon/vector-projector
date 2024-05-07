@@ -471,10 +471,11 @@ app.post('/entropy_db', async (req, res) => {
     });
     try {
         await client.connect();
-        const { items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviation } = req.body;
+
+        const { items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviationFromOrigin, standardDeviationFromCentroid, stdevAttributeValue } = req.body;
 
         const queryText = `
-            INSERT INTO entropy (items_number, pairwise_number, density, volume, entropy, query, model, num_attributes, avg_attribute_value, stddev)
+            INSERT INTO entropy (items_number, pairwise_number, density, volume, entropy, query, model, num_attributes, avg_attribute_value, standardDeviationFromCentroid, standardDeviationFromOrigin, stdevAttributeValue)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             ON CONFLICT (query, model) 
             DO UPDATE SET 
@@ -486,10 +487,11 @@ app.post('/entropy_db', async (req, res) => {
                 num_attributes = EXCLUDED.num_attributes,
                 avg_attribute_value = EXCLUDED.avg_attribute_value,
                 standardDeviationFromCentroid = EXCLUDED.standardDeviationFromCentroid,
-                standardDeviationFromOrigin = EXCLUDED.standardDeviationFromOrigin
+                standardDeviationFromOrigin = EXCLUDED.standardDeviationFromOrigin,
+                stdevAttributeValue = EXCLUDED.stdevAttributeValue
         `;
 
-        await client.query(queryText, [items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviation]);
+        await client.query(queryText, [items, pairwise, density, volume, entropy, query, model, numberOfAttributes, averageAttributeValue, standardDeviationFromOrigin, standardDeviationFromCentroid, stdevAttributeValue]);
         res.status(200).send("Record added or updated successfully.");
     } catch (error) {
         console.error("Error processing request:", error);
@@ -638,6 +640,7 @@ function calculateModelMetrics(cubeData) {
 
     const numberOfAttributes = calculateNumberOfAttributes(cubeData);
     const averageAttributeValue = calculateAverageAttributeValue(cubeData);
+    const stdevAttributeValue = calculateStandardDeviationAttributeValue(cubeData);
     
     return {
         numberOfCubes,
@@ -651,7 +654,8 @@ function calculateModelMetrics(cubeData) {
         numberOfAttributes,
         averageAttributeValue,
         standardDeviationFromOrigin: stdDevFromOrigin,
-        standardDeviationFromCentroid: stdDevFromCentroid
+        standardDeviationFromCentroid: stdDevFromCentroid,
+        stdevAttributeValue
     };
 }
 
@@ -737,13 +741,38 @@ function calculateAverageAttributeValue(cubeData) {
     Object.values(cubeData).forEach(item => {
         if (item.originalRatings) {
             Object.values(item.originalRatings).forEach(value => {
-                totalSum += value;
-                totalCount++;
+                // Ensure the value is a number and within the specified range
+                if (typeof value === 'number' && value >= 0 && value <= 10) {
+                    totalSum += value;
+                    totalCount++;
+                }
             });
         }
     });
 
     return totalCount > 0 ? totalSum / totalCount : 0;  // Returns the average of all attribute values
+}
+
+function calculateStandardDeviationAttributeValue(cubeData) {
+    let values = [];
+
+    Object.values(cubeData).forEach(item => {
+        if (item.originalRatings) {
+            Object.values(item.originalRatings).forEach(value => {
+                // Check if the value is a number and within the range
+                if (typeof value === 'number' && value >= 0 && value <= 10) {
+                    values.push(value);
+                }
+            });
+        }
+    });
+
+    if (values.length === 0) return 0; // Return 0 if no valid values
+
+    const mean = values.reduce((acc, val) => acc + val, 0) / values.length;
+    const variance = values.reduce((acc, val) => acc + (val - mean) ** 2, 0) / values.length;
+    
+    return Math.sqrt(variance); // Standard deviation is the square root of variance
 }
 
 
