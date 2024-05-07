@@ -201,6 +201,9 @@ function updateLeaderChart() {
                 break;
         }
 
+        console.info('DATAKEY', dataKey)
+        console.info('MODEL', modelAverages)
+
         modelAverages.sort((a, b) => b[dataKey] - a[dataKey]);
         const data = {
             labels: modelAverages.map(model => model.model),
@@ -323,9 +326,6 @@ async function compareModels(evt) {
         appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
         appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
         compareContainer.appendChild(modelDiv);
-
-        console.info('MODEL', modelResult.model)
-        console.info('ATTRIBUTE AVG', modelResult.averageAttributeValue)
 
         const payload = {
             items: modelResult.numberOfCubes,
