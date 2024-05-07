@@ -1126,9 +1126,9 @@ app.get('/model_averages', async (req, res) => {
             , avg(volume_max) volume_pct
             , avg(entropy_max) entropy_pct 
             , avg(num_attributes_max) num_attributes_pct 
-            , avg(standardDeviationFromCentroid_max) standardDeviationFromCentroid_pct 
-            , avg(standardDeviationFromOrigin_max) standardDeviationFromOrigin_pct 
-            , avg(stdevAttributeValue_max) stdevAttributeValue_pct 
+            , avg(standardDeviationFromCentroid_max) standarddeviationfromcentroid_pct 
+            , avg(standardDeviationFromOrigin_max) standarddeviationfromorigin_pct 
+            , avg(stdevAttributeValue_max) stdevattributevalue_pct 
             
             
           from model_base
@@ -1147,9 +1147,9 @@ app.get('/model_averages', async (req, res) => {
             items_pct: parseFloat(row.items_pct),           
             pairwise_pct: parseFloat(row.pairwise_pct),
             num_attributes_pct: parseFloat(row.num_attributes_pct),    
-            standardDeviationFromCentroid_pct: parseFloat(row.standardDeviationFromCentroid_pct),  
-            standardDeviationFromOrigin_pct: parseFloat(row.standardDeviationFromOrigin_pct),  
-            stdevAttributeValue_pct: parseFloat(row.stdevAttributeValue_pct)  
+            standardDeviationFromCentroid_pct: parseFloat(row.standarddeviationfromcentroid_pct),  
+            standardDeviationFromOrigin_pct: parseFloat(row.standarddeviationfromorigin_pct),  
+            stdevAttributeValue_pct: parseFloat(row.stdevattributevalue_pct)  
         }));
         
         console.info("MODEL AVERAGE ROW INFO:", modelAverages);
