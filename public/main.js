@@ -324,7 +324,7 @@ async function compareModels(evt) {
         modelDiv.appendChild(entropyParagraph);
 
         appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
-        appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
+        // appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
         compareContainer.appendChild(modelDiv);
 
         const payload = {
@@ -394,8 +394,8 @@ async function compareModels(evt) {
 function append2DVisualization(modelDiv, modelResult) {
 
   const canvas = document.createElement('canvas');
-  canvas.width = 200;
-  canvas.height = 200;
+  canvas.width = 150;
+  canvas.height = 150;
   modelDiv.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
