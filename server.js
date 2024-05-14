@@ -223,10 +223,11 @@ export const claudethree = async (prompt, modelId) => {
 };
 
 
-async function gemini_generateContent(prompt, model) {
+async function gemini_generateContent(prompt,) {
 
     const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
 
+    const model = "gemini-1.0-pro-001";
     const generativeModel = genAI.getGenerativeModel({
       model: model,
       generation_config: {
@@ -288,7 +289,7 @@ app.post('/ask', async (req, res, next) => {
             const clean_resp = gptResponse.data.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
       
-        } else if (['gemini-pro-1.0-001', 'gemini-pro-1.0-002', 'gemini-pro-1.5-0409'].includes(model)) {
+        } else if (['gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-0409'].includes(model)) {
 
             const prompt = userInput;
             const results = await gemini_generateContent(prompt, model);
