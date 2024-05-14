@@ -279,7 +279,7 @@ app.post('/ask', async (req, res, next) => {
             const clean_resp = gptResponse.data.choices[0].text.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
 
-        } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-0125-preview', 'gpt-4-1106-preview', 'gpt-4-turbo-preview', 'gpt-4-turbo-2024-04-09'].includes(model)) {
+        } else if (['gpt-3.5-turbo', 'gpt-4', 'gpt-4-0125-preview', 'gpt-4-1106-preview', 'gpt-4-turbo-preview', 'gpt-4-turbo-2024-04-09', 'gpt-4o-2024-05-13'].includes(model)) {
 
             const gptResponse = await openai.createChatCompletion({
                 model: model,
@@ -292,10 +292,6 @@ app.post('/ask', async (req, res, next) => {
         } else if (['gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-preview-0409'].includes(model)) {
 
             const prompt = userInput;
-
-            // if (['gemini-1.5-pro-0409'].includes(model)) {
-            //     model = 'gemini-1.5-pro-latest'
-            // }
 
             const results = await gemini_generateContent(prompt, model);
 
