@@ -227,7 +227,6 @@ async function gemini_generateContent(prompt, model) {
 
     const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
 
-    const model = model;
     const generativeModel = genAI.getGenerativeModel({
       model: model,
       generation_config: {
