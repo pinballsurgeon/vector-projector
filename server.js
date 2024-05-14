@@ -686,12 +686,10 @@ function calculateStandardDeviation(values) {
     return Math.sqrt(variance);
 }
 
-
 function calculateStandardDeviationFromOrigin(coordinates) {
     const distancesFromOrigin = coordinates.map(coord => Math.sqrt(coord.x**2 + coord.y**2 + coord.z**2));
     return calculateStandardDeviation(distancesFromOrigin);
 }
-
 
 function calculateCentroid(coordinates) {
     const sum = coordinates.reduce((acc, coord) => {
@@ -718,7 +716,6 @@ function calculateStandardDeviationFromCentroid(coordinates) {
     );
     return calculateStandardDeviation(distancesFromCentroid);
 }
-
 
 function calculateNumberOfAttributes(cubeData) {
     const attributeSet = new Set();
@@ -775,7 +772,6 @@ function calculateStandardDeviationAttributeValue(cubeData) {
     return Math.sqrt(variance); // Standard deviation is the square root of variance
 }
 
-
 function calculateBoundingVolumeArea(coordinates) {
 
     let minX = Infinity, minY = Infinity, minZ = Infinity;
@@ -796,7 +792,6 @@ function calculateBoundingVolumeArea(coordinates) {
 
     return length * width * height;
 }
-
 
 function calculateHistogramBins(pairwiseDistances, binCount) {
     const maxDistance = Math.max(...pairwiseDistances);
@@ -909,7 +904,6 @@ function calculateAttributeMetrics(modelData) {
     return attributeMetrics;
 }
 
-
 app.get('/get_model_data', async (req, res) => {
     const userInputValue = req.query.query;
     console.info("COMPARE ATTRIBUTES:", userInputValue);
@@ -956,7 +950,6 @@ app.get('/get_model_data', async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
-
 
 app.post('/users', async (req, res) => {
     const client = new Client({

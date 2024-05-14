@@ -276,8 +276,6 @@ async function compareModels(evt) {
         return;
     }
 
- 
-
     const canvasContainer = document.getElementById('canvas-container');
     canvasContainer.style.display = 'none';
     clearCanvas();
@@ -308,7 +306,7 @@ async function compareModels(evt) {
         modelDiv.appendChild(itemCountParagraph);
 
         const avgDistanceParagraph = document.createElement('p');
-        avgDistanceParagraph.textContent = `Avg. pairwise distance: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
+        avgDistanceParagraph.textContent = `Avg. pairwise: ${modelResult.pairwiseAvgDistance.toFixed(2)}`;
         modelDiv.appendChild(avgDistanceParagraph);
 
         const avgDensityParagraph = document.createElement('p');
