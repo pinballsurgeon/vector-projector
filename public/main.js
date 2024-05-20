@@ -5,7 +5,7 @@ import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer, 
 
 document.addEventListener("DOMContentLoaded", function() {
   const newSidebarSelector = document.getElementById("newSidebarSelector");
-  const defaultTab = document.getElementById("tab-gpt-3.5-turbo");
+  const defaultTab = document.getElementById("tab-model");
   if (defaultTab) {
     defaultTab.className += " active";
      }
