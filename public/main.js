@@ -4,21 +4,26 @@ import { listPerpetuator } from './listPerpetuator.js';
 import { createOrUpdateCube, updateVectorMetricsContent, clearCanvas, renderer, camera} from './cubeManager.js';
 
 document.addEventListener("DOMContentLoaded", function() {
-  const newSidebarSelector = document.getElementById("newSidebarSelector");
-  const defaultTab = document.getElementById("tab-model");
-  if (defaultTab) {
-    defaultTab.className += " active";
-     }
-  newSidebarSelector.addEventListener("change", function() {
+    const newSidebarSelector = document.getElementById("newSidebarSelector");
+    const defaultTab = document.getElementById("tab-model");
+  
+    if (defaultTab) {
+      defaultTab.className += " active";
+      
+      // Trigger the click event to ensure everything is set up correctly
+      openModelTab({ currentTarget: defaultTab });
+    }
+  
+    newSidebarSelector.addEventListener("change", function() {
       updateSidebarContent(this.value);
+    });
+  
+    fetchPreviousQueries();
+    updateSidebarContent(newSidebarSelector.value);
+    initializeModels();
+    initializeModelParams();
+    initializePrompts();
   });
-
-  fetchPreviousQueries();
-  updateSidebarContent(newSidebarSelector.value);
-  initializeModels();
-  initializeModelParams();
-  initializePrompts();
-});
 
 const askButton = document.getElementById('askButton');
 const userInput = document.getElementById('userInput');
