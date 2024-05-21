@@ -225,11 +225,11 @@ export const claudethree = async (prompt, modelId) => {
 };
 
 
-async function gemini_generateContent(prompt,) {
+async function gemini_generateContent(prompt, model) {
 
     const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
 
-    const model = "gemini-1.0-pro-001";
+    // const model = "gemini-1.0-pro-001";
     const generativeModel = genAI.getGenerativeModel({
       model: model,
       generation_config: {
