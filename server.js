@@ -17,6 +17,8 @@ const { Client } = pg;
 const require = createRequire(import.meta.url);
 const axios = require('axios'); 
 
+const Groq = require('groq-sdk');
+
 const { Configuration, OpenAIApi } = require("openai");
 
 const GoogleImages = require('google-images');
@@ -338,6 +340,35 @@ app.post('/ask', async (req, res, next) => {
 
             const clean_resp = chatResponse.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
+
+        } else if (['llama3-70b-8192'].includes(model)) {
+
+            const groq = new Groq({
+                apiKey: process.env.GROQ_API_KEY
+            });
+            const chatCompletion = await groq.chat.completions.create({
+                "messages": [
+                    {
+                    "role": "user",
+                    "content": userInput
+                    }
+                ],
+                "model": "llama3-70b-8192",
+                "temperature": 1,
+                "max_tokens": 2024,
+                "top_p": 1,
+                "stream": true,
+                "stop": null
+                });
+
+            let combinedResponse = '';
+
+            for await (const chunk of chatCompletion) {
+            const content = chunk.choices[0]?.delta?.content || '';
+            combinedResponse += content;
+            }
+
+            res.json({ response: combinedResponse });
 
         } else {
             const max_length = req.body.max_length || 1000;
