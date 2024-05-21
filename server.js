@@ -291,7 +291,7 @@ app.post('/ask', async (req, res, next) => {
             const clean_resp = gptResponse.data.choices[0].message.content.trim().replace(/\//g, "").replace(/\\/g, "");
             res.json({ response: clean_resp });
       
-        } else if (['gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-preview-0409'].includes(model)) {
+        } else if (['gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-preview-0409', 'gemini-1.5-flash-preview-0514'].includes(model)) {
 
             const prompt = userInput;
 
