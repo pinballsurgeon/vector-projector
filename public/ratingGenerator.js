@@ -53,7 +53,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
 
         const { model, temperature, top_p, num_return_sequences } = getModelAndParams();
 
-        if (!['text-davinci-003', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview', 'gpt-4-0125-preview', 'gpt-4-turbo-preview', 'gemini-pro','mistral-medium', 'mistral-large', 'claude-v2', 'claude-v3', 'gpt-4-turbo-2024-04-09', 'gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-0409', 'gemini-1.5-pro-preview-0409','gpt-4o-2024-05-13','llama3-70b-8192'].includes(model)) {
+        if (!['text-davinci-003', 'gpt-3.5-turbo-instruct', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-1106-preview', 'gpt-4-0125-preview', 'gpt-4-turbo-preview', 'gemini-pro','mistral-medium', 'mistral-large', 'claude-v2', 'claude-v3', 'gpt-4-turbo-2024-04-09', 'gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-0409', 'gemini-1.5-pro-preview-0409','gpt-4o-2024-05-13'].includes(model)) {
             for (let i = 0; i < items.length; i++) {
 
                 let item = items[i];
@@ -91,7 +91,7 @@ export const generateRatings = async (createOrUpdateCubeWithScene) => {
                     continue; // Skip to the next item
                 }
             }
-        } else if (['claude-v3'].includes(model)) {
+        } else if (['claude-v3', 'llama3-70b-8192'].includes(model)) {
 
             for (const item of items) {
                 // Await the processing of each item
