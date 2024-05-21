@@ -232,6 +232,7 @@ async function gemini_generateContent(prompt, model) {
     // const model = "gemini-1.0-pro-001";
     const generativeModel = genAI.getGenerativeModel({
       model: model,
+      apiVersion: 'v1beta',
       generation_config: {
         max_output_tokens: 2048,
         temperature: 0.6,
