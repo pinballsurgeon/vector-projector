@@ -326,7 +326,7 @@ async function compareModels(evt) {
         entropyParagraph.textContent = `Shannon Entropy: ${modelResult.shannonEntropy.toFixed(2)}`;
         modelDiv.appendChild(entropyParagraph);
 
-        appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
+        // appendHistogramCanvas(modelDiv, modelResult.pairwiseHistogramData, 'Pairwise Distances');
         // appendHistogramCanvas(modelDiv, modelResult.densityHistogramData, 'Density of Neighbors');
         compareContainer.appendChild(modelDiv);
 
