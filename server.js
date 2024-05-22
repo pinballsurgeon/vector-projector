@@ -227,47 +227,47 @@ export const claudethree = async (prompt, modelId) => {
 };
 
 
-async function gemini_generateContent(prompt, model) {
+// async function gemini_generateContent(prompt, model) {
 
-    // const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
-    const genAI = new GoogleGenerativeAI(process.env.GCP_GEM_PRO);
+//     // const genAI = new GoogleGenerativeAI(process.env.GCP_API_KEY);
+//     const genAI = new GoogleGenerativeAI(process.env.GCP_GEM_PRO);
 
-    const generativeModel = genAI.getGenerativeModel({
-      model: model,
-      apiVersion: 'v1beta',
-      generation_config: {
-        max_output_tokens: 2048,
-        temperature: 0.6,
-        top_p: 0.9,
-        top_k: 100
-      },
-      safety_settings: [
-              {
-                  "category": "HARM_CATEGORY_HATE_SPEECH",
-                  "threshold": "BLOCK_NONE"
-              },
-              {
-                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                  "threshold": "BLOCK_NONE"
-              },
-              {
-                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                  "threshold": "BLOCK_NONE"
-              },
-              {
-                  "category": "HARM_CATEGORY_HARASSMENT",
-                  "threshold": "BLOCK_NONE"
-              }
-          ]
-    });
+//     const generativeModel = genAI.getGenerativeModel({
+//       model: model,
+//       apiVersion: 'v1beta',
+//       generation_config: {
+//         max_output_tokens: 2048,
+//         temperature: 0.6,
+//         top_p: 0.9,
+//         top_k: 100
+//       },
+//       safety_settings: [
+//               {
+//                   "category": "HARM_CATEGORY_HATE_SPEECH",
+//                   "threshold": "BLOCK_NONE"
+//               },
+//               {
+//                   "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+//                   "threshold": "BLOCK_NONE"
+//               },
+//               {
+//                   "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+//                   "threshold": "BLOCK_NONE"
+//               },
+//               {
+//                   "category": "HARM_CATEGORY_HARASSMENT",
+//                   "threshold": "BLOCK_NONE"
+//               }
+//           ]
+//     });
 
-    const result = await generativeModel.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+//     const result = await generativeModel.generateContent(prompt);
+//     const response = result.response;
+//     const text = response.text();
 
-    return text;
+//     return text;
 
-  };
+//   };
 
 
 app.post('/ask', async (req, res, next) => {
