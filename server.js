@@ -305,7 +305,7 @@ app.post('/ask', async (req, res, next) => {
 
             const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
             //const model = 'gemini-1.5-pro-preview-0514';
-            
+             
 
             // Instantiate the models
             const generativeModel = vertex_ai.preview.getGenerativeModel({
