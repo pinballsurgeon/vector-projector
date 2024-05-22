@@ -34,6 +34,8 @@ const openai = new OpenAIApi(configuration);
 const app = express();
 const inference = new HfInference(hf_key);
 
+const {VertexAI} = require('@google-cloud/vertexai');
+
 app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`)
@@ -294,11 +296,60 @@ app.post('/ask', async (req, res, next) => {
       
         } else if (['gemini-1.0-pro-001', 'gemini-1.0-pro-002', 'gemini-1.5-pro-preview-0409', 'gemini-1.5-flash-preview-0514'].includes(model)) {
 
-            const prompt = userInput;
+            // const prompt = userInput;
 
-            const results = await gemini_generateContent(prompt, model);
+            // const results = await gemini_generateContent(prompt, model);
 
-            const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
+            // const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
+            // res.json({ response: clean_resp });
+
+            const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
+            //const model = 'gemini-1.5-pro-preview-0514';
+            
+
+            // Instantiate the models
+            const generativeModel = vertex_ai.preview.getGenerativeModel({
+            model: model,
+            generationConfig: {
+                'maxOutputTokens': 8192,
+                'temperature': 1,
+                'topP': 0.95,
+            },
+            safetySettings: [
+                {
+                  'category': 'HARM_CATEGORY_HATE_SPEECH',
+                  'threshold': 'BLOCK_ONLY_HIGH',
+                },
+                {
+                  'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
+                  'threshold': 'BLOCK_ONLY_HIGH',
+                },
+                {
+                  'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+                  'threshold': 'BLOCK_ONLY_HIGH',
+                },
+                {
+                  'category': 'HARM_CATEGORY_HARASSMENT',
+                  'threshold': 'BLOCK_ONLY_HIGH',
+                }
+              ],
+            });
+
+
+            const req = {
+                contents: [
+                {role: 'user', parts: [{text: `tew`}]}
+                ],
+            };
+            
+            const streamingResp = await generativeModel.generateContentStream(req);
+            
+
+            const resp = JSON.stringify(await streamingResp.response);
+
+            const clean_resp = resp.trim().replace(/\//g, "").replace(/\\/g, "");
+
+            console.info("GEMINI RESP:", clean_resp);
             res.json({ response: clean_resp });
 
         } else if (['claude-v2'].includes(model)) {
@@ -859,7 +910,7 @@ function estimateDensity(coordinates, avgDistance) {
 
 app.get('/compare_vectors', async (req, res) => {
     const userInputValue = req.query.query;
-    console.info("COMPARE VECTORS INPUT:", userInputValue);
+    // console.info("COMPARE VECTORS INPUT:", userInputValue);
 
     try {
         const client = new Client({
