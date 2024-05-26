@@ -36,12 +36,12 @@ const inference = new HfInference(hf_key);
 
 const {VertexAI} = require('@google-cloud/vertexai');
 
-const path = require('path');
+// const path = require('path');
 
-const credentialsFilePath = path.join(__dirname, 'gcloud_credentials.json');
-fs.writeFileSync(credentialsFilePath, process.env.GOOGLE_CREDENTIALS);
+// const credentialsFilePath = path.join(__dirname, 'gcloud_credentials.json');
+// fs.writeFileSync(credentialsFilePath, process.env.GOOGLE_CREDENTIALS);
 
-process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsFilePath;
+// process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsFilePath;
 
 app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
@@ -277,6 +277,27 @@ export const claudethree = async (prompt, modelId) => {
 //   };
 
 
+async function initializeVertexAI() {
+    // Load the credentials from the environment variable
+    const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+  
+    // Use google-auth-library to create a client with the loaded credentials
+    const auth = new GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/cloud-platform']
+    });
+  
+    // Initialize Vertex AI client with the custom auth client
+    // const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
+    const vertex_ai = new VertexAI({ 
+      project: 'dehls-deluxo-engine', 
+      location: 'us-central1',
+      authClient: await auth.getClient() 
+    });
+  
+    return vertex_ai;
+  }
+
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
@@ -310,53 +331,54 @@ app.post('/ask', async (req, res, next) => {
             // const clean_resp = results.trim().replace(/\//g, "").replace(/\\/g, "");
             // res.json({ response: clean_resp });
 
-            const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
-            //const model = 'gemini-1.5-pro-preview-0514';
+            // const vertex_ai = new VertexAI({project: 'dehls-deluxo-engine', location: 'us-central1'});
+            // const model = 'gemini-1.5-pro-preview-0514';
              
 
-            // Instantiate the models
+            const vertex_ai = await initializeVertexAI();
+
             const generativeModel = vertex_ai.preview.getGenerativeModel({
-            model: model,
-            generationConfig: {
-                'maxOutputTokens': 8192,
+                model: model,
+                generationConfig: {
+                'maxOutputTokens': 2048,
                 'temperature': 1,
-                'topP': 0.95,
-            },
-            safetySettings: [
+                'topP': 1,
+                },
+                safetySettings: [
                 {
-                  'category': 'HARM_CATEGORY_HATE_SPEECH',
-                  'threshold': 'BLOCK_ONLY_HIGH',
+                    'category': 'HARM_CATEGORY_HATE_SPEECH',
+                    'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
                 },
                 {
-                  'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
-                  'threshold': 'BLOCK_ONLY_HIGH',
+                    'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
+                    'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
                 },
                 {
-                  'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-                  'threshold': 'BLOCK_ONLY_HIGH',
+                    'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+                    'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
                 },
                 {
-                  'category': 'HARM_CATEGORY_HARASSMENT',
-                  'threshold': 'BLOCK_ONLY_HIGH',
+                    'category': 'HARM_CATEGORY_HARASSMENT',
+                    'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
                 }
-              ],
+                ],
             });
 
+            const chat = generativeModel.startChat({});
 
-            const req = {
-                contents: [
-                {role: 'user', parts: [{text: `tew`}]}
-                ],
-            };
+            const streamResult = await chat.sendMessageStream(prompt);
+            const response = (await streamResult.response).candidates[0].content;
+
+            // return response;
             
-            const streamingResp = await generativeModel.generateContentStream(req);
+            // const streamingResp = await generativeModel.generateContentStream(req);
             
 
-            const resp = JSON.stringify(await streamingResp.response);
+            // const resp = JSON.stringify(await streamingResp.response);
 
-            const clean_resp = resp.trim().replace(/\//g, "").replace(/\\/g, "");
+            // const clean_resp = resp.trim().replace(/\//g, "").replace(/\\/g, "");
 
-            console.info("GEMINI RESP:", clean_resp);
+            console.info("GEMINI RESP:", response);
             res.json({ response: clean_resp });
 
         } else if (['claude-v2'].includes(model)) {
