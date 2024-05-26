@@ -36,6 +36,9 @@ const inference = new HfInference(hf_key);
 
 const {VertexAI} = require('@google-cloud/vertexai');
 
+const path = require('path');
+const fs = require('fs');
+
 const credentialsFilePath = path.join(__dirname, 'gcloud_credentials.json');
 fs.writeFileSync(credentialsFilePath, process.env.GOOGLE_CREDENTIALS);
 
