@@ -106,7 +106,11 @@ function performPCA(data) {
 
         // const M = new mlMatrix.Matrix(covMatrix);
 
-        // const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
+        // const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M); 
+
+        const M = new Matrix(covMatrix);
+        const eigendecomposition = new EigenvalueDecomposition(M);
+
         const eigenvalues = eigendecomposition.realEigenvalues;
         const eigenvectors = eigendecomposition.eigenvectorMatrix;
 
