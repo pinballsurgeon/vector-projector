@@ -12,7 +12,7 @@ import {BedrockRuntimeClient, InvokeModelWithResponseStreamCommand } from "@aws-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
 
-const { Client } = pg;
+const { Client } = pg; 
 
 const require = createRequire(import.meta.url);
 const axios = require('axios'); 
