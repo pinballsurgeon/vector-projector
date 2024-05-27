@@ -34,7 +34,8 @@ const openai = new OpenAIApi(configuration);
 const app = express();
 const inference = new HfInference(hf_key);
 
-const {VertexAI} = require('@google-cloud/vertexai');
+const { VertexAI } = require('@google-cloud/vertexai');
+import { GoogleAuth } from 'google-auth-library';
 
 // const path = require('path');
 
