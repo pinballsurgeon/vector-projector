@@ -282,6 +282,8 @@ async function initializeVertexAI() {
     // Load the credentials from the environment variable
     const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
   
+    console.log(process.env.GOOGLE_CREDENTIALS);
+
     // Use google-auth-library to create a client with the loaded credentials
     const auth = new GoogleAuth({
       credentials,
