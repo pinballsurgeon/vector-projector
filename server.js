@@ -367,7 +367,7 @@ app.post('/ask', async (req, res, next) => {
 
             const chat = generativeModel.startChat({});
 
-            const streamResult = await chat.sendMessageStream(prompt);
+            const streamResult = await chat.sendMessageStream(userInput);
             const response = (await streamResult.response).candidates[0].content;
 
             // return response;
