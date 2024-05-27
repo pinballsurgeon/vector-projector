@@ -4,7 +4,8 @@ import MistralClient from '@mistralai/mistralai';
 import fs from 'fs';
 import * as ss from 'simple-statistics';
 import * as math from 'mathjs';
-import mlMatrix from 'ml-matrix';
+// import mlMatrix from 'ml-matrix';
+import { Matrix, EigenvalueDecomposition } from 'ml-matrix';
 import { createRequire } from "module"; 
 import bodyParser from 'body-parser';
 import pg from 'pg';
@@ -103,9 +104,9 @@ function performPCA(data) {
 
         const covMatrix = covarianceMatrix(centeredData);
 
-        const M = new mlMatrix.Matrix(covMatrix);
+        // const M = new mlMatrix.Matrix(covMatrix);
 
-        const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
+        // const eigendecomposition = new mlMatrix.EigenvalueDecomposition(M);
         const eigenvalues = eigendecomposition.realEigenvalues;
         const eigenvectors = eigendecomposition.eigenvectorMatrix;
 
