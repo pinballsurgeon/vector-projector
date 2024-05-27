@@ -300,7 +300,7 @@ async function initializeVertexAI() {
   
     return vertex_ai;
   }
-
+ 
 app.post('/ask', async (req, res, next) => {
     try {
         const userInput = req.body.prompt;
